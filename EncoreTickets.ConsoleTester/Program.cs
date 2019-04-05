@@ -1,0 +1,108 @@
+﻿using EncoreTickets.SDK;
+using EncoreTickets.SDK.Inventory;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using EncoreTickets.SDK.Content;
+using Product = EncoreTickets.SDK.Inventory.Product;
+using Product2 = EncoreTickets.SDK.Content.Product;
+
+namespace SDKConsoleTester
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ApiContext context = new ApiContext(Environments.Production);
+            List<string> productIds = new List<string>();
+            context.affiliate = "encoretickets";
+            // uscontext.useBroadway = true;
+
+
+            /* Get locations */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get all locations ");
+            Console.WriteLine(" ========================================================== ");
+            ContentServiceApi cs = new ContentServiceApi(context);
+            IList<Location> locations = cs.GetLocations(null);
+
+            foreach (var a in locations)
+            {
+                Console.WriteLine(string.Format("{0} ({1}): {2}", a.name, a.isoCode, string.Join(",", a.subLocations.ConvertAll<string>(x => x.name))));
+            }
+
+            /* Get products */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get all us products ");
+            Console.WriteLine(" ========================================================== ");
+            IList<Product2> products2 = cs.GetProducts(null);
+
+            int count = 0;
+            foreach (var p2 in products2)
+            {
+                Console.WriteLine(string.Format("{0} ({1}): {2}", p2.name, p2.id, p2.venue != null ? p2.venue.name : "- unknown-"));
+                // get detailed information for every 5th product
+                int temp;
+                if (Math.DivRem(count, 5, out temp) > 1)
+                {
+                    productIds.Add(p2.id);                    
+                }
+                count++;
+                Console.WriteLine("-------");
+            }
+            
+            /* Searching products test */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Inventory service serch for products with 'w' ");
+            Console.WriteLine(" ========================================================== ");
+            InventoryServiceApi inventoryService = new InventoryServiceApi(context);
+            IList<Product> products = inventoryService.Search("w", null);
+
+            foreach (var p3 in products)
+            {
+                Console.WriteLine(p3.name);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Inventory service serch for availability for products in array ");
+            Console.WriteLine(" ========================================================== ");
+
+            foreach (string pId in productIds)
+            {
+                Console.WriteLine(string.Format("--------* {0} *----------", pId));
+
+                Product2 p = cs.GetProductById(pId);
+                Console.WriteLine(string.Format("{0} ({1}): {2}", p.name, p.id, p.synopsis));
+
+                IList<Performance> availability = inventoryService.GetPerformances(pId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+                foreach (var a in availability)
+                {
+                    Console.WriteLine(string.Format("{0} - Tickets: {1}", a.datetime, a.largestLumpOfTickets));
+                }
+
+                if (availability.Count > 0)
+                {
+                    Console.WriteLine("--------* Availability *--------");
+                    Availability seats = inventoryService.GetAvailability(pId, 2, availability.FirstOrDefault().datetime);
+                    if (seats != null)
+                    {
+                        foreach (var a in seats.areas)
+                        {
+                            Console.WriteLine(a.name + " " + a.itemReference + " " + a.availableCount.ToString());
+                        }
+                    }
+                }
+
+                Console.WriteLine(string.Format("xxxxxxxxxxxxxx* {0} xxxxxxxxxxxxxx", pId));
+            }            
+
+            Console.WriteLine(" -- FINISHED --");
+            Console.ReadLine();
+        }
+    }
+}
+
