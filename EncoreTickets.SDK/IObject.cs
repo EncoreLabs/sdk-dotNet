@@ -18,6 +18,4 @@ namespace EncoreTickets.SDK
     public interface IObject
     {
     }
-
-
 }
