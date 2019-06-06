@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace EncoreTickets.SDK.Inventory
 {
@@ -14,9 +13,9 @@ namespace EncoreTickets.SDK.Inventory
         /// Default constructor for the Inventory service
         /// </summary>
         /// <param name="context"></param>
-        public InventoryServiceApi(ApiContext context) : base(context, "inventory.{0}.aws.encoretix.co.uk/api/")
-        {
-        }
+        public InventoryServiceApi(ApiContext context) : base(context, "inventory.{0}.aws.encoretix.co.uk/api/") { }
+
+        public InventoryServiceApi(ApiContext context, string baseUrl) : base(context, baseUrl) { }
 
         /// <summary>
         /// Search for a product
@@ -26,8 +25,8 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Product> Search(string text, IProgressCallback callback)
         {
-            ApiResultList<SearchResponse> result = 
-            this.ExecuteApiList<SearchResponse> (
+            ApiResultList<SearchResponse> result =
+            this.ExecuteApiList<SearchResponse>(
                 string.Format("v2/search?query={0}", text),
                 HttpMethod.Get,
                 false,
@@ -89,6 +88,18 @@ namespace EncoreTickets.SDK.Inventory
                HttpMethod.Get,
                false,
                null);
+
+            return result.Data;
+        }
+
+        /// <summary>
+        /// Get the first and last bookable dates for a product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public BookingRange GetBookingRange(string productId)
+        {
+            ApiResult<BookingRange> result = this.ExecuteApi<BookingRange>(string.Format("v3/products/{0}/availability-range", productId), HttpMethod.Get, true, null);
 
             return result.Data;
         }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -15,6 +13,10 @@ namespace EncoreTickets.SDK.Content
         /// </summary>
         /// <param name="context"></param>
         public ContentServiceApi(ApiContext context) : base(context, "content.{0}.aws.encoretix.co.uk/api/")
+        {
+        }
+
+        public ContentServiceApi(ApiContext context, string baseUrl) : base(context, baseUrl)
         {
         }
 
