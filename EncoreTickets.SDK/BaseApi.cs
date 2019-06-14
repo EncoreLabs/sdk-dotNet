@@ -189,6 +189,11 @@ namespace EncoreTickets.SDK
             {
                 request.AddHeader("x-apply-price-engine", "true");
                 request.AddHeader("x-market", "broadway");
+
+                if(request.Method == Method.GET)
+                {
+                    request.AddQueryParameter("countryCode", "US");
+                }
             }
 
             return request;
