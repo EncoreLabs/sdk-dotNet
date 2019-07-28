@@ -25,13 +25,9 @@ namespace EncoreTickets.SDK.Basket
         [SerializeAs(Name = "phone")]
         public string phone { get; set; }
 
-        [SerializeAs(Name = "mail")]
-        public Mail mail { get; set; }
-
         public Customer()
         {
-            address = new Address();
-            mail = new Mail();
+            address = new Address();            
         }
     }
 }

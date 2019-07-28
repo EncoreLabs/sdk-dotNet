@@ -178,7 +178,7 @@ namespace EncoreTickets.SDK
             var request = new RestRequest(endpoint, Method.GET);
 
             // add HTTP Headers
-            request.AddHeader("x-SDK", "EncoreTickets.SDK.NET v1");
+            request.AddHeader("x-SDK", "EncoreTickets.SDK.NET v1");  // todo: add build numers
 
             if (!string.IsNullOrWhiteSpace(this.context.affiliate))
             {

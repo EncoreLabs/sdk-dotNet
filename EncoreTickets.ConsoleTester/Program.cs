@@ -6,6 +6,7 @@ using System;
 using EncoreTickets.SDK.Content;
 using Product = EncoreTickets.SDK.Inventory.Product;
 using Product2 = EncoreTickets.SDK.Content.Product;
+using EncoreTickets.SDK.Venue;
 
 namespace SDKConsoleTester
 {
@@ -13,10 +14,54 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            ApiContext context = new ApiContext(Environments.Production);
+            ApiContext context = new ApiContext(Environments.Sandbox);
             List<string> productIds = new List<string>();
             context.affiliate = "encoretickets";
             // uscontext.useBroadway = true;
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get standard attributes ");
+            Console.WriteLine(" ========================================================== ");
+            VenueServiceApi vsApi = new VenueServiceApi(context);
+            IList<EncoreTickets.SDK.Venue.StandardAttribute> stas = vsApi.GetStandardAttributes();
+
+            foreach (var a in stas)
+            {
+                Console.WriteLine(
+                    string.Format("{0} - {1}", a.title, a.intention));
+            }
+
+
+            /* Get seat attributes */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get seat attributes for 163");
+            Console.WriteLine(" ========================================================== ");            
+            IList<EncoreTickets.SDK.Venue.SeatAttribute> sas = vsApi.GetSeatAttributes("163");
+
+            foreach (var a in sas)
+            {
+                Console.WriteLine(
+                    string.Format("{0} - {1} [{2}-{3} : {4}]", 
+                    a.seatIdentifier, 
+                    a.attributes[0].title,
+                    (!string.IsNullOrEmpty(a.startDate)) ? a.startDate : "-",
+                    (!string.IsNullOrEmpty(a.endDate)) ? a.endDate : "-",
+                    (a.performanceTimes != null) ? string.Join(",", a.performanceTimes) : "-"));
+            }
+
+            /* Get locations */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get all venues ");
+            Console.WriteLine(" ========================================================== ");
+            IList<EncoreTickets.SDK.Venue.Venue> venues = vsApi.GetVenues();
+
+            foreach (var a in venues)
+            {
+                Console.WriteLine(string.Format("{0} ({1}): {2}", a.title, a.internalId, a.compositeId));
+            }
 
 
             /* Get locations */

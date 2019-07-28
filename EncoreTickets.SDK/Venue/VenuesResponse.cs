@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace EncoreTickets.SDK.Venue
 {
-    public class GetVenuesResponse : IEnumerable<IObject>
+    public class VenuesResponse : IEnumerable<IObject>
     {
         [DataMember]
         public Response response { get; set; }

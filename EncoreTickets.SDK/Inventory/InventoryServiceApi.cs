@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Inventory
         /// Default constructor for the Inventory service
         /// </summary>
         /// <param name="context"></param>
-        public InventoryServiceApi(ApiContext context) : base(context, "inventory.{0}.aws.encoretix.co.uk/api/") { }
+        public InventoryServiceApi(ApiContext context) : base(context, "inventory-service.{0}tixuk.io/api/") { }
 
         public InventoryServiceApi(ApiContext context, string baseUrl) : base(context, baseUrl) { }
 

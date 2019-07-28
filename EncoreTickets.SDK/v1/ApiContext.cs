@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK
         /// </summary>
         public ApiContext(Environments env)
         {
-            this.envrionment = (env == Environments.Production) ? "prod" : "qa";
+            this.envrionment = (env == Environments.Production) ? "" : "dev";
         }
 
         /// <summary>
