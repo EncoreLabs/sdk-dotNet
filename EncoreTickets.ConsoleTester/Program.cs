@@ -14,10 +14,20 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            ApiContext context = new ApiContext(Environments.Sandbox);
-            List<string> productIds = new List<string>();
-            context.affiliate = "encoretickets";
-            // uscontext.useBroadway = true;
+            var context = new ApiContext(Environments.Sandbox, "admin", "password") {affiliate = "encoretickets"};
+            // context.useBroadway = true;
+            var productIds = new List<string>();
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get JWT token for the venue service");
+            Console.WriteLine(" ========================================================== ");
+            var vsAuthApi = new VenueAuthenticationServiceApi(context);
+            context = vsAuthApi.Authenticate();
+
+            Console.WriteLine($"username: {context.userName}");
+            Console.WriteLine($"password: {context.password}");
+            Console.WriteLine($"token: {context.accessToken}");
 
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");

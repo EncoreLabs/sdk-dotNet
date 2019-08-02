@@ -99,15 +99,16 @@ namespace EncoreTickets.SDK
         /// <typeparam name="T"></typeparam>
         /// <param name="endpoint"></param>
         /// <param name="method"></param>
-        /// <param name="postData"></param>
+        /// <param name="body"></param>
         /// <returns></returns>
-        protected ApiResult<T> ExecuteApi<T>(string endpoint, HttpMethod method, bool wrapped, string postData) where T : class
+        protected ApiResult<T> ExecuteApi<T>(string endpoint, Method method, bool wrapped, object body)
+            where T : class
         {
-            var client = this.GetClient();
-            RestRequest request = this.GetRequest(endpoint);
+            var client = GetClient();
+            var request = GetRequest(endpoint, method, body);
 
-            IRestResponse rr = null;
-            ApiResponse<T> apiResponse = null;
+            IRestResponse rr;
+            ApiResponse<T> apiResponse;
 
             if (wrapped)
             {
@@ -118,11 +119,11 @@ namespace EncoreTickets.SDK
             else
             {
                 rr = client.Execute(request);
-                T rawData = SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content);
+                var rawData = SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content);
                 apiResponse = new ApiResponse<T>(rawData);
             }
 
-            return new ApiResult<T>(this.context, request, rr, apiResponse);
+            return new ApiResult<T>(context, request, rr, apiResponse);
         }
 
         /// <summary>
@@ -131,15 +132,16 @@ namespace EncoreTickets.SDK
         /// <typeparam name="T"></typeparam>
         /// <param name="endpoint"></param>
         /// <param name="method"></param>
-        /// <param name="postData"></param>
+        /// <param name="body"></param>
         /// <returns></returns>
-        protected ApiResultList<T> ExecuteApiList<T>(string endpoint, HttpMethod method, bool wrapped, string postData) where T : class
+        protected ApiResultList<T> ExecuteApiList<T>(string endpoint, Method method, bool wrapped, object body)
+            where T : class
         {
-            var client = this.GetClient();
-            RestRequest request = this.GetRequest(endpoint);
+            var client = GetClient();
+            var request = GetRequest(endpoint, method, body);
 
-            IRestResponse rr = null;
-            ApiResponse<T> apiResponse = null;
+            IRestResponse rr;
+            ApiResponse<T> apiResponse;
 
             if (wrapped)
             {
@@ -150,53 +152,11 @@ namespace EncoreTickets.SDK
             else
             {
                 rr = client.Execute(request);
-                T rawData = (rr.IsSuccessful) ? SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content) : null;
+                var rawData = (rr.IsSuccessful) ? SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content) : null;
                 apiResponse = new ApiResponse<T>(rawData);
             }
 
-            // IRestResponse respone = client.Execute(request);
-
-            //SimpleJson.JsonArray x = SimpleJson.SimpleJson.DeserializeObject<SimpleJson.JsonArray>(respone.Content);
-            //AvailabilityResponse ar = (AvailabilityResponse)x;
-
-
-            //IRestResponse<ApiResponse<T>> response2 = (ApiResponse<T>)
-
-
-
-
-            return new ApiResultList<T>(this.context, request, rr, apiResponse);
-        }
-
-        /// <summary>
-        /// Get the request
-        /// </summary>
-        /// <param name="endpoint"></param>
-        /// <returns></returns>
-        private RestRequest GetRequest(string endpoint)
-        {
-            var request = new RestRequest(endpoint, Method.GET);
-
-            // add HTTP Headers
-            request.AddHeader("x-SDK", "EncoreTickets.SDK.NET v1");  // todo: add build numers
-
-            if (!string.IsNullOrWhiteSpace(this.context.affiliate))
-            {
-                request.AddHeader("affiliateId", this.context.affiliate); 
-            }
-
-            if (this.context.useBroadway)
-            {
-                request.AddHeader("x-apply-price-engine", "true");
-                request.AddHeader("x-market", "broadway");
-
-                if(request.Method == Method.GET)
-                {
-                    request.AddQueryParameter("countryCode", "US");
-                }
-            }
-
-            return request;
+            return new ApiResultList<T>(context, request, rr, apiResponse);
         }
 
         /// <summary>
@@ -205,14 +165,60 @@ namespace EncoreTickets.SDK
         /// <returns></returns>
         private RestClient GetClient()
         {
-            RestClient rc = new RestClient("https://" + string.Format(this.host, this.context.envrionment));
-
-            if (!string.IsNullOrEmpty(this.context.userName))
+            var rc = new RestClient("https://" + string.Format(host, context.envrionment))
             {
-                rc.Authenticator = new HttpBasicAuthenticator(this.context.userName, this.context.password);
+                Authenticator = GetAuthenticator()
+            };
+            return rc;
+        }
+
+        private IAuthenticator GetAuthenticator()
+        {
+            if (!string.IsNullOrEmpty(context.accessToken))
+            {
+                return new JwtAuthenticator(context.accessToken);
             }
 
-            return rc;
+            return !string.IsNullOrEmpty(context.userName)
+                ? new HttpBasicAuthenticator(context.userName, context.password)
+                : null;
+        }
+
+        /// <summary>
+        /// Get the request
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="method"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        private RestRequest GetRequest(string endpoint, Method method, object body)
+        {
+            var request = new RestRequest(endpoint, method);
+            AddHeadersToRequest(request);
+            request.AddJsonBody(body);
+
+            if (context.useBroadway && request.Method == Method.GET)
+            {
+                request.AddQueryParameter("countryCode", "US");
+            }
+
+            return request;
+        }
+
+        private void AddHeadersToRequest(IRestRequest request)
+        {
+            request.AddHeader("x-SDK", "EncoreTickets.SDK.NET v1");  // todo: add build numers
+
+            if (!string.IsNullOrWhiteSpace(context.affiliate))
+            {
+                request.AddHeader("affiliateId", context.affiliate);
+            }
+
+            if (context.useBroadway)
+            {
+                request.AddHeader("x-apply-price-engine", "true");
+                request.AddHeader("x-market", "broadway");
+            }
         }
 
         /// <summary>

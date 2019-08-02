@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Venue
 {
@@ -18,8 +18,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<Venue> GetVenues()
         {
-            ApiResultList<VenuesResponse> result = ExecuteApiList<VenuesResponse>("v1/venues", HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<VenuesResponse>("v1/venues", Method.GET, false, null);
             return result.GetList<Venue>();
         }
 
@@ -30,19 +29,18 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public Venue GetVenueById(string id)
         {
-            ApiResult<Venue> result = this.ExecuteApi<Venue>(string.Format("v1/venues/{0}", id), HttpMethod.Get, true, null);
-
+            var result = ExecuteApi<Venue>($"v1/venues/{id}", Method.GET, true, null);
             return result.Data;
         }
 
         /// <summary>
         /// Get the seat attributes for a venue
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="venue"></param>
         /// <returns></returns>
-        public IList<SeatAttribute> GetSeatAttributes(Venue v)
+        public IList<SeatAttribute> GetSeatAttributes(Venue venue)
         {
-            return this.GetSeatAttributes(v.internalId);
+            return GetSeatAttributes(venue.internalId);
         }
 
         /// <summary>
@@ -52,8 +50,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            ApiResultList<SeatAttributeResponse> result = ExecuteApiList<SeatAttributeResponse>(string.Format("v1/venues/{0}/seats/attributes/detailed", venueId), HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<SeatAttributeResponse>($"v1/venues/{venueId}/seats/attributes/detailed", Method.GET, false, null);
             return result.GetList<SeatAttribute>();
         }
 
@@ -63,8 +60,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<StandardAttribute> GetStandardAttributes()
         {
-            ApiResultList<StandardAttributeResponse> result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", Method.GET, false, null);
             return result.GetList<StandardAttribute>();
         }
     }

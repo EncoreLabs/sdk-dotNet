@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Inventory
 {
@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Inventory
             ApiResultList<SearchResponse> result =
             this.ExecuteApiList<SearchResponse>(
                 string.Format("v2/search?query={0}", text),
-                HttpMethod.Get,
+                Method.GET,
                 false,
                 null);
 
@@ -63,7 +63,7 @@ namespace EncoreTickets.SDK.Inventory
             ApiResultList<List<Performance>> result =
                 this.ExecuteApiList<List<Performance>>(
                     path,
-                    HttpMethod.Get,
+                    Method.GET,
                     false,
                     null);
 
@@ -85,7 +85,7 @@ namespace EncoreTickets.SDK.Inventory
             ApiResult<Availability> result =
            this.ExecuteApi<Availability>(
                path,
-               HttpMethod.Get,
+               Method.GET,
                false,
                null);
 
@@ -99,7 +99,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public BookingRange GetBookingRange(string productId)
         {
-            ApiResult<BookingRange> result = this.ExecuteApi<BookingRange>(string.Format("v3/products/{0}/availability-range", productId), HttpMethod.Get, true, null);
+            ApiResult<BookingRange> result = this.ExecuteApi<BookingRange>(string.Format("v3/products/{0}/availability-range", productId), Method.GET, true, null);
 
             return result.Data;
         }

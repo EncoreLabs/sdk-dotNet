@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -29,7 +30,7 @@ namespace EncoreTickets.SDK.Content
         public IList<Location> GetLocations(IProgressCallback callback)
         {
             ApiResultList<List<Location>> results =
-            this.ExecuteApiList<List<Location>>("v1/locations", HttpMethod.Get, true, null);
+            this.ExecuteApiList<List<Location>>("v1/locations", Method.GET, true, null);
 
             return results.GetList<Location>();
         }
@@ -44,7 +45,7 @@ namespace EncoreTickets.SDK.Content
             ApiResultList<List<Product>> result =
                 this.ExecuteApiList<List<Product>>(
                     "v1/products?page=1&limit=1000",
-                    HttpMethod.Get,
+                    Method.GET,
                     true,
                     null);
 
@@ -61,7 +62,7 @@ namespace EncoreTickets.SDK.Content
             ApiResult<Product> result =
                     this.ExecuteApi<Product>(
                         string.Format("v1/products/{0}", id),
-                        HttpMethod.Get,
+                        Method.GET,
                         true,
                         null);
 
