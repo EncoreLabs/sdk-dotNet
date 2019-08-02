@@ -66,9 +66,19 @@ namespace EncoreTickets.SDK.Venue
         }
 
         /// <summary>
+        /// Upsert a standard attribute by its title.
+        /// </summary>
+        /// <returns>The updated standard attribute.</returns>
+        public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
+        {
+            var result = ExecuteApi<StandardAttribute>("v1/admin/attributes", Method.PATCH, true, attribute);
+            return result.Data;
+        }
+
+        /// <summary>
         /// Upsert venue's seat attributes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
         public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
         {
             var body = new SeatAttributesRequest {seats = seatAttributes};

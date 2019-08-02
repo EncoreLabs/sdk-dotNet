@@ -33,14 +33,21 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get standard attributes ");
             Console.WriteLine(" ========================================================== ");
-            VenueServiceApi vsApi = new VenueServiceApi(context);
-            IList<EncoreTickets.SDK.Venue.StandardAttribute> stas = vsApi.GetStandardAttributes();
+            var vsApi = new VenueServiceApi(context);
+            var stas = vsApi.GetStandardAttributes();
 
             foreach (var a in stas)
             {
-                Console.WriteLine(
-                    string.Format("{0} - {1}", a.title, a.intention));
+                Console.WriteLine($"{a.title} - {a.intention}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Update standard attribute by title ");
+            Console.WriteLine(" ========================================================== ");
+            var sourceAttribute = stas.First();
+            var updatedAttribute = vsApi.UpsertStandardAttributeByTitle(sourceAttribute);
+            Console.WriteLine($"{updatedAttribute.title} - {updatedAttribute.intention}");
 
 
             /* Get seat attributes */
