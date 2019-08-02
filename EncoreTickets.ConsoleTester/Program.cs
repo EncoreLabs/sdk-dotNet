@@ -61,6 +61,15 @@ namespace SDKConsoleTester
                     (a.performanceTimes != null) ? string.Join(",", a.performanceTimes) : "-"));
             }
 
+
+            /* Upsert seat attributes */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Upsert seat attributes for 163");
+            Console.WriteLine(" ========================================================== ");
+            var result = vsApi.UpsertSeatAttributes("163", sas);
+            Console.WriteLine(result);
+
             /* Get locations */
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");

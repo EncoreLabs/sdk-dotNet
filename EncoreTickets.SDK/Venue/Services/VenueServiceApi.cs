@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Venue.Models.RequestModels;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Venue
@@ -62,6 +63,17 @@ namespace EncoreTickets.SDK.Venue
         {
             var result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", Method.GET, false, null);
             return result.GetList<StandardAttribute>();
+        }
+
+        /// <summary>
+        /// Upsert venue's seat attributes.
+        /// </summary>
+        /// <returns></returns>
+        public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
+        {
+            var body = new SeatAttributesRequest {seats = seatAttributes};
+            var result = ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", Method.PATCH, true, body);
+            return result.Result;
         }
     }
 }
