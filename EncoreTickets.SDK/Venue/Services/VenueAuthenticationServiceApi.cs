@@ -23,8 +23,17 @@ namespace EncoreTickets.SDK.Venue
         {
             var credentials = new CredentialsRequest{username = context.userName, password = context.password};
             var result = ExecuteApi<CredentialsResponse>("login", Method.POST, false, credentials);
-            context.accessToken = result.Data.token;
+            context.accessToken = result.Data?.token;
             return context;
+        }
+
+        /// <summary>
+        /// Verifies that the used context has been authenticated.
+        /// </summary>
+        /// <returns><c>true</c> If the context has been authenticated before ; otherwise, <c>false</c>.</returns>
+        public bool IsThereAuthentication()
+        {
+            return !string.IsNullOrEmpty(context.accessToken);
         }
     }
 }

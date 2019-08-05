@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK
         /// <summary>
         /// Gets or sets the user's password.
         /// </summary>
-        /// <value>The password.</value>au
+        /// <value>The password.</value>
         public string password { get; protected set; }
 
         /// <summary>
