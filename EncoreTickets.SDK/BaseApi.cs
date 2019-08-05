@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
-using System.Net.Http;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Xml.Serialization;
-using EncoreTickets.SDK.Inventory;
+using EncoreTickets.SDK.v1;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -174,14 +170,17 @@ namespace EncoreTickets.SDK
 
         private IAuthenticator GetAuthenticator()
         {
-            if (!string.IsNullOrEmpty(context.accessToken))
+            switch (context.AuthenticationMethod)
             {
-                return new JwtAuthenticator(context.accessToken);
+                case AuthenticationMethod.JWT:
+                    return string.IsNullOrEmpty(context.accessToken)
+                        ? null
+                        : new JwtAuthenticator(context?.accessToken);
+                case AuthenticationMethod.Basic:
+                    return new HttpBasicAuthenticator(context?.userName, context?.password);
+                default:
+                    return null;
             }
-
-            return !string.IsNullOrEmpty(context.userName)
-                ? new HttpBasicAuthenticator(context.userName, context.password)
-                : null;
         }
 
         /// <summary>

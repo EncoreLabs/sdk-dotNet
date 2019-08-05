@@ -1,10 +1,16 @@
 ﻿using System;
+using EncoreTickets.SDK.v1;
 
 namespace EncoreTickets.SDK
 {
     public class ApiContext
     {
         #region Properties
+
+        /// <summary>
+        /// The type of authentication that should be used to login.
+        /// </summary>
+        public AuthenticationMethod AuthenticationMethod { get; set; } = AuthenticationMethod.JWT;
 
         /// <summary>
         /// The environment

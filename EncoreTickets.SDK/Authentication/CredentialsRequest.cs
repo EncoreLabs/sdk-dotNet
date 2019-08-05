@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Venue
+﻿namespace EncoreTickets.SDK.Authentication
 {
     internal class CredentialsRequest
     {

@@ -14,7 +14,11 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            var context = new ApiContext(Environments.Sandbox, "admin", "password") {affiliate = "encoretickets"};
+            Console.Write("Enter username: ");
+            var userName = Console.ReadLine();
+            Console.Write("Enter password: ");
+            var password = Console.ReadLine();
+            var context = new ApiContext(Environments.Sandbox, userName, password) {affiliate = "encoretickets"};
             // context.useBroadway = true;
             var productIds = new List<string>();
 
@@ -22,18 +26,18 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get JWT token for the venue service");
             Console.WriteLine(" ========================================================== ");
-            var vsAuthApi = new VenueAuthenticationServiceApi(context);
-            context = vsAuthApi.Authenticate();
+            var vsApi = new VenueServiceApi(context);
+            var authContext = vsApi.AuthenticationService.Authenticate();
 
-            Console.WriteLine($"username: {context.userName}");
-            Console.WriteLine($"password: {context.password}");
-            Console.WriteLine($"token: {context.accessToken}");
+            Console.WriteLine($"username: {authContext.userName}");
+            Console.WriteLine($"password: {authContext.password}");
+            Console.WriteLine($"token: {authContext.accessToken}");
+            Console.WriteLine($"authenticated: {vsApi.AuthenticationService.IsThereAuthentication()}");
 
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get standard attributes ");
             Console.WriteLine(" ========================================================== ");
-            var vsApi = new VenueServiceApi(context);
             var stas = vsApi.GetStandardAttributes();
 
             foreach (var a in stas)

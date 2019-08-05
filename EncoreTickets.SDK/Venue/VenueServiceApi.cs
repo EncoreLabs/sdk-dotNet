@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.v1;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using RestSharp;
 
@@ -6,11 +8,19 @@ namespace EncoreTickets.SDK.Venue
 {
     public class VenueServiceApi : BaseCapabilityServiceApi
     {
+        private const string VenueHost = "venue-service.{0}tixuk.io/api/";
+
+        public AuthenticationService AuthenticationService { get; }
+
         /// <summary>
         /// Default constructor for the Venue service
         /// </summary>
         /// <param name="context"></param>
-        public VenueServiceApi(ApiContext context) : base(context, "venue-service.{0}tixuk.io/api/") { }
+        public VenueServiceApi(ApiContext context) : base(context, VenueHost)
+        {
+            context.AuthenticationMethod = AuthenticationMethod.JWT;
+            AuthenticationService = new AuthenticationService(context, VenueHost, "login");
+        }
 
         /// <summary>
         /// Get the available venues
