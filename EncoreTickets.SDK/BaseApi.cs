@@ -100,26 +100,9 @@ namespace EncoreTickets.SDK
         protected ApiResult<T> ExecuteApi<T>(string endpoint, Method method, bool wrapped, object body)
             where T : class
         {
-            var client = GetClient();
-            var request = GetRequest(endpoint, method, body);
-
-            IRestResponse rr;
-            ApiResponse<T> apiResponse;
-
-            if (wrapped)
-            {
-                rr = client.Execute<ApiResponse<T>>(request);
-                apiResponse = ((IRestResponse<ApiResponse<T>>)rr).Data;
-
-            }
-            else
-            {
-                rr = client.Execute(request);
-                var rawData = SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content);
-                apiResponse = new ApiResponse<T>(rawData);
-            }
-
-            return new ApiResult<T>(context, request, rr, apiResponse);
+            return ExecuteApi<T, ApiResult<T>>(endpoint, method, wrapped, body,
+                (request, restResponse, apiResponse) =>
+                    new ApiResult<T>(context, request, restResponse, apiResponse));
         }
 
         /// <summary>
@@ -133,26 +116,38 @@ namespace EncoreTickets.SDK
         protected ApiResultList<T> ExecuteApiList<T>(string endpoint, Method method, bool wrapped, object body)
             where T : class
         {
+            return ExecuteApi<T, ApiResultList<T>>(endpoint, method, wrapped, body,
+                (request, restResponse, apiResponse) =>
+                    new ApiResultList<T>(context, request, restResponse, apiResponse));
+        }
+
+        private TResult ExecuteApi<T, TResult>(string endpoint, Method method, bool wrapped, object body,
+            Func<RestRequest, IRestResponse, ApiResponse<T>, TResult> createResultFunc)
+            where T : class
+            where TResult : ApiResultBase<T>
+        {
             var client = GetClient();
             var request = GetRequest(endpoint, method, body);
 
-            IRestResponse rr;
+            IRestResponse restResponse;
             ApiResponse<T> apiResponse;
 
             if (wrapped)
             {
-                rr = client.Execute<ApiResponse<T>>(request);
-                apiResponse = ((IRestResponse<ApiResponse<T>>)rr).Data;
+                restResponse = client.Execute<ApiResponse<T>>(request);
+                apiResponse = ((IRestResponse<ApiResponse<T>>) restResponse).Data;
 
             }
             else
             {
-                rr = client.Execute(request);
-                var rawData = (rr.IsSuccessful) ? SimpleJson.SimpleJson.DeserializeObject<T>(rr.Content) : null;
+                restResponse = client.Execute(request);
+                var rawData = (restResponse.IsSuccessful)
+                    ? SimpleJson.SimpleJson.DeserializeObject<T>(restResponse.Content)
+                    : null;
                 apiResponse = new ApiResponse<T>(rawData);
             }
 
-            return new ApiResultList<T>(context, request, rr, apiResponse);
+            return createResultFunc(request, restResponse, apiResponse);
         }
 
         /// <summary>
