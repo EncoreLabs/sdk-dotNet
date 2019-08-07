@@ -14,23 +14,44 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            ApiContext context = new ApiContext(Environments.Sandbox);
-            List<string> productIds = new List<string>();
-            context.affiliate = "encoretickets";
-            // uscontext.useBroadway = true;
+            Console.Write("Enter username: ");
+            var userName = Console.ReadLine();
+            Console.Write("Enter password: ");
+            var password = Console.ReadLine();
+            var context = new ApiContext(Environments.Sandbox, userName, password) {affiliate = "encoretickets"};
+            // context.useBroadway = true;
+            var productIds = new List<string>();
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get JWT token for the venue service");
+            Console.WriteLine(" ========================================================== ");
+            var vsApi = new VenueServiceApi(context);
+            var authContext = vsApi.AuthenticationService.Authenticate();
+
+            Console.WriteLine($"username: {authContext.userName}");
+            Console.WriteLine($"password: {authContext.password}");
+            Console.WriteLine($"token: {authContext.accessToken}");
+            Console.WriteLine($"authenticated: {vsApi.AuthenticationService.IsThereAuthentication()}");
 
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get standard attributes ");
             Console.WriteLine(" ========================================================== ");
-            VenueServiceApi vsApi = new VenueServiceApi(context);
-            IList<EncoreTickets.SDK.Venue.StandardAttribute> stas = vsApi.GetStandardAttributes();
+            var stas = vsApi.GetStandardAttributes();
 
             foreach (var a in stas)
             {
-                Console.WriteLine(
-                    string.Format("{0} - {1}", a.title, a.intention));
+                Console.WriteLine($"{a.title} - {a.intention}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Update standard attribute by title ");
+            Console.WriteLine(" ========================================================== ");
+            var sourceAttribute = stas.First();
+            var updatedAttribute = vsApi.UpsertStandardAttributeByTitle(sourceAttribute);
+            Console.WriteLine($"{updatedAttribute.title} - {updatedAttribute.intention}");
 
 
             /* Get seat attributes */
@@ -50,6 +71,15 @@ namespace SDKConsoleTester
                     (!string.IsNullOrEmpty(a.endDate)) ? a.endDate : "-",
                     (a.performanceTimes != null) ? string.Join(",", a.performanceTimes) : "-"));
             }
+
+
+            /* Upsert seat attributes */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Upsert seat attributes for 163");
+            Console.WriteLine(" ========================================================== ");
+            var result = vsApi.UpsertSeatAttributes("163", sas);
+            Console.WriteLine(result);
 
             /* Get locations */
             Console.WriteLine();

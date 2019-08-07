@@ -1,15 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
+using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.v1;
+using EncoreTickets.SDK.Venue.Models.RequestModels;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Venue
 {
     public class VenueServiceApi : BaseCapabilityServiceApi
     {
+        private const string VenueHost = "venue-service.{0}tixuk.io/api/";
+
+        public AuthenticationService AuthenticationService { get; }
+
         /// <summary>
         /// Default constructor for the Venue service
         /// </summary>
         /// <param name="context"></param>
-        public VenueServiceApi(ApiContext context) : base(context, "venue-service.{0}tixuk.io/api/") { }
+        public VenueServiceApi(ApiContext context) : base(context, VenueHost)
+        {
+            context.AuthenticationMethod = AuthenticationMethod.JWT;
+            AuthenticationService = new AuthenticationService(context, VenueHost, "login");
+        }
 
         /// <summary>
         /// Get the available venues
@@ -18,8 +29,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<Venue> GetVenues()
         {
-            ApiResultList<VenuesResponse> result = ExecuteApiList<VenuesResponse>("v1/venues", HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<VenuesResponse>("v1/venues", Method.GET, false, null);
             return result.GetList<Venue>();
         }
 
@@ -30,19 +40,18 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public Venue GetVenueById(string id)
         {
-            ApiResult<Venue> result = this.ExecuteApi<Venue>(string.Format("v1/venues/{0}", id), HttpMethod.Get, true, null);
-
+            var result = ExecuteApi<Venue>($"v1/venues/{id}", Method.GET, true, null);
             return result.Data;
         }
 
         /// <summary>
         /// Get the seat attributes for a venue
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="venue"></param>
         /// <returns></returns>
-        public IList<SeatAttribute> GetSeatAttributes(Venue v)
+        public IList<SeatAttribute> GetSeatAttributes(Venue venue)
         {
-            return this.GetSeatAttributes(v.internalId);
+            return GetSeatAttributes(venue.internalId);
         }
 
         /// <summary>
@@ -52,8 +61,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            ApiResultList<SeatAttributeResponse> result = ExecuteApiList<SeatAttributeResponse>(string.Format("v1/venues/{0}/seats/attributes/detailed", venueId), HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<SeatAttributeResponse>($"v1/venues/{venueId}/seats/attributes/detailed", Method.GET, false, null);
             return result.GetList<SeatAttribute>();
         }
 
@@ -63,9 +71,29 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<StandardAttribute> GetStandardAttributes()
         {
-            ApiResultList<StandardAttributeResponse> result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", HttpMethod.Get, false, null);
-
+            var result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", Method.GET, false, null);
             return result.GetList<StandardAttribute>();
+        }
+
+        /// <summary>
+        /// Upsert a standard attribute by its title.
+        /// </summary>
+        /// <returns>The updated standard attribute.</returns>
+        public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
+        {
+            var result = ExecuteApi<StandardAttribute>("v1/admin/attributes", Method.PATCH, true, attribute);
+            return result.Data;
+        }
+
+        /// <summary>
+        /// Upsert venue's seat attributes.
+        /// </summary>
+        /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
+        public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
+        {
+            var body = new SeatAttributesRequest {seats = seatAttributes};
+            var result = ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", Method.PATCH, true, body);
+            return result.Result;
         }
     }
 }
