@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.v1;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
@@ -91,9 +92,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
         public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
         {
+            const string successStatus = "Success";
             var body = new SeatAttributesRequest {seats = seatAttributes};
             var result = ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", Method.PATCH, true, body);
-            return result.Result;
+            return result.Data?.Contains(successStatus) ?? false;
         }
     }
 }
