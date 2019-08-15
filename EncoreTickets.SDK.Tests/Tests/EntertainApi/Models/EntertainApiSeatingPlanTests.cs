@@ -4,9 +4,9 @@ using System.Linq;
 using EncoreTickets.SDK.EntertainApi.Model;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.EntertainApi.Models
+namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
 {
-    public class EntertainApiSeatingPlanTests
+    internal class EntertainApiSeatingPlanTests
     {
         [Test]
         public void EntertainApi_SeatingPlan_AdjustCoordinates_IfPositiveCoordinates_IsCorrect()

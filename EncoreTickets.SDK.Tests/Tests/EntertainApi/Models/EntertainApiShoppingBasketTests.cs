@@ -1,9 +1,9 @@
 ﻿using EncoreTickets.SDK.EntertainApi.Model;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.EntertainApi.Models
+namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
 {
-    public class EntertainApiShoppingBasketTests
+    internal class EntertainApiShoppingBasketTests
     {
         [Test]
         public void EntertainApi_ShoppingBasket_Constructor_InitializesCorrectly()
@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Tests.EntertainApi.Models
         [TestCase("test", null, false)]
         [TestCase("", "test", false)]
         [TestCase(null, "test", false)]
-        public void EntertainApi_ShoppingBasket_IsValid_IsCorrect(string id, string password, bool result)
+        public void EntertainApi_ShoppingBasket_IsValid_ReturnsCorrect(string id, string password, bool result)
         {
             var basket = new ShoppingBasket
             {

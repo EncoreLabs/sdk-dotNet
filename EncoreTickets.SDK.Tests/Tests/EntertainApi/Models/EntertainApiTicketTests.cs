@@ -1,9 +1,9 @@
 ﻿using EncoreTickets.SDK.EntertainApi.Model;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.EntertainApi.Models
+namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
 {
-    public class EntertainApiTicketTests
+    internal class EntertainApiTicketTests
     {
         [TestCase(null, "Mon, 1 Jan 0001")]
         [TestCase("4/16/1999", "Fri, 16 Apr 1999")]

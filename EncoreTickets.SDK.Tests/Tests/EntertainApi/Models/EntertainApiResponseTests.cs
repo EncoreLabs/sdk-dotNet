@@ -2,9 +2,9 @@
 using EncoreTickets.SDK.EntertainApi.Model;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.EntertainApi.Models
+namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
 {
-    public class EntertainApiResponseTests
+    internal class EntertainApiResponseTests
     {
         [Test]
         public void EntertainApi_Response_Constructor_InitializesCorrectly()
@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Tests.EntertainApi.Models
         [TestCase(true, "10/10/2970", false)]
         [TestCase(false, "10/10/1970", false)]
         [TestCase(false, "10/10/2970", false)]
-        public void EntertainApi_Response_HasExpiredTickets_IsCorrect(bool enta, string basketExpiry, bool result)
+        public void EntertainApi_Response_HasExpiredTickets_ReturnsCorrect(bool enta, string basketExpiry, bool result)
         {
             var response = new Response
             {
@@ -42,7 +42,7 @@ namespace EncoreTickets.SDK.Tests.EntertainApi.Models
         [TestCase("Test", null, true)]
         [TestCase(null, "Test", true)]
         [TestCase(null, null, false)]
-        public void EntertainApi_Response_ErrorHasOccured_IsCorrect(string errorMessage, string errorSeverity, bool result)
+        public void EntertainApi_Response_ErrorHasOccured_ReturnsCorrect(string errorMessage, string errorSeverity, bool result)
         {
             var response = new Response
             {

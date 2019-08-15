@@ -1,9 +1,9 @@
 ﻿using EncoreTickets.SDK.EntertainApi.Model;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.EntertainApi.Models
+namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
 {
-    public class EntertainApiXmlVenueTests
+    internal class EntertainApiXmlVenueTests
     {
         [Test]
         public void EntertainApi_XmlVenue_Constructor_InitializesCorrectly()
