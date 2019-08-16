@@ -8,14 +8,16 @@ namespace EncoreTickets.SDK
     public class ApiErrorEventArgs : EventArgs
     {
         /// <summary>
-        /// the full exception for logging etc
+        /// Gets the exception.
         /// </summary>
-        private Exception exception;
+        /// <value>The exception.</value>
+        public Exception Exception { get; }
 
         /// <summary>
-        /// the friendly message to use
+        /// Gets the friendly message to use.
         /// </summary>
-        private string message;
+        /// <value>The message.</value>
+        public string Message { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiErrorEventArgs"/> class.
@@ -24,32 +26,8 @@ namespace EncoreTickets.SDK
         /// <param name="message">The message.</param>
         public ApiErrorEventArgs(Exception exception, string message)
         {
-            this.exception = exception;
-            this.message = message;
-        }
-
-        /// <summary>
-        /// Gets the exception.
-        /// </summary>
-        /// <value>The exception.</value>
-        public Exception Exception
-        {
-            get
-            {
-                return this.exception;
-            }
-        }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>The message.</value>
-        public string Message
-        {
-            get
-            {
-                return this.message;
-            }
+            Exception = exception;
+            Message = message;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.Serialization;
-using System.Net;
+﻿using System.Runtime.Serialization;
 using RestSharp;
 
 namespace EncoreTickets.SDK
@@ -10,20 +6,22 @@ namespace EncoreTickets.SDK
     [DataContract]
     public abstract class ApiResultBase<T>
     {
-        #region Private Members
-        
         private IRestRequest request;
         private IRestResponse response;
-        private ApiContext context;
 
-        private bool success;
-
-        #endregion // Private Members
-
-        #region Constructors
-  
         /// <summary>
-        /// Initilaise a new instance of the context object
+        /// Gets a value indicating whether this call was a success.
+        /// </summary>
+        /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
+        public bool Result { get; }
+
+        /// <summary>
+        /// Context object
+        /// </summary>
+        public ApiContext Context { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the context object
         /// </summary>
         /// <param name="context"></param>
         /// <param name="request"></param>
@@ -32,31 +30,8 @@ namespace EncoreTickets.SDK
         {
             this.request = request;
             this.response = response;
-            this.success = response.ResponseStatus == ResponseStatus.Completed;
-            this.context = context;
+            this.Result = response.ResponseStatus == ResponseStatus.Completed;
+            this.Context = context;
         }
-        
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a value indicating whether this call was a success.
-        /// </summary>
-        /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
-        public bool Result
-        {
-            get { return this.success; }
-        }
-
-        /// <summary>
-        /// Context object
-        /// </summary>
-        public ApiContext Context
-        {
-            get { return this.context; }
-        }
-
-        #endregion // Properties
     }
 }

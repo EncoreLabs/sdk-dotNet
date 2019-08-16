@@ -1,6 +1,4 @@
 ﻿using RestSharp;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -12,7 +10,7 @@ namespace EncoreTickets.SDK
         /// <summary>
         /// list of results
         /// </summary>
-        private List<IObject> items;
+        private readonly List<IObject> items;
 
         /// <summary>
         /// Default constructor
@@ -23,32 +21,29 @@ namespace EncoreTickets.SDK
         public ApiResultList(ApiContext context, IRestRequest request, IRestResponse response, ApiResponse<T> data) : 
             base(context, request, response)
         {
-            if (response.StatusCode == System.Net.HttpStatusCode.OK && data.Data is IEnumerable)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK && data.Data is IEnumerable<IObject> enumerable)
             {
-                IEnumerable<IObject> enumerable = data.Data as IEnumerable<IObject>;
-                this.items = new List<IObject>(enumerable);
+                items = new List<IObject>(enumerable);
             }
             else
             {
-                this.items = new List<IObject>();
+                items = new List<IObject>();
             }
         }
 
         /// <summary>
         /// Gets the number of items in the colleciton
         /// </summary>
-        public int Count
-        {
-            get { return this.items.Count; }
-        }
+        public int Count => items.Count;
 
         /// <summary>
         /// Get the list of items
         /// </summary>
         /// <returns></returns>
-        public IList<K> GetList<K>() where K : IObject
+        public IList<K> GetList<K>()
+            where K : IObject
         {
-            return this.items.ConvertAll<K>(i => (K)i);
+            return items.ConvertAll(i => (K)i);
         }
     }
 }

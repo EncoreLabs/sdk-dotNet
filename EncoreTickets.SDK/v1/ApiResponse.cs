@@ -1,6 +1,4 @@
-﻿using EncoreTickets.SDK.Inventory;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace EncoreTickets.SDK
 {
@@ -16,13 +14,14 @@ namespace EncoreTickets.SDK
         [DataMember]
         public object context { get; set; }
 
-        public object Data { get { return this.response; } }
+        public object Data => response;
 
         /// <summary>
         /// Empty constructor
         /// </summary>
         public ApiResponse()
-        { }
+        {
+        }
             
         /// <summary>
         /// Initilias ean API response
@@ -30,7 +29,7 @@ namespace EncoreTickets.SDK
         /// <param name="data"></param>
         public ApiResponse(T data)
         {
-            this.response = data;
+            response = data;
         }
     }
 }
