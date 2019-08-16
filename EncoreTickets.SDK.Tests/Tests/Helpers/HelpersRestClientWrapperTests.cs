@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.EntertainApi;
+using EncoreTickets.SDK.Helpers.RestClientWrapper;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
 
-namespace EncoreTickets.SDK.Tests.Tests.EntertainApi
+namespace EncoreTickets.SDK.Tests.Tests.Helpers
 {
-    internal class EntertainApiRestClientWrapperTests
+    internal class HelpersRestClientWrapperTests
     {
 
         private static readonly object[] SourceForGetRestRequestTest =
@@ -290,7 +290,7 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi
         };
 
         [TestCaseSource(nameof(SourceForGetRestRequestTest))]
-        public void EntertainApi_Customer_GetRestRequest_ReturnsCorrectRequest(
+        public void Helpers_Customer_GetRestRequest_ReturnsCorrectRequest(
             RestClientParameters restClientParameters, string expectedMethod, string expectedFormat)
         {
             var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
@@ -324,7 +324,7 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi
         }
 
         [TestCaseSource(nameof(SourceForIsGoodResponseTest))]
-        public void EntertainApi_RestClientWrapper_IsGoodResponse_ReturnsCorrectly(RestResponse response, bool expected)
+        public void Helpers_RestClientWrapper_IsGoodResponse_ReturnsCorrectly(RestResponse response, bool expected)
         {
             var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
             var result = restClientWrapper.IsGoodResponse(response);
@@ -332,7 +332,7 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi
         }
 
         [TestCaseSource(nameof(SourceForExecuteTest))]
-        public void EntertainApi_RestClientWrapper_Execute_TriesToExecute(RestResponse response, bool expectedFromOneAttempt)
+        public void Helpers_RestClientWrapper_Execute_TriesToExecute(RestResponse response, bool expectedFromOneAttempt)
         {
             var clientMock = new Mock<RestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);

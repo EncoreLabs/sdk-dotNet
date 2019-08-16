@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace EncoreTickets.SDK.EntertainApi.Model
 {
     public class Ticket
@@ -42,21 +41,21 @@ namespace EncoreTickets.SDK.EntertainApi.Model
 
         #region Helper Properties & Methods
 
-        public string DateFormatted => Date.ToString("ddd, ") + Date.Date.Day + Date.ToString(" MMM yyyy");
-
         public bool Enta => !string.IsNullOrEmpty(SeatKey) && SeatKey.ToLower().StartsWith("enta");
 
         public string FaceValueFormatted => $"{FaceValue:C}";
+
+        public string PriceFormatted => $"{Price:C}";
 
         public int FirstAsInt => int.TryParse(First, out var firstAsInt) ? firstAsInt : 0;
 
         public int LastAsInt => int.TryParse(Last, out var lastAsInt) ? lastAsInt : 0;
 
-        public string PriceFormatted => $"{Price:C}";
-
         public string SavingAsPercentageFormatted => "5%";
 
         public string Tag => BlockId + ":" + Block.Replace(" ", "");
+
+        public string DateFormatted => Date.ToString("ddd, ") + Date.Date.Day + Date.ToString(" MMM yyyy");
 
         public string TimeFormatted => Date.ToString("h:mmtt").ToLower();
 

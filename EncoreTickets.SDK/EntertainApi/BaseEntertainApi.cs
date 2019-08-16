@@ -2,16 +2,16 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Xml.Linq;
+using EncoreTickets.SDK.Helpers.RestClientWrapper;
 
 
 namespace EncoreTickets.SDK.EntertainApi
 {
     public abstract class BaseEntertainApi : BaseApi
     {
-        protected readonly RestClientWrapper _restClientWrapper;
+        private readonly RestClientWrapper _restClientWrapper;
   
         /// <summary>
         /// Default constructor

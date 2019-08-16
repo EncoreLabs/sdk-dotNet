@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using RestSharp;
 using RestSharp.Authenticators;
-using System.Net;
 
-namespace EncoreTickets.SDK.EntertainApi
+namespace EncoreTickets.SDK.Helpers.RestClientWrapper
 {
-    public class RestClientWrapper
+    internal class RestClientWrapper
     {
         private static readonly List<HttpStatusCode> SuccessfulStatusCodes = new List<HttpStatusCode>
         {

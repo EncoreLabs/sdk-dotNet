@@ -50,7 +50,8 @@ namespace EncoreTickets.SDK.EntertainApi.Model
 
         public bool Enta => basketItemHistory != null && basketItemHistory.enta;
 
-        public bool ExpiredBasketItemHistory => basketItemHistory != null && basketItemHistory.enta && basketItemHistory.basketExpiry <= DateTime.Now;
+        public bool ExpiredBasketItemHistory =>
+            basketItemHistory != null && basketItemHistory.enta && basketItemHistory.basketExpiry <= DateTime.Now;
 
         public string SavingAsPercentageFormatted =>
             facevalue > 0 && price > 0 && facevalue > price

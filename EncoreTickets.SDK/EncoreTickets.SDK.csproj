@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.5.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
