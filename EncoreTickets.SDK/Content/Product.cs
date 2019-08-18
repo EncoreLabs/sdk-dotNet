@@ -1,4 +1,5 @@
 ﻿using System;
+using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Content
 {

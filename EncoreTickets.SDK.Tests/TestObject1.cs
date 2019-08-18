@@ -1,4 +1,6 @@
-﻿namespace EncoreTickets.SDK.Tests
+﻿using EncoreTickets.SDK.Interfaces;
+
+namespace EncoreTickets.SDK.Tests
 {
     internal class TestObject1 : IObject
     {

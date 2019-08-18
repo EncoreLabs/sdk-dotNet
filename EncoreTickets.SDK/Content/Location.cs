@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Content
 {

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Utilities
 {
     public static class DateTimeHelper
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using RestSharp;
+using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Content
 {

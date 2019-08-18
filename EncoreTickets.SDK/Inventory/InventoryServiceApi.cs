@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EncoreTickets.SDK.Interfaces;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Inventory
