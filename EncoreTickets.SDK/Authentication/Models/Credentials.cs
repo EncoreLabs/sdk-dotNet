@@ -1,6 +1,6 @@
-﻿namespace EncoreTickets.SDK.Authentication
+﻿namespace EncoreTickets.SDK.Authentication.Models
 {
-    internal class CredentialsRequest
+    internal class Credentials
     {
         public string username { get; set; }
 

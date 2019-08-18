@@ -76,6 +76,15 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 },
                 null,
             },
+            new object[]
+            {
+                null,
+                new RestClientParameters
+                {
+                    BaseUrl = @"Http://test.com"
+                },
+                null,
+            },
         };
 
         private static readonly object[] SourceForGetRestRequestTest =

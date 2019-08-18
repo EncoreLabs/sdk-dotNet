@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
 using EncoreTickets.SDK.Api.Results;
 using RestSharp;
 
@@ -77,8 +73,8 @@ namespace EncoreTickets.SDK.Api
             where T : class
             where TResult : ApiResultBase<T>
         {
-            var clientWrapper = CreateClientWrapper();
-            var parameters = CreateClientWrapperParameters(endpoint, method, body);
+            var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(Context);
+            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(Context, BaseUrl, endpoint, method, body);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
 
@@ -100,80 +96,6 @@ namespace EncoreTickets.SDK.Api
             }
 
             return createResultFunc(request, restResponse, apiResponse);
-        }
-
-        private RestClientWrapper CreateClientWrapper()
-        {
-            var credentials = new RestClientWrapperCredentials
-            {
-                AuthenticationMethod = Context.AuthenticationMethod,
-                AccessToken = Context.AccessToken,
-                Username = Context.UserName,
-                Password = Context.Password
-            };
-            return new RestClientWrapper(credentials);
-        }
-
-        private RestClientParameters CreateClientWrapperParameters(string endpoint, RequestMethod method, object body)
-        {
-            return new RestClientParameters
-            {
-                BaseUrl = BaseUrl,
-                RequestUrl = endpoint,
-                RequestBody = body,
-                RequestFormat = RequestFormat.Json,
-                RequestHeaders = GetHeaders(),
-                RequestMethod = method,
-                RequestQueryParameters = GetQueryParameters(method),
-                RequestUrlSegments = null,
-            };
-        }
-
-        private Dictionary<string, string> GetHeaders()
-        {
-            var headers = new Dictionary<string, string>
-            {
-                {"x-SDK", "EncoreTickets.SDK.NET" } // todo: add build numbers
-            };
-
-            if (!string.IsNullOrWhiteSpace(Context.Affiliate))
-            {
-                headers.Add("affiliateId", Context.Affiliate);
-            }
-
-            if (Context.UseBroadway)
-            {
-                headers.Add("x-apply-price-engine", "true");
-                headers.Add("x-market", "broadway");
-            }
-            return headers;
-        }
-
-        private Dictionary<string, string> GetQueryParameters(RequestMethod method)
-        {
-            var queryParameters = new Dictionary<string, string>();
-            if (Context.UseBroadway && method == RequestMethod.Get)
-            {
-                queryParameters.Add("countryCode", "US");
-            }
-
-            return queryParameters;
-        }
-
-        private List<Type> GetKnownTypes(params Type[] types)
-        {
-            var knownTypes = new List<Type>();
-            if (types != null)
-            {
-                knownTypes.AddRange(types);
-            }
-
-            knownTypes.Add(typeof(Hashtable));
-            knownTypes.Add(typeof(System.Collections.Specialized.StringDictionary));
-            knownTypes.Add(typeof(System.Collections.Specialized.NameValueCollection));
-            knownTypes.Add(typeof(MemoryStream));
-
-            return knownTypes;
         }
     }
 }

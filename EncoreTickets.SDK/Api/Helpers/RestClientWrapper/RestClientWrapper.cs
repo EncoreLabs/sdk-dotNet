@@ -93,6 +93,11 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
 
         private IAuthenticator GetAuthenticator()
         {
+            if (credentials == null)
+            {
+                return null;
+            }
+
             switch (credentials.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:

@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Tests
                 var expectedValue = property.GetValue(expected, null);
                 var actualValue = property.GetValue(actual, null);
 
-                if (!(actualValue is IList) && !Equals(expectedValue, actualValue))
+                if (!(actualValue is IEnumerable && !(actualValue is string)) && !Equals(expectedValue, actualValue))
                 {
                     Assert.Fail("Property {0}.{1} does not match. Expected: {2} but was: {3}",
                         property.DeclaringType.Name, property.Name, expectedValue, actualValue);
