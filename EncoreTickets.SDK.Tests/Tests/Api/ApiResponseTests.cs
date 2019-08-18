@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using EncoreTickets.SDK.Api.Results;
+using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.v1
+namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiResponseTests
     {

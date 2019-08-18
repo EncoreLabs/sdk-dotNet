@@ -1,8 +1,10 @@
-﻿using RestSharp;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Interfaces;
+using RestSharp;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api.Results
 {
     [DataContract]
     public class ApiResultList<T> : ApiResultBase<T>
@@ -11,6 +13,11 @@ namespace EncoreTickets.SDK
         /// list of results
         /// </summary>
         private readonly List<IObject> items;
+
+        /// <summary>
+        /// Gets the number of items in the collection.
+        /// </summary>
+        public int Count => items.Count;
 
         /// <summary>
         /// Default constructor
@@ -32,18 +39,13 @@ namespace EncoreTickets.SDK
         }
 
         /// <summary>
-        /// Gets the number of items in the colleciton
-        /// </summary>
-        public int Count => items.Count;
-
-        /// <summary>
         /// Get the list of items
         /// </summary>
         /// <returns></returns>
-        public IList<K> GetList<K>()
-            where K : IObject
+        public IList<TObject> GetList<TObject>()
+            where TObject : IObject
         {
-            return items.ConvertAll(i => (K)i);
+            return items.ConvertAll(i => (TObject)i);
         }
     }
 }

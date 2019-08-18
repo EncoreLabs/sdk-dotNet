@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api.Context
 {
     /// <summary>
     /// Api Error Event Args

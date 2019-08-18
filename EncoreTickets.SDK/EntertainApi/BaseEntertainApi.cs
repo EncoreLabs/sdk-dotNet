@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using EncoreTickets.SDK.Helpers.RestClientWrapper;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
 
 
 namespace EncoreTickets.SDK.EntertainApi

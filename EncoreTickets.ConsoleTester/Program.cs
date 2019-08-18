@@ -1,5 +1,4 @@
-﻿using EncoreTickets.SDK;
-using EncoreTickets.SDK.Inventory;
+﻿using EncoreTickets.SDK.Inventory;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -7,6 +6,7 @@ using EncoreTickets.SDK.Content;
 using Product = EncoreTickets.SDK.Inventory.Product;
 using Product2 = EncoreTickets.SDK.Content.Product;
 using EncoreTickets.SDK.Venue;
+using EncoreTickets.SDK.Api.Context;
 
 namespace SDKConsoleTester
 {
@@ -16,10 +16,10 @@ namespace SDKConsoleTester
         {
             Console.Write("Enter username: ");
             var userName = Console.ReadLine();
-            Console.Write("Enter password: ");
+            Console.Write("Enter Password: ");
             var password = Console.ReadLine();
-            var context = new ApiContext(Environments.Sandbox, userName, password) {affiliate = "encoretickets"};
-            // context.useBroadway = true;
+            var context = new ApiContext(Environments.Sandbox, userName, password) {Affiliate = "encoretickets"};
+            // context.UseBroadway = true;
             var productIds = new List<string>();
 
             Console.WriteLine();
@@ -29,9 +29,9 @@ namespace SDKConsoleTester
             var vsApi = new VenueServiceApi(context);
             var authContext = vsApi.AuthenticationService.Authenticate();
 
-            Console.WriteLine($"username: {authContext.userName}");
-            Console.WriteLine($"password: {authContext.password}");
-            Console.WriteLine($"token: {authContext.accessToken}");
+            Console.WriteLine($"username: {authContext.UserName}");
+            Console.WriteLine($"Password: {authContext.Password}");
+            Console.WriteLine($"token: {authContext.AccessToken}");
             Console.WriteLine($"authenticated: {vsApi.AuthenticationService.IsThereAuthentication()}");
 
             Console.WriteLine();
@@ -100,7 +100,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" Test: Get all locations ");
             Console.WriteLine(" ========================================================== ");
             ContentServiceApi cs = new ContentServiceApi(context);
-            IList<Location> locations = cs.GetLocations(null);
+            IList<Location> locations = cs.GetLocations();
 
             foreach (var a in locations)
             {
@@ -112,15 +112,14 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get all us products ");
             Console.WriteLine(" ========================================================== ");
-            IList<Product2> products2 = cs.GetProducts(null);
+            IList<Product2> products2 = cs.GetProducts();
 
             int count = 0;
             foreach (var p2 in products2)
             {
                 Console.WriteLine(string.Format("{0} ({1}): {2}", p2.name, p2.id, p2.venue != null ? p2.venue.name : "- unknown-"));
                 // get detailed information for every 5th product
-                int temp;
-                if (Math.DivRem(count, 5, out temp) > 1)
+                if (Math.DivRem(count, 5, out var temp) > 1)
                 {
                     productIds.Add(p2.id);                    
                 }
@@ -134,7 +133,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" Test: Inventory service serch for products with 'w' ");
             Console.WriteLine(" ========================================================== ");
             InventoryServiceApi inventoryService = new InventoryServiceApi(context);
-            IList<Product> products = inventoryService.Search("w", null);
+            IList<Product> products = inventoryService.Search("w");
 
             foreach (var p3 in products)
             {

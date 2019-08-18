@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api.Results
 {
     [DataContract]
     public class ApiResponse<T>
@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK
         }
             
         /// <summary>
-        /// Initilias ean API response
+        /// Initializes ean API response
         /// </summary>
         /// <param name="data"></param>
         public ApiResponse(T data)

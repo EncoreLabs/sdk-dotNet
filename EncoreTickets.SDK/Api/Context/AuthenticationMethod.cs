@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.v1
+﻿namespace EncoreTickets.SDK.Api.Context
 {
     /// <summary>
     /// The type of authentication.
@@ -6,6 +6,6 @@
     public enum AuthenticationMethod
     {
         JWT,        // access token
-        Basic       // username + password
+        Basic       // username + Password
     }
 }

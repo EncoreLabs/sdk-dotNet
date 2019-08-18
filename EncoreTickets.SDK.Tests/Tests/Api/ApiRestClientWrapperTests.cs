@@ -2,15 +2,81 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Helpers.RestClientWrapper;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
+using RestSharp.Authenticators;
 
-namespace EncoreTickets.SDK.Tests.Tests.Helpers
+namespace EncoreTickets.SDK.Tests.Tests.Api
 {
-    internal class HelpersRestClientWrapperTests
+    internal class ApiRestClientWrapperTests
     {
+        private static readonly object[] SourceForGetRestClientTest =
+        {
+            new object[]
+            {
+                new RestClientWrapperCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "token",
+                    AuthenticationMethod = AuthenticationMethod.JWT
+                },
+                new RestClientParameters
+                {
+                    BaseUrl = @"Http://test.com"
+                },
+                new JwtAuthenticator("token"), 
+            },
+            new object[]
+            {
+                new RestClientWrapperCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = null,
+                    AuthenticationMethod = AuthenticationMethod.JWT
+                },
+                new RestClientParameters
+                {
+                    BaseUrl = @"Http://test.com"
+                },
+                null,
+            },
+            new object[]
+            {
+                new RestClientWrapperCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "token",
+                    AuthenticationMethod = AuthenticationMethod.Basic
+                },
+                new RestClientParameters
+                {
+                    BaseUrl = @"Http://test.com"
+                },
+                new HttpBasicAuthenticator("username", "password"),
+            },
+            new object[]
+            {
+                new RestClientWrapperCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "token",
+                    AuthenticationMethod = (AuthenticationMethod)190000000
+                },
+                new RestClientParameters
+                {
+                    BaseUrl = @"Http://test.com"
+                },
+                null,
+            },
+        };
 
         private static readonly object[] SourceForGetRestRequestTest =
         {
@@ -18,47 +84,69 @@ namespace EncoreTickets.SDK.Tests.Tests.Helpers
             {
                 new RestClientParameters
                 {
-                    RequestParams = new Dictionary<string, string> {{"test", "test"}, {"eqr", "1234"}},
+                    RequestUrlSegments = new Dictionary<string, string> {{"test", "test"}, {"eqr", "1234"}},
+                    RequestQueryParameters = new Dictionary<string, string> {{"q", "test"}, {"gsgsdgbdfb", "1234"}},
+                    RequestUrl = "test",
                     RequestHeaders = new Dictionary<string, string> {{"test", "test"}},
                     RequestBody = new object(),
                     RequestMethod = RequestMethod.Get,
                     RequestFormat = RequestFormat.Json
                 },
                 "Get",
-                "Json"
+                "Json",
+                "application/json"
             },
             new object[]
             {
                 new RestClientParameters
                 {
-                    RequestParams = new Dictionary<string, string> {{"test", "test"}},
+                    RequestUrlSegments = new Dictionary<string, string> {{"test", "test"}},
+                    RequestQueryParameters = new Dictionary<string, string> {{"q", "test"}, {"gsgsdgbdfb", "1234"}},
+                    RequestUrl = "test",
                     RequestHeaders = new Dictionary<string, string> {{"test", "test"}, {"eqr", "1234"}},
                     RequestBody = 4,
                     RequestMethod = RequestMethod.Post,
-                    RequestFormat = RequestFormat.Json
+                    RequestFormat = RequestFormat.Xml
                 },
                 "Post",
-                "Json"
+                "Xml",
+                "text/xml"
             },
             new object[]
             {
                 new RestClientParameters
                 {
+                    RequestUrl = "test",
                     RequestMethod = RequestMethod.Put,
                     RequestFormat = RequestFormat.Xml
                 },
                 "Put",
-                "Xml"
+                "Xml",
+                null
             },
             new object[]
             {
                 new RestClientParameters
                 {
+                    RequestUrl = "test",
                     RequestMethod = RequestMethod.Delete,
                     RequestFormat = RequestFormat.Xml
                 },
                 "Delete",
-                "Xml"
+                "Xml",
+                null
+            },
+            new object[]
+            {
+                new RestClientParameters
+                {
+                    RequestUrl = "test",
+                    RequestMethod = RequestMethod.Patch,
+                    RequestFormat = RequestFormat.Json
+                },
+                "Patch",
+                "Json",
+                null
             },
         };
 
@@ -289,21 +377,56 @@ namespace EncoreTickets.SDK.Tests.Tests.Helpers
             },
         };
 
+        private static readonly object[] SourceForExecuteTTest =
+        {
+            new object[]
+            {
+                new RestResponse<object>
+                {
+                    StatusCode = HttpStatusCode.OK
+                },
+                true
+            },
+            new object[]
+            {
+                new RestResponse<TestObject1>
+                {
+                    StatusCode = HttpStatusCode.BadRequest
+                },
+                false
+            },
+        };
+
+        [TestCaseSource(nameof(SourceForGetRestClientTest))]
+        public void Api_RestClientWrapper_GetRestClient_ReturnsCorrectRestClient(
+            RestClientWrapperCredentials credentials, RestClientParameters restClientParameters, IAuthenticator expectedAuthenticator)
+        {
+            var wrapper = new RestClientWrapper(credentials);
+            var result = wrapper.GetRestClient(restClientParameters);
+            Assert.AreEqual(restClientParameters.BaseUrl, result.BaseUrl.OriginalString);
+
+            if (expectedAuthenticator == null)
+            {
+                Assert.AreEqual(expectedAuthenticator, result.Authenticator);
+            }
+            else
+            {
+                Assert.AreEqual(expectedAuthenticator.GetType(), result.Authenticator.GetType());
+            }
+        }
+
         [TestCaseSource(nameof(SourceForGetRestRequestTest))]
-        public void Helpers_Customer_GetRestRequest_ReturnsCorrectRequest(
-            RestClientParameters restClientParameters, string expectedMethod, string expectedFormat)
+        public void Api_RestClientWrapper_GetRestRequest_ReturnsCorrectRequest(RestClientParameters restClientParameters,
+            string expectedMethod, string expectedFormat, string expectedBodyType)
         {
             var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
             var result = restClientWrapper.GetRestRequest(restClientParameters);
 
-            var urlSegments = result.Parameters.Where(x => x.Type == ParameterType.UrlSegment);
-            var expectedParamsCount = restClientParameters.RequestParams?.Count ?? 0;
-            Assert.AreEqual(expectedParamsCount, urlSegments.Count());
-            foreach (var urlSegment in urlSegments)
-            {
-                Assert.IsTrue(restClientParameters.RequestParams.Keys.Contains(urlSegment.Name));
-                Assert.AreEqual(restClientParameters.RequestParams[urlSegment.Name], urlSegment.Value);
-            }
+            Assert.AreEqual(restClientParameters.RequestUrl, result.Resource);
+
+            Assert.AreEqual(expectedMethod.ToLower(), result.Method.ToString().ToLower());
+
+            Assert.AreEqual(expectedFormat.ToLower(), result.RequestFormat.ToString().ToLower());
 
             var headers = result.Parameters.Where(x => x.Type == ParameterType.HttpHeader);
             var expectedHeadersCount = restClientParameters.RequestHeaders?.Count ?? 0;
@@ -314,17 +437,32 @@ namespace EncoreTickets.SDK.Tests.Tests.Helpers
                 Assert.AreEqual(restClientParameters.RequestHeaders[header.Name], header.Value);
             }
 
+            var urlSegments = result.Parameters.Where(x => x.Type == ParameterType.UrlSegment);
+            var expectedParamsCount = restClientParameters.RequestUrlSegments?.Count ?? 0;
+            Assert.AreEqual(expectedParamsCount, urlSegments.Count());
+            foreach (var urlSegment in urlSegments)
+            {
+                Assert.IsTrue(restClientParameters.RequestUrlSegments.Keys.Contains(urlSegment.Name));
+                Assert.AreEqual(restClientParameters.RequestUrlSegments[urlSegment.Name], urlSegment.Value);
+            }
+
+            var queryParams = result.Parameters.Where(x => x.Type == ParameterType.QueryString);
+            var expectedQueryParamsCount = restClientParameters.RequestQueryParameters?.Count ?? 0;
+            Assert.AreEqual(expectedQueryParamsCount, queryParams.Count());
+            foreach (var param in queryParams)
+            {
+                Assert.IsTrue(restClientParameters.RequestQueryParameters.Keys.Contains(param.Name));
+                Assert.AreEqual(restClientParameters.RequestQueryParameters[param.Name], param.Value);
+            }
+
             var body = result.Parameters.Where(x => x.Type == ParameterType.RequestBody);
             var expectedBodyCount = restClientParameters.RequestBody != null ? 1 : 0;
             Assert.AreEqual(expectedBodyCount, body.Count());
-
-            Assert.AreEqual(expectedMethod.ToLower(), result.Method.ToString().ToLower());
-
-            Assert.AreEqual(expectedFormat.ToLower(), result.RequestFormat.ToString().ToLower());
+            Assert.AreEqual(expectedBodyType, body.FirstOrDefault()?.Name);
         }
 
         [TestCaseSource(nameof(SourceForIsGoodResponseTest))]
-        public void Helpers_RestClientWrapper_IsGoodResponse_ReturnsCorrectly(RestResponse response, bool expected)
+        public void Api_RestClientWrapper_IsGoodResponse_ReturnsCorrectly(RestResponse response, bool expected)
         {
             var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
             var result = restClientWrapper.IsGoodResponse(response);
@@ -332,7 +470,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Helpers
         }
 
         [TestCaseSource(nameof(SourceForExecuteTest))]
-        public void Helpers_RestClientWrapper_Execute_TriesToExecute(RestResponse response, bool expectedFromOneAttempt)
+        public void Api_RestClientWrapper_Execute_TriesToExecute(RestResponse response, bool expectedFromOneAttempt)
         {
             var clientMock = new Mock<RestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);
@@ -342,6 +480,20 @@ namespace EncoreTickets.SDK.Tests.Tests.Helpers
 
             var times = expectedFromOneAttempt ? Times.Once() : Times.AtLeastOnce();
             clientMock.Verify(mock => mock.Execute(It.IsAny<IRestRequest>()), times);
+        }
+
+        [TestCaseSource(nameof(SourceForExecuteTTest))]
+        public void Api_RestClientWrapper_ExecuteT_TriesToExecute<T>(RestResponse<T> response, bool expectedFromOneAttempt)
+            where T : class, new()
+        {
+            var clientMock = new Mock<RestClient>();
+            clientMock.Setup(x => x.Execute<T>(It.IsAny<IRestRequest>())).Returns(response);
+            var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
+
+            restClientWrapper.Execute<T>(clientMock.Object, It.IsAny<IRestRequest>());
+
+            var times = expectedFromOneAttempt ? Times.Once() : Times.AtLeastOnce();
+            clientMock.Verify(mock => mock.Execute<T>(It.IsAny<IRestRequest>()), times);
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
 
 namespace EncoreTickets.SDK.Content
 {

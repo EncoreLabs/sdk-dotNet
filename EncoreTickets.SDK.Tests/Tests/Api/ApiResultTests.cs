@@ -1,9 +1,11 @@
 ﻿using System.Net;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Results;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
 
-namespace EncoreTickets.SDK.Tests.Tests
+namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiResultTests
     {

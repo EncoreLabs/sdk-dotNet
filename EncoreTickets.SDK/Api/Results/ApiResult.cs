@@ -1,10 +1,11 @@
 ﻿using System.Runtime.Serialization;
+using EncoreTickets.SDK.Api.Context;
 using RestSharp;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api.Results
 {
     /// <summary>
-    /// Class respresenting result of Api call
+    /// Class representing result of Api call
     /// </summary>
     /// <typeparam name="T">data type</typeparam>
     [DataContract]

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EncoreTickets.SDK
+﻿namespace EncoreTickets.SDK.Api.Context
 {
     /// <summary>
     /// Environment enums

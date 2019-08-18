@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Helpers.RestClientWrapper
+﻿namespace EncoreTickets.SDK.Api.Helpers
 {
     internal enum RequestFormat
     {

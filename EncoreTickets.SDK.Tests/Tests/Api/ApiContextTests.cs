@@ -1,8 +1,9 @@
 ﻿using System;
+using EncoreTickets.SDK.Api.Context;
 using Moq;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.v1
+namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiContextTests
     {
@@ -30,7 +31,7 @@ namespace EncoreTickets.SDK.Tests.Tests.v1
         [TestCaseSource(nameof(SourceForConstructorTest))]
         public void ApiContext_Constructor_InitializesEnvironment(ApiContext context)
         {
-            Assert.IsNotNull(context.envrionment);
+            Assert.IsNotNull(context.Environment);
         }
 
         [TestCaseSource(nameof(SourceForOnErrorOccurredTest))]

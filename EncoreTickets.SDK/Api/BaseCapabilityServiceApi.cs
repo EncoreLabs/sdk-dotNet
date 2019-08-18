@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using EncoreTickets.SDK.Api.Context;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api
 {
     public abstract class BaseCapabilityServiceApi : BaseApi
     {

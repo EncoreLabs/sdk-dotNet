@@ -1,7 +1,8 @@
 ﻿using System;
+using EncoreTickets.SDK.Api.Context;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests
+namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiErrorEventArgTests
     {

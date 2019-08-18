@@ -1,7 +1,8 @@
 ﻿using System.Runtime.Serialization;
+using EncoreTickets.SDK.Api.Context;
 using RestSharp;
 
-namespace EncoreTickets.SDK
+namespace EncoreTickets.SDK.Api.Results
 {
     [DataContract]
     public abstract class ApiResultBase<T>
@@ -30,8 +31,8 @@ namespace EncoreTickets.SDK
         {
             this.request = request;
             this.response = response;
-            this.Result = response.ResponseStatus == ResponseStatus.Completed;
-            this.Context = context;
+            Result = response.ResponseStatus == ResponseStatus.Completed;
+            Context = context;
         }
     }
 }
