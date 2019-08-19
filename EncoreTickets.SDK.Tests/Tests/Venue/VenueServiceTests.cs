@@ -220,7 +220,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Venue
             var result = UpsertStandardAttributeByTitle(attribute);
             executorMock.Verify(mock => mock.ExecuteApi<StandardAttribute>(It.IsAny<string>(),
                 It.IsAny<RequestMethod>(), It.IsAny<bool>(), attribute), Times.Once);
-            AssertExtension.PropertyValuesAreEquals(attribute, result);
+            AssertExtension.SimplePropertyValuesAreEquals(attribute, result);
         }
 
         [Test]

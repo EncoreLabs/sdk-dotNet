@@ -53,11 +53,11 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
         [TestCase("", 0)]
         [TestCase(null, 0)]
         [TestCase("test", 0)]
-        public void EntertainApi_Ticket_FirstAsInt_IsCorrect(string first, int result)
+        public void EntertainApi_Ticket_FirstAsInt_IsCorrect(string firstValueOfTicket, int result)
         {
             var item = new Ticket
             {
-                First = first
+                First = firstValueOfTicket
             };
             Assert.AreEqual(result, item.FirstAsInt);
         }

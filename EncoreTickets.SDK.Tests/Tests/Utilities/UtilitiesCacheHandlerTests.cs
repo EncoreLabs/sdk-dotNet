@@ -56,8 +56,8 @@ namespace EncoreTickets.SDK.Tests.Tests.Utilities
             Assert.AreEqual(data, result);
         }
 
-        [TestCase("test")]
-        [TestCase("fgsjhgdslgsd dgsg")]
+        [TestCase("1730")]
+        [TestCase("Success")]
         public void Utilities_CacheHandler_IfDataWithKeyWasNotAddedAndDefaultDataIsNull_GetWithCacheMethodAddAndReturnsData<T>(T instance)
         {
             var key = GetRandomKey();

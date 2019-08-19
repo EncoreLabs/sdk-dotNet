@@ -31,6 +31,6 @@ namespace EncoreTickets.SDK.Content.Models
 
         public Venue venue { get; set; }
 
-        public object onSale { get; set; }
+        public string onSale { get; set; }
     }
 }

@@ -68,8 +68,8 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
             Assert.AreEqual(result, reservation.SavingAsPercentageFormatted);
         }
 
-        [TestCase("test", "test", "test:test")]
-        [TestCase("test", " t e s t ", "test:test")]
+        [TestCase("ST", "STALLS", "ST:STALLS")]
+        [TestCase("ST", "STALLS 1", "ST:STALLS1")]
         [TestCase("", "", ":")]
         public void EntertainApi_Reservation_Tag_IsCorrect(string blockId, string block, string result)
         {

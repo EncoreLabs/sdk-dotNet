@@ -25,11 +25,11 @@ namespace EncoreTickets.SDK.Tests.Tests.Venue
         [Test]
         public void Venue_SeatAttributeResponse_GetEnumerator_ReturnsCorrectEnumerator()
         {
-            var seatAttribute1 = new SeatAttribute();
-            var seatAttribute2 = new SeatAttribute();
+            var firstSeatAttribute = new SeatAttribute();
+            var secondSeatAttribute = new SeatAttribute();
             var response = new SeatAttributeResponse
             {
-                response = new List<SeatAttribute> { seatAttribute1, seatAttribute2 }
+                response = new List<SeatAttribute> { firstSeatAttribute, secondSeatAttribute }
             };
             foreach (var item in response)
             {

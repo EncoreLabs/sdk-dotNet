@@ -38,8 +38,10 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         public void ApiContext_OnErrorOccurred_ReturnsCorrectly(EventHandler<ApiErrorEventArgs> apiError, bool expected)
         {
             ApiContext.ApiError += apiError;
+
             var result = ApiContext.OnErrorOccurred(It.IsAny<object>(), It.IsAny<ApiErrorEventArgs>());
             Assert.AreEqual(expected, result);
+
             ApiContext.ApiError -= apiError;
         }
     }

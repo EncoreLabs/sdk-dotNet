@@ -43,7 +43,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 new RestResponse {ResponseStatus = ResponseStatus.Completed, StatusCode = HttpStatusCode.OK},
-                new ApiResponse<IEnumerable<TestObject1>>(new List<TestObject1>{new TestObject1()}),
+                new ApiResponse<IEnumerable<TestObject>>(new List<TestObject>{new TestObject()}),
                 true,
                 1
             },
@@ -93,9 +93,9 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         public void ApiResultList_GetList_ReturnsList()
         {
             var response = new RestResponse {ResponseStatus = ResponseStatus.Completed, StatusCode = HttpStatusCode.OK};
-            var data = new ApiResponse<TestObject1[]>(new []{new TestObject1(), new TestObject1()});
-            var resultList = new ApiResultList<TestObject1[]>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(), response, data);
-            var result = resultList.GetList<TestObject1>();
+            var data = new ApiResponse<TestObject[]>(new []{new TestObject(), new TestObject()});
+            var resultList = new ApiResultList<TestObject[]>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(), response, data);
+            var result = resultList.GetList<TestObject>();
             Assert.IsTrue(result != null);
             Assert.AreEqual(2, result.Count);
         }

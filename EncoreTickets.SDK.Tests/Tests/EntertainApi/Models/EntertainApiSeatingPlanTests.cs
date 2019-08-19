@@ -663,7 +663,7 @@ namespace EncoreTickets.SDK.Tests.Tests.EntertainApi.Models
                     {
                         var resultPerformance = resultBlocksToCheckPerformance[i].SpSeats[j].SeatPerformances[k];
                         var itemPerformance = item.SpBlocks[i].SpSeats[j].SeatPerformances[k];
-                        AssertExtension.PropertyValuesAreEquals(resultPerformance, itemPerformance);
+                        AssertExtension.SimplePropertyValuesAreEquals(resultPerformance, itemPerformance);
                     }
                 }
             }

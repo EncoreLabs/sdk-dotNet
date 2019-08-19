@@ -1,5 +1,4 @@
-﻿using System.Net;
-using EncoreTickets.SDK.Api;
+﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;

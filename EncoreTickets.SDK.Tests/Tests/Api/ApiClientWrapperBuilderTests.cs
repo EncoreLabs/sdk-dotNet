@@ -74,7 +74,8 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         [TestCaseSource(nameof(sourceForCreateClientWrapperTests))]
         public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(ApiContext context)
         {
-            Assert.DoesNotThrow(() => ApiClientWrapperBuilder.CreateClientWrapper(context));
+            var wrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
+            Assert.IsTrue(wrapper != null);
         }
 
         [TestCaseSource(nameof(sourceForCreateClientWrapperParametersTests))]
@@ -94,7 +95,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestUrlSegments = null,
             };
             var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body);
-            AssertExtension.PropertyValuesAreEquals(expectedParameters, result);
+            AssertExtension.SimplePropertyValuesAreEquals(expectedParameters, result);
             foreach (var expected in expectedHeaders)
             {
                 Assert.Contains(expected, result.RequestHeaders);
