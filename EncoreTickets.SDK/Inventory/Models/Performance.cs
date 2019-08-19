@@ -2,19 +2,13 @@
 using System.Runtime.Serialization;
 using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Inventory
+namespace EncoreTickets.SDK.Inventory.Models
 {
     [DataContract]
     public class Performance : IObject
     {
         public DateTime datetime { get; set; }
-        public int? largestLumpOfTickets { get; set; }
 
-        /*
-{
-datetime: "2019-03-21T19:30:00+0000",
-largestLumpOfTickets: 10
-},
-*/
+        public int? largestLumpOfTickets { get; set; }
     }
 }

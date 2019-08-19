@@ -1,5 +1,4 @@
-﻿using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.EntertainApi;
 
 namespace EncoreTickets.SDK.Basket

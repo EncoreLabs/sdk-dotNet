@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using EncoreTickets.SDK.Content;
-using Product = EncoreTickets.SDK.Inventory.Product;
-using Product2 = EncoreTickets.SDK.Content.Product;
+using Product = EncoreTickets.SDK.Inventory.Models.Product;
+using Product2 = EncoreTickets.SDK.Content.Models.Product;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Inventory.Models;
 
 namespace SDKConsoleTester
 {
@@ -51,7 +53,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             var sourceAttribute = stas.First();
             var updatedAttribute = vsApi.UpsertStandardAttributeByTitle(sourceAttribute);
-            Console.WriteLine($"{updatedAttribute.title} - {updatedAttribute.intention}");
+            Console.WriteLine($"{updatedAttribute?.title} - {updatedAttribute?.intention}");
 
 
             /* Get seat attributes */
@@ -59,7 +61,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get seat attributes for 163");
             Console.WriteLine(" ========================================================== ");            
-            IList<EncoreTickets.SDK.Venue.SeatAttribute> sas = vsApi.GetSeatAttributes("163");
+            IList<EncoreTickets.SDK.Venue.Models.SeatAttribute> sas = vsApi.GetSeatAttributes("163");
 
             foreach (var a in sas)
             {
@@ -86,7 +88,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get all venues ");
             Console.WriteLine(" ========================================================== ");
-            IList<EncoreTickets.SDK.Venue.Venue> venues = vsApi.GetVenues();
+            IList<EncoreTickets.SDK.Venue.Models.Venue> venues = vsApi.GetVenues();
 
             foreach (var a in venues)
             {

@@ -1,9 +1,6 @@
 ﻿using RestSharp.Serializers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EncoreTickets.SDK.Basket
+namespace EncoreTickets.SDK.Basket.Models
 {
     public class Address
     {

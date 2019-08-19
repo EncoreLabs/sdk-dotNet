@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Content
+namespace EncoreTickets.SDK.Inventory.Models.ResponseModels
 {
-    public class LocationResponse : IEnumerable<IObject>
+    internal class SearchResponse : IEnumerable<IObject>
     {
         [DataMember]
-        public List<Location> locations { get; set; }
+        public List<Product> product { get; set; }
 
         /// <summary>
         /// REturn the data
         /// </summary>
-        public List<IObject> Data { get { return this.locations.ConvertAll<IObject>(p => p as IObject); } }
+        public List<IObject> Data { get { return this.product.ConvertAll<IObject>(p => p as IObject); } }
 
         /// <summary>
         /// Return the enumerator

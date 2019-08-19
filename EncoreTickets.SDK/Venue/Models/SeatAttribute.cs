@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Venue
+namespace EncoreTickets.SDK.Venue.Models
 {
     public class SeatAttribute : IObject
     {

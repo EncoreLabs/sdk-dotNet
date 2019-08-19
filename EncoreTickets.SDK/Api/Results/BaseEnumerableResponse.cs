@@ -1,38 +1,36 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Inventory
+namespace EncoreTickets.SDK.Api.Results
 {
-    public class SearchResponse : IEnumerable<IObject>
+    internal class BaseEnumerableResponse<T> : IEnumerable<IObject>
+        where T : IObject
     {
         [DataMember]
-        public List<Product> product { get; set; }
+        public List<T> response { get; set; }
 
         /// <summary>
-        /// REturn the data
+        /// Returns the data.
         /// </summary>
-        public List<IObject> Data { get { return this.product.ConvertAll<IObject>(p => p as IObject); } }
+        public virtual List<IObject> Data => response.ConvertAll(p => p as IObject);
 
         /// <summary>
-        /// Return the enumerator
+        /// Returns the enumerator.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<IObject> GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
     }
 }

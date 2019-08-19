@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities;
 
 namespace EncoreTickets.SDK.Inventory
@@ -27,7 +29,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Product> Search(string text)
         {
-            var result = ExecuteApiList<SearchResponse>($"v2/search?query={text}", RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<SearchResponse>($"v2/search?query={text}", RequestMethod.Get, false, null);
             return result.GetList<Product>();
         }
 
@@ -55,7 +57,7 @@ namespace EncoreTickets.SDK.Inventory
         public IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to)
         {
             var path = $"v2/availability/products/{productId}/quantity/{quantity}/from/{@from.ToEncoreDate()}/to/{to.ToEncoreDate()}";
-            var result = ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false, null);
             return result.GetList<Performance>();
         }
 
@@ -69,7 +71,7 @@ namespace EncoreTickets.SDK.Inventory
         public Availability GetAvailability(string productId, int quantity, DateTime performance)
         {
             var path = $"v1/availability/products/{productId}/quantity/{quantity}/seats?date={performance.ToEncoreDate()}&time={performance.ToEncoreTime()}";
-            var result = ExecuteApi<Availability>(path, RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApi<Availability>(path, RequestMethod.Get, false, null);
             return result.Data;
         }
 
@@ -80,7 +82,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public BookingRange GetBookingRange(string productId)
         {
-            var result = ExecuteApi<BookingRange>(
+            var result = Executor.ExecuteApi<BookingRange>(
                 $"v3/products/{productId}/availability-range",
                 RequestMethod.Get,
                 true,

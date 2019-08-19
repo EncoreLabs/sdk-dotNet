@@ -2,6 +2,7 @@
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Content.Models;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -28,7 +29,7 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Location> GetLocations()
         {
-            var results = ExecuteApiList<List<Location>>("v1/locations", RequestMethod.Get, true, null);
+            var results = Executor.ExecuteApiList<List<Location>>("v1/locations", RequestMethod.Get, true, null);
             return results.GetList<Location>();
         }
 
@@ -38,7 +39,7 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Product> GetProducts()
         {
-            var result = ExecuteApiList<List<Product>>("v1/products?page=1&limit=1000", RequestMethod.Get, true, null);
+            var result = Executor.ExecuteApiList<List<Product>>("v1/products?page=1&limit=1000", RequestMethod.Get, true, null);
             return result.GetList<Product>();
         }
 
@@ -49,7 +50,7 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public Product GetProductById(string id)
         {
-            var result = ExecuteApi<Product>($"v1/products/{id}", RequestMethod.Get, true, null);
+            var result = Executor.ExecuteApi<Product>($"v1/products/{id}", RequestMethod.Get, true, null);
             return result.Data;
         }
 
