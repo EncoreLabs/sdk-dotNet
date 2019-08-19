@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 using System.Threading;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Tests
 {
@@ -16,6 +18,23 @@ namespace EncoreTickets.SDK.Tests
         public static void SetCultureGlobally(string cultureName)
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureName);
+        }
+
+        public static RestResponse GetSuccessResponse()
+        {
+            return new RestResponse
+            {
+                ResponseStatus = ResponseStatus.Completed,
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+
+        public static RestResponse GetFailedResponse()
+        {
+            return new RestResponse
+            {
+                ResponseStatus = ResponseStatus.Error,
+            };
         }
     }
 }

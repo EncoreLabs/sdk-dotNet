@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests
@@ -18,6 +20,14 @@ namespace EncoreTickets.SDK.Tests
                     Assert.Fail("Property {0}.{1} does not match. Expected: {2} but was: {3}",
                         property.DeclaringType.Name, property.Name, expectedValue, actualValue);
                 }
+            }
+        }
+        public static void EnumerableAreEquals<T>(IEnumerable<T> expected, ICollection actual)
+        {
+            Assert.AreEqual(expected.Count(), actual.Count);
+            foreach (var expectedItem in expected)
+            {
+                Assert.Contains(expectedItem, actual);
             }
         }
     }

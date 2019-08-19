@@ -11,26 +11,25 @@ namespace EncoreTickets.SDK.Inventory.Models.ResponseModels
         public List<Product> product { get; set; }
 
         /// <summary>
-        /// REturn the data
+        /// Returns the data.
         /// </summary>
-        public List<IObject> Data { get { return this.product.ConvertAll<IObject>(p => p as IObject); } }
+        public List<IObject> Data => product.ConvertAll(p => p as IObject);
 
         /// <summary>
-        /// Return the enumerator
+        /// Returns the enumerator.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<IObject> GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
 
-        /// <summary>
-        /// 
+        /// <summary> 
         /// </summary>
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
     }
 }

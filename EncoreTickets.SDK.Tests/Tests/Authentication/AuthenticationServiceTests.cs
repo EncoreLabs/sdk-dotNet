@@ -82,16 +82,11 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
                 AuthenticationMethod = AuthenticationMethod.JWT
             };
             var token = new AccessToken {token = "test"};
-            var successResponse = new RestResponse
-            {
-                ResponseStatus = ResponseStatus.Completed,
-                StatusCode = HttpStatusCode.OK
-            };
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
                     It.IsAny<bool>(), It.IsAny<Credentials>()))
                 .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(),
-                    successResponse, new ApiResponse<AccessToken>(token)));
+                    TestHelper.GetSuccessResponse(), new ApiResponse<AccessToken>(token)));
 
             var resultContext = Authenticate();
             executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(), It.IsAny<bool>(),
@@ -107,15 +102,11 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             {
                 AuthenticationMethod = AuthenticationMethod.JWT
             };
-            var errorResponse = new RestResponse
-            {
-                ResponseStatus = ResponseStatus.Error,
-            };
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
                     It.IsAny<bool>(), It.IsAny<Credentials>()))
                 .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(),
-                    errorResponse, new ApiResponse<AccessToken>(null)));
+                    TestHelper.GetFailedResponse(), new ApiResponse<AccessToken>(null)));
 
             var resultContext = Authenticate();
             executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(), It.IsAny<bool>(),
