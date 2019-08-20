@@ -10,16 +10,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Venue
         [Test]
         public void Venue_SeatAttributeResponse_Data_IsCorrect()
         {
-            var seatAttribute1 = new SeatAttribute();
-            var seatAttribute2 = new SeatAttribute();
+            var firstSeatAttribute = new SeatAttribute();
+            var secondSeatAttribute = new SeatAttribute();
             var response = new SeatAttributeResponse
             {
-                response = new List<SeatAttribute> {seatAttribute1, seatAttribute2}
+                response = new List<SeatAttribute> {firstSeatAttribute , secondSeatAttribute }
             };
             var result = response.Data;
             Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Contains(seatAttribute1));
-            Assert.IsTrue(result.Contains(seatAttribute2));
+            Assert.IsTrue(result.Contains(firstSeatAttribute ));
+            Assert.IsTrue(result.Contains(secondSeatAttribute ));
         }
 
         [Test]

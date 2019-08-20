@@ -42,6 +42,7 @@ namespace EncoreTickets.SDK.Api
             var headers = new Dictionary<string, string>
             {
                 {"x-SDK", "EncoreTickets.SDK.NET" } // todo: add build numbers
+                { "x-SDK", "EncoreTickets.SDK.NET" } // todo: add build numbers - PUM-1914
             };
 
             if (!string.IsNullOrWhiteSpace(context.Affiliate))
