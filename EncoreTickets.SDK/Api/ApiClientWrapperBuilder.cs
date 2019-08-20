@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
@@ -39,10 +40,10 @@ namespace EncoreTickets.SDK.Api
 
         private static Dictionary<string, string> GetHeaders(ApiContext context)
         {
+            var buildNumber = GetBuildNumber();
             var headers = new Dictionary<string, string>
             {
-                {"x-SDK", "EncoreTickets.SDK.NET" } // todo: add build numbers
-                { "x-SDK", "EncoreTickets.SDK.NET" } // todo: add build numbers - PUM-1914
+                { "x-SDK", $"EncoreTickets.SDK.NET {buildNumber}" }
             };
 
             if (!string.IsNullOrWhiteSpace(context.Affiliate))
@@ -67,6 +68,14 @@ namespace EncoreTickets.SDK.Api
             }
 
             return queryParameters;
+        }
+
+        private static string GetBuildNumber()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyName = assembly.GetName();
+            var version = assemblyName.Version;
+            return $"{version.Major}.{version.Minor}.{version.Build}";
         }
     }
 }

@@ -2,28 +2,18 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    <Company>EncoreTickets</Company>
+    <Authors>EncoreTickets</Authors>
+    <PackageTags />
+    <RepositoryUrl>https://github.com/EncoreLabs/sdk-dotNet</RepositoryUrl>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="EntertainApi\DBHelper.cs" />
-    <Compile Remove="IApiResult.cs" />
-    <Compile Remove="IApiResultBase.cs" />
-    <Compile Remove="IApiResultList.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Polly" Version="7.1.0" />
     <PackageReference Include="RestSharp" Version="106.5.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="RestSharp">
-      <HintPath>..\..\..\..\Wizard\Source\Theatre\Library\bin\Debug\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Net.Http.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
