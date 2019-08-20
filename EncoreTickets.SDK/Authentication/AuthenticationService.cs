@@ -1,5 +1,7 @@
-﻿using EncoreTickets.SDK.v1;
-using RestSharp;
+﻿using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Authentication.Models;
 
 namespace EncoreTickets.SDK.Authentication
 {
@@ -29,14 +31,14 @@ namespace EncoreTickets.SDK.Authentication
         /// <returns>The API context</returns>
         public ApiContext Authenticate()
         {
-            switch (context.AuthenticationMethod)
+            switch (Context?.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:
                     JwtLogin();
                     break;
             }
 
-            return context;
+            return Context;
         }
 
         /// <summary>
@@ -45,10 +47,10 @@ namespace EncoreTickets.SDK.Authentication
         /// <returns><c>true</c> If the context has been authenticated before ; otherwise, <c>false</c>.</returns>
         public bool IsThereAuthentication()
         {
-            switch (context.AuthenticationMethod)
+            switch (Context?.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:
-                    return !string.IsNullOrEmpty(context.accessToken);
+                    return !string.IsNullOrEmpty(Context.AccessToken);
                 default:
                     return false;
             }
@@ -56,9 +58,9 @@ namespace EncoreTickets.SDK.Authentication
 
         private void JwtLogin()
         {
-            var credentials = new CredentialsRequest { username = context.userName, password = context.password };
-            var result = ExecuteApi<CredentialsResponse>(endpoint, Method.POST, false, credentials);
-            context.accessToken = result.Data?.token;
+            var credentials = new Credentials {username = Context.UserName, password = Context.Password};
+            var result = Executor.ExecuteApi<AccessToken>(endpoint, RequestMethod.Post, false, credentials);
+            Context.AccessToken = result.Data?.token;
         }
     }
 }

@@ -1,26 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Venue
+namespace EncoreTickets.SDK.Venue.Models.ResponseModels
 {
-    public class VenuesResponse : IEnumerable<IObject>
+    internal class VenuesResponse : IEnumerable<IObject>
     {
         [DataMember]
         public Response response { get; set; }
 
         /// <summary>
-        /// REturn the data
+        /// Returns the data.
         /// </summary>
-        public List<IObject> Data { get { return response.results.ConvertAll(p => p as IObject); } }
+        public List<IObject> Data => response.results.ConvertAll(p => p as IObject);
 
         /// <summary>
-        /// Return the enumerator
+        /// Returns the enumerator.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<IObject> GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
     }
 

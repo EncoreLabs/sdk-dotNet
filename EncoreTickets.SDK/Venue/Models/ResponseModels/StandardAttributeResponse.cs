@@ -1,35 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using EncoreTickets.SDK.Api.Results;
 
-namespace EncoreTickets.SDK.Venue
+namespace EncoreTickets.SDK.Venue.Models.ResponseModels
 {
-    public class StandardAttributeResponse : IEnumerable<IObject>
+    internal class StandardAttributeResponse : BaseEnumerableResponse<StandardAttribute>
     {
-        [DataMember]
-        public List<StandardAttribute> response { get; set; }
-
-        /// <summary>
-        /// REturn the data
-        /// </summary>
-        public List<IObject> Data { get { return response.ConvertAll(p => p as IObject); } }
-
-        /// <summary>
-        /// Return the enumerator
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<IObject> GetEnumerator()
-        {
-            return this.Data.GetEnumerator();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.Data.GetEnumerator();
-        }
     }
 }

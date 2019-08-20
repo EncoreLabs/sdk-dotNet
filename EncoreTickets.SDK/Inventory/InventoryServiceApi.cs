@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using RestSharp;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Inventory.Models.ResponseModels;
+using EncoreTickets.SDK.Utilities;
 
 namespace EncoreTickets.SDK.Inventory
 {
@@ -21,17 +26,10 @@ namespace EncoreTickets.SDK.Inventory
         /// Search for a product
         /// </summary>
         /// <param name="text"></param>
-        /// <param name="callback"></param>
         /// <returns></returns>
-        public IList<Product> Search(string text, IProgressCallback callback)
+        public IList<Product> Search(string text)
         {
-            ApiResultList<SearchResponse> result =
-            this.ExecuteApiList<SearchResponse>(
-                string.Format("v2/search?query={0}", text),
-                Method.GET,
-                false,
-                null);
-
+            var result = Executor.ExecuteApiList<SearchResponse>($"v2/search?query={text}", RequestMethod.Get, false, null);
             return result.GetList<Product>();
         }
 
@@ -45,7 +43,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Performance> GetPerformances(int productId, int quantity, DateTime from, DateTime to)
         {
-            return this.GetPerformances(productId.ToString(), quantity, from, to);
+            return GetPerformances(productId.ToString(), quantity, from, to);
         }
 
         /// <summary>
@@ -58,15 +56,8 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to)
         {
-            var path = string.Format("v2/availability/products/{0}/quantity/{1}/from/{2}/to/{3}", productId, quantity, from.ToEncoreDate(), to.ToEncoreDate());
-
-            ApiResultList<List<Performance>> result =
-                this.ExecuteApiList<List<Performance>>(
-                    path,
-                    Method.GET,
-                    false,
-                    null);
-
+            var path = $"v2/availability/products/{productId}/quantity/{quantity}/from/{@from.ToEncoreDate()}/to/{to.ToEncoreDate()}";
+            var result = Executor.ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false, null);
             return result.GetList<Performance>();
         }
 
@@ -79,16 +70,8 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public Availability GetAvailability(string productId, int quantity, DateTime performance)
         {
-            // https://inventory-service.tixuk.io/api/v1/availability/products/1587/quantity/2/seats?date=20181220&time=1930&t=1544138058971
-            var path = string.Format("v1/availability/products/{0}/quantity/{1}/seats?date={2}&time={3}", productId, quantity, performance.ToEncoreDate(), performance.ToEncoreTime());
-
-            ApiResult<Availability> result =
-           this.ExecuteApi<Availability>(
-               path,
-               Method.GET,
-               false,
-               null);
-
+            var path = $"v1/availability/products/{productId}/quantity/{quantity}/seats?date={performance.ToEncoreDate()}&time={performance.ToEncoreTime()}";
+            var result = Executor.ExecuteApi<Availability>(path, RequestMethod.Get, false, null);
             return result.Data;
         }
 
@@ -99,8 +82,11 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public BookingRange GetBookingRange(string productId)
         {
-            ApiResult<BookingRange> result = this.ExecuteApi<BookingRange>(string.Format("v3/products/{0}/availability-range", productId), Method.GET, true, null);
-
+            var result = Executor.ExecuteApi<BookingRange>(
+                $"v3/products/{productId}/availability-range",
+                RequestMethod.Get,
+                true,
+                null);
             return result.Data;
         }
     }

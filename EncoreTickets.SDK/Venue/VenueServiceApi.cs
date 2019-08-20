@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Authentication;
-using EncoreTickets.SDK.v1;
+using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
-using RestSharp;
+using EncoreTickets.SDK.Venue.Models.ResponseModels;
 
 namespace EncoreTickets.SDK.Venue
 {
@@ -26,12 +29,11 @@ namespace EncoreTickets.SDK.Venue
         /// <summary>
         /// Get the available venues
         /// </summary>
-        /// <param name="callback"></param>
         /// <returns></returns>
-        public IList<Venue> GetVenues()
+        public IList<Models.Venue> GetVenues()
         {
-            var result = ExecuteApiList<VenuesResponse>("v1/venues", Method.GET, false, null);
-            return result.GetList<Venue>();
+            var result = Executor.ExecuteApiList<VenuesResponse>("v1/venues", RequestMethod.Get, false, null);
+            return result.GetList<Models.Venue>();
         }
 
         /// <summary>
@@ -39,9 +41,9 @@ namespace EncoreTickets.SDK.Venue
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Venue GetVenueById(string id)
+        public Models.Venue GetVenueById(string id)
         {
-            var result = ExecuteApi<Venue>($"v1/venues/{id}", Method.GET, true, null);
+            var result = Executor.ExecuteApi<Models.Venue>($"v1/venues/{id}", RequestMethod.Get, true, null);
             return result.Data;
         }
 
@@ -50,7 +52,7 @@ namespace EncoreTickets.SDK.Venue
         /// </summary>
         /// <param name="venue"></param>
         /// <returns></returns>
-        public IList<SeatAttribute> GetSeatAttributes(Venue venue)
+        public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
             return GetSeatAttributes(venue.internalId);
         }
@@ -62,7 +64,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            var result = ExecuteApiList<SeatAttributeResponse>($"v1/venues/{venueId}/seats/attributes/detailed", Method.GET, false, null);
+            var result = Executor.ExecuteApiList<SeatAttributeResponse>($"v1/venues/{venueId}/seats/attributes/detailed", RequestMethod.Get, false, null);
             return result.GetList<SeatAttribute>();
         }
 
@@ -72,7 +74,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<StandardAttribute> GetStandardAttributes()
         {
-            var result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", Method.GET, false, null);
+            var result = Executor.ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", RequestMethod.Get, false, null);
             return result.GetList<StandardAttribute>();
         }
 
@@ -82,7 +84,7 @@ namespace EncoreTickets.SDK.Venue
         /// <returns>The updated standard attribute.</returns>
         public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
         {
-            var result = ExecuteApi<StandardAttribute>("v1/admin/attributes", Method.PATCH, true, attribute);
+            var result = Executor.ExecuteApi<StandardAttribute>("v1/admin/attributes", RequestMethod.Patch, true, attribute);
             return result.Data;
         }
 
@@ -94,7 +96,7 @@ namespace EncoreTickets.SDK.Venue
         {
             const string successStatus = "Success";
             var body = new SeatAttributesRequest {seats = seatAttributes};
-            var result = ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", Method.PATCH, true, body);
+            var result = Executor.ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", RequestMethod.Patch, true, body);
             return result.Data?.Contains(successStatus) ?? false;
         }
     }
