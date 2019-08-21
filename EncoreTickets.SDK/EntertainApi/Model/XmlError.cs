@@ -3,12 +3,7 @@
     public class XmlError
     {
         public string Description { get; set; }
-        public XmlErrorType XmlErrorType { get; set; }
-    }
 
-    public enum XmlErrorType
-    {
-        Warning,
-        Error
+        public XmlErrorType XmlErrorType { get; set; }
     }
 }

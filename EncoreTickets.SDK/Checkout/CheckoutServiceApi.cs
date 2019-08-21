@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
 
-namespace EncoreTickets.SDK.Content
+namespace EncoreTickets.SDK.Checkout
 {
     /// <summary>
     /// Wrapper class for the inventory service API
     /// </summary>
-    public class CheckoutServiceApi : BaseCapabilityServiceApi
+    public class CheckoutServiceApi : BaseApi
     {
         /// <summary>
         /// Default constructor for the Inventory service

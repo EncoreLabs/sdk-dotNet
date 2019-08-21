@@ -1,12 +1,14 @@
-﻿using EncoreTickets.SDK;
-using EncoreTickets.SDK.Inventory;
+﻿using EncoreTickets.SDK.Inventory;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using EncoreTickets.SDK.Content;
-using Product = EncoreTickets.SDK.Inventory.Product;
-using Product2 = EncoreTickets.SDK.Content.Product;
+using Product = EncoreTickets.SDK.Inventory.Models.Product;
+using Product2 = EncoreTickets.SDK.Content.Models.Product;
 using EncoreTickets.SDK.Venue;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Inventory.Models;
 
 namespace SDKConsoleTester
 {
@@ -14,23 +16,43 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            ApiContext context = new ApiContext(Environments.Sandbox);
-            List<string> productIds = new List<string>();
-            context.affiliate = "encoretickets";
-            // uscontext.useBroadway = true;
+            Console.Write("Enter username: ");
+            var userName = Console.ReadLine();
+            Console.Write("Enter Password: ");
+            var password = Console.ReadLine();
+            var context = new ApiContext(Environments.Sandbox, userName, password) {Affiliate = "encoretickets"};
+            var productIds = new List<string>();
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get JWT token for the venue service");
+            Console.WriteLine(" ========================================================== ");
+            var vsApi = new VenueServiceApi(context);
+            var authContext = vsApi.AuthenticationService.Authenticate();
+
+            Console.WriteLine($"username: {authContext.UserName}");
+            Console.WriteLine($"Password: {authContext.Password}");
+            Console.WriteLine($"token: {authContext.AccessToken}");
+            Console.WriteLine($"authenticated: {vsApi.AuthenticationService.IsThereAuthentication()}");
 
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get standard attributes ");
             Console.WriteLine(" ========================================================== ");
-            VenueServiceApi vsApi = new VenueServiceApi(context);
-            IList<EncoreTickets.SDK.Venue.StandardAttribute> stas = vsApi.GetStandardAttributes();
+            var stas = vsApi.GetStandardAttributes();
 
             foreach (var a in stas)
             {
-                Console.WriteLine(
-                    string.Format("{0} - {1}", a.title, a.intention));
+                Console.WriteLine($"{a.title} - {a.intention}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Update standard attribute by title ");
+            Console.WriteLine(" ========================================================== ");
+            var sourceAttribute = stas.First();
+            var updatedAttribute = vsApi.UpsertStandardAttributeByTitle(sourceAttribute);
+            Console.WriteLine($"{updatedAttribute?.title} - {updatedAttribute?.intention}");
 
 
             /* Get seat attributes */
@@ -38,7 +60,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get seat attributes for 163");
             Console.WriteLine(" ========================================================== ");            
-            IList<EncoreTickets.SDK.Venue.SeatAttribute> sas = vsApi.GetSeatAttributes("163");
+            IList<EncoreTickets.SDK.Venue.Models.SeatAttribute> sas = vsApi.GetSeatAttributes("163");
 
             foreach (var a in sas)
             {
@@ -51,12 +73,21 @@ namespace SDKConsoleTester
                     (a.performanceTimes != null) ? string.Join(",", a.performanceTimes) : "-"));
             }
 
+
+            /* Upsert seat attributes */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Upsert seat attributes for 163");
+            Console.WriteLine(" ========================================================== ");
+            var result = vsApi.UpsertSeatAttributes("163", sas);
+            Console.WriteLine(result);
+
             /* Get locations */
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get all venues ");
             Console.WriteLine(" ========================================================== ");
-            IList<EncoreTickets.SDK.Venue.Venue> venues = vsApi.GetVenues();
+            IList<EncoreTickets.SDK.Venue.Models.Venue> venues = vsApi.GetVenues();
 
             foreach (var a in venues)
             {
@@ -70,7 +101,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" Test: Get all locations ");
             Console.WriteLine(" ========================================================== ");
             ContentServiceApi cs = new ContentServiceApi(context);
-            IList<Location> locations = cs.GetLocations(null);
+            IList<Location> locations = cs.GetLocations();
 
             foreach (var a in locations)
             {
@@ -82,15 +113,14 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Get all us products ");
             Console.WriteLine(" ========================================================== ");
-            IList<Product2> products2 = cs.GetProducts(null);
+            IList<Product2> products2 = cs.GetProducts();
 
             int count = 0;
             foreach (var p2 in products2)
             {
                 Console.WriteLine(string.Format("{0} ({1}): {2}", p2.name, p2.id, p2.venue != null ? p2.venue.name : "- unknown-"));
                 // get detailed information for every 5th product
-                int temp;
-                if (Math.DivRem(count, 5, out temp) > 1)
+                if (Math.DivRem(count, 5, out var temp) > 1)
                 {
                     productIds.Add(p2.id);                    
                 }
@@ -104,7 +134,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" Test: Inventory service serch for products with 'w' ");
             Console.WriteLine(" ========================================================== ");
             InventoryServiceApi inventoryService = new InventoryServiceApi(context);
-            IList<Product> products = inventoryService.Search("w", null);
+            IList<Product> products = inventoryService.Search("w");
 
             foreach (var p3 in products)
             {

@@ -1,28 +1,19 @@
-﻿using EncoreTickets.SDK.EntertainApi;
-using RestSharp;
-using System;
-using System.Xml.Linq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Xml.XPath;
-using EncoreTickets.SDK.EntertainApi.Model;
+﻿using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.EntertainApi;
 
 namespace EncoreTickets.SDK.Basket
 {
     /// <summary>
-    /// Wrapper class for the Basket service API
+    /// The wrapper class for the Basket service API.
     /// </summary>
     public class BasketServiceApi : BaseEntertainApi
     {
         /// <summary>
-        /// Default constructor for the Basket service
+        /// Default constructor for the Basket service.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The API context for requests.</param>
         public BasketServiceApi(ApiContext context) : base(context, "basket-service.{0}tixuk.io/api/")
         {
         }
-       
     }
 }

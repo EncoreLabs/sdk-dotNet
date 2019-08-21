@@ -1,26 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
+using System.Linq;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Venue.Models;
+using EncoreTickets.SDK.Venue.Models.RequestModels;
+using EncoreTickets.SDK.Venue.Models.ResponseModels;
 
 namespace EncoreTickets.SDK.Venue
 {
-    public class VenueServiceApi : BaseCapabilityServiceApi
+    /// <inheritdoc/>
+    /// <summary>
+    /// The service to provide an interface for calling Venue API endpoints.
+    /// </summary>
+    public class VenueServiceApi : BaseApi
     {
+        private const string VenueHost = "venue-service.{0}tixuk.io/api/";
+
+        /// <summary>
+        /// Gets the authentication service for the current Venue service./>
+        /// </summary>
+        public AuthenticationService AuthenticationService { get; }
+
         /// <summary>
         /// Default constructor for the Venue service
         /// </summary>
         /// <param name="context"></param>
-        public VenueServiceApi(ApiContext context) : base(context, "venue-service.{0}tixuk.io/api/") { }
+        public VenueServiceApi(ApiContext context) : base(context, VenueHost)
+        {
+            context.AuthenticationMethod = AuthenticationMethod.JWT;
+            AuthenticationService = new AuthenticationService(context, VenueHost, "login");
+        }
 
         /// <summary>
         /// Get the available venues
         /// </summary>
-        /// <param name="callback"></param>
         /// <returns></returns>
-        public IList<Venue> GetVenues()
+        public IList<Models.Venue> GetVenues()
         {
-            ApiResultList<VenuesResponse> result = ExecuteApiList<VenuesResponse>("v1/venues", HttpMethod.Get, false, null);
-
-            return result.GetList<Venue>();
+            var result = Executor.ExecuteApiList<VenuesResponse>(
+                "v1/venues",
+                RequestMethod.Get, 
+                false);
+            return result.GetList<Models.Venue>();
         }
 
         /// <summary>
@@ -28,21 +51,23 @@ namespace EncoreTickets.SDK.Venue
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Venue GetVenueById(string id)
+        public Models.Venue GetVenueById(string id)
         {
-            ApiResult<Venue> result = this.ExecuteApi<Venue>(string.Format("v1/venues/{0}", id), HttpMethod.Get, true, null);
-
+            var result = Executor.ExecuteApi<Models.Venue>(
+                $"v1/venues/{id}",
+                RequestMethod.Get, 
+                true);
             return result.Data;
         }
 
         /// <summary>
         /// Get the seat attributes for a venue
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="venue"></param>
         /// <returns></returns>
-        public IList<SeatAttribute> GetSeatAttributes(Venue v)
+        public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
-            return this.GetSeatAttributes(v.internalId);
+            return GetSeatAttributes(venue.internalId);
         }
 
         /// <summary>
@@ -52,8 +77,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            ApiResultList<SeatAttributeResponse> result = ExecuteApiList<SeatAttributeResponse>(string.Format("v1/venues/{0}/seats/attributes/detailed", venueId), HttpMethod.Get, false, null);
-
+            var result = Executor.ExecuteApiList<List<SeatAttribute>>(
+                $"v1/venues/{venueId}/seats/attributes/detailed",
+                RequestMethod.Get, 
+                true);
             return result.GetList<SeatAttribute>();
         }
 
@@ -63,9 +90,41 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<StandardAttribute> GetStandardAttributes()
         {
-            ApiResultList<StandardAttributeResponse> result = ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", HttpMethod.Get, false, null);
-
+            var result = Executor.ExecuteApiList<List<StandardAttribute>>(
+                "v1/attributes/standard",
+                RequestMethod.Get,
+                true);
             return result.GetList<StandardAttribute>();
+        }
+
+        /// <summary>
+        /// Upsert a standard attribute by its title.
+        /// </summary>
+        /// <returns>The updated standard attribute.</returns>
+        public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
+        {
+            var result = Executor.ExecuteApi<StandardAttribute>(
+                "v1/admin/attributes",
+                RequestMethod.Patch, 
+                true,
+                attribute);
+            return result.Data;
+        }
+
+        /// <summary>
+        /// Upsert venue's seat attributes.
+        /// </summary>
+        /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
+        public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
+        {
+            const string successStatus = "Success";
+            var body = new SeatAttributesRequest {seats = seatAttributes};
+            var result = Executor.ExecuteApi<IEnumerable<string>>(
+                $"v1/admin/venues/{venueId}/seats/attributes",
+                RequestMethod.Patch,
+                true,
+                body);
+            return result.Data?.Contains(successStatus) ?? false;
         }
     }
 }

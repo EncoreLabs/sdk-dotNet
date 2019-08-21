@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
+using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Content.Models;
 
 namespace EncoreTickets.SDK.Content
 {
     /// <summary>
     /// Wrapper class for the inventory service API
     /// </summary>
-    public class ContentServiceApi : BaseCapabilityServiceApi
+    public class ContentServiceApi : BaseApi
     {
         /// <summary>
         /// Default constructor for the Inventory service
@@ -23,31 +26,26 @@ namespace EncoreTickets.SDK.Content
         /// <summary>
         /// Search for a product
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="callback"></param>
         /// <returns></returns>
-        public IList<Location> GetLocations(IProgressCallback callback)
+        public IList<Location> GetLocations()
         {
-            ApiResultList<List<Location>> results =
-            this.ExecuteApiList<List<Location>>("v1/locations", HttpMethod.Get, true, null);
-
+            var results = Executor.ExecuteApiList<List<Location>>(
+                "v1/locations",
+                RequestMethod.Get,
+                true);
             return results.GetList<Location>();
         }
 
         /// <summary>
         /// Get the available products
         /// </summary>
-        /// <param name="callback"></param>
         /// <returns></returns>
-        public IList<Product> GetProducts(IProgressCallback callback)
+        public IList<Product> GetProducts()
         {
-            ApiResultList<List<Product>> result =
-                this.ExecuteApiList<List<Product>>(
-                    "v1/products?page=1&limit=1000",
-                    HttpMethod.Get,
-                    true,
-                    null);
-
+            var result = Executor.ExecuteApiList<List<Product>>(
+                "v1/products?page=1&limit=1000",
+                RequestMethod.Get, 
+                true);
             return result.GetList<Product>();
         }
 
@@ -58,13 +56,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public Product GetProductById(string id)
         {
-            ApiResult<Product> result =
-                    this.ExecuteApi<Product>(
-                        string.Format("v1/products/{0}", id),
-                        HttpMethod.Get,
-                        true,
-                        null);
-
+            var result = Executor.ExecuteApi<Product>(
+                $"v1/products/{id}",
+                RequestMethod.Get,
+                true);
             return result.Data;
         }
 
@@ -75,7 +70,7 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public Product GetProductById(int id)
         {
-            return this.GetProductById(id.ToString());
+            return GetProductById(id.ToString());
         }
     }
 }
