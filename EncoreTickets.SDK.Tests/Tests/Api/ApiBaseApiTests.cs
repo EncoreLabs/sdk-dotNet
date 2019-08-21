@@ -23,6 +23,10 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             },
         };
 
+        public ApiBaseApiTests() : base(new ApiContext(), testHost)
+        {
+        }
+
         [TestCaseSource(nameof(SourceForBaseUrlTest))]
         public void Api_BaseApi_BaseUrl_ReturnsCorrectly(ApiContext context, string expected)
         {
@@ -37,10 +41,6 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var firstExecutor = Executor;
             var secondExecutor = Executor;
             Assert.AreNotEqual(firstExecutor, secondExecutor);
-        }
-
-        public ApiBaseApiTests() : base(new ApiContext(), testHost)
-        {
         }
     }
 }
