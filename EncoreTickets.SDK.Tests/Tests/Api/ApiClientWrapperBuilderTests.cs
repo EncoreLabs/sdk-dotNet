@@ -26,7 +26,6 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 {
                     {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                 },
-                new Dictionary<string, string> { }
             },
             new object[]
             {
@@ -40,34 +39,6 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                     {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                     {"affiliateId", "test"},
                 },
-                new Dictionary<string, string> { }
-            },
-            new object[]
-            {
-                new ApiContext{UseBroadway = true},
-                RequestMethod.Get,
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
-                    {"x-apply-price-engine", "true"},
-                    {"x-market", "broadway"},
-                },
-                new Dictionary<string, string>
-                {
-                    {"countryCode", null }
-                }
-            },
-            new object[]
-            {
-                new ApiContext{UseBroadway = true},
-                RequestMethod.Post,
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
-                    {"x-apply-price-engine", "true"},
-                    {"x-market", "broadway"},
-                },
-                new Dictionary<string, string> {}
             },
         };
 
@@ -80,7 +51,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
 
         [TestCaseSource(nameof(sourceForCreateClientWrapperParametersTests))]
         public void Api_ApiClientWrapperBuilder_CreateClientWrapperParameters_ReturnsCorrectedParameters(ApiContext context, RequestMethod method,
-            Dictionary<string, string> expectedHeaders, Dictionary<string, string> expectedQueryParams)
+            Dictionary<string, string> expectedHeaders)
         {
             var baseUrl = It.IsAny<string>();
             var endpoint = It.IsAny<string>();
@@ -93,17 +64,13 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestFormat = RequestFormat.Json,
                 RequestMethod = method,
                 RequestUrlSegments = null,
+                RequestQueryParameters = null,
             };
             var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body);
             AssertExtension.SimplePropertyValuesAreEquals(expectedParameters, result);
-            foreach (var expected in expectedHeaders)
-            {
-                Assert.Contains(expected, result.RequestHeaders);
-            }
-            foreach (var expected in expectedQueryParams)
-            {
-                Assert.Contains(expected.Key, result.RequestQueryParameters.Keys);
-            }
+            AssertExtension.EnumerableAreEquals(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
+            AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, result.RequestQueryParameters);
+            AssertExtension.EnumerableAreEquals(expectedParameters.RequestHeaders, expectedHeaders);
         }
     }
 }

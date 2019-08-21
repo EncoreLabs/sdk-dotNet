@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Api
                 RequestFormat = RequestFormat.Json,
                 RequestHeaders = GetHeaders(context),
                 RequestMethod = method,
-                RequestQueryParameters = GetQueryParameters(context, method),
+                RequestQueryParameters = null,
                 RequestUrlSegments = null,
             };
         }
@@ -58,7 +58,7 @@ namespace EncoreTickets.SDK.Api
             var buildNumber = GetBuildNumber();
             var headers = new Dictionary<string, string>
             {
-                { "x-SDK", $"EncoreTickets.SDK.NET {buildNumber}" }
+                {"x-SDK", $"EncoreTickets.SDK.NET {buildNumber}"}
             };
 
             if (!string.IsNullOrWhiteSpace(context.Affiliate))
@@ -66,23 +66,7 @@ namespace EncoreTickets.SDK.Api
                 headers.Add("affiliateId", context.Affiliate);
             }
 
-            if (context.UseBroadway)
-            {
-                headers.Add("x-apply-price-engine", "true");
-                headers.Add("x-market", "broadway");
-            }
             return headers;
-        }
-
-        private static Dictionary<string, string> GetQueryParameters(ApiContext context, RequestMethod method)
-        {
-            var queryParameters = new Dictionary<string, string>();
-            if (context.UseBroadway && method == RequestMethod.Get)
-            {
-                queryParameters.Add("countryCode", "US");
-            }
-
-            return queryParameters;
         }
 
         private static string GetBuildNumber()

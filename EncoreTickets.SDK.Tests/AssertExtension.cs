@@ -25,6 +25,12 @@ namespace EncoreTickets.SDK.Tests
 
         public static void EnumerableAreEquals<T>(IEnumerable<T> expected, ICollection actual)
         {
+            if (Equals(expected, actual))
+            {
+                Assert.Pass();
+                return;
+            }
+
             Assert.AreEqual(expected.Count(), actual.Count);
             foreach (var expectedItem in expected)
             {

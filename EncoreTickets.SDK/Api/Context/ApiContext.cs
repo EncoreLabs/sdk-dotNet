@@ -43,11 +43,6 @@ namespace EncoreTickets.SDK.Api.Context
         public int TimeoutMilliseconds { get; set; }
 
         /// <summary>
-        /// Gets or sets <c>true</c> if broadway is used; otherwise, <c>false</c>
-        /// </summary>
-        public bool UseBroadway { get; set; }
-
-        /// <summary>
         /// Gets or sets the affiliate.
         /// </summary>
         public string Affiliate { get; set; }

@@ -21,7 +21,6 @@ namespace SDKConsoleTester
             Console.Write("Enter Password: ");
             var password = Console.ReadLine();
             var context = new ApiContext(Environments.Sandbox, userName, password) {Affiliate = "encoretickets"};
-            // context.UseBroadway = true;
             var productIds = new List<string>();
 
             Console.WriteLine();
