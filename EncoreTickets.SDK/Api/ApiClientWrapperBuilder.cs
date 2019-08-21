@@ -6,8 +6,16 @@ using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
 
 namespace EncoreTickets.SDK.Api
 {
+    /// <summary>
+    /// Helper class for creating entities for the rest client wrapper of API services.
+    /// </summary>
     internal static class ApiClientWrapperBuilder
     {
+        /// <summary>
+        /// Creates <see cref="RestClientWrapper"></see> for requests to API./>
+        /// </summary>
+        /// <param name="context">API context.</param>
+        /// <returns>Initialized client wrapper.</returns>
         public static RestClientWrapper CreateClientWrapper(ApiContext context)
         {
             var credentials = context == null
@@ -22,6 +30,13 @@ namespace EncoreTickets.SDK.Api
             return new RestClientWrapper(credentials);
         }
 
+        /// <summary>
+        /// Creates <see cref="RestClientParameters"></see> for requests to API./>
+        /// </summary>
+        /// <param name="context">API context.</param>
+        /// <param name="baseUrl">Site URL.</param>
+        /// <param name="endpoint">Resource endpoint.</param>
+        /// <returns>Initialized client wrapper parameters.</returns>
         public static RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl, string endpoint,
             RequestMethod method, object body)
         {

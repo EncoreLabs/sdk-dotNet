@@ -10,10 +10,17 @@ using EncoreTickets.SDK.Venue.Models.ResponseModels;
 
 namespace EncoreTickets.SDK.Venue
 {
-    public class VenueServiceApi : BaseCapabilityServiceApi
+    /// <inheritdoc/>
+    /// <summary>
+    /// The service to provide an interface for calling Venue API endpoints.
+    /// </summary>
+    public class VenueServiceApi : BaseApi
     {
         private const string VenueHost = "venue-service.{0}tixuk.io/api/";
 
+        /// <summary>
+        /// Gets the authentication service for the current Venue service./>
+        /// </summary>
         public AuthenticationService AuthenticationService { get; }
 
         /// <summary>
@@ -32,7 +39,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<Models.Venue> GetVenues()
         {
-            var result = Executor.ExecuteApiList<VenuesResponse>("v1/venues", RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<VenuesResponse>(
+                "v1/venues",
+                RequestMethod.Get, 
+                false);
             return result.GetList<Models.Venue>();
         }
 
@@ -43,7 +53,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public Models.Venue GetVenueById(string id)
         {
-            var result = Executor.ExecuteApi<Models.Venue>($"v1/venues/{id}", RequestMethod.Get, true, null);
+            var result = Executor.ExecuteApi<Models.Venue>(
+                $"v1/venues/{id}",
+                RequestMethod.Get, 
+                true);
             return result.Data;
         }
 
@@ -64,7 +77,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            var result = Executor.ExecuteApiList<SeatAttributeResponse>($"v1/venues/{venueId}/seats/attributes/detailed", RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<List<SeatAttribute>>(
+                $"v1/venues/{venueId}/seats/attributes/detailed",
+                RequestMethod.Get, 
+                true);
             return result.GetList<SeatAttribute>();
         }
 
@@ -74,7 +90,10 @@ namespace EncoreTickets.SDK.Venue
         /// <returns></returns>
         public IList<StandardAttribute> GetStandardAttributes()
         {
-            var result = Executor.ExecuteApiList<StandardAttributeResponse>("v1/attributes/standard", RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<List<StandardAttribute>>(
+                "v1/attributes/standard",
+                RequestMethod.Get,
+                true);
             return result.GetList<StandardAttribute>();
         }
 
@@ -84,7 +103,11 @@ namespace EncoreTickets.SDK.Venue
         /// <returns>The updated standard attribute.</returns>
         public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
         {
-            var result = Executor.ExecuteApi<StandardAttribute>("v1/admin/attributes", RequestMethod.Patch, true, attribute);
+            var result = Executor.ExecuteApi<StandardAttribute>(
+                "v1/admin/attributes",
+                RequestMethod.Patch, 
+                true,
+                attribute);
             return result.Data;
         }
 
@@ -96,7 +119,11 @@ namespace EncoreTickets.SDK.Venue
         {
             const string successStatus = "Success";
             var body = new SeatAttributesRequest {seats = seatAttributes};
-            var result = Executor.ExecuteApi<IEnumerable<string>>($"v1/admin/venues/{venueId}/seats/attributes", RequestMethod.Patch, true, body);
+            var result = Executor.ExecuteApi<IEnumerable<string>>(
+                $"v1/admin/venues/{venueId}/seats/attributes",
+                RequestMethod.Patch,
+                true,
+                body);
             return result.Data?.Contains(successStatus) ?? false;
         }
     }

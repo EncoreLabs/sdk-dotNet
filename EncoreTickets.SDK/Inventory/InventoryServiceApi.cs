@@ -12,7 +12,7 @@ namespace EncoreTickets.SDK.Inventory
     /// <summary>
     /// Wrapper class for the inventory service API
     /// </summary>
-    public class InventoryServiceApi : BaseCapabilityServiceApi
+    public class InventoryServiceApi : BaseApi
     {
         /// <summary>
         /// Default constructor for the Inventory service
@@ -29,7 +29,10 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Product> Search(string text)
         {
-            var result = Executor.ExecuteApiList<SearchResponse>($"v2/search?query={text}", RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApiList<SearchResponse>(
+                $"v2/search?query={text}",
+                RequestMethod.Get, 
+                false);
             return result.GetList<Product>();
         }
 
@@ -56,8 +59,8 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to)
         {
-            var path = $"v2/availability/products/{productId}/quantity/{quantity}/from/{@from.ToEncoreDate()}/to/{to.ToEncoreDate()}";
-            var result = Executor.ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false, null);
+            var path = $"v2/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}";
+            var result = Executor.ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false);
             return result.GetList<Performance>();
         }
 
@@ -71,7 +74,7 @@ namespace EncoreTickets.SDK.Inventory
         public Availability GetAvailability(string productId, int quantity, DateTime performance)
         {
             var path = $"v1/availability/products/{productId}/quantity/{quantity}/seats?date={performance.ToEncoreDate()}&time={performance.ToEncoreTime()}";
-            var result = Executor.ExecuteApi<Availability>(path, RequestMethod.Get, false, null);
+            var result = Executor.ExecuteApi<Availability>(path, RequestMethod.Get, false);
             return result.Data;
         }
 
@@ -85,8 +88,7 @@ namespace EncoreTickets.SDK.Inventory
             var result = Executor.ExecuteApi<BookingRange>(
                 $"v3/products/{productId}/availability-range",
                 RequestMethod.Get,
-                true,
-                null);
+                true);
             return result.Data;
         }
     }

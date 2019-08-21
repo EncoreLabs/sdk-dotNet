@@ -2,6 +2,9 @@
 
 namespace EncoreTickets.SDK.Basket.Models
 {
+    /// <summary>
+    /// The address model of the Basket service.
+    /// </summary>
     public class Address
     {
         [SerializeAs(Attribute = true, Name = "type")]
@@ -25,6 +28,9 @@ namespace EncoreTickets.SDK.Basket.Models
         [SerializeAs(Name = "country")]
         public string Country { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Address"/> class.
+        /// </summary>
         public Address()
         {
             Type = "C";

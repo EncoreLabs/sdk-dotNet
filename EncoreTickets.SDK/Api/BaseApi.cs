@@ -3,23 +3,26 @@
 namespace EncoreTickets.SDK.Api
 {
     /// <summary>
-    /// The base api class to be extended by concrete implementations
+    /// The base api class to be extended by concrete implementations.
     /// </summary>
     public abstract class BaseApi
     {
-        /// <summary>
-        /// The host
-        /// </summary>
         private readonly string host;
 
         /// <summary>
-        /// The api context
+        /// Gets an executor of requests to the service based on context and base URL.
         /// </summary>
-        protected ApiContext Context;
+        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
 
+        /// <summary>
+        /// Gets base API URL.
+        /// </summary>
         protected string BaseUrl => "https://" + string.Format(host, Context.Environment);
 
-        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
+        /// <summary>
+        /// Gets or sets API context.
+        /// </summary>
+        protected ApiContext Context { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseApi"/> class.

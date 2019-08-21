@@ -84,7 +84,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
                     It.IsAny<bool>(), It.IsAny<Credentials>()))
-                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(),
+                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
                     TestHelper.GetSuccessResponse(), new ApiResponse<AccessToken>(token)));
 
             var resultContext = Authenticate();
@@ -104,7 +104,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
                     It.IsAny<bool>(), It.IsAny<Credentials>()))
-                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(),
+                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
                     TestHelper.GetFailedResponse(), new ApiResponse<AccessToken>(null)));
 
             var resultContext = Authenticate();

@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Get,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET"},
+                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                 },
                 new Dictionary<string, string> { }
             },
@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Get,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET"},
+                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                     {"affiliateId", "test"},
                 },
                 new Dictionary<string, string> { }
@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Get,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET"},
+                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                     {"x-apply-price-engine", "true"},
                     {"x-market", "broadway"},
                 },
@@ -63,7 +63,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Post,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET"},
+                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
                     {"x-apply-price-engine", "true"},
                     {"x-market", "broadway"},
                 },

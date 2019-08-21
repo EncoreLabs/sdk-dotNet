@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 new RestResponse {ResponseStatus = ResponseStatus.Completed},
                 new ApiResponse<string>("test"),
-                true,
+                false,
                 null
             },
             new object[]
@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 new RestResponse {ResponseStatus = ResponseStatus.Completed},
                 new ApiResponse<object>(TestObject),
-                true,
+                false,
                 null
             },
             new object[]
@@ -72,12 +72,12 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         };
 
         [TestCaseSource(nameof(SourceForConstructorTest))]
-        public void ApiResult_Constructor_InitializesProperties<T>(IRestResponse response, ApiResponse<T> data,
+        public void Api_ApiResult_Constructor_InitializesProperties<T>(IRestResponse response, ApiResponse<T> data,
             bool expectedResult, T expectedData)
             where T : class
         {
             var context = It.IsAny<ApiContext>();
-            var result = new ApiResult<T>(context, It.IsAny<IRestRequest>(), response, data);
+            var result = new ApiResult<T>(context, response, data);
             Assert.AreEqual(context, result.Context);
             Assert.AreEqual(expectedResult, result.Result);
             Assert.AreEqual(expectedData, result.Data);

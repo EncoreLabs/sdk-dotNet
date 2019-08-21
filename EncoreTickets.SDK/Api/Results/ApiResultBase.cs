@@ -1,15 +1,13 @@
-﻿using System.Runtime.Serialization;
-using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Context;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results
 {
-    [DataContract]
-    public abstract class ApiResultBase<T>
+    /// <summary>
+    /// The base class for providing the result of a executes request.
+    /// </summary>
+    public abstract class ApiResultBase
     {
-        private IRestRequest request;
-        private IRestResponse response;
-
         /// <summary>
         /// Gets a value indicating whether this call was a success.
         /// </summary>
@@ -17,22 +15,19 @@ namespace EncoreTickets.SDK.Api.Results
         public bool Result { get; }
 
         /// <summary>
-        /// Context object
+        /// Gets a context object for which the request was made.
         /// </summary>
         public ApiContext Context { get; }
 
         /// <summary>
-        /// Initializes a new instance of the context object
+        /// Initializes a new instance of <see cref="ApiResultBase"/>
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="request"></param>
-        /// <param name="response"></param>
-        protected ApiResultBase(ApiContext context, IRestRequest request, IRestResponse response)
+        /// <param name="context">Api context.</param>
+        /// <param name="response">Response.</param>
+        protected ApiResultBase(ApiContext context, IRestResponse response)
         {
-            this.request = request;
-            this.response = response;
-            Result = response.ResponseStatus == ResponseStatus.Completed;
             Context = context;
+            Result = response.IsSuccessful;
         }
     }
 }

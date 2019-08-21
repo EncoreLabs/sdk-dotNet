@@ -2,6 +2,7 @@
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Interfaces;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -78,23 +79,23 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         };
 
         [TestCaseSource(nameof(SourceForConstructorTest))]
-        public void ApiResultList_Constructor_InitializesProperties<T>(IRestResponse response, ApiResponse<T> data,
+        public void Api_ApiResultList_Constructor_InitializesProperties<T>(IRestResponse response, ApiResponse<T> data,
             bool expectedResult, int expectedCount)
-            where T : class
+            where T : class, IEnumerable<IObject>
         {
             var context = It.IsAny<ApiContext>();
-            var result = new ApiResultList<T>(context, It.IsAny<IRestRequest>(), response, data);
+            var result = new ApiResultList<T>(context, response, data);
             Assert.AreEqual(context, result.Context);
             Assert.AreEqual(expectedResult, result.Result);
             Assert.AreEqual(expectedCount, result.Count);
         }
 
         [Test]
-        public void ApiResultList_GetList_ReturnsList()
+        public void Api_ApiResultList_GetList_ReturnsList()
         {
             var response = new RestResponse {ResponseStatus = ResponseStatus.Completed, StatusCode = HttpStatusCode.OK};
             var data = new ApiResponse<TestObject[]>(new []{new TestObject(), new TestObject()});
-            var resultList = new ApiResultList<TestObject[]>(It.IsAny<ApiContext>(), It.IsAny<IRestRequest>(), response, data);
+            var resultList = new ApiResultList<TestObject[]>(It.IsAny<ApiContext>(), response, data);
             var result = resultList.GetList<TestObject>();
             Assert.IsTrue(result != null);
             Assert.AreEqual(2, result.Count);

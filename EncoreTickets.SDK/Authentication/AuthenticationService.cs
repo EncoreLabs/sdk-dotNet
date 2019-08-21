@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Authentication
     /// <summary>
     /// The authentication service.
     /// </summary>
-    public class AuthenticationService : BaseCapabilityServiceApi
+    public class AuthenticationService : BaseApi
     {
         private readonly string endpoint;
 

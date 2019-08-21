@@ -1,5 +1,8 @@
 ﻿namespace EncoreTickets.SDK.Interfaces
 {
+    /// <summary>
+    /// Progress interface.
+    /// </summary>
     public interface IProgressCallback
     {
         /// <summary>
