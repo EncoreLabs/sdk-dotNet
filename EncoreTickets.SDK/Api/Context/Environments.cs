@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Api.Context
 {
     /// <summary>
-    /// Environment enums
+    /// The environment for requests to Api.
     /// </summary>
     public enum Environments
     {

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    [DataContract]
     public class Product : IIdentifiableObject
     {
         public string id { get; set; }

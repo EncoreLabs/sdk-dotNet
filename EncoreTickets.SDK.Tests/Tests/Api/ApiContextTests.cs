@@ -9,9 +9,31 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
     {
         private static readonly object[] SourceForConstructorTest =
         {
-            new ApiContext(), 
-            new ApiContext(Environments.Sandbox), 
-            new ApiContext(Environments.Sandbox, "test", "test"), 
+            new object[]
+            {
+                new ApiContext(),
+                ""
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Sandbox),
+                "dev"
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Production),
+                ""
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Sandbox, "username", "password"),
+                "dev"
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Production, "username", "password"),
+                ""
+            },
         };
 
         private static readonly object[] SourceForOnErrorOccurredTest =
@@ -29,13 +51,23 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         };
 
         [TestCaseSource(nameof(SourceForConstructorTest))]
-        public void ApiContext_Constructor_InitializesEnvironment(ApiContext context)
+        public void Api_ApiContext_Constructor_InitializesEnvironment(ApiContext context, string expected)
         {
-            Assert.IsNotNull(context.Environment);
+            Assert.AreEqual(expected, context.Environment);
+        }
+
+        [Test]
+        public void Api_ApiContext_Constructor_InitializesCredentials()
+        {
+            const string username = "username";
+            const string password = "password";
+            var context  = new ApiContext(Environments.Sandbox, username, password);
+            Assert.AreEqual(username, context.UserName);
+            Assert.AreEqual(password, context.Password);
         }
 
         [TestCaseSource(nameof(SourceForOnErrorOccurredTest))]
-        public void ApiContext_OnErrorOccurred_ReturnsCorrectly(EventHandler<ApiErrorEventArgs> apiError, bool expected)
+        public void Api_ApiContext_OnErrorOccurred_ReturnsCorrectly(EventHandler<ApiErrorEventArgs> apiError, bool expected)
         {
             ApiContext.ApiError += apiError;
 

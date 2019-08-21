@@ -5,7 +5,14 @@
     /// </summary>
     public enum AuthenticationMethod
     {
-        JWT,        // access token
-        Basic       // username + Password
+        /// <summary>
+        /// Authentication based on access tokens.
+        /// </summary>
+        JWT,
+
+        /// <summary>
+        /// Authentication based on username and password.
+        /// </summary>
+        Basic
     }
 }

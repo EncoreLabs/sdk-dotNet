@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Interfaces
 {
     /// <summary>
-    /// An identifiable IObject
+    /// The interface for an identifiable IObject.
     /// </summary>
     public interface IIdentifiableObject : IObject
     {

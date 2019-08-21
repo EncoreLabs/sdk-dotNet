@@ -2,6 +2,9 @@
 
 namespace EncoreTickets.SDK.Basket.Models
 {
+    /// <summary>
+    /// The customer model of the Basket service.
+    /// </summary>
     public class Customer
     {
         [SerializeAs(Name = "title")]
@@ -22,6 +25,9 @@ namespace EncoreTickets.SDK.Basket.Models
         [SerializeAs(Name = "phone")]
         public string phone { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Customer"/> class.
+        /// </summary>
         public Customer()
         {
             address = new Address();

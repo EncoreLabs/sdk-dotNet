@@ -7,7 +7,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
     internal class ApiErrorEventArgTests
     {
         [Test]
-        public void EntertainApi_ApiErrorEventArg_Constructor_InitializesProperties()
+        public void Api_ApiErrorEventArg_Constructor_InitializesProperties()
         {
             var exception = new Exception();
             const string message = "test";

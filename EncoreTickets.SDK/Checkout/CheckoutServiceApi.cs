@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Checkout
     /// <summary>
     /// Wrapper class for the inventory service API
     /// </summary>
-    public class CheckoutServiceApi : BaseCapabilityServiceApi
+    public class CheckoutServiceApi : BaseApi
     {
         /// <summary>
         /// Default constructor for the Inventory service

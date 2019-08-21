@@ -2,23 +2,24 @@
 
 namespace EncoreTickets.SDK.Api.Context
 {
+    /// <summary>
+    /// The context for requests to API.
+    /// </summary>
     public class ApiContext
     {
         /// <summary>
-        /// Occurs when an error occurred.
+        /// The event that occurs when an error occurred.
         /// </summary>
         public static event EventHandler<ApiErrorEventArgs> ApiError;
 
         /// <summary>
-        /// Gets or sets the Nova user name of the user that your API calls will run as.
+        /// Gets the Nova user name of the user that your API calls will run as.
         /// </summary>
-        /// <value>The name of the user.</value>
         public string UserName { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the user's Password.
+        /// Gets the user's password.
         /// </summary>
-        /// <value>The Password.</value>
         public string Password { get; protected set; }
 
         /// <summary>
@@ -27,42 +28,41 @@ namespace EncoreTickets.SDK.Api.Context
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// The type of authentication that should be used to login.
+        /// Gets or sets the type of authentication that should be used to login.
         /// </summary>
         public AuthenticationMethod AuthenticationMethod { get; set; }
 
         /// <summary>
-        /// The environment
+        /// Gets or sets the environment.
         /// </summary>
         public string Environment { get; set; }
 
         /// <summary>
         /// Gets or sets the timeout milliseconds.
         /// </summary>
-        /// <value>The timeout milliseconds.</value>
         public int TimeoutMilliseconds { get; set; }
 
         /// <summary>
-        /// Use broadway 
+        /// Gets or sets <c>true</c> if broadway is used; otherwise, <c>false</c>
         /// </summary>
         public bool UseBroadway { get; set; }
 
         /// <summary>
-        /// The affiliate
+        /// Gets or sets the affiliate.
         /// </summary>
         public string Affiliate { get; set; }
 
         /// <summary>
-        /// Initializes static members of the <see cref="ApiContext"/> class.
+        /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext(Environments env, string userName, string password) : this(env)
+        public ApiContext(Environments environment, string userName, string password) : this(environment)
         {
             UserName = userName;
             Password = password;
         }
 
         /// <summary>
-        /// Default constructor
+        /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext() : this(Environments.Production)
         { 
@@ -70,7 +70,7 @@ namespace EncoreTickets.SDK.Api.Context
         }
 
         /// <summary>
-        /// Initializes static members of the <see cref="ApiContext"/> class.
+        /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(Environments env)
         {

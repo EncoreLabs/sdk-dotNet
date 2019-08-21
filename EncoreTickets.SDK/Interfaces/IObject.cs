@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Interfaces
 {
     /// <summary>
-    /// Marker interface
+    /// Marker interface.
     /// </summary>
     public interface IObject
     {

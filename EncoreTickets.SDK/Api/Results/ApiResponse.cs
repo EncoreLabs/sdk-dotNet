@@ -1,32 +1,44 @@
-﻿using System.Runtime.Serialization;
-
-namespace EncoreTickets.SDK.Api.Results
+﻿namespace EncoreTickets.SDK.Api.Results
 {
-    [DataContract]
+    /// <summary>
+    /// The API response for data wrapped with extra information.
+    /// </summary>
+    /// <typeparam name="T">The type of wrapped data.</typeparam>
     public class ApiResponse<T>
     {
-        [DataMember]
-        public Request request { get; set; }
-
-        [DataMember]
-        public T response { get; set; }
-
-        [DataMember]
-        public object context { get; set; }
-
-        public object Data => response;
+        /// <summary>
+        /// Gets unwrapped response data.
+        /// </summary>
+        public T Data => response;
 
         /// <summary>
-        /// Empty constructor
+        /// Gets or sets response.
+        /// </summary>
+        /// <typeparam name="T">The type of wrapped data.</typeparam>
+        public T response { get; set; }
+
+        /// <summary>
+        /// Gets or sets request.
+        /// </summary>
+        public Request request { get; set; }
+
+        /// <summary>
+        /// Gets or sets the response context.
+        /// </summary>
+        public object context { get; set; }
+
+        /// <summary>
+        /// Empty constructor to create a new instance of <see cref="ApiResponse"/>
         /// </summary>
         public ApiResponse()
         {
         }
-            
+
         /// <summary>
-        /// Initializes ean API response
+        /// Initializes a new instance of <see cref="ApiResponse"/>
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">The wrapped data.</param>
+        /// <typeparam name="T">The type of wrapped data.</typeparam>
         public ApiResponse(T data)
         {
             response = data;

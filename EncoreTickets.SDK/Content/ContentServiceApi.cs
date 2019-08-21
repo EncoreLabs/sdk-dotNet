@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Content
     /// <summary>
     /// Wrapper class for the inventory service API
     /// </summary>
-    public class ContentServiceApi : BaseCapabilityServiceApi
+    public class ContentServiceApi : BaseApi
     {
         /// <summary>
         /// Default constructor for the Inventory service
@@ -29,7 +29,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Location> GetLocations()
         {
-            var results = Executor.ExecuteApiList<List<Location>>("v1/locations", RequestMethod.Get, true, null);
+            var results = Executor.ExecuteApiList<List<Location>>(
+                "v1/locations",
+                RequestMethod.Get,
+                true);
             return results.GetList<Location>();
         }
 
@@ -39,7 +42,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Product> GetProducts()
         {
-            var result = Executor.ExecuteApiList<List<Product>>("v1/products?page=1&limit=1000", RequestMethod.Get, true, null);
+            var result = Executor.ExecuteApiList<List<Product>>(
+                "v1/products?page=1&limit=1000",
+                RequestMethod.Get, 
+                true);
             return result.GetList<Product>();
         }
 
@@ -50,7 +56,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public Product GetProductById(string id)
         {
-            var result = Executor.ExecuteApi<Product>($"v1/products/{id}", RequestMethod.Get, true, null);
+            var result = Executor.ExecuteApi<Product>(
+                $"v1/products/{id}",
+                RequestMethod.Get,
+                true);
             return result.Data;
         }
 

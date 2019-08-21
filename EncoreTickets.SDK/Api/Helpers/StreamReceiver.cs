@@ -4,6 +4,9 @@ using System.Net;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
+    /// <summary>
+    /// The helper for working with streams.
+    /// </summary>
     internal static class StreamReceiver
     {
         /// <summary>

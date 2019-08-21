@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models.ResponseModels
 {
     internal class SearchResponse : IEnumerable<IObject>
     {
-        [DataMember]
-        public List<Product> product { get; set; }
-
         /// <summary>
         /// Returns the data.
         /// </summary>
         public List<IObject> Data => product.ConvertAll(p => p as IObject);
+        
+        public List<Product> product { get; set; }
 
         /// <summary>
         /// Returns the enumerator.

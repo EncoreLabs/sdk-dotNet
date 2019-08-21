@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Venue.Models
         
         public string endDate { get; set; }
         
-        public string[] performanceTimes { get; set; }
+        public List<string> performanceTimes { get; set; }
 
         public List<Attribute> attributes { get; set; }
     }

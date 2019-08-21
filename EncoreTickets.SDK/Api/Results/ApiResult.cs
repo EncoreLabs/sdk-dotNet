@@ -1,34 +1,30 @@
-﻿using System.Runtime.Serialization;
-using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Context;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results
 {
     /// <summary>
-    /// Class representing result of Api call
+    /// Class representing result of Api call.
     /// </summary>
     /// <typeparam name="T">data type</typeparam>
-    [DataContract]
-    public class ApiResult<T> : ApiResultBase<T>
+    public class ApiResult<T> : ApiResultBase
         where T : class
     {
         /// <summary>
-        /// The data returned by the API response
+        /// The data returned by the API response.
         /// </summary>
         public T Data { get; }
 
         /// <summary>
-        /// Default constructor
+        /// Initializes a new instance of <see cref="ApiResult"/>
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="response"></param>
-        public ApiResult(ApiContext context, IRestRequest request, IRestResponse response, ApiResponse<T> data)
-            : base(context, request, response)
+        /// <param name="context">Api context.</param>
+        /// <param name="response">Response.</param>
+        /// <param name="data">Response data.</param>
+        public ApiResult(ApiContext context, IRestResponse response, ApiResponse<T> data)
+            : base(context, response)
         {
-            if (response.IsSuccessful)
-            {
-                Data = data.Data as T;
-            }
+            Data = response.IsSuccessful ? data.Data : null;
         }
     }
 }

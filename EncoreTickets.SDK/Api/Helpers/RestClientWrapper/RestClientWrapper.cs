@@ -8,6 +8,9 @@ using RestSharp.Authenticators;
 
 namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
 {
+    /// <summary>
+    /// Helper class for working with RestSharp classes.
+    /// </summary>
     internal class RestClientWrapper
     {
         private const int MaxExecutionsCount = 2;
@@ -25,11 +28,20 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
 
         private readonly RestClientWrapperCredentials credentials;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// </summary>
+        /// <param name="restClientWrapperCredentials">Credentials for requests.</param>
         public RestClientWrapper(RestClientWrapperCredentials restClientWrapperCredentials)
         {
             credentials = restClientWrapperCredentials;
         }
 
+        /// <summary>
+        /// Returns an initialized client.
+        /// </summary>
+        /// <param name="restClientParameters">Parameters.</param>
+        /// <returns>Rest client.</returns>
         public IRestClient GetRestClient(RestClientParameters restClientParameters)
         {
             var client = new RestClient(restClientParameters.BaseUrl)
@@ -39,6 +51,11 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             return client;
         }
 
+        /// <summary>
+        /// Returns an initialized request.
+        /// </summary>
+        /// <param name="restClientParameters">Parameters.</param>
+        /// <returns>Rest request.</returns>
         public IRestRequest GetRestRequest(RestClientParameters restClientParameters)
         {
             var request = new RestRequest(restClientParameters.RequestUrl)
@@ -53,6 +70,11 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             return request;
         }
 
+        /// <summary>
+        /// Executes a request initialized with parameters.
+        /// </summary>
+        /// <param name="restClientParameters">Parameters.</param>
+        /// <returns>Rest response.</returns>
         public IRestResponse Execute(RestClientParameters restClientParameters)
         {
             var client = GetRestClient(restClientParameters);
@@ -60,6 +82,12 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             return Execute(client, request);
         }
 
+        /// <summary>
+        /// Executes a request.
+        /// </summary>
+        /// <param name="client">The prepared rest client.</param>
+        /// <param name="request">The prepared rest request.</param>
+        /// <returns>Rest response.</returns>
         public IRestResponse Execute(IRestClient client, IRestRequest request)
         {
             var response = Policy
@@ -70,6 +98,13 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             return response;
         }
 
+        /// <summary>
+        /// Executes a request with expected data of a certain type.
+        /// </summary>
+        /// <param type="T">The type of an object expected in response.</param>
+        /// <param name="client">The prepared rest client.</param>
+        /// <param name="request">The prepared rest request.</param>
+        /// <returns>Rest response.</returns>
         public IRestResponse<T> Execute<T>(IRestClient client, IRestRequest request)
             where T : class, new()
         {
@@ -81,6 +116,11 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             return response;
         }
 
+        /// <summary>
+        /// Returns the state of a response.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <returns><c>true</c> If the response is good ; otherwise, <c>false</c></returns>
         public bool IsGoodResponse(IRestResponse response)
         {
             if (response.ErrorException != null || !string.IsNullOrEmpty(response.ErrorMessage))
