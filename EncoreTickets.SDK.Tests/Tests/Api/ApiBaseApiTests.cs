@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 new ApiContext(Environments.Staging),
-                "https://venue-service.stagINGtixuk.io/api/"
+                "https://venue-service.stagingtixuk.io/api/"
             },
             new object[]
             {
