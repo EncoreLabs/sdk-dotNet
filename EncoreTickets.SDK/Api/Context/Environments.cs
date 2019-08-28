@@ -6,6 +6,8 @@
     public enum Environments
     {
         Production,
+        Staging,
+        QA,
         Sandbox
     }
 }

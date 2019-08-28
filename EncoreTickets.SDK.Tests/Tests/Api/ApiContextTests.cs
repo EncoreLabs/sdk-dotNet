@@ -12,27 +12,37 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 new ApiContext(),
-                ""
+                Environments.Production
             },
             new object[]
             {
                 new ApiContext(Environments.Sandbox),
-                "dev"
+                Environments.Sandbox
             },
             new object[]
             {
                 new ApiContext(Environments.Production),
-                ""
+                Environments.Production
             },
             new object[]
             {
                 new ApiContext(Environments.Sandbox, "username", "password"),
-                "dev"
+                Environments.Sandbox
             },
             new object[]
             {
                 new ApiContext(Environments.Production, "username", "password"),
-                ""
+                Environments.Production
+            },
+            new object[]
+            {
+                new ApiContext(Environments.QA, "username", "password"),
+                Environments.QA
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Staging, "username", "password"),
+                Environments.Staging
             },
         };
 
@@ -51,7 +61,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         };
 
         [TestCaseSource(nameof(SourceForConstructorTest))]
-        public void Api_ApiContext_Constructor_InitializesEnvironment(ApiContext context, string expected)
+        public void Api_ApiContext_Constructor_InitializesEnvironment(ApiContext context, Environments expected)
         {
             Assert.AreEqual(expected, context.Environment);
         }

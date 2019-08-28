@@ -35,7 +35,7 @@ namespace EncoreTickets.SDK.Api.Context
         /// <summary>
         /// Gets or sets the environment.
         /// </summary>
-        public string Environment { get; set; }
+        public Environments Environment { get; set; }
 
         /// <summary>
         /// Gets or sets the timeout milliseconds.
@@ -70,7 +70,7 @@ namespace EncoreTickets.SDK.Api.Context
         public ApiContext(Environments env)
         {
             AuthenticationMethod = AuthenticationMethod.JWT;
-            Environment = (env == Environments.Production) ? "" : "dev";
+            Environment = env;
         }
 
         /// <summary>

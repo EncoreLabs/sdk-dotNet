@@ -10,14 +10,14 @@ namespace EncoreTickets.SDK.Api
         private readonly string host;
 
         /// <summary>
+        /// Gets base API URL.
+        /// </summary>
+        protected virtual string BaseUrl => "https://" + string.Format(host, GetEnvironmentPartOfHost());
+
+        /// <summary>
         /// Gets an executor of requests to the service based on context and base URL.
         /// </summary>
         protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
-
-        /// <summary>
-        /// Gets base API URL.
-        /// </summary>
-        protected string BaseUrl => "https://" + string.Format(host, Context.Environment);
 
         /// <summary>
         /// Gets or sets API context.
@@ -33,6 +33,22 @@ namespace EncoreTickets.SDK.Api
         {
             this.host = host;
             Context = context;
+        }
+
+        private string GetEnvironmentPartOfHost()
+        {
+            switch (Context.Environment)
+            {
+                case Environments.Production:
+                    return "";
+                case Environments.Staging:
+                    return "stagING";
+                case Environments.QA:
+                    return "qa";
+                case Environments.Sandbox:
+                default:
+                    return "dev";
+            }
         }
     }
 }
