@@ -10,6 +10,8 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
+        private const string SdkVersion = "1.0.1";
+
         private static object[] sourceForCreateClientWrapperTests =
         {
             new ApiContext(),
@@ -24,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Get,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
+                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
                 },
             },
             new object[]
@@ -36,7 +38,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestMethod.Get,
                 new Dictionary<string, string>
                 {
-                    {"x-SDK", "EncoreTickets.SDK.NET 1.0.0"},
+                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
                     {"affiliateId", "test"},
                 },
             },
