@@ -42,7 +42,7 @@ namespace EncoreTickets.SDK.Api
                 case Environments.Production:
                     return "";
                 case Environments.Staging:
-                    return "stagING";
+                    return "staging";
                 case Environments.QA:
                     return "qa";
                 case Environments.Sandbox:
