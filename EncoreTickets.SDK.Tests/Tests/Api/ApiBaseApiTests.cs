@@ -21,6 +21,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 new ApiContext(Environments.Sandbox),
                 "https://venue-service.devtixuk.io/api/"
             },
+            new object[]
+            {
+                new ApiContext(Environments.Staging),
+                "https://venue-service.stagINGtixuk.io/api/"
+            },
+            new object[]
+            {
+                new ApiContext(Environments.QA),
+                "https://venue-service.qatixuk.io/api/"
+            },
         };
 
         public ApiBaseApiTests() : base(new ApiContext(), testHost)
