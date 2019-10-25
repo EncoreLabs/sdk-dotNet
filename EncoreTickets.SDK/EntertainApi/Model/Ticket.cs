@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace EncoreTickets.SDK.EntertainApi.Model
 {
@@ -55,9 +56,9 @@ namespace EncoreTickets.SDK.EntertainApi.Model
 
         public string Tag => BlockId + ":" + Block.Replace(" ", "");
 
-        public string DateFormatted => Date.ToString("ddd, ") + Date.Date.Day + Date.ToString(" MMM yyyy");
+        public string DateFormatted => Date.ToString("ddd, d MMM yyyy", CultureInfo.InvariantCulture);
 
-        public string TimeFormatted => Date.ToString("h:mmtt").ToLower();
+        public string TimeFormatted => Date.ToString("h:mmtt", CultureInfo.InvariantCulture).ToLower();
 
         #endregion
     }

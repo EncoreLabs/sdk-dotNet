@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EncoreTickets.SDK">
-      <HintPath>..\EncoreTickets.SDK\bin\Debug\net461\EncoreTickets.SDK.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\EncoreTickets.SDK\EncoreTickets.SDK.csproj" />
   </ItemGroup>
 
 </Project>
