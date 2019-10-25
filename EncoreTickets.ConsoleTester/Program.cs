@@ -7,6 +7,7 @@ using Product = EncoreTickets.SDK.Inventory.Models.Product;
 using Product2 = EncoreTickets.SDK.Content.Models.Product;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Inventory.Models;
 
@@ -131,7 +132,7 @@ namespace SDKConsoleTester
             /* Searching products test */
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
-            Console.WriteLine(" Test: Inventory service serch for products with 'w' ");
+            Console.WriteLine(" Test: Inventory service search for products with 'w' ");
             Console.WriteLine(" ========================================================== ");
             InventoryServiceApi inventoryService = new InventoryServiceApi(context);
             IList<Product> products = inventoryService.Search("w");
@@ -143,7 +144,7 @@ namespace SDKConsoleTester
 
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
-            Console.WriteLine(" Test: Inventory service serch for availability for products in array ");
+            Console.WriteLine(" Test: Inventory service search for availability for products in array ");
             Console.WriteLine(" ========================================================== ");
 
             foreach (string pId in productIds)
@@ -173,8 +174,28 @@ namespace SDKConsoleTester
                 }
 
                 Console.WriteLine(string.Format("xxxxxxxxxxxxxx* {0} xxxxxxxxxxxxxx", pId));
-            }            
+            }
 
+            /* Get promotion details */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Basket service getting promotion details ");
+            Console.WriteLine(" ========================================================== ");
+            var basketService = new BasketServiceApi(context);
+            var promotionDetails = basketService.GetPromotionDetails("206000034");
+            if (promotionDetails != null)
+            {
+                Console.WriteLine($"id: {promotionDetails.id}");
+                Console.WriteLine($"name: {promotionDetails.name}");
+                Console.WriteLine($"displayText: {promotionDetails.displayText}");
+                Console.WriteLine($"description: {promotionDetails.description}");
+                Console.WriteLine($"reference: {promotionDetails.reference}");
+                Console.WriteLine($"reportingCode: {promotionDetails.reportingCode}");
+                Console.WriteLine($"validFrom: {promotionDetails.validFrom}");
+                Console.WriteLine($"validTo: {promotionDetails.validTo}");
+            }
+
+            Console.WriteLine();
             Console.WriteLine(" -- FINISHED --");
             Console.ReadLine();
         }
