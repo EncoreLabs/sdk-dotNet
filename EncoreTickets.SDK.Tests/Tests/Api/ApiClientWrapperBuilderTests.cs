@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
-        private const string SdkVersion = "1.0.1";
+        private const string SdkVersion = "1.1.0";
 
         private static object[] sourceForCreateClientWrapperTests =
         {
