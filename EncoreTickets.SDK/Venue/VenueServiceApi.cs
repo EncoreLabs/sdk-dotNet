@@ -61,6 +61,21 @@ namespace EncoreTickets.SDK.Venue
         }
 
         /// <summary>
+        /// Update the venue by its id.
+        /// </summary>
+        /// <param name="venue">Venue for update</param>
+        /// <returns>Updated venue</returns>
+        public Models.Venue UpdateVenueById(Models.Venue venue)
+        {
+            var result = Executor.ExecuteApi<Models.Venue>(
+                $"v1/admin/venues/{venue.internalId}",
+                RequestMethod.Post,
+                true,
+                venue);
+            return result.Data;
+        }
+
+        /// <summary>
         /// Get the seat attributes for a venue
         /// </summary>
         /// <param name="venue"></param>
