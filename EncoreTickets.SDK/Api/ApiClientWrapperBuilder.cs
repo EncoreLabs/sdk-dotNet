@@ -39,9 +39,10 @@ namespace EncoreTickets.SDK.Api
         /// <param name="method">Request method.</param>
         /// <param name="body">Request body.</param>
         /// <param name="queryObject">Object for request query.</param>
+        /// <param name="dateFormat">Request date format.</param>
         /// <returns>Initialized client wrapper parameters.</returns>
         public static RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl, string endpoint,
-            RequestMethod method, object body, object queryObject)
+            RequestMethod method, object body, object queryObject, string dateFormat)
         {
             return new RestClientParameters
             {
@@ -50,6 +51,7 @@ namespace EncoreTickets.SDK.Api
                 RequestFormat = RequestFormat.Json,
                 RequestHeaders = GetHeaders(context),
                 RequestMethod = method,
+                RequestDateFormat = dateFormat,
                 RequestBody = body,
                 RequestQueryParameters = GetQueryParameters(queryObject),
             };
@@ -94,7 +96,7 @@ namespace EncoreTickets.SDK.Api
                 var propertyValue = property.GetValue(queryObject, null);
                 if (propertyValue != null)
                 {
-                    result.Add(property.Name, propertyValue.ToString());
+                    result.Add(property.Name.ToLower(), propertyValue.ToString());
                 }
             }
 

@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 new ApiContext(),
                 RequestMethod.Get,
-                new {test1 = "test", test2 = 4, test3 = (string) null},
+                new {test1 = "test", Test2 = 4, test3 = (string) null},
                 new Dictionary<string, string>
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
@@ -67,6 +67,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var baseUrl = It.IsAny<string>();
             var endpoint = It.IsAny<string>();
             var body = It.IsAny<object>();
+            var dateFormat = It.IsAny<string>();
             var expectedParameters = new RestClientParameters
             {
                 BaseUrl = baseUrl,
@@ -75,9 +76,10 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestFormat = RequestFormat.Json,
                 RequestMethod = method,
                 RequestUrlSegments = null,
+                RequestDateFormat = dateFormat
             };
-            var result =
-                ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body, queryObject);
+            var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body,
+                queryObject, dateFormat);
             AssertExtension.SimplePropertyValuesAreEquals(expectedParameters, result);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, expectedQuery);
