@@ -10,6 +10,7 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Pricing;
 
 namespace SDKConsoleTester
 {
@@ -17,9 +18,26 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            Console.Write("Enter username: ");
+            var apiKey = "access_token"; // it's too big for Console.ReadLine()
+            var contextPricingService = new ApiContext(Environments.QA, apiKey);
+
+            var pricingApi = new PricingServiceApi(contextPricingService);
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get exchange rates");
+            Console.WriteLine(" ========================================================== ");
+            var rates = pricingApi.GetExchangeRates(null);
+            foreach (var a in rates)
+            {
+                Console.WriteLine($"{a.baseCurrency} -> {a.targetCurrency}: {a.rate}, {a.encoreRate}, {a.protectionMargin}");
+            }
+
+
+            Console.WriteLine();
+            Console.Write("Enter venue username: ");
             var userName = Console.ReadLine();
-            Console.Write("Enter Password: ");
+            Console.Write("Enter venue Password: ");
             var password = Console.ReadLine();
             var context = new ApiContext(Environments.Sandbox, userName, password) {Affiliate = "encoretickets"};
             var productIds = new List<string>();

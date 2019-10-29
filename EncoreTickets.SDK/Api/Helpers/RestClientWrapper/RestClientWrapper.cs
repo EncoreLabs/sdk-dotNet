@@ -61,7 +61,8 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
             var request = new RestRequest(restClientParameters.RequestUrl)
             {
                 Method = GetRequestMethod(restClientParameters),
-                RequestFormat = GetDataFormat(restClientParameters)
+                RequestFormat = GetDataFormat(restClientParameters),
+                DateFormat = restClientParameters.RequestDateFormat,
             };
             SetRequestParameters(request, restClientParameters.RequestHeaders, ParameterType.HttpHeader);
             SetRequestParameters(request, restClientParameters.RequestUrlSegments, ParameterType.UrlSegment);

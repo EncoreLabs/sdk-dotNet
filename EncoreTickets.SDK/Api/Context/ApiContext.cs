@@ -59,9 +59,9 @@ namespace EncoreTickets.SDK.Api.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext() : this(Environments.Production)
-        { 
-            TimeoutMilliseconds = 120000;
+        public ApiContext(Environments environment, string token) : this(environment)
+        {
+            AccessToken = token;
         }
 
         /// <summary>
@@ -71,6 +71,14 @@ namespace EncoreTickets.SDK.Api.Context
         {
             AuthenticationMethod = AuthenticationMethod.JWT;
             Environment = env;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// </summary>
+        public ApiContext() : this(Environments.Production)
+        { 
+            TimeoutMilliseconds = 120000;
         }
 
         /// <summary>
