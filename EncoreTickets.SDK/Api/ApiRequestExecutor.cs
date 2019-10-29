@@ -36,11 +36,12 @@ namespace EncoreTickets.SDK.Api
         /// <param name="method">Request method.</param>
         /// <param name="wrapped"><c>true</c> if expected data should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResult<T> ExecuteApi<T>(string endpoint, RequestMethod method, bool wrapped, object body = null)
+        public virtual ApiResult<T> ExecuteApi<T>(string endpoint, RequestMethod method, bool wrapped, object body = null, object query = null)
             where T : class
         {
-            return ExecuteApi<T, ApiResult<T>>(endpoint, method, wrapped, body,
+            return ExecuteApi<T, ApiResult<T>>(endpoint, method, wrapped, body, query,
                 (response, apiResponse) => new ApiResult<T>(context, response, apiResponse));
         }
 
@@ -52,21 +53,22 @@ namespace EncoreTickets.SDK.Api
         /// <param name="method">Request method.</param>
         /// <param name="wrapped"><c>true</c> if expected data should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResultList<T> ExecuteApiList<T>(string endpoint, RequestMethod method, bool wrapped, object body = null)
+        public virtual ApiResultList<T> ExecuteApiList<T>(string endpoint, RequestMethod method, bool wrapped, object body = null, object query = null)
             where T : class, IEnumerable<IObject>
         {
-            return ExecuteApi<T, ApiResultList<T>>(endpoint, method, wrapped, body,
+            return ExecuteApi<T, ApiResultList<T>>(endpoint, method, wrapped, body, query,
                 (response, apiResponse) => new ApiResultList<T>(context, response, apiResponse));
         }
 
-        private TResult ExecuteApi<T, TResult>(string endpoint, RequestMethod method, bool wrapped, object body,
+        private TResult ExecuteApi<T, TResult>(string endpoint, RequestMethod method, bool wrapped, object body, object query,
             Func<IRestResponse, ApiResponse<T>, TResult> createResultFunc)
             where T : class
             where TResult : ApiResultBase
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
-            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body);
+            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body, query);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
             return wrapped

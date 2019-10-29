@@ -24,10 +24,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 new ApiContext(),
                 RequestMethod.Get,
+                new {test1 = "test", test2 = 4, test3 = (string) null},
                 new Dictionary<string, string>
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
                 },
+                new Dictionary<string, string>
+                {
+                    {"test1", "test"},
+                    {"test2", "4"},
+                }
             },
             new object[]
             {
@@ -36,11 +42,13 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                     Affiliate = "test"
                 },
                 RequestMethod.Get,
+                null,
                 new Dictionary<string, string>
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
                     {"affiliateId", "test"},
                 },
+                null
             },
         };
 
@@ -52,8 +60,9 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         }
 
         [TestCaseSource(nameof(sourceForCreateClientWrapperParametersTests))]
-        public void Api_ApiClientWrapperBuilder_CreateClientWrapperParameters_ReturnsCorrectedParameters(ApiContext context, RequestMethod method,
-            Dictionary<string, string> expectedHeaders)
+        public void Api_ApiClientWrapperBuilder_CreateClientWrapperParameters_ReturnsCorrectedParameters(
+            ApiContext context, RequestMethod method, object queryObject,
+            Dictionary<string, string> expectedHeaders, Dictionary<string, string> expectedQuery)
         {
             var baseUrl = It.IsAny<string>();
             var endpoint = It.IsAny<string>();
@@ -66,12 +75,12 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 RequestFormat = RequestFormat.Json,
                 RequestMethod = method,
                 RequestUrlSegments = null,
-                RequestQueryParameters = null,
             };
-            var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body);
+            var result =
+                ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body, queryObject);
             AssertExtension.SimplePropertyValuesAreEquals(expectedParameters, result);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
-            AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, result.RequestQueryParameters);
+            AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, expectedQuery);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestHeaders, expectedHeaders);
         }
     }

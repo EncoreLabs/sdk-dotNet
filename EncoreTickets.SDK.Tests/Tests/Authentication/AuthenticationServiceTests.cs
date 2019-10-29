@@ -6,7 +6,6 @@ using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Authentication.Models;
 using Moq;
 using NUnit.Framework;
-using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.Tests.Authentication
 {
@@ -83,13 +82,13 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             var token = new AccessToken {token = "test"};
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(), It.IsAny<Credentials>()))
+                    It.IsAny<bool>(), It.IsAny<Credentials>(), null))
                 .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
                     TestHelper.GetSuccessResponse(), new ApiResponse<AccessToken>(token)));
 
             var resultContext = Authenticate();
             executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(), It.IsAny<bool>(),
-                    It.Is<object>(cred => ((Credentials)cred).password == Context.Password && ((Credentials)cred).username == Context.UserName)),
+                    It.Is<object>(cred => ((Credentials)cred).password == Context.Password && ((Credentials)cred).username == Context.UserName), null),
                 Times.Once);
             Assert.AreEqual(token.token, resultContext.AccessToken);
         }
@@ -103,13 +102,13 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             };
             executorMock
                 .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(), It.IsAny<Credentials>()))
+                    It.IsAny<bool>(), It.IsAny<Credentials>(), null))
                 .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
                     TestHelper.GetFailedResponse(), new ApiResponse<AccessToken>(null)));
 
             var resultContext = Authenticate();
             executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(), It.IsAny<bool>(),
-                It.Is<object>(cred => ((Credentials) cred).password == Context.Password && ((Credentials) cred).username == Context.UserName)),
+                It.Is<object>(cred => ((Credentials) cred).password == Context.Password && ((Credentials) cred).username == Context.UserName), null),
                 Times.Once);
             Assert.AreEqual(null, resultContext.AccessToken);
         }
