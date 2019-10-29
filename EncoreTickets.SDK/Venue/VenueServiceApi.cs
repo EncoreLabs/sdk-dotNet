@@ -63,13 +63,12 @@ namespace EncoreTickets.SDK.Venue
         /// <summary>
         /// Update the venue by its id.
         /// </summary>
-        /// <param name="venueId">Venue ID</param>
         /// <param name="venue">Venue for update</param>
         /// <returns>Updated venue</returns>
-        public Models.Venue UpdateVenueById(string venueId, Models.Venue venue)
+        public Models.Venue UpdateVenueById(Models.Venue venue)
         {
             var result = Executor.ExecuteApi<Models.Venue>(
-                $"v1/admin/venues/{venueId}",
+                $"v1/admin/venues/{venue.internalId}",
                 RequestMethod.Post,
                 true,
                 venue);

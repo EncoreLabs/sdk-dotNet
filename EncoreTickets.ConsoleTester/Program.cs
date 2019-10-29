@@ -108,7 +108,7 @@ namespace SDKConsoleTester
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Update venue by ID = 55  ");
             Console.WriteLine(" ========================================================== ");
-            var resultVenue = vsApi.UpdateVenueById(venueId, venue);
+            var resultVenue = vsApi.UpdateVenueById(venue);
             Console.WriteLine($"{resultVenue.title} ({resultVenue.internalId}): {resultVenue.compositeId}");
 
             /* Get locations */
