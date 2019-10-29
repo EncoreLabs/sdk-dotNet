@@ -34,7 +34,7 @@ Install-Package EncoreTickets.SDK
 - Added a method to the PricingServiceApi to call GET /api/v2/admin/exchange_rates endpoint
 
 #### 1.2
-- Added a method to the VenueServiceApi to call POST /api/v1/venues/{id} endpoint
+- Added a method to the VenueServiceApi to call POST /api/v1/admin/venues/{id} endpoint
 - Added a mapping between environment names and Environments enum
 
 #### 1.1
