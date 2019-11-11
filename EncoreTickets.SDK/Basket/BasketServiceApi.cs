@@ -29,5 +29,17 @@ namespace EncoreTickets.SDK.Basket
             var result = Executor.ExecuteApi<Promotion>(path, RequestMethod.Get, true);
             return result?.Data;
         }
+
+        /// <summary>
+        /// Get details of a basket by its reference. 
+        /// </summary>
+        /// <param name="basketReference"></param>
+        /// <returns>Details of a basket with the specified reference or null if not found.</returns>
+        public BasketDetails GetBasketDetails(string basketReference)
+        {
+            var path = $"v1/baskets/{basketReference}";
+            var result = Executor.ExecuteApi<BasketDetails>(path, RequestMethod.Get, true);
+            return result?.Data;
+        }
     }
 }
