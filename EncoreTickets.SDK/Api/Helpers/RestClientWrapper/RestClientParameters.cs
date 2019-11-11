@@ -18,6 +18,11 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
         public string RequestUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets the format for dates.
+        /// </summary>
+        public string RequestDateFormat { get; set; }
+
+        /// <summary>
         /// Gets or sets request headers: key - header name; value - header value.
         /// </summary>
         public Dictionary<string, string> RequestHeaders { get; set; }
