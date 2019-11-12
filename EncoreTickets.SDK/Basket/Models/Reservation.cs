@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
 using EncoreTickets.SDK.Inventory.Models;
 
 namespace EncoreTickets.SDK.Basket.Models
 {
-    public class Reservation : IIdentifiableObject
+    public class Reservation
     {
-        public string id { get; internal set; }
+        public int id { get; internal set; }
 
         public string venueId { get; internal set; }
 
