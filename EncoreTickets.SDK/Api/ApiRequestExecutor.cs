@@ -26,6 +26,17 @@ namespace EncoreTickets.SDK.Api
             this.baseUrl = baseUrl;
         }
 
+        /// <summary>
+        /// Get an object of <typeparamref name="T"/> from API when expected data should not be wrapped with extra data on API side.
+        /// </summary>
+        /// <typeparam name="T">Type of expected object.</typeparam>
+        /// <param name="endpoint">API resource endpoint.</param>
+        /// <param name="method">Request method.</param>
+        /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
+        /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(
             string endpoint,
             RequestMethod method,
@@ -39,6 +50,17 @@ namespace EncoreTickets.SDK.Api
             return CreateApiResult(restResponse, wrappedError);
         }
 
+        /// <summary>
+        /// Get an object of <typeparamref name="T"/> from API when expected data should be standard wrapped with extra data on API side.
+        /// </summary>
+        /// <typeparam name="T">Type of expected object.</typeparam>
+        /// <param name="endpoint">API resource endpoint.</param>
+        /// <param name="method">Request method.</param>
+        /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
+        /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T>(
             string endpoint,
             RequestMethod method,
@@ -52,6 +74,19 @@ namespace EncoreTickets.SDK.Api
             return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, wrappedError);
         }
 
+        /// <summary>
+        /// Get an object of <typeparamref name="T"/> from API when expected data should be non-standard wrapped with extra data on API side.
+        /// </summary>
+        /// <typeparam name="T">Type of expected object.</typeparam>
+        /// <typeparam name="TApiResponse">Type of the response object.</typeparam>
+        /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
+        /// <param name="endpoint">API resource endpoint.</param>
+        /// <param name="method">Request method.</param>
+        /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
+        /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(
             string endpoint,
             RequestMethod method,
@@ -116,7 +151,7 @@ namespace EncoreTickets.SDK.Api
             }
 
             var apiError = DeserializeResponse<UnwrappedError>(restResponse);
-            return new ApiResult<T>(default, restResponse, context, apiError);
+            return new ApiResult<T>(default, restResponse, context, apiError?.message);
         }
 
         private T DeserializeResponse<T>(IRestResponse response)
@@ -125,7 +160,7 @@ namespace EncoreTickets.SDK.Api
             {
                 return SimpleJson.SimpleJson.DeserializeObject<T>(response.Content);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return default;
             }

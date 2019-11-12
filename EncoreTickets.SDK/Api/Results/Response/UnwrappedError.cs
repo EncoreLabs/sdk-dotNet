@@ -1,6 +1,9 @@
 ﻿namespace EncoreTickets.SDK.Api.Results.Response
 {
-    public class UnwrappedError
+    /// <summary>
+    /// The model for simple API errors.
+    /// </summary>
+    internal class UnwrappedError
     {
         public string code { get; set; }
 

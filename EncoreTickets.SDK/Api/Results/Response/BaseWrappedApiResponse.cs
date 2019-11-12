@@ -3,7 +3,7 @@
     /// <summary>
     /// The API response for data wrapped with extra information.
     /// </summary>
-    /// <typeparam name="TResponse">The type of wrapped response data.</typeparam>
+    /// <typeparam name="TResponse">The type of data in "response" section.</typeparam>
     /// <typeparam name="TData">The type of requested data.</typeparam>
     public abstract class BaseWrappedApiResponse<TResponse, TData>
         where TResponse : class

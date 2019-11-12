@@ -8,27 +8,52 @@ using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results
 {
+    /// <summary>
+    /// The base exception for failed API requests.
+    /// </summary>
     public class ApiException : Exception
     {
+        /// <inheritdoc/>
         public override string Message => Errors.Any() ? string.Join("; ", Errors) : null;
 
+        /// <summary>
+        /// Gets HTTP response status code.
+        /// </summary>
         public HttpStatusCode ResponseCode => Response.StatusCode;
+
+        /// <summary>
+        /// Gets the API response errors.
+        /// </summary>
+        public List<string> Errors => GetErrors();
+
+        /// <summary>
+        /// Gets the details of the sent request.
+        /// </summary>
+        public Dictionary<string, object> Details => GetRequestDetails();
 
         /// <summary>
         /// Gets a context object for which the request was made.
         /// </summary>
         public ApiContext Context { get; }
 
+        /// <summary>
+        /// Gets HTTP response.
+        /// </summary>
         public IRestResponse Response { get; }
 
+        /// <summary>
+        /// Gets the request returned in the API response.
+        /// </summary>
         public Request RequestInResponse { get; }
 
+        /// <summary>
+        /// Gets the context returned in the API response.
+        /// </summary>
         public Response.Context ContextInResponse { get; }
 
-        public List<string> Errors => GetErrors();
-
-        public Dictionary<string, object> Details => GetRequestDetails();
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApiException"/>
+        /// </summary>
         public ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
             Request requestInResponse)
         {
