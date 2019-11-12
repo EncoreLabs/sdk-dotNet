@@ -30,10 +30,12 @@ namespace EncoreTickets.SDK.Api
             string endpoint,
             RequestMethod method,
             object body = null,
+            object query = null,
+            string dateFormat = null,
             bool wrappedError = false)
             where T : class, new()
         {
-            var restResponse = GetRestResponse<T>(endpoint, method, body);
+            var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat);
             return CreateApiResult(restResponse, wrappedError);
         }
 
@@ -41,10 +43,12 @@ namespace EncoreTickets.SDK.Api
             string endpoint,
             RequestMethod method,
             object body = null,
+            object query = null,
+            string dateFormat = null,
             bool wrappedError = true)
             where T : class
         {
-            var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body);
+            var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat);
             return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, wrappedError);
         }
 
@@ -52,21 +56,28 @@ namespace EncoreTickets.SDK.Api
             string endpoint,
             RequestMethod method,
             object body = null,
+            object query = null,
+            string dateFormat = null,
             bool wrappedError = true)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
         {
-            var restWrappedResponse = GetRestResponse<TApiResponse>(endpoint, method, body);
+            var restWrappedResponse = GetRestResponse<TApiResponse>(endpoint, method, body, query, dateFormat);
             return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, wrappedError);
         }
 
-        private IRestResponse<T> GetRestResponse<T>(string endpoint, RequestMethod method, object body)
+        private IRestResponse<T> GetRestResponse<T>(
+            string endpoint,
+            RequestMethod method,
+            object body,
+            object query,
+            string dateFormat)
             where T : class, new()
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
-            var parameters =
-                ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body);
+            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method,
+                body, query, dateFormat);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
             return clientWrapper.Execute<T>(client, request);

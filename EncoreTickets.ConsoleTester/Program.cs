@@ -10,6 +10,7 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Pricing;
 
 namespace SDKConsoleTester
 {
@@ -17,9 +18,26 @@ namespace SDKConsoleTester
     {
         static void Main(string[] args)
         {
-            Console.Write("Enter username: ");
+            var apiKey = "access_token"; // it's too big for Console.ReadLine()
+            var contextPricingService = new ApiContext(Environments.QA, apiKey);
+
+            var pricingApi = new PricingServiceApi(contextPricingService);
+
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get exchange rates");
+            Console.WriteLine(" ========================================================== ");
+            var rates = pricingApi.GetExchangeRates(null);
+            foreach (var a in rates)
+            {
+                Console.WriteLine($"{a.baseCurrency} -> {a.targetCurrency}: {a.rate}, {a.encoreRate}, {a.protectionMargin}");
+            }
+
+
+            Console.WriteLine();
+            Console.Write("Enter venue username: ");
             var userName = Console.ReadLine();
-            Console.Write("Enter Password: ");
+            Console.Write("Enter venue Password: ");
             var password = Console.ReadLine();
             var context = new ApiContext(Environments.Sandbox, userName, password) {Affiliate = "encoretickets"};
             var productIds = new List<string>();
@@ -95,6 +113,22 @@ namespace SDKConsoleTester
                 Console.WriteLine(string.Format("{0} ({1}): {2}", a.title, a.internalId, a.compositeId));
             }
 
+            /* Get detailed venue by Id */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Get detailed venue by ID = 55 ");
+            Console.WriteLine(" ========================================================== ");
+            const string venueId = "55";
+            var venue = vsApi.GetVenueById(venueId);
+            Console.WriteLine($"{venue.title} ({venue.internalId}): {venue.compositeId}");
+
+            /* Update venue by id */
+            Console.WriteLine();
+            Console.WriteLine(" ========================================================== ");
+            Console.WriteLine(" Test: Update venue by ID = 55  ");
+            Console.WriteLine(" ========================================================== ");
+            var resultVenue = vsApi.UpdateVenueById(venue);
+            Console.WriteLine($"{resultVenue.title} ({resultVenue.internalId}): {resultVenue.compositeId}");
 
             /* Get locations */
             Console.WriteLine();

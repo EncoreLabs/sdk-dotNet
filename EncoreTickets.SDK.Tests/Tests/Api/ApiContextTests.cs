@@ -26,6 +26,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             },
             new object[]
             {
+                new ApiContext(Environments.QA, "token"),
+                Environments.QA
+            },
+            new object[]
+            {
+                new ApiContext(Environments.Production, "token"),
+                Environments.Production
+            },
+            new object[]
+            {
                 new ApiContext(Environments.Sandbox, "username", "password"),
                 Environments.Sandbox
             },
@@ -74,6 +84,14 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var context  = new ApiContext(Environments.Sandbox, username, password);
             Assert.AreEqual(username, context.UserName);
             Assert.AreEqual(password, context.Password);
+        }
+
+        [Test]
+        public void Api_ApiContext_Constructor_InitializesToken()
+        {
+            const string token = "acess_token";
+            var context = new ApiContext(Environments.Sandbox, token);
+            Assert.AreEqual(token, context.AccessToken);
         }
 
         [TestCaseSource(nameof(SourceForOnErrorOccurredTest))]
