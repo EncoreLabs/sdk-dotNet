@@ -15,7 +15,7 @@ namespace EncoreTickets.SDK.Basket.Models
 
         public decimal exchangeRate { get; internal set; }
 
-        public string delivery { get; internal set; }
+        public Delivery delivery { get; internal set; }
 
         public bool allowFlexiTickets { get; internal set; }
 
