@@ -58,9 +58,13 @@ namespace EncoreTickets.SDK.Authentication
 
         private void JwtLogin()
         {
-            var credentials = new Credentials {username = Context.UserName, password = Context.Password};
-            var result = Executor.ExecuteApi<AccessToken>(endpoint, RequestMethod.Post, false, credentials);
-            Context.AccessToken = result.Data?.token;
+            var credentials = new Credentials { username = Context.UserName, password = Context.Password };
+            var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(
+                endpoint,
+                RequestMethod.Post,
+                credentials,
+                wrappedError: true);
+            Context.AccessToken = result.DataOrException?.token;
         }
     }
 }

@@ -7,8 +7,8 @@
     {
         public string body { get; set; }
 
-        public Query query { get; set; }
+        public dynamic query { get; set; }
 
-        public UrlParams urlParams { get; set; }
+        public dynamic urlParams { get; set; }
     }
 }

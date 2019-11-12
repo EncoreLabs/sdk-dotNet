@@ -8,4 +8,13 @@ namespace EncoreTickets.SDK.Api.Results.Response
 
         public List<Info> info { get; set; }
     }
+
+    public class Error
+    {
+        public string message { get; set; }
+    }
+
+    public class Info
+    {
+    }
 }

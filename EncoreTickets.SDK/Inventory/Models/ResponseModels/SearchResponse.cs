@@ -1,33 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
+﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Api.Results.Response;
 
 namespace EncoreTickets.SDK.Inventory.Models.ResponseModels
 {
-    internal class SearchResponse : IEnumerable<IObject>
+    internal class ProductSearchResponse : ApiResponse<List<Product>>
     {
         /// <summary>
         /// Returns the data.
         /// </summary>
-        public List<IObject> Data => product.ConvertAll(p => p as IObject);
-        
+        public override List<Product> Data => product;
+
         public List<Product> product { get; set; }
-
-        /// <summary>
-        /// Returns the enumerator.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<IObject> GetEnumerator()
-        {
-            return Data.GetEnumerator();
-        }
-
-        /// <summary> 
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Data.GetEnumerator();
-        }
     }
 }

@@ -29,11 +29,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Location> GetLocations()
         {
-            var results = Executor.ExecuteApiList<List<Location>>(
+            var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(
                 "v1/locations",
-                RequestMethod.Get,
-                true);
-            return results.GetList<Location>();
+                RequestMethod.Get);
+            return results.DataOrException;
         }
 
         /// <summary>
@@ -42,11 +41,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public IList<Product> GetProducts()
         {
-            var result = Executor.ExecuteApiList<List<Product>>(
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(
                 "v1/products?page=1&limit=1000",
-                RequestMethod.Get, 
-                true);
-            return result.GetList<Product>();
+                RequestMethod.Get);
+            return result.DataOrException;
         }
 
         /// <summary>
@@ -56,11 +54,10 @@ namespace EncoreTickets.SDK.Content
         /// <returns></returns>
         public Product GetProductById(string id)
         {
-            var result = Executor.ExecuteApi<Product>(
+            var result = Executor.ExecuteApiWithWrappedResponse<Product>(
                 $"v1/products/{id}",
-                RequestMethod.Get,
-                true);
-            return result.Data;
+                RequestMethod.Get);
+            return result.DataOrException;
         }
 
         /// <summary>

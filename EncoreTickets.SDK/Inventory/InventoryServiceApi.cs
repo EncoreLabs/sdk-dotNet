@@ -29,11 +29,11 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public IList<Product> Search(string text)
         {
-            var result = Executor.ExecuteApiList<SearchResponse>(
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>, ProductSearchResponse, List<Product>>(
                 $"v2/search?query={text}",
-                RequestMethod.Get, 
-                false);
-            return result.GetList<Product>();
+                RequestMethod.Get,
+                wrappedError: false);
+            return result.DataOrException;
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace EncoreTickets.SDK.Inventory
         public IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to)
         {
             var path = $"v2/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}";
-            var result = Executor.ExecuteApiList<List<Performance>>(path, RequestMethod.Get, false);
-            return result.GetList<Performance>();
+            var result = Executor.ExecuteApiWithNotWrappedResponse<List<Performance>>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace EncoreTickets.SDK.Inventory
         public Availability GetAvailability(string productId, int quantity, DateTime performance)
         {
             var path = $"v1/availability/products/{productId}/quantity/{quantity}/seats?date={performance.ToEncoreDate()}&time={performance.ToEncoreTime()}";
-            var result = Executor.ExecuteApi<Availability>(path, RequestMethod.Get, false);
-            return result.Data;
+            var result = Executor.ExecuteApiWithNotWrappedResponse<Availability>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
 
         /// <summary>
@@ -85,11 +85,10 @@ namespace EncoreTickets.SDK.Inventory
         /// <returns></returns>
         public BookingRange GetBookingRange(string productId)
         {
-            var result = Executor.ExecuteApi<BookingRange>(
+            var result = Executor.ExecuteApiWithWrappedResponse<BookingRange>(
                 $"v3/products/{productId}/availability-range",
-                RequestMethod.Get,
-                true);
-            return result.Data;
+                RequestMethod.Get);
+            return result.DataOrException;
         }
     }
 }

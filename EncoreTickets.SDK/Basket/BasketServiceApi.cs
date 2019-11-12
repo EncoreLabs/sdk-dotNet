@@ -26,8 +26,8 @@ namespace EncoreTickets.SDK.Basket
         public Promotion GetPromotionDetails(string promotionId)
         {
             var path = $"v1/promotions/{promotionId}";
-            var result = Executor.ExecuteApi<Promotion>(path, RequestMethod.Get, true);
-            return result?.Data;
+            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
     }
 }
