@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Api.Results
 {
     public class ApiException : Exception
     {
-        public override string Message => string.Join("; ", Errors);
+        public override string Message => Errors.Any() ? string.Join("; ", Errors) : null;
 
         public HttpStatusCode ResponseCode => Response.StatusCode;
 
