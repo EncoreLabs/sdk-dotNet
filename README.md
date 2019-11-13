@@ -30,6 +30,9 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 1.5
+- Updated methods to return an exception instead of a default value if API request fails
+
 #### 1.4
 - Added a method to the BasketServiceApi to call GET /api/v1/baskets/{reference} endpoint
 
