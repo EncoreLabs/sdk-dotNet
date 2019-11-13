@@ -38,8 +38,8 @@ namespace EncoreTickets.SDK.Basket
         public BasketDetails GetBasketDetails(string basketReference)
         {
             var path = $"v1/baskets/{basketReference}";
-            var result = Executor.ExecuteApi<BasketDetails>(path, RequestMethod.Get, true);
-            return result?.Data;
+            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
     }
 }
