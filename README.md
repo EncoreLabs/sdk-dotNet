@@ -30,6 +30,9 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 1.4
+- Added a method to the BasketServiceApi to call GET /api/v1/baskets/{reference} endpoint
+
 #### 1.3
 - Added a method to the PricingServiceApi to call GET /api/v2/admin/exchange_rates endpoint
 

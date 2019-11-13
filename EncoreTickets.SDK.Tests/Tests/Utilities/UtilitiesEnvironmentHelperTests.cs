@@ -1,7 +1,6 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Utilities;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.Tests.Utilities
