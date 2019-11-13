@@ -2,6 +2,7 @@
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Authentication.Models;
 using Moq;
@@ -79,44 +80,62 @@ namespace EncoreTickets.SDK.Tests.Tests.Authentication
             {
                 AuthenticationMethod = AuthenticationMethod.JWT
             };
-            var token = new AccessToken {token = "test"};
+            var token = new AccessToken { token = "test" };
             executorMock
-                .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(), It.IsAny<Credentials>(), null, null))
-                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
-                    TestHelper.GetSuccessResponse(), new ApiResponse<AccessToken>(token)));
+                .Setup(x => x.ExecuteApiWithNotWrappedResponse<AccessToken>(
+                    It.IsAny<string>(),
+                    It.IsAny<RequestMethod>(),
+                    It.IsAny<Credentials>(),
+                    null,
+                    null,
+                    true))
+                .Returns(() =>
+                    new ApiResult<AccessToken>(token, TestHelper.GetSuccessResponse(), It.IsAny<ApiContext>()));
 
             var resultContext = Authenticate();
-            executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(),
+            executorMock.Verify(mock => mock.ExecuteApiWithNotWrappedResponse<AccessToken>(
+                    It.IsAny<string>(),
+                    It.IsAny<RequestMethod>(),
                     It.Is<object>(cred =>
-                        ((Credentials) cred).password == Context.Password && 
-                        ((Credentials) cred).username == Context.UserName), null, null),
+                        ((Credentials)cred).password == Context.Password &&
+                        ((Credentials)cred).username == Context.UserName),
+                    null,
+                    null,
+                    true),
                 Times.Once);
             Assert.AreEqual(token.token, resultContext.AccessToken);
         }
 
         [Test]
-        public void Authentication_AuthenticationService_AuthenticateJwt_IfNotSuccess_ReturnsCorrectContext()
+        public void Authentication_AuthenticationService_AuthenticateJwt_IfNotSuccess_ThrowsException()
         {
             Context = new ApiContext(It.IsAny<Environments>(), "username", "pass")
             {
                 AuthenticationMethod = AuthenticationMethod.JWT
             };
             executorMock
-                .Setup(x => x.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(), It.IsAny<Credentials>(), null, null))
-                .Returns(() => new ApiResult<AccessToken>(It.IsAny<ApiContext>(),
-                    TestHelper.GetFailedResponse(), new ApiResponse<AccessToken>(null)));
+                .Setup(x => x.ExecuteApiWithNotWrappedResponse<AccessToken>(
+                    It.IsAny<string>(),
+                    It.IsAny<RequestMethod>(),
+                    It.IsAny<Credentials>(),
+                    null,
+                    null,
+                    true))
+                .Returns(() =>
+                    new ApiResult<AccessToken>(null, TestHelper.GetFailedResponse(), It.IsAny<ApiContext>(),
+                        It.IsAny<Context>(), It.IsAny<Request>()));
 
-            var resultContext = Authenticate();
-            executorMock.Verify(mock => mock.ExecuteApi<AccessToken>(It.IsAny<string>(), It.IsAny<RequestMethod>(),
-                    It.IsAny<bool>(),
+            Assert.Throws<ApiException>(() => Authenticate());
+            executorMock.Verify(mock => mock.ExecuteApiWithNotWrappedResponse<AccessToken>(
+                    It.IsAny<string>(),
+                    It.IsAny<RequestMethod>(),
                     It.Is<object>(cred =>
-                        ((Credentials) cred).password == Context.Password &&
-                        ((Credentials) cred).username == Context.UserName), null, null),
+                        ((Credentials)cred).password == Context.Password &&
+                        ((Credentials)cred).username == Context.UserName),
+                    null,
+                    null,
+                    true),
                 Times.Once);
-            Assert.AreEqual(null, resultContext.AccessToken);
         }
 
         public AuthenticationServiceTests() : base(null, "", "")

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
 using EncoreTickets.SDK.Api.Results;
-using EncoreTickets.SDK.Interfaces;
+using EncoreTickets.SDK.Api.Results.Response;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api
@@ -29,77 +27,143 @@ namespace EncoreTickets.SDK.Api
         }
 
         /// <summary>
-        /// Get an object of <typeparamref name="T"/>.
+        /// Get an object of <typeparamref name="T"/> from API when expected data should not be wrapped with extra data on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="endpoint">API resource endpoint.</param>
         /// <param name="method">Request method.</param>
-        /// <param name="wrapped"><c>true</c> if expected data should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <param name="body">Request body.</param>
         /// <param name="query">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResult<T> ExecuteApi<T>(string endpoint, RequestMethod method, bool wrapped,
-            object body = null, object query = null, string dateFormat = null)
-            where T : class
+        public virtual ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(
+            string endpoint,
+            RequestMethod method,
+            object body = null,
+            object query = null,
+            string dateFormat = null,
+            bool wrappedError = false)
+            where T : class, new()
         {
-            return ExecuteApi<T, ApiResult<T>>(endpoint, method, wrapped, body, query, dateFormat,
-                (response, apiResponse) => new ApiResult<T>(context, response, apiResponse));
+            var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat);
+            return CreateApiResult(restResponse, wrappedError);
         }
 
         /// <summary>
-        /// Get a list of <typeparamref name="T"/> objects.
+        /// Get an object of <typeparamref name="T"/> from API when expected data should be standard wrapped with extra data on API side.
         /// </summary>
-        /// <typeparam name="T">Type of objects of an expected list.</typeparam>
+        /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="endpoint">API resource endpoint.</param>
         /// <param name="method">Request method.</param>
-        /// <param name="wrapped"><c>true</c> if expected data should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <param name="body">Request body.</param>
         /// <param name="query">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResultList<T> ExecuteApiList<T>(string endpoint, RequestMethod method, bool wrapped,
-            object body = null, object query = null, string dateFormat = null)
-            where T : class, IEnumerable<IObject>
+        public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T>(
+            string endpoint,
+            RequestMethod method,
+            object body = null,
+            object query = null,
+            string dateFormat = null,
+            bool wrappedError = true)
+            where T : class
         {
-            return ExecuteApi<T, ApiResultList<T>>(endpoint, method, wrapped, body, query, dateFormat,
-                (response, apiResponse) => new ApiResultList<T>(context, response, apiResponse));
+            var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat);
+            return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, wrappedError);
         }
 
-        private TResult ExecuteApi<T, TResult>(string endpoint, RequestMethod method, bool wrapped, object body, object query, string dateFormat,
-            Func<IRestResponse, ApiResponse<T>, TResult> createResultFunc)
+        /// <summary>
+        /// Get an object of <typeparamref name="T"/> from API when expected data should be non-standard wrapped with extra data on API side.
+        /// </summary>
+        /// <typeparam name="T">Type of expected object.</typeparam>
+        /// <typeparam name="TApiResponse">Type of the response object.</typeparam>
+        /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
+        /// <param name="endpoint">API resource endpoint.</param>
+        /// <param name="method">Request method.</param>
+        /// <param name="body">Request body.</param>
+        /// <param name="query">Object for request query.</param>
+        /// <param name="dateFormat">Request date format.</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <returns>Result of request execution.</returns>
+        public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(
+            string endpoint,
+            RequestMethod method,
+            object body = null,
+            object query = null,
+            string dateFormat = null,
+            bool wrappedError = true)
             where T : class
-            where TResult : ApiResultBase
+            where TResponse : class
+            where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
+        {
+            var restWrappedResponse = GetRestResponse<TApiResponse>(endpoint, method, body, query, dateFormat);
+            return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, wrappedError);
+        }
+
+        private IRestResponse<T> GetRestResponse<T>(
+            string endpoint,
+            RequestMethod method,
+            object body,
+            object query,
+            string dateFormat)
+            where T : class, new()
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
-            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body, query, dateFormat);
+            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method,
+                body, query, dateFormat);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
-            return wrapped
-                ? ExecuteApiToGetWrappedData(clientWrapper, client, request, createResultFunc)
-                : ExecuteApiToGetData(clientWrapper, client, request, createResultFunc);
+            return clientWrapper.Execute<T>(client, request);
         }
 
-        private TResult ExecuteApiToGetWrappedData<T, TResult>(RestClientWrapper clientWrapper, IRestClient client, IRestRequest request,
-            Func<IRestResponse, ApiResponse<T>, TResult> createResultFunc)
+        private ApiResult<T> CreateApiResult<T>(IRestResponse<T> restResponse, bool wrappedError)
             where T : class
-            where TResult : ApiResultBase
         {
-            var restWrappedResponse = clientWrapper.Execute<ApiResponse<T>>(client, request);
-            return createResultFunc(restWrappedResponse, restWrappedResponse.Data);
+            return !restResponse.IsSuccessful
+                ? CreateApiResultForError<T>(restResponse, wrappedError)
+                : new ApiResult<T>(restResponse.Data, restResponse, context);
         }
 
-        private TResult ExecuteApiToGetData<T, TResult>(RestClientWrapper clientWrapper, IRestClient client, IRestRequest request,
-            Func<IRestResponse, ApiResponse<T>, TResult> createResultFunc)
+        private ApiResult<T> CreateApiResult<T, TApiResponse, TResponse>(
+            IRestResponse<TApiResponse> restWrappedResponse, bool wrappedError)
             where T : class
-            where TResult : ApiResultBase
+            where TResponse : class
+            where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
         {
-            var restResponse = clientWrapper.Execute(client, request);
-            var rawData = clientWrapper.IsGoodResponse(restResponse)
-                ? SimpleJson.SimpleJson.DeserializeObject<T>(restResponse.Content)
-                : null;
-            var apiResponse = new ApiResponse<T>(rawData);
-            return createResultFunc(restResponse, apiResponse);
+            if (!restWrappedResponse.IsSuccessful && restWrappedResponse.Data?.context == null)
+            {
+                return CreateApiResultForError<T>(restWrappedResponse, wrappedError);
+            }
+
+            var data = restWrappedResponse.Data;
+            return new ApiResult<T>(data?.Data, restWrappedResponse, context, data?.context, data?.request);
+        }
+
+        private ApiResult<T> CreateApiResultForError<T>(IRestResponse restResponse, bool wrappedError)
+            where T : class
+        {
+            if (wrappedError)
+            {
+                var errorData = DeserializeResponse<WrappedError>(restResponse);
+                return new ApiResult<T>(default, restResponse, context, errorData?.context, errorData?.request);
+            }
+
+            var apiError = DeserializeResponse<UnwrappedError>(restResponse);
+            return new ApiResult<T>(default, restResponse, context, apiError?.message);
+        }
+
+        private T DeserializeResponse<T>(IRestResponse response)
+        {
+            try
+            {
+                return SimpleJson.SimpleJson.DeserializeObject<T>(response.Content);
+            }
+            catch (Exception)
+            {
+                return default;
+            }
         }
     }
 }

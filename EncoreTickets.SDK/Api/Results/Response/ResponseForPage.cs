@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EncoreTickets.SDK.Interfaces;
 
-namespace EncoreTickets.SDK.Api.Results
+namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
     /// The entity for collecting items received with additional information for pagination.

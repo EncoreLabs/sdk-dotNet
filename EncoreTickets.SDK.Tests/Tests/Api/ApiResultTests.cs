@@ -1,9 +1,9 @@
-﻿using System.Net;
+﻿using System;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Response;
 using Moq;
 using NUnit.Framework;
-using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.Tests.Api
 {
@@ -11,76 +11,55 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
     {
         private static readonly object TestObject = new object();
 
-        private static readonly object[] SourceForConstructorTest =
+        private static readonly object[] SourceForConstructor5Test_IfSuccessfulResponse =
         {
-            new object[]
-            {
-                new RestResponse {ResponseStatus = ResponseStatus.Completed},
-                new ApiResponse<string>("test"),
-                false,
-                null
-            },
-            new object[]
-            {
-                new RestResponse {ResponseStatus = ResponseStatus.Completed, StatusCode = HttpStatusCode.OK},
-                new ApiResponse<string>("test"),
-                true,
-                "test"
-            },
-            new object[]
-            {
-                new RestResponse {ResponseStatus = ResponseStatus.Completed},
-                new ApiResponse<object>(TestObject),
-                false,
-                null
-            },
-            new object[]
-            {
-                new RestResponse {ResponseStatus = ResponseStatus.Completed, StatusCode = HttpStatusCode.OK},
-                new ApiResponse<object>(TestObject),
-                true,
-                TestObject
-            },
-            new object[]
-            {
-                new RestResponse { ResponseStatus = ResponseStatus.Aborted},
-                new ApiResponse<string>("test"),
-                false,
-                null
-            },
-            new object[]
-            {
-                new RestResponse { ResponseStatus = ResponseStatus.Error },
-                new ApiResponse<string>("test"),
-                false,
-                null
-            },
-            new object[]
-            {
-                new RestResponse { ResponseStatus = ResponseStatus.None },
-                new ApiResponse<string>("test"),
-                false,
-                null
-            },
-            new object[]
-            {
-                new RestResponse { ResponseStatus = ResponseStatus.TimedOut },
-                new ApiResponse<string>("test"),
-                false,
-                null
-            },
+            new object[] {},
+            TestObject,
+            "test"
         };
 
-        [TestCaseSource(nameof(SourceForConstructorTest))]
-        public void Api_ApiResult_Constructor_InitializesProperties<T>(IRestResponse response, ApiResponse<T> data,
-            bool expectedResult, T expectedData)
+        [TestCaseSource(nameof(SourceForConstructor5Test_IfSuccessfulResponse))]
+        public void Api_ApiResult_ConstructorWith5Args_InitializesCommonPropertiesIfSuccessfulResponse<T>(T data)
             where T : class
         {
+            var response = TestHelper.GetSuccessResponse();
+            var responseContext = new Context();
+            var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
-            var result = new ApiResult<T>(context, response, data);
+
+            var result = new ApiResult<T>(data, response, context, responseContext, requestInResponse);
+
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(data, result.DataOrException);
+            Assert.AreEqual(data, result.DataOrDefault);
             Assert.AreEqual(context, result.Context);
-            Assert.AreEqual(expectedResult, result.Result);
-            Assert.AreEqual(expectedData, result.Data);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.AreEqual(responseContext, result.ResponseContext);
+            Assert.AreEqual(requestInResponse, result.RequestInResponse);
+            Assert.AreEqual(default, result.Exception);
+        }
+
+        [Test]
+        public void Api_ApiResult_ConstructorWith5Args_InitializesCommonPropertiesIfUnsuccessfulResponse()
+        {
+            var response = TestHelper.GetFailedResponse();
+            var responseContext = new Context();
+            var requestInResponse = new Request();
+            var context = It.IsAny<ApiContext>();
+
+            var result = new ApiResult<object>(null, response, context, responseContext, requestInResponse);
+
+            Assert.AreEqual(context, result.Context);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.AreEqual(responseContext, result.ResponseContext);
+            Assert.AreEqual(requestInResponse, result.RequestInResponse);
+            Assert.AreEqual(false, result.IsSuccessful);
+            Assert.AreEqual(default, result.DataOrDefault);
+            var thrownException = Assert.Catch<ApiException>(() =>
+            {
+                var data = result.DataOrException;
+            });
+            Assert.AreEqual(thrownException, result.Exception);
         }
     }
 }

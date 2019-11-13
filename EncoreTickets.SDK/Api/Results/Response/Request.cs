@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Api.Results
+﻿namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
     /// The model for a request returned in some API responses.
@@ -7,8 +7,8 @@
     {
         public string body { get; set; }
 
-        public Query query { get; set; }
+        public dynamic query { get; set; }
 
-        public UrlParams urlParams { get; set; }
+        public dynamic urlParams { get; set; }
     }
 }

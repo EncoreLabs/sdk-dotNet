@@ -22,24 +22,24 @@ namespace EncoreTickets.SDK.Basket
         /// Get details of a promotion by its ID. 
         /// </summary>
         /// <param name="promotionId"></param>
-        /// <returns>Details of a promotion with the specified ID or null if not found.</returns>
+        /// <returns>Details of a promotion with the specified ID or an exception if not found.</returns>
         public Promotion GetPromotionDetails(string promotionId)
         {
             var path = $"v1/promotions/{promotionId}";
-            var result = Executor.ExecuteApi<Promotion>(path, RequestMethod.Get, true);
-            return result?.Data;
+            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
 
         /// <summary>
         /// Get details of a basket by its reference. 
         /// </summary>
         /// <param name="basketReference"></param>
-        /// <returns>Details of a basket with the specified reference or null if not found.</returns>
+        /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
         public BasketDetails GetBasketDetails(string basketReference)
         {
             var path = $"v1/baskets/{basketReference}";
-            var result = Executor.ExecuteApi<BasketDetails>(path, RequestMethod.Get, true);
-            return result?.Data;
+            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(path, RequestMethod.Get);
+            return result.DataOrException;
         }
     }
 }

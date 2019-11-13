@@ -13,33 +13,17 @@ namespace EncoreTickets.SDK.Tests.Tests.Venue
             var venue2 = new SDK.Venue.Models.Venue();
             var response = new VenuesResponse
             {
-                response = new Response
-                {
-                    results = new List<SDK.Venue.Models.Venue> {venue1, venue2}
-                }
-            };
-            var result = response.Data;
-            Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Contains(venue1));
-            Assert.IsTrue(result.Contains(venue2));
-        }
-
-        [Test]
-        public void Venue_VenuesResponse_GetEnumerator_ReturnsCorrectEnumerator()
-        {
-            var venue1 = new SDK.Venue.Models.Venue();
-            var venue2 = new SDK.Venue.Models.Venue();
-            var response = new VenuesResponse
-            {
-                response = new Response
+                response = new VenuesResponseContent
                 {
                     results = new List<SDK.Venue.Models.Venue> { venue1, venue2 }
                 }
             };
-            foreach (var item in response)
-            {
-                Assert.IsTrue(item != null);
-            }
+
+            var result = response.Data;
+
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.Contains(venue1));
+            Assert.IsTrue(result.Contains(venue2));
         }
     }
 }

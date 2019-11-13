@@ -1,7 +1,7 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Pricing.Models;
 using EncoreTickets.SDK.Pricing.Models.RequestModels;
@@ -36,13 +36,12 @@ namespace EncoreTickets.SDK.Pricing
         /// <returns>Exchange rates.</returns>
         public ResponseForPage<ExchangeRate> GetExchangeRates(ExchangeRatesParameters parameters)
         {
-            var result = Executor.ExecuteApi<ResponseForPage<ExchangeRate>>(
+            var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(
                 "v2/admin/exchange_rates",
                 RequestMethod.Get,
-                true,
                 query: parameters,
                 dateFormat: DateFormat);
-            return result.Data;
+            return result.DataOrException;
         }
     }
 }
