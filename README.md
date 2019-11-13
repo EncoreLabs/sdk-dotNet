@@ -30,7 +30,7 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
-#### 1.5
+#### 2.0
 - Updated methods to return an exception instead of a default value if API request fails
 
 #### 1.4
