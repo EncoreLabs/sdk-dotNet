@@ -7,17 +7,14 @@ namespace EncoreTickets.SDK.Api.Results.Response
     /// </summary>
     public class Context
     {
+        /// <summary>
+        /// Gets or sets an errors collection.
+        /// </summary>
         public List<Error> errors { get; set; }
 
+        /// <summary>
+        /// Gets or sets an infos collection.
+        /// </summary>
         public List<Info> info { get; set; }
-    }
-
-    public class Error
-    {
-        public string message { get; set; }
-    }
-
-    public class Info
-    {
     }
 }
