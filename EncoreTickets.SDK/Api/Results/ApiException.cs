@@ -22,7 +22,7 @@ namespace EncoreTickets.SDK.Api.Results
         public HttpStatusCode ResponseCode => Response.StatusCode;
 
         /// <summary>
-        /// Gets the API response errors.
+        /// Gets the API response errors as messages.
         /// </summary>
         public List<string> Errors => GetErrors();
 
@@ -63,11 +63,20 @@ namespace EncoreTickets.SDK.Api.Results
             Response = response;
         }
 
-        private List<string> GetErrors()
+        /// <summary>
+        /// Returns easily read errors that are the cause of the exception.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual List<string> GetErrors()
         {
-            return ContextInResponse?.errors == null
-                ? new List<string> {Response.StatusDescription}
-                : ContextInResponse.errors.Select(x => x.message).ToList();
+            if (ContextInResponse?.errors == null)
+            {
+                return new List<string> {Response.StatusDescription};
+            }
+
+            var contextErrors = ContextInResponse.errors.Select(ConvertErrorToString)
+                .Where(x => !string.IsNullOrEmpty(x));
+            return contextErrors.ToList();
         }
 
         private Dictionary<string, object> GetRequestDetails()
@@ -86,6 +95,17 @@ namespace EncoreTickets.SDK.Api.Results
             }
 
             return details;
+        }
+
+        private string ConvertErrorToString(Error error)
+        {
+            var message = error.message;
+            if (!string.IsNullOrEmpty(error.field))
+            {
+                message = $"{error.field} - {message}";
+            }
+
+            return message;
         }
 
         private void AddDynamicToDictionary(IDictionary<string, object> sourceDictionary, dynamic dynamicObject)

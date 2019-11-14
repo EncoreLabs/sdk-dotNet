@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             Assert.AreEqual(response, result.RestResponse);
             Assert.AreEqual(responseContext, result.ResponseContext);
             Assert.AreEqual(requestInResponse, result.RequestInResponse);
-            Assert.AreEqual(default, result.Exception);
+            Assert.AreEqual(default, result.ApiException);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 var data = result.DataOrException;
             });
-            Assert.AreEqual(thrownException, result.Exception);
+            Assert.AreEqual(thrownException, result.ApiException);
         }
     }
 }
