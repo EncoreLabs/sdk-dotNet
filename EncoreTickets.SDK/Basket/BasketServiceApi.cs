@@ -1,5 +1,9 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using System;
+using System.Net;
+using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.EntertainApi;
@@ -59,8 +63,26 @@ namespace EncoreTickets.SDK.Basket
                 RequestMethod.Patch,
                 body);
 
-            var codesOfInfosAsErrors = new[] {"notValidPromotionCode"};
-            return result.GetDataOrContextException(codesOfInfosAsErrors);
+            try
+            {
+                return result.GetDataOrContextException("notValidPromotionCode");
+            }
+            catch (ContextApiException e)
+            {
+                throw new InvalidPromoCodeException(e, coupon);
+            }
+            catch (ApiException e)
+            {
+                switch (e.ResponseCode)
+                {
+                    case HttpStatusCode.NotFound:
+                        throw new BasketNotFoundException(e, basketId);
+                    case HttpStatusCode.BadRequest:
+                        throw new BasketCannotBeModifiedException(e, basketId);
+                    default:
+                        throw;
+                }
+            }
         }
     }
 }

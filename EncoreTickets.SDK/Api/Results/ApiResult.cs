@@ -93,6 +93,17 @@ namespace EncoreTickets.SDK.Api.Results
         /// Gets <c>data</c> if the API request was successful and response context does not have warnings, <see cref="T"/>;
         /// otherwise, <c> throws the API context exception</c>, <see cref="ContextApiException"/>;.
         /// </summary>
+        /// <param name="codeOfInfoAsError">Information code in the context of the response, which is an error.</param>
+        /// <returns>Data</returns>
+        public T GetDataOrContextException(string codeOfInfoAsError)
+        {
+            return GetDataOrContextException(new[] {codeOfInfoAsError});
+        }
+
+        /// <summary>
+        /// Gets <c>data</c> if the API request was successful and response context does not have warnings, <see cref="T"/>;
+        /// otherwise, <c> throws the API context exception</c>, <see cref="ContextApiException"/>;.
+        /// </summary>
         /// <param name="codesOfInfosAsErrors">Information codes in the context of the response, which are errors.</param>
         /// <returns>Data</returns>
         public T GetDataOrContextException(IEnumerable<string> codesOfInfosAsErrors)
