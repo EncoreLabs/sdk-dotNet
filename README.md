@@ -30,6 +30,9 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 2.1
+- Added a method to the BasketServiceApi to call PATCH ​/api​/v1​/baskets​/{reference}​/applyPromotion endpoint
+
 #### 2.0
 - Updated methods to return an exception instead of a default value if API request fails
 
