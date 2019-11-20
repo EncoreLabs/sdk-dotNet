@@ -8,19 +8,19 @@ namespace EncoreTickets.SDK.Authentication
     /// <inheritdoc cref="BaseApi" />
     /// <inheritdoc cref="IAuthenticationService" />
     /// <summary>
-    /// The authentication service.
+    /// The service for JWT authentication.
     /// </summary>
-    public class AuthenticationService : BaseApi, IAuthenticationService
+    public class JwtAuthenticationService : BaseApi, IAuthenticationService
     {
         private readonly string endpoint;
 
         /// <summary>
-        /// Initializes an instance for the authentication service.
+        /// Initializes an instance for the JWT authentication service.
         /// </summary>
         /// <param name="context">The API context.</param>
         /// <param name="host">The service host.</param>
         /// <param name="loginEndpoint">The endpoint for login method.</param>
-        public AuthenticationService(ApiContext context, string host, string loginEndpoint)
+        public JwtAuthenticationService(ApiContext context, string host, string loginEndpoint)
             : base(context, host)
         {
             endpoint = loginEndpoint;
@@ -29,29 +29,18 @@ namespace EncoreTickets.SDK.Authentication
         /// <inheritdoc />
         public ApiContext Authenticate()
         {
-            switch (Context?.AuthenticationMethod)
-            {
-                case AuthenticationMethod.JWT:
-                    JwtLogin();
-                    break;
-            }
-
+            var accessToken = JwtLogin();
+            Context.AccessToken = accessToken.token;
             return Context;
         }
 
         /// <inheritdoc />
         public bool IsThereAuthentication()
         {
-            switch (Context?.AuthenticationMethod)
-            {
-                case AuthenticationMethod.JWT:
-                    return !string.IsNullOrEmpty(Context.AccessToken);
-                default:
-                    return false;
-            }
+            return !string.IsNullOrEmpty(Context?.AccessToken);
         }
 
-        private void JwtLogin()
+        private AccessToken JwtLogin()
         {
             var credentials = new Credentials
             {
@@ -63,7 +52,7 @@ namespace EncoreTickets.SDK.Authentication
                 RequestMethod.Post,
                 credentials,
                 wrappedError: true);
-            Context.AccessToken = result.DataOrException?.token;
+            return result.DataOrException;
         }
     }
 }

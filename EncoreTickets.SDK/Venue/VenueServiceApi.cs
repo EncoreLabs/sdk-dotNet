@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Venue
         public VenueServiceApi(ApiContext context) : base(context, VenueHost)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
-            AuthenticationService = new AuthenticationService(context, VenueHost, "login");
+            AuthenticationService = AuthenticationServiceFactory.Create(context, VenueHost, "login");
         }
 
         /// <inheritdoc/>

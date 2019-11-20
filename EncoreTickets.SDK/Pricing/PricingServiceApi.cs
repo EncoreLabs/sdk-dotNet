@@ -30,7 +30,7 @@ namespace EncoreTickets.SDK.Pricing
         public PricingServiceApi(ApiContext context) : base(context, PricingHost)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
-            AuthenticationService = new AuthenticationService(context, PricingHost, "login");
+            AuthenticationService = AuthenticationServiceFactory.Create(context, PricingHost, "login");
         }
 
         /// <inheritdoc />
