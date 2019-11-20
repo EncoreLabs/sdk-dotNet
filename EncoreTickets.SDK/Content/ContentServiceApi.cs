@@ -6,27 +6,29 @@ using EncoreTickets.SDK.Content.Models;
 
 namespace EncoreTickets.SDK.Content
 {
+    /// <inheritdoc cref="BaseApi" />
+    /// <inheritdoc cref="IContentServiceApi" />
     /// <summary>
-    /// Wrapper class for the inventory service API
+    /// The wrapper class for the content service API.
     /// </summary>
-    public class ContentServiceApi : BaseApi
+    public class ContentServiceApi : BaseApi, IContentServiceApi
     {
         /// <summary>
-        /// Default constructor for the Inventory service
+        /// Default constructor for the content service
         /// </summary>
         /// <param name="context"></param>
         public ContentServiceApi(ApiContext context) : base(context, "content-service.{0}tixuk.io/api/")
         {
         }
 
+        /// <summary>
+        /// Constructor for the content service
+        /// </summary>
         public ContentServiceApi(ApiContext context, string baseUrl) : base(context, baseUrl)
         {
         }
 
-        /// <summary>
-        /// Search for a product
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<Location> GetLocations()
         {
             var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(
@@ -35,10 +37,7 @@ namespace EncoreTickets.SDK.Content
             return results.DataOrException;
         }
 
-        /// <summary>
-        /// Get the available products
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<Product> GetProducts()
         {
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(
@@ -47,11 +46,7 @@ namespace EncoreTickets.SDK.Content
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get the product by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Product GetProductById(string id)
         {
             var result = Executor.ExecuteApiWithWrappedResponse<Product>(
@@ -60,11 +55,7 @@ namespace EncoreTickets.SDK.Content
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get the product by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Product GetProductById(int id)
         {
             return GetProductById(id.ToString());

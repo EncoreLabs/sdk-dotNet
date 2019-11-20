@@ -10,18 +10,19 @@ using EncoreTickets.SDK.Venue.Models.ResponseModels;
 
 namespace EncoreTickets.SDK.Venue
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="BaseApi" />
+    /// <inheritdoc cref="IVenueServiceApi" />
     /// <summary>
     /// The service to provide an interface for calling Venue API endpoints.
     /// </summary>
-    public class VenueServiceApi : BaseApi
+    public class VenueServiceApi : BaseApi, IVenueServiceApi
     {
         private const string VenueHost = "venue-service.{0}tixuk.io/api/";
 
         /// <summary>
         /// Gets the authentication service for the current Venue service./>
         /// </summary>
-        public AuthenticationService AuthenticationService { get; }
+        public IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Default constructor for the Venue service
@@ -30,13 +31,10 @@ namespace EncoreTickets.SDK.Venue
         public VenueServiceApi(ApiContext context) : base(context, VenueHost)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
-            AuthenticationService = new AuthenticationService(context, VenueHost, "login");
+            AuthenticationService = AuthenticationServiceFactory.Create(context, VenueHost, "login");
         }
 
-        /// <summary>
-        /// Get the available venues
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public IList<Models.Venue> GetVenues()
         {
             var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(
@@ -45,11 +43,7 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get the venue by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public Models.Venue GetVenueById(string id)
         {
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
@@ -58,11 +52,7 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Update the venue by its id.
-        /// </summary>
-        /// <param name="venue">Venue for update</param>
-        /// <returns>Updated venue</returns>
+        /// <inheritdoc/>
         public Models.Venue UpdateVenueById(Models.Venue venue)
         {
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
@@ -72,21 +62,13 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get the seat attributes for a venue
-        /// </summary>
-        /// <param name="venue"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
             return GetSeatAttributes(venue.internalId);
         }
 
-        /// <summary>
-        /// Get detailed seat attributes
-        /// </summary>
-        /// <param name="venueId"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
             var result = Executor.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
@@ -95,10 +77,7 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get the standard attributes
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public IList<StandardAttribute> GetStandardAttributes()
         {
             var result = Executor.ExecuteApiWithWrappedResponse<List<StandardAttribute>>(
@@ -107,10 +86,7 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Upsert a standard attribute by its title.
-        /// </summary>
-        /// <returns>The updated standard attribute.</returns>
+        /// <inheritdoc/>
         public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
         {
             var result = Executor.ExecuteApiWithWrappedResponse<StandardAttribute>(
@@ -120,10 +96,7 @@ namespace EncoreTickets.SDK.Venue
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Upsert venue's seat attributes.
-        /// </summary>
-        /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
         {
             const string successStatus = "Success";
