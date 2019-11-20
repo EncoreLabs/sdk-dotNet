@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Authentication;
+﻿using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Authentication;
 
 namespace EncoreTickets.SDK.Interfaces
 {
@@ -8,8 +9,15 @@ namespace EncoreTickets.SDK.Interfaces
     public interface IServiceApiWithAuthentication
     {
         /// <summary>
-        /// The authentication service.
+        /// Gets the authentication service.
         /// </summary>
         IAuthenticationService AuthenticationService { get; }
+
+        /// <summary>
+        /// Returns an authentication service for some context.
+        /// </summary>
+        /// <param name="context">The API context.</param>
+        /// <returns>The authentication service.</returns>
+        IAuthenticationService GetAuthenticationService(ApiContext context);
     }
 }

@@ -7,17 +7,20 @@ namespace EncoreTickets.SDK.Api
     /// </summary>
     public abstract class BaseApi
     {
-        private readonly string host;
-
         /// <summary>
         /// Gets base API URL.
         /// </summary>
-        protected virtual string BaseUrl => "https://" + string.Format(host, GetEnvironmentPartOfHost());
+        protected virtual string BaseUrl => "https://" + string.Format(Host, GetEnvironmentPartOfHost());
 
         /// <summary>
         /// Gets an executor of requests to the service based on context and base URL.
         /// </summary>
         protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
+
+        /// <summary>
+        /// Gets API host.
+        /// </summary>
+        protected string Host { get; }
 
         /// <summary>
         /// Gets or sets API context.
@@ -31,7 +34,7 @@ namespace EncoreTickets.SDK.Api
         /// <param name="host">The host.</param>
         protected BaseApi(ApiContext context, string host)
         {
-            this.host = host;
+            Host = host;
             Context = context;
         }
 
