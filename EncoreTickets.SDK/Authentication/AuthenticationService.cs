@@ -1,16 +1,16 @@
-﻿using System;
-using EncoreTickets.SDK.Api;
+﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Authentication.Models;
 
 namespace EncoreTickets.SDK.Authentication
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="BaseApi" />
+    /// <inheritdoc cref="IAuthenticationService" />
     /// <summary>
     /// The authentication service.
     /// </summary>
-    public class AuthenticationService : BaseApi
+    public class AuthenticationService : BaseApi, IAuthenticationService
     {
         private readonly string endpoint;
 
@@ -26,10 +26,7 @@ namespace EncoreTickets.SDK.Authentication
             endpoint = loginEndpoint;
         }
 
-        /// <summary>
-        /// Get an API context with data set for an authenticated user.
-        /// </summary>
-        /// <returns>The API context</returns>
+        /// <inheritdoc />
         public ApiContext Authenticate()
         {
             switch (Context?.AuthenticationMethod)
@@ -42,10 +39,7 @@ namespace EncoreTickets.SDK.Authentication
             return Context;
         }
 
-        /// <summary>
-        /// Verifies that the used context has been authenticated.
-        /// </summary>
-        /// <returns><c>true</c> If the context has been authenticated before ; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc />
         public bool IsThereAuthentication()
         {
             switch (Context?.AuthenticationMethod)
