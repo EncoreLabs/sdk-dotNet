@@ -21,7 +21,8 @@ namespace EncoreTickets.SDK.Api
         /// <inheritdoc />
         public virtual IAuthenticationService GetAuthenticationService(ApiContext context)
         {
-            return AuthenticationServiceFactory.Create(context, Host, "login");
+            const string standardLoginEndpoint = "login";
+            return AuthenticationServiceFactory.Create(context, Host, standardLoginEndpoint);
         }
     }
 }
