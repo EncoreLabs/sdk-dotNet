@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
@@ -10,10 +9,12 @@ using EncoreTickets.SDK.EntertainApi;
 
 namespace EncoreTickets.SDK.Basket
 {
+    /// <inheritdoc cref="BaseEntertainApi" />
+    /// <inheritdoc cref="IBasketServiceApi" />
     /// <summary>
     /// The wrapper class for the Basket service API.
     /// </summary>
-    public class BasketServiceApi : BaseEntertainApi
+    public class BasketServiceApi : BaseEntertainApi, IBasketServiceApi
     {
         /// <summary>
         /// Default constructor for the Basket service.
@@ -23,11 +24,7 @@ namespace EncoreTickets.SDK.Basket
         {
         }
 
-        /// <summary>
-        /// Get details of a promotion by its ID. 
-        /// </summary>
-        /// <param name="promotionId"></param>
-        /// <returns>Details of a promotion with the specified ID or an exception if not found.</returns>
+        /// <inheritdoc />
         public Promotion GetPromotionDetails(string promotionId)
         {
             var path = $"v1/promotions/{promotionId}";
@@ -35,11 +32,7 @@ namespace EncoreTickets.SDK.Basket
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Get details of a basket by its reference. 
-        /// </summary>
-        /// <param name="basketReference">Basket ID</param>
-        /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
+        /// <inheritdoc />
         public BasketDetails GetBasketDetails(string basketReference)
         {
             var path = $"v1/baskets/{basketReference}";
@@ -47,14 +40,7 @@ namespace EncoreTickets.SDK.Basket
             return result.DataOrException;
         }
 
-        /// <summary>
-        /// Applies promotion to a basket when this is possible.
-        /// </summary>
-        /// <param name="basketId">Basket ID</param>
-        /// <param name="coupon">Coupon name</param>
-        /// <returns>Details of a basket with the specified ID.</returns>
-        /// <exception cref="ApiException">The API request failed.</exception>
-        /// <exception cref="ContextApiException">The API request was successful, but the response context contains information about the invalid promo code.</exception>
+        /// <inheritdoc />
         public BasketDetails UpsertPromotion(string basketId, Coupon coupon)
         {
             var body = new ApplyPromotionRequest {coupon = coupon};

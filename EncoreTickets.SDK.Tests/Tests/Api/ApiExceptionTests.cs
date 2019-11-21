@@ -15,13 +15,25 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 new List<string> {"Moved"},
-                new RestResponse {StatusDescription = "Moved"},
+                new RestResponse {StatusDescription = "Moved", ErrorMessage = "Resource moved"},
+                null
+            },
+            new object[]
+            {
+                new List<string> {"Connection was closed"},
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 null
             },
             new object[]
             {
                 new List<string> {"Not found"},
-                new RestResponse {StatusDescription = "Not found"},
+                new RestResponse {StatusDescription = "Not found", ErrorMessage = "404"},
+                new Context(),
+            },
+            new object[]
+            {
+                new List<string> {"Connection was closed"},
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 new Context(),
             },
             new object[]
@@ -34,11 +46,23 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             {
                 new List<string> {"Venue [9] is not found"},
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error> {new Error {message = "Venue [9] is not found"}}},
+                new Context {errors = new List<Error>
+                {
+                    new Error {message = "Venue [9] is not found"}
+                }},
             },
             new object[]
             {
-                new List<string> {"Product [9] is not found", "Unauthorized"},
+                new List<string> {"coupon.code - This value should not be blank."},
+                new RestResponse {StatusDescription = "OK"},
+                new Context {errors = new List<Error>
+                {
+                    new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                }},
+            },
+            new object[]
+            {
+                new List<string> {"Product [9] is not found", "Unauthorized", "coupon.code - This value should not be blank."},
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
@@ -46,6 +70,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                     {
                         new Error {message = "Product [9] is not found"},
                         new Error {message = "Unauthorized"},
+                        new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
                     }
                 },
             },
@@ -56,13 +81,25 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 "Moved",
-                new RestResponse {StatusDescription = "Moved"},
+                new RestResponse {StatusDescription = "Moved", ErrorMessage = "Resource moved"},
+                null
+            },
+            new object[]
+            {
+                "Connection was closed",
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 null
             },
             new object[]
             {
                 "Not found",
-                new RestResponse {StatusDescription = "Not found"},
+                new RestResponse {StatusDescription = "Not found", ErrorMessage = "404"},
+                new Context(),
+            },
+            new object[]
+            {
+                "Connection was closed",
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 new Context(),
             },
             new object[]
@@ -79,7 +116,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             },
             new object[]
             {
-                "Product [9] is not found; Unauthorized",
+                "coupon.code - This value should not be blank.",
+                new RestResponse {StatusDescription = "OK"},
+                new Context {errors = new List<Error>
+                {
+                    new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                }},
+            },
+            new object[]
+            {
+                "Product [9] is not found; Unauthorized; coupon.code - This value should not be blank.",
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
@@ -87,6 +133,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                     {
                         new Error {message = "Product [9] is not found"},
                         new Error {message = "Unauthorized"},
+                        new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
                     }
                 },
             },

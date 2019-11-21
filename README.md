@@ -30,6 +30,10 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 2.2
+- Added public interfaces for API services
+- Added an ability to create an authentication service for some API with a specific context
+
 #### 2.1
 - Added a method to the BasketServiceApi to call PATCH ​/api​/v1​/baskets​/{reference}​/applyPromotion endpoint
 

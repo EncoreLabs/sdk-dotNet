@@ -3,13 +3,15 @@ using EncoreTickets.SDK.Api.Context;
 
 namespace EncoreTickets.SDK.Checkout
 {
+    /// <inheritdoc cref="BaseApi" />
+    /// <inheritdoc cref="ICheckoutServiceApi" />
     /// <summary>
-    /// Wrapper class for the inventory service API
+    /// The wrapper class for the checkout service API.
     /// </summary>
-    public class CheckoutServiceApi : BaseApi
+    public class CheckoutServiceApi : BaseApi, ICheckoutServiceApi
     {
         /// <summary>
-        /// Default constructor for the Inventory service
+        /// Default constructor for the checkout service
         /// </summary>
         /// <param name="context"></param>
         public CheckoutServiceApi(ApiContext context) : base(context, "checkout-service.{0}tixuk.io/api/")

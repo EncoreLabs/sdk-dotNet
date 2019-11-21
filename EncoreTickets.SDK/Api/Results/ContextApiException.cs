@@ -30,7 +30,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <inheritdoc />
         protected override List<string> GetErrors()
         {
-            var infosAsErrors = ContextInResponse.info?.Where(x => codesOfInfos.Contains(x.code));
+            var infosAsErrors = ContextInResponse?.info?.Where(x => codesOfInfos.Contains(x.code));
             var errors = infosAsErrors?.Select(ConvertInfoToString).ToList() ?? new List<string>();
             return errors;
         }
