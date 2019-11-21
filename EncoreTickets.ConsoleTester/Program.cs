@@ -1,14 +1,22 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using Amazon.SQS;
+using Amazon.SQS.Model;
 using EncoreTickets.SDK.Api.Context;
+using Microsoft.Extensions.Configuration;
 
 namespace EncoreTickets.ConsoleTester
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var context = CreateApiContext();
-            PricingServiceTester.TestPricingService();
+            var configuration = SetupConfiguration();
+            await AwsTester.TestAws(configuration);
+            
+            var context = CreateApiContext(configuration["Venue:Username"], configuration["Venue:Password"]);
+            PricingServiceTester.TestPricingService(configuration["Pricing:AccessToken"]);
             VenueServiceTester.TestVenueService(context);
             var productIds = ContentServiceTester.TestContentServiceAndGetProducts(context);
             InventoryServiceTester.TestInventoryService(context, productIds);
@@ -19,13 +27,17 @@ namespace EncoreTickets.ConsoleTester
             Console.ReadLine();
         }
 
-        private static ApiContext CreateApiContext()
+        private static IConfiguration SetupConfiguration()
         {
-            Console.WriteLine();
-            Console.Write("Enter venue username: ");
-            var userName = Console.ReadLine();
-            Console.Write("Enter venue Password: ");
-            var password = Console.ReadLine();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.real.json", optional: true);
+            return builder.Build();
+        }
+
+        private static ApiContext CreateApiContext(string userName, string password)
+        {
             return new ApiContext(Environments.Sandbox, userName, password) { Affiliate = "encoretickets" };
         }
     }
