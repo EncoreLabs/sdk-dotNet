@@ -15,13 +15,25 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 new List<string> {"Moved"},
-                new RestResponse {StatusDescription = "Moved"},
+                new RestResponse {StatusDescription = "Moved", ErrorMessage = "Resource moved"},
+                null
+            },
+            new object[]
+            {
+                new List<string> {"Connection was closed"},
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 null
             },
             new object[]
             {
                 new List<string> {"Not found"},
-                new RestResponse {StatusDescription = "Not found"},
+                new RestResponse {StatusDescription = "Not found", ErrorMessage = "404"},
+                new Context(),
+            },
+            new object[]
+            {
+                new List<string> {"Connection was closed"},
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 new Context(),
             },
             new object[]
@@ -69,13 +81,25 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             new object[]
             {
                 "Moved",
-                new RestResponse {StatusDescription = "Moved"},
+                new RestResponse {StatusDescription = "Moved", ErrorMessage = "Resource moved"},
+                null
+            },
+            new object[]
+            {
+                "Connection was closed",
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 null
             },
             new object[]
             {
                 "Not found",
-                new RestResponse {StatusDescription = "Not found"},
+                new RestResponse {StatusDescription = "Not found", ErrorMessage = "404"},
+                new Context(),
+            },
+            new object[]
+            {
+                "Connection was closed",
+                new RestResponse {StatusDescription = null, ErrorMessage = "Connection was closed"},
                 new Context(),
             },
             new object[]
