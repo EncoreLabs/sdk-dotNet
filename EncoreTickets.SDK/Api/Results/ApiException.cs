@@ -71,7 +71,12 @@ namespace EncoreTickets.SDK.Api.Results
         {
             if (ContextInResponse?.errors == null)
             {
-                return new List<string> {Response.StatusDescription};
+                return new List<string>
+                {
+                    string.IsNullOrEmpty(Response.StatusDescription)
+                        ? Response.ErrorMessage
+                        : Response.StatusDescription
+                };
             }
 
             var contextErrors = ContextInResponse.errors.Select(ConvertErrorToString)
