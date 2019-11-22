@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Amazon.Extensions.NETCore.Setup;
-using Amazon.SQS;
-using Amazon.SQS.Model;
+using EncoreTickets.SDK.Aws;
 using Microsoft.Extensions.Configuration;
 
 namespace EncoreTickets.ConsoleTester
@@ -11,29 +9,28 @@ namespace EncoreTickets.ConsoleTester
     {
         public static async Task TestAws(IConfiguration configuration)
         {
-            var sqsClient = SetupClient(configuration);
-            await TestSendMessage(sqsClient, configuration["AWS_SQS:QueueUrl"]);
+            var awsSqs = CreateSqs(configuration);
+            await TestSendMessage(awsSqs, configuration["AWS_SQS:QueueUrl"]);
         }
 
-        private static IAmazonSQS SetupClient(IConfiguration configuration)
+        private static IAwsSqs CreateSqs(IConfiguration configuration)
         {
             var options = configuration.GetAWSOptions();
-            return options.CreateServiceClient<IAmazonSQS>();
+            var profile = options.Profile;
+            var region = options.Region.SystemName;
+            var accessKey = configuration["AWS_SQS:Credentials:AccessKey"];
+            var secretKey = configuration["AWS_SQS:Credentials:SecretKey"];
+            return new AwsSqs(profile, region, accessKey, secretKey);
         }
 
-        private static async Task TestSendMessage(IAmazonSQS client, string queueUrl)
+        private static async Task TestSendMessage(IAwsSqs sqs, string queueUrl)
         {
             Console.WriteLine();
             Console.WriteLine(" ========================================================== ");
             Console.WriteLine(" Test: Send message");
             Console.WriteLine(" ========================================================== ");
 
-            var sqsRequest = new SendMessageRequest
-            {
-                QueueUrl = queueUrl,
-                MessageBody = "{\"reference\": \"0\"}"
-            };
-            var sqsResponse = await client.SendMessageAsync(sqsRequest);
+            var sqsResponse = await sqs.SendMessageAsync(queueUrl, "testMessage");
 
             Console.WriteLine($"Status code: {sqsResponse.HttpStatusCode}");
         }

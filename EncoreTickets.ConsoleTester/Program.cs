@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.Runtime.CredentialManagement;
 using Amazon.SQS;
-using Amazon.SQS.Model;
 using EncoreTickets.SDK.Api.Context;
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +17,7 @@ namespace EncoreTickets.ConsoleTester
         {
             var configuration = SetupConfiguration();
             await AwsTester.TestAws(configuration);
-            
+
             var context = CreateApiContext(configuration["Venue:Username"], configuration["Venue:Password"]);
             PricingServiceTester.TestPricingService(configuration["Pricing:AccessToken"]);
             VenueServiceTester.TestVenueService(context);
