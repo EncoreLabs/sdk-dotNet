@@ -2,7 +2,7 @@
 
 This repository contains the main project EncoreTicket.SDK and other projects for testing classes from the main.
 
-This SDK contains .Net models and service classes for calling Encore Tickets API, as well as general useful utilities and interfaces.
+This SDK contains .Net models and service classes for calling Encore Tickets API and working with some AWS services as well as general useful utilities and interfaces.
 
 Each service has public methods that wrap a call to a specific API endpoint with some parameters.
 
@@ -20,6 +20,8 @@ Each service has public methods that wrap a call to a specific API endpoint with
 
 - PricingServiceApi.cs - For calling endpoints of Pricing API (live pricing for products available for sale through Encore Tickets)
 
+- AwsSqs.cs - For working with AWS Simple Queue Service
+
 ### Instalation
 
 EncoreTickets.SDK is available as a Nuget package. You can use the Nuget Package Manager to install it.
@@ -29,6 +31,9 @@ Install-Package EncoreTickets.SDK
 ```
 
 ### Versions:
+
+#### 2.3
+- Added ability to send messages to AWS queue
 
 #### 2.2
 - Added public interfaces for API services

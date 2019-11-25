@@ -6,10 +6,9 @@ namespace EncoreTickets.ConsoleTester
 {
     static class PricingServiceTester
     {
-        public static void TestPricingService()
+        public static void TestPricingService(string accessToken)
         {
-            var apiKey = "access_token"; // it's too big for Console.ReadLine()
-            var contextPricingService = new ApiContext(Environments.QA, apiKey);
+            var contextPricingService = new ApiContext(Environments.QA, accessToken);
 
             var pricingApi = new PricingServiceApi(contextPricingService);
 
