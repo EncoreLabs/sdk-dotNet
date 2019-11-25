@@ -115,7 +115,8 @@ namespace EncoreTickets.SDK.Api
                 body, query, dateFormat);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
-            return clientWrapper.Execute<T>(client, request);
+            var response = clientWrapper.Execute<T>(client, request);
+            return response;
         }
 
         private ApiResult<T> CreateApiResult<T>(IRestResponse<T> restResponse, bool wrappedError)
