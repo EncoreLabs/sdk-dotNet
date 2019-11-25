@@ -228,7 +228,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                     RequestBody = 4,
                     RequestFormat = RequestFormat.Xml
                 },
-                "text/xml"
+                "application/xml"
             },
             new object[]
             {
@@ -585,13 +585,18 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         public void Api_RestClientWrapper_GetRestRequest_ReturnsCorrectRequestWithCorrectBody(
             RestClientParameters restClientParameters, string expectedBodyType)
         {
-            var restClientWrapper = new RestClientWrapper(new RestClientWrapperCredentials());
+            //Arrange
+            var expectedBodyCount = restClientParameters.RequestBody != null ? 1 : 0;
+            var credentials = new RestClientWrapperCredentials();
+            var restClientWrapper = new RestClientWrapper(credentials);
+
+            //Act
             var result = restClientWrapper.GetRestRequest(restClientParameters);
 
+            //Assert
             var body = result.Parameters.Where(x => x.Type == ParameterType.RequestBody);
-            var expectedBodyCount = restClientParameters.RequestBody != null ? 1 : 0;
             Assert.AreEqual(expectedBodyCount, body.Count());
-            Assert.AreEqual(expectedBodyType, body.FirstOrDefault()?.Name);
+            Assert.AreEqual(expectedBodyType, body.FirstOrDefault()?.ContentType);
         }
 
         [TestCaseSource(nameof(SourceForIsGoodResponseTest))]

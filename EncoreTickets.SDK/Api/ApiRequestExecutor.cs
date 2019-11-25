@@ -158,7 +158,7 @@ namespace EncoreTickets.SDK.Api
         {
             try
             {
-                return SimpleJson.SimpleJson.DeserializeObject<T>(response.Content);
+                return SimpleJson.DeserializeObject<T>(response.Content);
             }
             catch (Exception)
             {
