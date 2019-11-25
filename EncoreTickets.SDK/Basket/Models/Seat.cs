@@ -4,9 +4,9 @@
     {
         public string aggregateReference { get; internal set; }
 
-        public string blockId { get; internal set; }
+        public string areaId { get; internal set; }
 
-        public string blockName { get; internal set; }
+        public string areaName { get; internal set; }
 
         public string row { get; internal set; }
 
