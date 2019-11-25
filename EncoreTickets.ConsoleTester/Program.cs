@@ -23,7 +23,7 @@ namespace EncoreTickets.ConsoleTester
             VenueServiceTester.TestVenueService(context);
             var productIds = ContentServiceTester.TestContentServiceAndGetProducts(context);
             InventoryServiceTester.TestInventoryService(context, productIds);
-            BasketServiceTester.TestBasketService(context);
+            BasketServiceTester.TestBasketService(context, configuration["Basket:TestReference"]);
 
             Console.WriteLine();
             Console.WriteLine(" -- FINISHED --");
