@@ -44,6 +44,7 @@ namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
         /// <returns>Rest client.</returns>
         public IRestClient GetRestClient(RestClientParameters restClientParameters)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var client = new RestClient(restClientParameters.BaseUrl)
             {
                 Authenticator = GetAuthenticator()

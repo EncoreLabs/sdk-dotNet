@@ -3,6 +3,8 @@ using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Venue.Exceptions;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
@@ -98,7 +100,20 @@ namespace EncoreTickets.SDK.Venue
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,
                 body);
-            return result.DataOrException?.Contains(successStatus) ?? false;
+
+            try
+            {
+                return result.DataOrException?.Contains(successStatus) ?? false;
+            }
+            catch (ApiException exception)
+            {
+                if (exception.ResponseCode == default) // hack, because RestSharp is currently returning “request was aborted” for a long response with a 403 status
+                {
+                    throw new AccessTokenExpiredException(exception);
+                }
+
+                throw;
+            }
         }
     }
 }

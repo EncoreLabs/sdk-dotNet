@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Gets HTTP response status code.
         /// </summary>
-        public HttpStatusCode ResponseCode => Response.StatusCode;
+        public virtual HttpStatusCode ResponseCode => Response.StatusCode;
 
         /// <summary>
         /// Gets the API response errors as messages.
