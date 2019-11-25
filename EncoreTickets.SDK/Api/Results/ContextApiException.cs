@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Initializes a new instance of <see cref="ContextApiException"/>
         /// </summary>
-        public ContextApiException(
+        internal ContextApiException(
             IEnumerable<string> codesOfInfosAsErrors,
             IRestResponse response,
             ApiContext requestContext,
