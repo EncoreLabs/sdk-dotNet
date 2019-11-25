@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Response;
 using RestSharp;
@@ -15,23 +14,12 @@ namespace EncoreTickets.SDK.Api.Results
         where T : class
     {
         private T apiData;
-        private IRestResponse response;
-
-        /// <summary>
-        /// Gets or sets HTTP response.
-        /// </summary>
-        public object Response => response;
 
         /// <summary>
         /// Gets a value indicating whether this call was a success.
         /// </summary>
         /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
-        public bool IsSuccessful => response.IsSuccessful;
-
-        /// <summary>
-        /// Gets HTTP response status code.
-        /// </summary>
-        public virtual HttpStatusCode ResponseCode => response.StatusCode;
+        public bool IsSuccessful => RestResponse.IsSuccessful;
 
         /// <summary>
         /// Gets <c>data</c> if the API request was successful, <see cref="T"/>; otherwise, <c> throws the API exception</c>, <see cref="ApiException"/>;.
@@ -47,6 +35,11 @@ namespace EncoreTickets.SDK.Api.Results
         /// Gets or sets a context object for which the request was made.
         /// </summary>
         public ApiContext Context { get; set; }
+
+        /// <summary>
+        /// Gets or sets HTTP response.
+        /// </summary>
+        public IRestResponse RestResponse{ get; set; }
 
         /// <summary>
         /// Gets or sets the context returned in the API response.
@@ -67,7 +60,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// Initializes a new instance of <see cref="ApiResult"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
-        internal ApiResult(T data, IRestResponse response, ApiContext context, Response.Context responseContext,
+        public ApiResult(T data, IRestResponse response, ApiContext context, Response.Context responseContext,
             Request requestInResponse)
         {
             ResponseContext = responseContext;
@@ -79,10 +72,10 @@ namespace EncoreTickets.SDK.Api.Results
         /// Initializes a new instance of <see cref="ApiResult"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
-        internal ApiResult(T data, IRestResponse response, ApiContext context, string error)
+        public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
             ResponseContext = error != null
-                ? new Response.Context {errors = new List<Error> {new Error {message = error}}}
+                ? new Response.Context { errors = new List<Error> { new Error { message = error } } }
                 : null;
             InitializeCommonParameters(data, response, context);
         }
@@ -91,7 +84,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// Initializes a new instance of <see cref="ApiResult"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
-        internal ApiResult(T data, IRestResponse response, ApiContext context)
+        public ApiResult(T data, IRestResponse response, ApiContext context)
         {
             InitializeCommonParameters(data, response, context);
         }
@@ -121,19 +114,19 @@ namespace EncoreTickets.SDK.Api.Results
                 return data;
             }
 
-            var exception = new ContextApiException(codesOfInfosAsErrors, response, Context, ResponseContext,
+            var exception = new ContextApiException(codesOfInfosAsErrors, RestResponse, Context, ResponseContext,
                 RequestInResponse);
             return exception.Errors.Any() ? throw exception : data;
         }
 
         private void InitializeCommonParameters(T data, IRestResponse response, ApiContext context)
         {
-            this.response = response;
             apiData = data;
+            RestResponse = response;
             Context = context;
             ApiException = IsSuccessful
                 ? null
-                : new ApiException(response, Context, ResponseContext, RequestInResponse);
+                : new ApiException(RestResponse, Context, ResponseContext, RequestInResponse);
         }
     }
 }

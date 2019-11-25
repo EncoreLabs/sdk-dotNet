@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var result = new ApiResult<object[]>(data, response, context, responseContext, requestInResponse);
 
             Assert.AreEqual(context, result.Context);
-            Assert.AreEqual(response, result.Response);
+            Assert.AreEqual(response, result.RestResponse);
             Assert.AreEqual(responseContext, result.ResponseContext);
             Assert.AreEqual(requestInResponse, result.RequestInResponse);
             Assert.AreEqual(true, result.IsSuccessful);
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var result = new ApiResult<object>(null, response, context, responseContext, requestInResponse);
 
             Assert.AreEqual(context, result.Context);
-            Assert.AreEqual(response, result.Response);
+            Assert.AreEqual(response, result.RestResponse);
             Assert.AreEqual(responseContext, result.ResponseContext);
             Assert.AreEqual(requestInResponse, result.RequestInResponse);
             Assert.AreEqual(false, result.IsSuccessful);
@@ -104,7 +104,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             var result = new ApiResult<object>(null, response, context, responseContext, requestInResponse);
 
             Assert.AreEqual(context, result.Context);
-            Assert.AreEqual(response, result.Response);
+            Assert.AreEqual(response, result.RestResponse);
             Assert.AreEqual(responseContext, result.ResponseContext);
             Assert.AreEqual(requestInResponse, result.RequestInResponse);
             Assert.AreEqual(false, result.IsSuccessful);

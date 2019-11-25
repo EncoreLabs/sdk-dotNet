@@ -13,20 +13,13 @@ namespace EncoreTickets.SDK.Api.Results
     /// </summary>
     public class ApiException : Exception
     {
-        private readonly IRestResponse response;
-
         /// <inheritdoc/>
         public override string Message => Errors.Any() ? string.Join("; ", Errors) : null;
 
         /// <summary>
         /// Gets HTTP response status code.
         /// </summary>
-        public virtual HttpStatusCode ResponseCode => response.StatusCode;
-
-        /// <summary>
-        /// Gets HTTP response.
-        /// </summary>
-        public object Response => response;
+        public virtual HttpStatusCode ResponseCode => Response.StatusCode;
 
         /// <summary>
         /// Gets the API response errors as messages.
@@ -44,6 +37,11 @@ namespace EncoreTickets.SDK.Api.Results
         public ApiContext Context { get; }
 
         /// <summary>
+        /// Gets HTTP response.
+        /// </summary>
+        public IRestResponse Response { get; }
+
+        /// <summary>
         /// Gets the request returned in the API response.
         /// </summary>
         public Request RequestInResponse { get; }
@@ -56,13 +54,13 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
-        internal ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
+        public ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
             Request requestInResponse)
         {
             RequestInResponse = requestInResponse;
             ContextInResponse = contextInResponse;
             Context = requestContext;
-            this.response = response;
+            Response = response;
         }
 
         /// <summary>
@@ -75,9 +73,9 @@ namespace EncoreTickets.SDK.Api.Results
             {
                 return new List<string>
                 {
-                    string.IsNullOrEmpty(response.StatusDescription)
-                        ? response.ErrorMessage
-                        : response.StatusDescription
+                    string.IsNullOrEmpty(Response.StatusDescription)
+                        ? Response.ErrorMessage
+                        : Response.StatusDescription
                 };
             }
 
