@@ -48,10 +48,41 @@ namespace EncoreTickets.SDK.Basket
                 $"v1/baskets/{basketId}/applyPromotion",
                 RequestMethod.Patch,
                 body);
+            return GetUpsertPromotionResult(result, coupon, basketId);
+        }
 
+        /// <inheritdoc />
+        public BasketDetails UpsertBasket(UpsertBasketRequest request)
+        {
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
+                "v1/baskets",
+                RequestMethod.Patch,
+                request);
+            return response.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public BasketDetails RemoveReservation(string basketId, int reservationId)
+        {
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
+                $"v1/baskets/{basketId}/reservations/{reservationId}",
+                RequestMethod.Delete);
+            return response.DataOrException;
+        }
+
+        public BasketDetails ClearBasket(string basketId)
+        {
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
+                $"v1/baskets/{basketId}/clear",
+                RequestMethod.Patch);
+            return response.DataOrException;
+        }
+
+        private BasketDetails GetUpsertPromotionResult(ApiResult<BasketDetails> apiResult, Coupon coupon, string basketId)
+        {
             try
             {
-                return result.GetDataOrContextException("notValidPromotionCode");
+                return apiResult.GetDataOrContextException("notValidPromotionCode");
             }
             catch (ContextApiException e)
             {

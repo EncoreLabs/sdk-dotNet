@@ -6,6 +6,8 @@
 
         public string currency { get; set; }
 
+        public int? decimalPlaces { get; set; }
+
         public override string ToString()
         {
             return $"{currency}{value / 100}";
