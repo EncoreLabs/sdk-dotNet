@@ -32,6 +32,11 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 2.4
+- Added a method to the BasketServiceApi to call PATCH /api/v1/baskets endpoint
+- Added a method to the BasketServiceApi to call DELETE /api/v1/baskets/{reference}/reservations/{reservationId} endpoint
+- Added a method to the BasketServiceApi to call PATCH /api/v1/baskets/{reference}/clear endpoint
+
 #### 2.3
 - Added ability to send messages to AWS queue
 
