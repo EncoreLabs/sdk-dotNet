@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using EncoreTickets.SDK.Api.Results;
-using RestSharp;
 
 namespace EncoreTickets.SDK.Venue.Exceptions
 {
@@ -15,12 +14,7 @@ namespace EncoreTickets.SDK.Venue.Exceptions
 
         public ApiException SourceException { get; }
 
-        internal AccessTokenExpiredException(ApiException exception)
-            : base(
-                exception.Response as IRestResponse,
-                exception.Context,
-                exception.ContextInResponse,
-                exception.RequestInResponse)
+        internal AccessTokenExpiredException(ApiException exception) : base(exception)
         {
             SourceException = exception;
         }

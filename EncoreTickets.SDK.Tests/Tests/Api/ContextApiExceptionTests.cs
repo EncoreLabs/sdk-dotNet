@@ -17,18 +17,18 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                 new List<string>(),
                 new RestResponse {StatusDescription = "Moved"},
                 null,
-                new[] {"notValidPromotionCode"}
+                new Info[] { },
             },
             new object[]
             {
-                new List<string>(),
+                new List<string> {"notValidPromotionCode"},
                 new RestResponse {StatusDescription = "Not found"},
                 new Context {errors = new List<Error>(), info = new List<Info>()},
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
-                new List<string>(),
+                new List<string> {"notValidPromotionCode"},
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
@@ -43,11 +43,11 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         }
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
-                new List<string>(),
+                new List<string> {"notValidPromotionCode"},
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
@@ -56,7 +56,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "Some info", code = "someInfo", type = "information"}
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -72,10 +72,19 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                             message =
                                 "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
                             code = "notValidPromotionCode", type = "information", name = "coupon"
-                        }
+                        },
+                        new Info {message = "Some info", code = "someInfo", type = "information"}
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[]
+                {
+                    new Info
+                    {
+                        message =
+                            "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
+                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                    }
+                },
             },
             new object[]
             {
@@ -88,7 +97,10 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[]
+                {
+                    new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                },
             },
             new object[]
             {
@@ -111,7 +123,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "The warning", code = "warning"},
                     }
                 },
-                new[] {"notValidPromotionCode", "warning"}
+                new[]
+                {
+                    new Info
+                    {
+                        message =
+                            "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
+                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                    },
+                    new Info {message = "The warning", code = "warning"},
+                },
             },
         };
 
@@ -119,21 +140,21 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         {
             new object[]
             {
-                null,
+                "API exception occured",
                 new RestResponse {StatusDescription = "Moved"},
                 null,
-                new[] {"notValidPromotionCode"}
+                new Info[] { },
             },
             new object[]
             {
-                null,
+                "notValidPromotionCode",
                 new RestResponse {StatusDescription = "Not found"},
                 new Context {errors = new List<Error>(), info = new List<Info>()},
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
-                null,
+                "notValidPromotionCode",
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
@@ -148,11 +169,11 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         }
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
-                null,
+                "notValidPromotionCode",
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
@@ -161,7 +182,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "Some info", code = "someInfo", type = "information"}
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[] {new Info {code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -179,7 +200,15 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         }
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[]
+                {
+                    new Info
+                    {
+                        message =
+                            "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
+                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                    }
+                },
             },
             new object[]
             {
@@ -192,7 +221,10 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
                     }
                 },
-                new[] {"notValidPromotionCode"}
+                new[]
+                {
+                    new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                }
             },
             new object[]
             {
@@ -211,7 +243,16 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
                         new Info {message = "The warning", code = "warning"},
                     }
                 },
-                new[] {"notValidPromotionCode", "warning"}
+                new[]
+                {
+                    new Info
+                    {
+                        message =
+                            "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
+                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                    },
+                    new Info {message = "The warning", code = "warning"},
+                },
             },
         };
 
@@ -295,7 +336,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
 
         [TestCaseSource(nameof(SourceForErrorsProperty))]
         public void Api_ContextApiException_ErrorsProperty_ReturnsCorrectValue(List<string> expectedErrors,
-            IRestResponse response, Context context, string[] codesOfInfosAsWarnings)
+            IRestResponse response, Context context, Info[] codesOfInfosAsWarnings)
         {
             var exception = new ContextApiException(codesOfInfosAsWarnings, response, It.IsAny<ApiContext>(), context,
                 It.IsAny<Request>());
@@ -306,7 +347,8 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
         }
 
         [TestCaseSource(nameof(SourceForMessagesProperty))]
-        public void Api_ContextApiException_MessageProperty_ReturnsCorrectValue(string expected, IRestResponse response, Context context, string[] codesOfInfosAsWarnings)
+        public void Api_ContextApiException_MessageProperty_ReturnsCorrectValue(string expected, IRestResponse response,
+            Context context, Info[] codesOfInfosAsWarnings)
         {
             var exception = new ContextApiException(codesOfInfosAsWarnings, response, It.IsAny<ApiContext>(), context,
                 It.IsAny<Request>());

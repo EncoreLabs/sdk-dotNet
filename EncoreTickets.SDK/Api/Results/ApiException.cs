@@ -13,8 +13,12 @@ namespace EncoreTickets.SDK.Api.Results
     /// </summary>
     public class ApiException : Exception
     {
+        private const string DefaultMessage = "API exception occured";
+
+        private readonly string predefinedMessage;
+
         /// <inheritdoc/>
-        public override string Message => Errors.Any() ? string.Join("; ", Errors) : null;
+        public override string Message => GetMessage();
 
         /// <summary>
         /// Gets HTTP response status code.
@@ -24,7 +28,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Gets the API response errors as messages.
         /// </summary>
-        public List<string> Errors => GetErrors();
+        public virtual List<string> Errors => GetErrors();
 
         /// <summary>
         /// Gets the details of the sent request.
@@ -54,6 +58,32 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
+        public ApiException()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApiException"/>
+        /// </summary>
+        public ApiException(string message)
+        {
+            predefinedMessage = message;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApiException"/>
+        /// </summary>
+        public ApiException(ApiException sourceException) : this(
+            sourceException.Response,
+            sourceException.Context,
+            sourceException.ContextInResponse,
+            sourceException.RequestInResponse)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApiException"/>
+        /// </summary>
         public ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
             Request requestInResponse)
         {
@@ -63,11 +93,21 @@ namespace EncoreTickets.SDK.Api.Results
             Response = response;
         }
 
+        protected string GetMessage()
+        {
+            if (string.IsNullOrEmpty(predefinedMessage))
+            {
+                return Errors.Any() ? string.Join("; ", Errors) : DefaultMessage;
+            }
+
+            return predefinedMessage;
+        }
+
         /// <summary>
         /// Returns easily read errors that are the cause of the exception.
         /// </summary>
         /// <returns></returns>
-        protected virtual List<string> GetErrors()
+        protected List<string> GetErrors()
         {
             if (ContextInResponse?.errors == null)
             {
@@ -82,6 +122,17 @@ namespace EncoreTickets.SDK.Api.Results
             var contextErrors = ContextInResponse.errors.Select(ConvertErrorToString)
                 .Where(x => !string.IsNullOrEmpty(x));
             return contextErrors.ToList();
+        }
+
+        private string ConvertErrorToString(Error error)
+        {
+            var message = error.message;
+            if (!string.IsNullOrEmpty(error.field))
+            {
+                message = $"{error.field} - {message}";
+            }
+
+            return message;
         }
 
         private Dictionary<string, object> GetRequestDetails()
@@ -100,17 +151,6 @@ namespace EncoreTickets.SDK.Api.Results
             }
 
             return details;
-        }
-
-        private string ConvertErrorToString(Error error)
-        {
-            var message = error.message;
-            if (!string.IsNullOrEmpty(error.field))
-            {
-                message = $"{error.field} - {message}";
-            }
-
-            return message;
         }
 
         private void AddDynamicToDictionary(IDictionary<string, object> sourceDictionary, dynamic dynamicObject)

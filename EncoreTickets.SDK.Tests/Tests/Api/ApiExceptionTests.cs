@@ -104,7 +104,7 @@ namespace EncoreTickets.SDK.Tests.Tests.Api
             },
             new object[]
             {
-                null,
+                "API exception occured",
                 new RestResponse {StatusDescription = "Not found"},
                 new Context {errors = new List<Error>()},
             },

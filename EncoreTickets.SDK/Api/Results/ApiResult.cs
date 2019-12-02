@@ -109,14 +109,18 @@ namespace EncoreTickets.SDK.Api.Results
         public T GetDataOrContextException(IEnumerable<string> codesOfInfosAsErrors)
         {
             var data = DataOrException;
-            if (ResponseContext == null)
+            if (ResponseContext?.info == null)
             {
                 return data;
             }
 
-            var exception = new ContextApiException(codesOfInfosAsErrors, RestResponse, Context, ResponseContext,
-                RequestInResponse);
-            return exception.Errors.Any() ? throw exception : data;
+            var infosAsErrors = ResponseContext.info.Where(x => codesOfInfosAsErrors.Contains(x.code));
+            if (!infosAsErrors.Any())
+            {
+                return data;
+            }
+
+            throw new ContextApiException(infosAsErrors, RestResponse, Context, ResponseContext, RequestInResponse);
         }
 
         private void InitializeCommonParameters(T data, IRestResponse response, ApiContext context)
