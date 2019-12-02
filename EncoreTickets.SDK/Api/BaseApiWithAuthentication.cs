@@ -11,11 +11,15 @@ namespace EncoreTickets.SDK.Api
     /// </summary>
     public abstract class BaseApiWithAuthentication : BaseApi, IServiceApiWithAuthentication
     {
+        private IAuthenticationService authenticationService;
         /// <inheritdoc />
-        public virtual IAuthenticationService AuthenticationService => GetAuthenticationService(Context);
+        public virtual IAuthenticationService AuthenticationService => authenticationService ?? (authenticationService = GetAuthenticationService(Context));
 
-        protected BaseApiWithAuthentication(ApiContext context, string host) : base(context, host)
+        private bool AutomaticAuthentication { get; }
+
+        protected BaseApiWithAuthentication(ApiContext context, string host, bool automaticAuthentication = false) : base(context, host)
         {
+            AutomaticAuthentication = automaticAuthentication;
         }
 
         /// <inheritdoc />
@@ -23,6 +27,14 @@ namespace EncoreTickets.SDK.Api
         {
             const string standardLoginEndpoint = "login";
             return AuthenticationServiceFactory.Create(context, Host, standardLoginEndpoint);
+        }
+
+        protected void TriggerAutomaticAuthentication()
+        {
+            if (AutomaticAuthentication)
+            {
+                AuthenticationService.Authenticate();
+            }
         }
     }
 }

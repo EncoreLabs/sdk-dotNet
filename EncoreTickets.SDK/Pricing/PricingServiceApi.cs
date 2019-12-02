@@ -21,7 +21,8 @@ namespace EncoreTickets.SDK.Pricing
         /// Default constructor.
         /// </summary>
         /// <param name="context"></param>
-        public PricingServiceApi(ApiContext context) : base(context, PricingHost)
+        /// /// <param name="automaticAuthentication"></param>
+        public PricingServiceApi(ApiContext context, bool automaticAuthentication = false) : base(context, PricingHost, automaticAuthentication)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
@@ -29,6 +30,7 @@ namespace EncoreTickets.SDK.Pricing
         /// <inheritdoc />
         public ResponseForPage<ExchangeRate> GetExchangeRates(ExchangeRatesParameters parameters)
         {
+            TriggerAutomaticAuthentication();
             var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(
                 "v2/admin/exchange_rates",
                 RequestMethod.Get,

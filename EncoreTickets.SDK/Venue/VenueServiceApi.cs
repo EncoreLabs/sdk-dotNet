@@ -24,7 +24,8 @@ namespace EncoreTickets.SDK.Venue
         /// Default constructor for the Venue service
         /// </summary>
         /// <param name="context"></param>
-        public VenueServiceApi(ApiContext context) : base(context, VenueHost)
+        /// <param name="automaticAuthentication"></param>
+        public VenueServiceApi(ApiContext context, bool automaticAuthentication = false) : base(context, VenueHost, automaticAuthentication)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
