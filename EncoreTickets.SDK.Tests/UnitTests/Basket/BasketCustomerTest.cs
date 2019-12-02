@@ -1,7 +1,7 @@
 ﻿using EncoreTickets.SDK.Basket.Models;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Basket
+namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 {
     internal class BasketCustomerTest
     {

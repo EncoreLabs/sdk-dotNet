@@ -2,7 +2,7 @@
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Venue
+namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 {
     internal class VenueVenuesResponseTests
     {
