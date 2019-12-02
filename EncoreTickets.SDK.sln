@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK", "Encore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.ConsoleTester", "EncoreTickets.ConsoleTester\EncoreTickets.ConsoleTester.csproj", "{3C02916E-8E11-4C0A-919B-74D939E1B343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

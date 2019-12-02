@@ -1,11 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime;
-using Amazon.Runtime.CredentialManagement;
-using Amazon.SQS;
 using EncoreTickets.SDK.Api.Context;
 using Microsoft.Extensions.Configuration;
 
