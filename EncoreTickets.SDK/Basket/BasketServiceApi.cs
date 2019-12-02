@@ -1,20 +1,20 @@
 ﻿using System.Net;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
-using EncoreTickets.SDK.EntertainApi;
 
 namespace EncoreTickets.SDK.Basket
 {
-    /// <inheritdoc cref="BaseEntertainApi" />
+    /// <inheritdoc cref="BaseApi" />
     /// <inheritdoc cref="IBasketServiceApi" />
     /// <summary>
     /// The wrapper class for the Basket service API.
     /// </summary>
-    public class BasketServiceApi : BaseEntertainApi, IBasketServiceApi
+    public class BasketServiceApi : BaseApi, IBasketServiceApi
     {
         /// <summary>
         /// Default constructor for the Basket service.
