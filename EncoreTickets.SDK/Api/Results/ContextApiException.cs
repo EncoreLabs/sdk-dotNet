@@ -11,31 +11,51 @@ namespace EncoreTickets.SDK.Api.Results
     /// </summary>
     public class ContextApiException : ApiException
     {
-        private readonly IEnumerable<string> codesOfInfos;
+        /// <inheritdoc />
+        public override List<string> Errors => GetContextErrorsAsStrings();
+
+        public readonly IEnumerable<Info> ContextErrors;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ContextApiException"/>
+        /// </summary>
+        public ContextApiException(IEnumerable<Info> infosAsErrors)
+        {
+            ContextErrors = infosAsErrors;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ContextApiException"/>
+        /// </summary>
+        public ContextApiException(ContextApiException sourceException) : this(
+            sourceException.ContextErrors,
+            sourceException.Response,
+            sourceException.Context,
+            sourceException.ContextInResponse,
+            sourceException.RequestInResponse)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContextApiException"/>
         /// </summary>
         public ContextApiException(
-            IEnumerable<string> codesOfInfosAsErrors,
+            IEnumerable<Info> infosAsErrors,
             IRestResponse response,
             ApiContext requestContext,
             Response.Context contextInResponse,
             Request requestInResponse)
             : base(response, requestContext, contextInResponse, requestInResponse)
         {
-            codesOfInfos = codesOfInfosAsErrors;
+            ContextErrors = infosAsErrors;
         }
 
-        /// <inheritdoc />
-        protected override List<string> GetErrors()
+        private List<string> GetContextErrorsAsStrings()
         {
-            var infosAsErrors = ContextInResponse?.info?.Where(x => codesOfInfos.Contains(x.code));
-            var errors = infosAsErrors?.Select(ConvertInfoToString).ToList() ?? new List<string>();
-            return errors;
+            return ContextErrors?.Select(ConvertInfoToString).ToList();
         }
 
-        private string ConvertInfoToString(Info info)
+        private static string ConvertInfoToString(Info info)
         {
             return string.IsNullOrEmpty(info.message) ? info.code : info.message;
         }
