@@ -1,6 +1,5 @@
 ﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Pricing;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.IntegrationTests
