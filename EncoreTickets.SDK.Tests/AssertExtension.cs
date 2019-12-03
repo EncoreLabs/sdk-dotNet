@@ -42,7 +42,7 @@ namespace EncoreTickets.SDK.Tests
         {
             var isString = actualValue is string;
             var isEnumerable = actualValue is IEnumerable;
-            return !(isEnumerable && !isString);
+            return !isEnumerable || isString;
         }
     }
 }

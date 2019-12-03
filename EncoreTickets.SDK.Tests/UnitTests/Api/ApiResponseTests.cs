@@ -1,7 +1,7 @@
 ﻿using EncoreTickets.SDK.Api.Results.Response;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Api
+namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiResponseTests
     {

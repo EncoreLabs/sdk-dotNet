@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK", "EncoreTickets.SDK\EncoreTickets.SDK.csproj", "{17B29BB0-FC00-4B1A-8559-9D0436C003B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.ConsoleTester", "EncoreTickets.ConsoleTester\EncoreTickets.ConsoleTester.csproj", "{3C02916E-8E11-4C0A-919B-74D939E1B343}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{17B29BB0-FC00-4B1A-8559-9D0436C003B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17B29BB0-FC00-4B1A-8559-9D0436C003B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17B29BB0-FC00-4B1A-8559-9D0436C003B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C02916E-8E11-4C0A-919B-74D939E1B343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C02916E-8E11-4C0A-919B-74D939E1B343}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C02916E-8E11-4C0A-919B-74D939E1B343}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C02916E-8E11-4C0A-919B-74D939E1B343}.Release|Any CPU.Build.0 = Release|Any CPU
 		{48098143-B237-4664-B18D-3E721C651871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48098143-B237-4664-B18D-3E721C651871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48098143-B237-4664-B18D-3E721C651871}.Release|Any CPU.ActiveCfg = Release|Any CPU

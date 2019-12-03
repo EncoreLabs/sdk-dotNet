@@ -3,7 +3,7 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Utilities;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Utilities
+namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
 {
     internal class UtilitiesEnvironmentHelperTests
     {

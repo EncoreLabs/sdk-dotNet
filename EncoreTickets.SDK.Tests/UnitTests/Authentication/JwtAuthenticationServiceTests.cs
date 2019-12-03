@@ -8,7 +8,7 @@ using EncoreTickets.SDK.Authentication.Models;
 using Moq;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Authentication
+namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 {
     internal class JwtAuthenticationServiceTests : JwtAuthenticationService
     {

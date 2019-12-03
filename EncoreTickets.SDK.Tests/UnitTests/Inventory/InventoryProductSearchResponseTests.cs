@@ -3,7 +3,7 @@ using EncoreTickets.SDK.Inventory.Models;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Inventory
+namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 {
     internal class InventoryProductSearchResponseTests
     {
