@@ -5,16 +5,17 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
+    [TestFixture]
     class PricingServiceTests
     {
-        private readonly IConfiguration configuration;
-        private readonly PricingServiceApi service;
+        private PricingServiceApi service;
 
-        public PricingServiceTests()
+        [SetUp]
+        public void SetupState()
         {
-            configuration = ConfigurationHelper.GetConfiguration();
+            var configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"]);
-            service = new PricingServiceApi(context);
+            service = new PricingServiceApi(context, true);
         }
 
         [Test]

@@ -12,12 +12,14 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
+    [TestFixture]
     class BasketServiceTests
     {
-        private readonly IConfiguration configuration;
-        private readonly BasketServiceApi service;
+        private IConfiguration configuration;
+        private BasketServiceApi service;
 
-        public BasketServiceTests()
+        [SetUp]
+        public void SetupState()
         {
             configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA);

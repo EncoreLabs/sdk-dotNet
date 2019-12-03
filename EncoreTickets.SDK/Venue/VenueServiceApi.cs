@@ -51,6 +51,7 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public Models.Venue UpdateVenueById(Models.Venue venue)
         {
+            TriggerAutomaticAuthentication();
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
                 $"v1/admin/venues/{venue.internalId}",
                 RequestMethod.Post,
@@ -85,6 +86,7 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
         {
+            TriggerAutomaticAuthentication();
             var result = Executor.ExecuteApiWithWrappedResponse<StandardAttribute>(
                 "v1/admin/attributes",
                 RequestMethod.Patch,
@@ -95,6 +97,7 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
         {
+            TriggerAutomaticAuthentication();
             const string successStatus = "Success";
             var body = new SeatAttributesRequest { seats = seatAttributes };
             var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
