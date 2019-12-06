@@ -1,6 +1,4 @@
-﻿using EncoreTickets.SDK.Inventory.Models;
-
-namespace EncoreTickets.SDK.Basket.Models
+﻿namespace EncoreTickets.SDK.Basket.Models
 {
     public class Delivery
     {

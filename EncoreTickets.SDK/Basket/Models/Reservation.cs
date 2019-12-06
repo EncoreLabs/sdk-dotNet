@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Inventory.Models;
 
 namespace EncoreTickets.SDK.Basket.Models
 {
