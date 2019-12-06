@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetBasketTotalInOfficeCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.adjustedSalePriceInOfficeCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalAdjustedAmountInOfficeCurrency());
 
         /// <summary>
         /// Gets total adjusted amount in shopper currency.
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetBasketTotalInShopperCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.adjustedSalePriceInShopperCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalAdjustedAmountInShopperCurrency());
 
         /// <summary>
         /// Gets total adjustment amount in office currency.
@@ -61,7 +61,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalDiscountInOfficeCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.adjustmentAmountInOfficeCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalAdjustmentAmountInOfficeCurrency());
 
         /// <summary>
         /// Gets total adjustment amount in shopper currency.
@@ -69,7 +69,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalDiscountInShopperCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.adjustmentAmountInShopperCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalAdjustmentAmountInShopperCurrency());
 
         /// <summary>
         /// Gets total face value in office currency.
@@ -77,7 +77,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalFaceValueInOfficeCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.faceValueInOfficeCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalFaceValueInOfficeCurrency());
 
         /// <summary>
         /// Gets total face value in shopper currency.
@@ -85,7 +85,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalFaceValueInShopperCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.faceValueInShopperCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalFaceValueInShopperCurrency());
 
         /// <summary>
         /// Gets total sale price without any adjustments in office currency.
@@ -93,7 +93,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalSalePriceInOfficeCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.salePriceInOfficeCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalSalePriceInOfficeCurrency());
 
         /// <summary>
         /// Gets total sale price without any adjustments in office currency.
@@ -101,7 +101,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static Price GetTotalSalePriceInShopperCurrency(this BasketDetails basketDetails)
-            => basketDetails.GetTotalFromAllReservations(r => r.salePriceInShopperCurrency);
+            => basketDetails.GetTotalFromAllReservations(r => r.GetTotalSalePriceInShopperCurrency());
 
         /// <summary>
         /// Gets basket total without delivery.
@@ -112,25 +112,13 @@ namespace EncoreTickets.SDK.Basket.Extensions
         {
             var total = basketDetails.GetBasketTotalInOfficeCurrency();
             return total != null && basketDetails.delivery?.charge != null
-                ? new Price
-                {
-                    value = total.value - basketDetails.delivery.charge.value,
-                    currency = total.currency,
-                    decimalPlaces = total.decimalPlaces
-                }
+                ? total - basketDetails.delivery.charge
                 : total;
         }
 
-        private static Price GetTotalFromAllReservations(this BasketDetails basketDetails, Func<Reservation, Price> priceFunc)
-        {
-            return basketDetails.reservations?.Count > 0 ?
-                new Price
-                {
-                    value = basketDetails.reservations.Sum(r => (priceFunc(r).value ?? 0) * r.quantity),
-                    currency = priceFunc(basketDetails.reservations[0]).currency,
-                    decimalPlaces = priceFunc(basketDetails.reservations[0]).decimalPlaces
-                }
+        private static Price GetTotalFromAllReservations(this BasketDetails basketDetails, Func<Reservation, Price> priceFunc) 
+             => basketDetails.reservations?.Count > 0 ? 
+                basketDetails.reservations.Select(priceFunc).Aggregate((x, y) => x + y) 
                 : null;
-        }
     }
 }

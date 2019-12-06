@@ -5,7 +5,6 @@ using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Inventory.Models;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 {
