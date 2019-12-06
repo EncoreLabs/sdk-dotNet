@@ -1,4 +1,4 @@
-﻿using EncoreTickets.SDK.Api.Results;
+﻿using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;

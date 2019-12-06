@@ -1,11 +1,11 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Utilities.Enums;
 
-namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
+namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 {
     /// <summary>
     /// Credentials for <see cref="RestClientWrapper"/>
     /// </summary>
-    internal class RestClientWrapperCredentials
+    public class RestClientWrapperCredentials
     {
         /// <summary>
         /// Gets or sets an authentication method for the credentials.

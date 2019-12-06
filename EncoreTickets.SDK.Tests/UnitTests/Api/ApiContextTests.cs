@@ -1,6 +1,4 @@
-﻿using System;
-using EncoreTickets.SDK.Api.Context;
-using Moq;
+﻿using EncoreTickets.SDK.Api.Context;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api
@@ -56,20 +54,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             },
         };
 
-        private static readonly object[] SourceForOnErrorOccurredTest =
-        {
-            new object[]
-            {
-                new EventHandler<ApiErrorEventArgs>((sender, args) => { }),
-                true
-            },
-            new object[]
-            {
-                null,
-                false
-            },
-        };
-
         [TestCaseSource(nameof(SourceForConstructorTest))]
         public void Api_ApiContext_Constructor_InitializesEnvironment(ApiContext context, Environments expected)
         {
@@ -92,17 +76,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             const string token = "acess_token";
             var context = new ApiContext(Environments.Sandbox, token);
             Assert.AreEqual(token, context.AccessToken);
-        }
-
-        [TestCaseSource(nameof(SourceForOnErrorOccurredTest))]
-        public void Api_ApiContext_OnErrorOccurred_ReturnsCorrectly(EventHandler<ApiErrorEventArgs> apiError, bool expected)
-        {
-            ApiContext.ApiError += apiError;
-
-            var result = ApiContext.OnErrorOccurred(It.IsAny<object>(), It.IsAny<ApiErrorEventArgs>());
-            Assert.AreEqual(expected, result);
-
-            ApiContext.ApiError -= apiError;
         }
     }
 }

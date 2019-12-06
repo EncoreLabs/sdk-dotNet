@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Venue.Models
 {
-    public class SeatAttribute : IObject
+    public class SeatAttribute
     {
         public string seatIdentifier { get; set; }
 

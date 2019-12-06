@@ -1,17 +1,16 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Pricing.Models
 {
     /// <summary>
     /// Exchange rate DTO
     /// </summary>
-    public class ExchangeRate : IObject
+    public class ExchangeRate
     {
         /// <summary>
         /// Gets or sets an internal API ID.
         /// </summary>
-        public int id { get; }
+        public int id { get; set; }
 
         /// <summary>
         /// Gets or sets a code of the source currency.

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Venue.Models;
 
 namespace EncoreTickets.SDK.Venue

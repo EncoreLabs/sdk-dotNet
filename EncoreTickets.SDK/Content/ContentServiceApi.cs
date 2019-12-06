@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Content
 {

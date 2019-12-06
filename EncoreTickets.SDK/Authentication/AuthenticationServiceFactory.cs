@@ -1,5 +1,6 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Authentication
 {

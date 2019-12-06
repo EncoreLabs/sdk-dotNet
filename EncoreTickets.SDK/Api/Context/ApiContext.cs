@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Context
 {
@@ -7,11 +7,6 @@ namespace EncoreTickets.SDK.Api.Context
     /// </summary>
     public class ApiContext
     {
-        /// <summary>
-        /// The event that occurs when an error occurred.
-        /// </summary>
-        public static event EventHandler<ApiErrorEventArgs> ApiError;
-
         /// <summary>
         /// Gets the Nova user name of the user that your API calls will run as.
         /// </summary>
@@ -77,25 +72,8 @@ namespace EncoreTickets.SDK.Api.Context
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext() : this(Environments.Production)
-        { 
-            TimeoutMilliseconds = 120000;
-        }
-
-        /// <summary>
-        /// Called when an error occurred.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ApiErrorEventArgs"/> instance containing the event data.</param>
-        /// <returns>if handled</returns>
-        public static bool OnErrorOccurred(object sender, ApiErrorEventArgs e)
         {
-            if (ApiError == null)
-            {
-                return false;
-            }
-
-            ApiError(sender, e);
-            return true;
+            TimeoutMilliseconds = 120000;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Pricing.Models;
 using EncoreTickets.SDK.Pricing.Models.RequestModels;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Pricing
 {

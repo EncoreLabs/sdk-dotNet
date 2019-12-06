@@ -1,9 +1,9 @@
-﻿namespace EncoreTickets.SDK.Api.Helpers
+﻿namespace EncoreTickets.SDK.Utilities.Enums
 {
     /// <summary>
     /// Available API request formats.
     /// </summary>
-    internal enum RequestFormat
+    public enum RequestFormat
     {
         Xml,
         Json

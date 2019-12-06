@@ -1,8 +1,6 @@
-﻿using EncoreTickets.SDK.Interfaces;
-
-namespace EncoreTickets.SDK.Venue.Models
+﻿namespace EncoreTickets.SDK.Venue.Models
 {
-    public class StandardAttribute : IObject
+    public class StandardAttribute
     {
         public string title { get; set; }
 

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Venue.Models
 {
-    public class Venue : IObject
+    public class Venue
     {
         public string compositeId { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Authentication.Models;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Authentication
 {

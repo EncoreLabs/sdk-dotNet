@@ -1,5 +1,5 @@
-﻿using EncoreTickets.SDK.Api.Results.Response;
-using EncoreTickets.SDK.Interfaces;
+﻿using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Pricing.Models;
 using EncoreTickets.SDK.Pricing.Models.RequestModels;
 

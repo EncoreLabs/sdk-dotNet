@@ -1,6 +1,5 @@
 ﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Api
 {
@@ -12,6 +11,7 @@ namespace EncoreTickets.SDK.Api
     public abstract class BaseApiWithAuthentication : BaseApi, IServiceApiWithAuthentication
     {
         private IAuthenticationService authenticationService;
+
         /// <inheritdoc />
         public virtual IAuthenticationService AuthenticationService => authenticationService ?? (authenticationService = GetAuthenticationService(Context));
 

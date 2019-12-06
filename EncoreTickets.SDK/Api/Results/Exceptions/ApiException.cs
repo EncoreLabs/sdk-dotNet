@@ -6,7 +6,7 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Response;
 using RestSharp;
 
-namespace EncoreTickets.SDK.Api.Results
+namespace EncoreTickets.SDK.Api.Results.Exceptions
 {
     /// <summary>
     /// The base exception for failed API requests.
