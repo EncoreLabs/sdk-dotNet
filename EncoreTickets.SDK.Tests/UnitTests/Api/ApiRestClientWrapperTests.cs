@@ -9,7 +9,7 @@ using NUnit.Framework;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace EncoreTickets.SDK.Tests.Tests.Api
+namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiRestClientWrapperTests
     {

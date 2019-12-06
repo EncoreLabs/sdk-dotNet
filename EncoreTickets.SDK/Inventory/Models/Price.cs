@@ -1,6 +1,8 @@
-﻿namespace EncoreTickets.SDK.Inventory.Models
+﻿using EncoreTickets.SDK.Utilities.CommonModels;
+
+namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Price
+    public class Price : IPriceWithCurrency
     {
         public int? value { get; set; }
 

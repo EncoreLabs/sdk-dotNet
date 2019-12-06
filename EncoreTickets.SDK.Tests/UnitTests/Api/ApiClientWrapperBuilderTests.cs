@@ -6,7 +6,7 @@ using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Api
+namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
