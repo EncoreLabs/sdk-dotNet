@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Basket.Extensions
 {
@@ -112,13 +112,13 @@ namespace EncoreTickets.SDK.Basket.Extensions
         {
             var total = basketDetails.GetBasketTotalInOfficeCurrency();
             return total != null && basketDetails.delivery?.charge != null
-                ? total - basketDetails.delivery.charge
+                ? total.Subtract(basketDetails.delivery.charge)
                 : total;
         }
 
         private static Price GetTotalFromAllReservations(this BasketDetails basketDetails, Func<Reservation, Price> priceFunc) 
-             => basketDetails.reservations?.Count > 0 ? 
-                basketDetails.reservations.Select(priceFunc).Aggregate((x, y) => x + y) 
-                : null;
+             => basketDetails.reservations?.Count > 0 
+                 ? basketDetails.reservations.Select(priceFunc).Aggregate((x, y) => x.Add(y)) 
+                 : null;
     }
 }

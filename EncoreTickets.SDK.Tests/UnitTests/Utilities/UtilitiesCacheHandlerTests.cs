@@ -3,7 +3,7 @@ using EncoreTickets.SDK.Utilities.Common;
 using Moq;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.Tests.Utilities
+namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
 {
     internal class UtilitiesCacheHandlerTests
     {

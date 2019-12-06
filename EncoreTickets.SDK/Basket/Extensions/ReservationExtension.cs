@@ -1,5 +1,5 @@
 ﻿using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Basket.Extensions
 {
@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalAdjustedAmountInOfficeCurrency(this Reservation reservation) 
-            => reservation.adjustedSalePriceInOfficeCurrency * reservation.quantity;
+            => reservation.adjustedSalePriceInOfficeCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total adjusted amount in shopper currency for the reservation.
@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalAdjustedAmountInShopperCurrency(this Reservation reservation) 
-            => reservation.adjustedSalePriceInShopperCurrency * reservation.quantity;
+            => reservation.adjustedSalePriceInShopperCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total adjustment amount in office currency for the reservation.
@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalAdjustmentAmountInOfficeCurrency(this Reservation reservation) 
-            => reservation.adjustmentAmountInOfficeCurrency * reservation.quantity;
+            => reservation.adjustmentAmountInOfficeCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total adjustment amount in shopper currency for the reservation.
@@ -35,7 +35,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalAdjustmentAmountInShopperCurrency(this Reservation reservation)
-            => reservation.adjustmentAmountInShopperCurrency * reservation.quantity;
+            => reservation.adjustmentAmountInShopperCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total sale price in office currency for the reservation.
@@ -43,7 +43,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalSalePriceInOfficeCurrency(this Reservation reservation) 
-            => reservation.salePriceInOfficeCurrency * reservation.quantity;
+            => reservation.salePriceInOfficeCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total sale price in shopper currency for the reservation.
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalSalePriceInShopperCurrency(this Reservation reservation) 
-            => reservation.salePriceInShopperCurrency * reservation.quantity;
+            => reservation.salePriceInShopperCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total face value in office currency for the reservation.
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalFaceValueInOfficeCurrency(this Reservation reservation) 
-            => reservation.faceValueInOfficeCurrency * reservation.quantity;
+            => reservation.faceValueInOfficeCurrency.MultiplyByNumber(reservation.quantity);
 
         /// <summary>
         /// Gets total face value in shopper currency for the reservation.
@@ -67,6 +67,6 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="reservation"></param>
         /// <returns></returns>
         public static Price GetTotalFaceValueInShopperCurrency(this Reservation reservation) 
-            => reservation.faceValueInShopperCurrency * reservation.quantity;
+            => reservation.faceValueInShopperCurrency.MultiplyByNumber(reservation.quantity);
     }
 }

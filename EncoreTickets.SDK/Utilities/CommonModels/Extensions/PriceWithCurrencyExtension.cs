@@ -1,0 +1,66 @@
+﻿using System;
+using EncoreTickets.SDK.Utilities.Exceptions;
+
+namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
+{
+    public static class PriceWithCurrencyExtension
+    {
+        /// <summary>
+        /// Adds two prices together.
+        /// </summary>
+        /// <param name="firstPrice"></param>
+        /// <param name="secondPrice"></param>
+        /// <returns>The Price where value is the sum of the two operands' values and the currency is the same as operands'.</returns>
+        /// <exception cref="CurrenciesDontMatchException">When currencies or numbers of decimal places differ between operands.</exception>
+        public static T Add<T>(this T firstPrice, T secondPrice) 
+            where T : class, IPriceWithCurrency, new()
+            => firstPrice.PerformArithmeticOperation(secondPrice, (x, y) => x + y);
+
+        /// <summary>
+        /// Subtracts one price from another.
+        /// </summary>
+        /// <param name="firstPrice"></param>
+        /// <param name="secondPrice"></param>
+        /// <returns>The Price where value is the difference of the first and second operand values and the currency is the same as operands'.</returns>
+        /// <exception cref="CurrenciesDontMatchException">When currencies or numbers of decimal places differ between operands.</exception>
+        public static T Subtract<T>(this T firstPrice, T secondPrice) 
+            where T : class, IPriceWithCurrency, new() 
+            => firstPrice.PerformArithmeticOperation(secondPrice, (x, y) => x - y);
+
+        /// <summary>
+        /// Multiplies a price by a number.
+        /// </summary>
+        /// <param name="price"></param>
+        /// <param name="number"></param>
+        /// <returns>The Price where value is the product of the original price and the number and the currency is the same as original price's.</returns>
+        public static T MultiplyByNumber<T>(this T price, int number) 
+            where T : class, IPriceWithCurrency, new() 
+            => price != null 
+                ? new T
+                {
+                    currency = price.currency,
+                    decimalPlaces = price.decimalPlaces,
+                    value = (price.value ?? 0) * number
+                }
+                : null;
+
+        private static T PerformArithmeticOperation<T>(this T firstPrice, T secondPrice, Func<int, int, int> operation)
+            where T : class, IPriceWithCurrency, new()
+        {
+            if (firstPrice == null || secondPrice == null)
+            {
+                return null;
+            }
+            if (firstPrice.currency != secondPrice.currency || firstPrice.decimalPlaces != secondPrice.decimalPlaces)
+            {
+                throw new CurrenciesDontMatchException();
+            }
+            return new T
+            {
+                currency = firstPrice.currency,
+                decimalPlaces = firstPrice.decimalPlaces,
+                value = operation(firstPrice.value ?? 0, secondPrice.value ?? 0)
+            };
+        }
+    }
+}

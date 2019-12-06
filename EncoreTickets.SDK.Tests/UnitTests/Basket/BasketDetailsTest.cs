@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Inventory.Models;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
