@@ -1,10 +1,11 @@
-﻿using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Authentication.Models;
+using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
 using NUnit.Framework;
 

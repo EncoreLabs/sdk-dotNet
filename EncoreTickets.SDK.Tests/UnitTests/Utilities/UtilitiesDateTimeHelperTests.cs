@@ -1,4 +1,4 @@
-﻿using EncoreTickets.SDK.Utilities;
+﻿using EncoreTickets.SDK.Utilities.Business;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities

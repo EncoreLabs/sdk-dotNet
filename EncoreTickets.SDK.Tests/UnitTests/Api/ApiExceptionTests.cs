@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using Moq;
 using NUnit.Framework;

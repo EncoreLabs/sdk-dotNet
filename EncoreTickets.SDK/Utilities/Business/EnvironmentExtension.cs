@@ -1,7 +1,7 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Context;
 
-namespace EncoreTickets.SDK.Utilities
+namespace EncoreTickets.SDK.Utilities.Business
 {
     public static class EnvironmentExtension
     {

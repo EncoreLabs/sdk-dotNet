@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Api.Helpers
+﻿namespace EncoreTickets.SDK.Utilities.Enums
 {
     /// <summary>
     /// Available API request methods.

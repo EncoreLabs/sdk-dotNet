@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.Enums;
 
-namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
+namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 {
     /// <summary>
     /// Parameters for requests of <see cref="RestClientWrapper"/>
     /// </summary>
-    internal class RestClientParameters
+    public class RestClientParameters
     {
         /// <summary>
         /// Gets or sets site URL.

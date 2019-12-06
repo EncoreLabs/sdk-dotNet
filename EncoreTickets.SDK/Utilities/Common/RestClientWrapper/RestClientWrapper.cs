@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Utilities.Enums;
 using Polly;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace EncoreTickets.SDK.Api.Helpers.RestClientWrapper
+namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 {
     /// <summary>
     /// Helper class for working with RestSharp classes.
     /// </summary>
-    internal class RestClientWrapper
+    public class RestClientWrapper
     {
         private const int MaxExecutionsCount = 2;
 

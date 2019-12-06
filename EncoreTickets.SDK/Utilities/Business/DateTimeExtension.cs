@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EncoreTickets.SDK.Utilities
+namespace EncoreTickets.SDK.Utilities.Business
 {
     /// <summary>
     /// The extensions for DateTime class.

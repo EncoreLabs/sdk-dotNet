@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;

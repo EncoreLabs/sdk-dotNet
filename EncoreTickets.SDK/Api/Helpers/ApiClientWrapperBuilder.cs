@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Enums;
 
-namespace EncoreTickets.SDK.Api
+namespace EncoreTickets.SDK.Api.Helpers
 {
     /// <summary>
     /// Helper class for creating entities for the rest client wrapper of API services.

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Helpers.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
 using NUnit.Framework;
 

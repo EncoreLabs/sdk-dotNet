@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Api.Context
+﻿namespace EncoreTickets.SDK.Utilities.Enums
 {
     /// <summary>
     /// The type of authentication.

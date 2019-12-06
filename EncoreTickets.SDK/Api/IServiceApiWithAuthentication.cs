@@ -1,7 +1,7 @@
 ﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
 
-namespace EncoreTickets.SDK.Interfaces
+namespace EncoreTickets.SDK.Api
 {
     /// <summary>
     /// The interface of a service which allows an authentication.

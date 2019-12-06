@@ -1,6 +1,7 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
 using NUnit.Framework;
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Enums;
 using RestSharp;
 
-namespace EncoreTickets.SDK.Api
+namespace EncoreTickets.SDK.Api.Helpers
 {
     /// <summary>
     /// API requests executor.

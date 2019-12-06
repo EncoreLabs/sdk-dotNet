@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 
 namespace EncoreTickets.SDK.Venue.Exceptions
 {

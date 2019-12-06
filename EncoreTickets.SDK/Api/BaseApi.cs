@@ -1,4 +1,5 @@
 ﻿using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 
 namespace EncoreTickets.SDK.Api
 {

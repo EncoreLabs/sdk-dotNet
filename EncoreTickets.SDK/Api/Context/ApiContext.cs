@@ -1,4 +1,6 @@
-﻿namespace EncoreTickets.SDK.Api.Context
+﻿using EncoreTickets.SDK.Utilities.Enums;
+
+namespace EncoreTickets.SDK.Api.Context
 {
     /// <summary>
     /// The context for requests to API.

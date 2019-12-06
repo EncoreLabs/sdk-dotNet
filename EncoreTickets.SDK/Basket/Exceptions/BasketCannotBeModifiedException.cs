@@ -1,4 +1,5 @@
 ﻿using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 
 namespace EncoreTickets.SDK.Basket.Exceptions
 {

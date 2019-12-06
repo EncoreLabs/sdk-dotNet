@@ -1,5 +1,5 @@
 ﻿using System;
-using EncoreTickets.SDK.Utilities;
+using EncoreTickets.SDK.Utilities.Common;
 using Moq;
 using NUnit.Framework;
 

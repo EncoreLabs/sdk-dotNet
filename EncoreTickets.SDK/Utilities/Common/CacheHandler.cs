@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EncoreTickets.SDK.Utilities
+namespace EncoreTickets.SDK.Utilities.Common
 {
     /// <summary>
     /// Cache Handler class
     /// </summary>
-    /// // TODO: complete this class!
+    /// // TODO: APS-1935 - complete this class!
     public class CacheHandler
     {
         /// <summary>
