@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Api.Results.Response
 {
@@ -9,7 +8,6 @@ namespace EncoreTickets.SDK.Api.Results.Response
     /// </summary>
     /// <typeparam name="T">Model type</typeparam>
     public class ResponseForPage<T> : IEnumerable<T>
-        where T : IObject
     {
         /// <summary>
         /// Gets or sets the collection of received items.

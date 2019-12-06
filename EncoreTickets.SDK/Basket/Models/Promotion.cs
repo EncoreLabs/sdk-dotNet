@@ -1,9 +1,8 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Basket.Models
 {
-    public class Promotion : IIdentifiableObject
+    public class Promotion
     {
         public string id { get; set; }
 

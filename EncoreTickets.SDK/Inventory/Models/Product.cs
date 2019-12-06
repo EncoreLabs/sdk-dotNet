@@ -1,9 +1,8 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Product : IIdentifiableObject
+    public class Product
     {
         public string id { get; set; }
 

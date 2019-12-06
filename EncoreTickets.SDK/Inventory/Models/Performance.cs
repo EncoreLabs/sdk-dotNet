@@ -1,9 +1,8 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Performance : IObject
+    public class Performance
     {
         public DateTime datetime { get; set; }
 
