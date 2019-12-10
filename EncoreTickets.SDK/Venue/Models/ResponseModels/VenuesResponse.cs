@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Venue.Models.ResponseModels
     internal class VenuesResponse : BaseWrappedApiResponse<VenuesResponseContent, List<Venue>>
     {
         /// <inheritdoc/>
-        public override List<Venue> Data => response.Results;
+        public override List<Venue> Data => Response.Results;
     }
 
     internal class VenuesResponseContent

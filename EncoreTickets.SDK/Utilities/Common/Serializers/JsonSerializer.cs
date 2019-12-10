@@ -11,7 +11,8 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
     {
         private readonly Newtonsoft.Json.JsonSerializer defaultSerializer = new Newtonsoft.Json.JsonSerializer
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc
         };
 
         private readonly Newtonsoft.Json.JsonSerializer serializer;

@@ -100,7 +100,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             const string successStatus = "Success";
             var body = new SeatAttributesRequest { Seats = seatAttributes };
-            var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+            var result = Executor.ExecuteApiWithWrappedResponse<string>(
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,
                 body);

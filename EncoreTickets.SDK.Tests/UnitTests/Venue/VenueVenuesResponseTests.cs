@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             var venue2 = new SDK.Venue.Models.Venue();
             var response = new VenuesResponse
             {
-                response = new VenuesResponseContent
+                Response = new VenuesResponseContent
                 {
                     Results = new List<SDK.Venue.Models.Venue> { venue1, venue2 }
                 }
