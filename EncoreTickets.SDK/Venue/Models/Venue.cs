@@ -5,30 +5,30 @@ namespace EncoreTickets.SDK.Venue.Models
 {
     public class Venue
     {
-        public string compositeId { get; set; }
+        public string CompositeId { get; set; }
 
-        public string internalId { get; set; }
+        public string InternalId { get; set; }
 
-        public string title { get; set; }
+        public string Title { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public Address address { get; set; }
+        public Address Address { get; set; }
 
-        public SeatSettings seatSettings { get; set; }
+        public SeatSettings SeatSettings { get; set; }
 
-        public List<object> seatLayouts { get; set; }
+        public List<object> SeatLayouts { get; set; }
 
-        public List<VenueTerminal> venueTerminals { get; set; }
+        public List<VenueTerminal> VenueTerminals { get; set; }
 
-        public List<Facility> facilities { get; set; }
+        public List<Facility> Facilities { get; set; }
 
-        public List<object> transportAttributes { get; set; }
+        public List<object> TransportAttributes { get; set; }
 
-        public DateTime? contentOverriddenAt { get; set; }
+        public DateTime? ContentOverriddenAt { get; set; }
 
-        public DateTime? createdAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
-        public DateTime? updatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

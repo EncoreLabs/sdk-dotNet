@@ -255,7 +255,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     It.IsAny<Context>(),
                     It.IsAny<Request>()));
 
-            var result = GetSeatAttributes(new SDK.Venue.Models.Venue { internalId = venueId });
+            var result = GetSeatAttributes(new SDK.Venue.Models.Venue { InternalId = venueId });
 
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
                 It.Is<string>(x => x.Contains(venueId)),
@@ -289,7 +289,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             Assert.Catch<ApiException>(() =>
             {
-                var result = GetSeatAttributes(new SDK.Venue.Models.Venue { internalId = venueId });
+                var result = GetSeatAttributes(new SDK.Venue.Models.Venue { InternalId = venueId });
             });
 
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
@@ -368,7 +368,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         [Test]
         public void Venue_VenueServiceApi_UpsertStandardAttributeByTitle_IfSuccess_ReturnsUpdated()
         {
-            var attribute = new StandardAttribute { description = "desc", title = "title", intention = "" };
+            var attribute = new StandardAttribute { Description = "desc", Title = "title", Intention = "" };
             executorMock
                 .Setup(x => x.ExecuteApiWithWrappedResponse<StandardAttribute>(
                     It.IsAny<string>(),
@@ -399,7 +399,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         [Test]
         public void Venue_VenueServiceApi_UpsertStandardAttributeByTitle_IfNotSuccess_ThrowsApiException()
         {
-            var attribute = new StandardAttribute { description = "desc", title = "title", intention = "" };
+            var attribute = new StandardAttribute { Description = "desc", Title = "title", Intention = "" };
             executorMock
                 .Setup(x => x.ExecuteApiWithWrappedResponse<StandardAttribute>(
                     It.IsAny<string>(),
@@ -454,7 +454,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
                 true), Times.Once);
@@ -486,7 +486,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
                 true), Times.Once);
@@ -521,7 +521,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
                 true), Times.Once);

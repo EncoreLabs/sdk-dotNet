@@ -4,15 +4,15 @@ namespace EncoreTickets.SDK.Inventory.Models
 {
     public class Price : IPriceWithCurrency
     {
-        public int? value { get; set; }
+        public int? Value { get; set; }
 
-        public string currency { get; set; }
+        public string Currency { get; set; }
 
-        public int? decimalPlaces { get; set; }
+        public int? DecimalPlaces { get; set; }
 
         public override string ToString()
         {
-            return $"{currency}{value / 100}";
+            return $"{Currency}{Value / 100}";
         }
     }
 }

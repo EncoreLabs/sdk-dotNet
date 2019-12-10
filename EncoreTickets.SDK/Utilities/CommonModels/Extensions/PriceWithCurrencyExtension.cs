@@ -38,9 +38,9 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
             => price != null 
                 ? new T
                 {
-                    currency = price.currency,
-                    decimalPlaces = price.decimalPlaces,
-                    value = (price.value ?? 0) * number
+                    Currency = price.Currency,
+                    DecimalPlaces = price.DecimalPlaces,
+                    Value = (price.Value ?? 0) * number
                 }
                 : null;
 
@@ -51,15 +51,15 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
             {
                 return null;
             }
-            if (firstPrice.currency != secondPrice.currency || firstPrice.decimalPlaces != secondPrice.decimalPlaces)
+            if (firstPrice.Currency != secondPrice.Currency || firstPrice.DecimalPlaces != secondPrice.DecimalPlaces)
             {
                 throw new CurrenciesDontMatchException();
             }
             return new T
             {
-                currency = firstPrice.currency,
-                decimalPlaces = firstPrice.decimalPlaces,
-                value = operation(firstPrice.value ?? 0, secondPrice.value ?? 0)
+                Currency = firstPrice.Currency,
+                DecimalPlaces = firstPrice.DecimalPlaces,
+                Value = operation(firstPrice.Value ?? 0, secondPrice.Value ?? 0)
             };
         }
     }

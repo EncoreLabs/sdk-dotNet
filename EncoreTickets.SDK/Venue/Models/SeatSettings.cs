@@ -2,10 +2,10 @@
 {
     public class SeatSettings
     {
-        public bool seatsSupplied { get; set; }
+        public bool SeatsSupplied { get; set; }
 
-        public SeatSelectionMode seatSelectionMode { get; set; }
+        public SeatSelectionMode SeatSelectionMode { get; set; }
 
-        public AllocationType allocationType { get; set; }
+        public AllocationType AllocationType { get; set; }
     }
 }

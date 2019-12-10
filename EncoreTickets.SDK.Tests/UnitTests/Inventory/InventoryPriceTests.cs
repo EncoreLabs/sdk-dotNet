@@ -13,8 +13,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         {
             var price = new Price
             {
-                value = value,
-                currency = currency
+                Value = value,
+                Currency = currency
             };
             Assert.AreEqual(expected, price.ToString());
         }

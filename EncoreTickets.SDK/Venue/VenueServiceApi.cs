@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Venue
         {
             TriggerAutomaticAuthentication();
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
-                $"v1/admin/venues/{venue.internalId}",
+                $"v1/admin/venues/{venue.InternalId}",
                 RequestMethod.Post,
                 venue);
             return result.DataOrException;
@@ -62,7 +62,7 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
-            return GetSeatAttributes(venue.internalId);
+            return GetSeatAttributes(venue.InternalId);
         }
 
         /// <inheritdoc/>
@@ -99,7 +99,7 @@ namespace EncoreTickets.SDK.Venue
         {
             TriggerAutomaticAuthentication();
             const string successStatus = "Success";
-            var body = new SeatAttributesRequest { seats = seatAttributes };
+            var body = new SeatAttributesRequest { Seats = seatAttributes };
             var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,

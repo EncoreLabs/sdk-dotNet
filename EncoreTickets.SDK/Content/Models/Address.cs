@@ -2,18 +2,18 @@
 {
     public class Address
     {
-        public string firstLine { get; set; }
+        public string FirstLine { get; set; }
 
-        public object secondLine { get; set; }
+        public object SecondLine { get; set; }
 
-        public object thirdLine { get; set; }
+        public object ThirdLine { get; set; }
 
-        public string city { get; set; }
+        public string City { get; set; }
 
-        public object postCode { get; set; }
+        public object PostCode { get; set; }
 
-        public Region region { get; set; }
+        public Region Region { get; set; }
 
-        public Country country { get; set; }
+        public Country Country { get; set; }
     }
 }

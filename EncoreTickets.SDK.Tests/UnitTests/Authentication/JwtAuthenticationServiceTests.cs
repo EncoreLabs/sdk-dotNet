@@ -81,7 +81,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             {
                 AuthenticationMethod = AuthenticationMethod.JWT
             };
-            var token = new AccessToken { token = "test" };
+            var token = new AccessToken { Token = "test" };
             executorMock
                 .Setup(x => x.ExecuteApiWithNotWrappedResponse<AccessToken>(
                     It.IsAny<string>(),
@@ -98,13 +98,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                     It.IsAny<string>(),
                     It.IsAny<RequestMethod>(),
                     It.Is<object>(cred =>
-                        ((Credentials)cred).password == Context.Password &&
-                        ((Credentials)cred).username == Context.UserName),
+                        ((Credentials)cred).Password == Context.Password &&
+                        ((Credentials)cred).Username == Context.UserName),
                     null,
                     null,
                     true),
                 Times.Once);
-            Assert.AreEqual(token.token, resultContext.AccessToken);
+            Assert.AreEqual(token.Token, resultContext.AccessToken);
         }
 
         [Test]
@@ -131,8 +131,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                     It.IsAny<string>(),
                     It.IsAny<RequestMethod>(),
                     It.Is<object>(cred =>
-                        ((Credentials)cred).password == Context.Password &&
-                        ((Credentials)cred).username == Context.UserName),
+                        ((Credentials)cred).Password == Context.Password &&
+                        ((Credentials)cred).Username == Context.UserName),
                     null,
                     null,
                     true),

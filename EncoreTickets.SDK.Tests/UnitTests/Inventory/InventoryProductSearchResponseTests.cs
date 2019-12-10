@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             var product2 = new Product();
             var response = new ProductSearchResponse
             {
-                product = new List<Product> {product1, product2}
+                Product = new List<Product> {product1, product2}
             };
 
             var result = response.Data;

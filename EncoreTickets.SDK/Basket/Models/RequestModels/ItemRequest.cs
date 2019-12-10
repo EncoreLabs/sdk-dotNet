@@ -2,6 +2,6 @@
 {
     public class ItemRequest
     {
-        public string aggregateReference { get; set; }
+        public string AggregateReference { get; set; }
     }
 }

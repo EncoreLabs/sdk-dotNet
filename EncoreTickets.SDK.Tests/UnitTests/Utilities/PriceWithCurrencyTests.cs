@@ -110,17 +110,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
         {
             return new Price
             {
-                currency = currency,
-                decimalPlaces = decimalPlaces,
-                value = value
+                Currency = currency,
+                DecimalPlaces = decimalPlaces,
+                Value = value
             };
         }
 
         private void AssertPriceIsExpected(int? expectedResult, Price result)
         {
-            Assert.AreEqual(expectedResult, result.value);
-            Assert.AreEqual(DefaultCurrency, result.currency);
-            Assert.AreEqual(DefaultDecimalPlaces, result.decimalPlaces);
+            Assert.AreEqual(expectedResult, result.Value);
+            Assert.AreEqual(DefaultCurrency, result.Currency);
+            Assert.AreEqual(DefaultDecimalPlaces, result.DecimalPlaces);
         }
     }
 }

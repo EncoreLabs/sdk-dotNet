@@ -2,10 +2,10 @@
 {
     public class Venue
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public Address address { get; set; }
+        public Address Address { get; set; }
     }
 }

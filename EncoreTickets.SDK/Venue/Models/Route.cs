@@ -2,8 +2,8 @@
 {
     public class Route
     {
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public TransportMode transportMode { get; set; }
+        public TransportMode TransportMode { get; set; }
     }
 }

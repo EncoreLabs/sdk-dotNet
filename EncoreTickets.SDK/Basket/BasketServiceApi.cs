@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public BasketDetails UpsertPromotion(string basketId, Coupon coupon)
         {
-            var body = new ApplyPromotionRequest {coupon = coupon};
+            var body = new ApplyPromotionRequest {Coupon = coupon};
             var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
                 $"v1/baskets/{basketId}/applyPromotion",
                 RequestMethod.Patch,
