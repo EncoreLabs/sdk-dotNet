@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
-using Newtonsoft.Json.Serialization;
 using Polly;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -51,7 +49,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             {
                 Authenticator = GetAuthenticator()
             };
-            client.AddHandler("application/json", () => new JsonSerializer(restClientParameters.RequestDateFormat));
+            client.AddHandler("application/json", () => restClientParameters.Deserializer);
             return client;
         }
 
@@ -66,7 +64,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             {
                 Method = GetRequestMethod(restClientParameters),
                 RequestFormat = GetDataFormat(restClientParameters),
-                JsonSerializer = new JsonSerializer(restClientParameters.RequestDateFormat)
+                JsonSerializer = restClientParameters.Serializer
             };
             SetRequestParameters(request, restClientParameters.RequestHeaders, ParameterType.HttpHeader);
             SetRequestParameters(request, restClientParameters.RequestUrlSegments, ParameterType.UrlSegment);

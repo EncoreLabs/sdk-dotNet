@@ -1,5 +1,4 @@
 ﻿using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Utilities.CommonModels;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using EncoreTickets.SDK.Utilities.Exceptions;
 using NUnit.Framework;

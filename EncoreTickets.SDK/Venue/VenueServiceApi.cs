@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Exceptions;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Venue.Exceptions;
 using EncoreTickets.SDK.Venue.Models;
@@ -100,10 +100,11 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             const string successStatus = "Success";
             var body = new SeatAttributesRequest { Seats = seatAttributes };
-            var result = Executor.ExecuteApiWithWrappedResponse<string>(
+            var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,
-                body);
+                body,
+                deserializer: JsonSerializer.CreateInstance<SingleOrListJsonSerializer<string>>());
 
             try
             {

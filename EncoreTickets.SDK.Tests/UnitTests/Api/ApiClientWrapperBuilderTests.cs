@@ -81,9 +81,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 RequestUrlSegments = null,
                 RequestDateFormat = dateFormat
             };
+
             var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body,
-                queryObject, dateFormat);
-            AssertExtension.SimplePropertyValuesAreEquals(expectedParameters, result);
+                queryObject, dateFormat, null, null);
+
+            Assert.AreEqual(expectedParameters.BaseUrl, result.BaseUrl);
+            Assert.AreEqual(expectedParameters.RequestUrl, result.RequestUrl);
+            Assert.AreEqual(expectedParameters.RequestBody, result.RequestBody);
+            Assert.AreEqual(expectedParameters.RequestFormat, result.RequestFormat);
+            Assert.AreEqual(expectedParameters.RequestMethod, result.RequestMethod);
+            Assert.AreEqual(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
+            Assert.AreEqual(expectedParameters.RequestDateFormat, result.RequestDateFormat);
+            Assert.NotNull(result.Serializer);
+            Assert.NotNull(result.Deserializer);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, expectedQuery);
             AssertExtension.EnumerableAreEquals(expectedParameters.RequestHeaders, expectedHeaders);

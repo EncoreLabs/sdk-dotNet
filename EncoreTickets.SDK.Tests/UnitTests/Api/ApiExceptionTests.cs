@@ -155,7 +155,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 new Dictionary<string, object>
                 {
-                    {"body", "{ username : admin, password : pwd }"},
+                    {"Body", "{ username : admin, password : pwd }"},
                 },
                 new Request
                 {
@@ -199,7 +199,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                     {"productId", "9"},
                     {"quantity", "2"},
                     {"promoId", "19"},
-                    {"body", "{ username : admin, password : pwd }"},
+                    {"Body", "{ username : admin, password : pwd }"},
                 },
                 new Request
                 {

@@ -4,6 +4,8 @@ using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Utilities.Enums;
 using RestSharp;
+using RestSharp.Deserializers;
+using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
@@ -36,6 +38,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="query">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
         /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <param name="serializer">Serializer to use in the request.</param>
+        /// <param name="deserializer">Deserializer to use in the response.</param>
         /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(
             string endpoint,
@@ -43,10 +47,12 @@ namespace EncoreTickets.SDK.Api.Helpers
             object body = null,
             object query = null,
             string dateFormat = null,
-            bool wrappedError = false)
+            bool wrappedError = false,
+            ISerializer serializer = null,
+            IDeserializer deserializer = null)
             where T : class, new()
         {
-            var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat);
+            var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat, serializer, deserializer);
             return CreateApiResult(restResponse, wrappedError);
         }
 
@@ -60,6 +66,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="query">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
         /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <param name="serializer">Serializer to be used in the request.</param>
+        /// <param name="deserializer">Deserializer to be used in the response.</param>
         /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T>(
             string endpoint,
@@ -67,10 +75,12 @@ namespace EncoreTickets.SDK.Api.Helpers
             object body = null,
             object query = null,
             string dateFormat = null,
-            bool wrappedError = true)
+            bool wrappedError = true,
+            ISerializer serializer = null,
+            IDeserializer deserializer = null)
             where T : class
         {
-            var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat);
+            var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat, serializer, deserializer);
             return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, wrappedError);
         }
 
@@ -86,6 +96,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="query">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
         /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
+        /// <param name="serializer">JsonSerializer for a request.</param>
+        /// <param name="deserializer">JsonDeserializer for a response.</param>
         /// <returns>Result of request execution.</returns>
         public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(
             string endpoint,
@@ -93,12 +105,14 @@ namespace EncoreTickets.SDK.Api.Helpers
             object body = null,
             object query = null,
             string dateFormat = null,
-            bool wrappedError = true)
+            bool wrappedError = true,
+            ISerializer serializer = null,
+            IDeserializer deserializer = null)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
         {
-            var restWrappedResponse = GetRestResponse<TApiResponse>(endpoint, method, body, query, dateFormat);
+            var restWrappedResponse = GetRestResponse<TApiResponse>(endpoint, method, body, query, dateFormat, serializer, deserializer);
             return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, wrappedError);
         }
 
@@ -107,12 +121,14 @@ namespace EncoreTickets.SDK.Api.Helpers
             RequestMethod method,
             object body,
             object query,
-            string dateFormat)
+            string dateFormat,
+            ISerializer serializer,
+            IDeserializer deserializer)
             where T : class, new()
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
             var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method,
-                body, query, dateFormat);
+                body, query, dateFormat, serializer, deserializer);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
             var response = clientWrapper.Execute<T>(client, request);

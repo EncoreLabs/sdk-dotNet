@@ -89,7 +89,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                     It.IsAny<Credentials>(),
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() =>
                     new ApiResult<AccessToken>(token, TestHelper.GetSuccessResponse(), It.IsAny<ApiContext>()));
 
@@ -102,7 +104,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                         ((Credentials)cred).Username == Context.UserName),
                     null,
                     null,
-                    true),
+                    true,
+                    null,
+                    null),
                 Times.Once);
             Assert.AreEqual(token.Token, resultContext.AccessToken);
         }
@@ -121,7 +125,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                     It.IsAny<Credentials>(),
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() =>
                     new ApiResult<AccessToken>(null, TestHelper.GetFailedResponse(), It.IsAny<ApiContext>(),
                         It.IsAny<Context>(), It.IsAny<Request>()));
@@ -135,7 +141,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                         ((Credentials)cred).Username == Context.UserName),
                     null,
                     null,
-                    true),
+                    true,
+                    null,
+                    null),
                 Times.Once);
         }
 

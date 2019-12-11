@@ -1,36 +1,24 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    class JsonSerializer : ISerializer, IDeserializer
+    abstract class JsonSerializer : ISerializer, IDeserializer
     {
-        private readonly Newtonsoft.Json.JsonSerializer defaultSerializer = new Newtonsoft.Json.JsonSerializer
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc
-        };
+        protected abstract Newtonsoft.Json.JsonSerializer Serializer { get; }
 
-        private readonly Newtonsoft.Json.JsonSerializer serializer;
-
-        public JsonSerializer()
+        public static T CreateInstance<T>(string dateFormat = null) 
+            where T : JsonSerializer, new()
         {
-            serializer = defaultSerializer;
-        }
-
-        public JsonSerializer(string dateFormat)
-        {
-            serializer = defaultSerializer;
-            serializer.DateFormatString = dateFormat;
-        }
-
-        public JsonSerializer(Newtonsoft.Json.JsonSerializer serializer)
-        {
-            this.serializer = serializer;
+            var serializer = new T();
+            if (!string.IsNullOrEmpty(dateFormat))
+            {
+                serializer.Serializer.DateFormatString = dateFormat;
+            }
+            return serializer;
         }
 
         public string ContentType { get; set; } = "application/json";
@@ -38,9 +26,9 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
         public string Serialize(object obj)
         {
             using (var stringWriter = new StringWriter())
-            using(var jsonTextWriter = new JsonTextWriter(stringWriter))
+            using (var jsonTextWriter = new JsonTextWriter(stringWriter))
             {
-                serializer.Serialize(jsonTextWriter, obj);
+                Serializer.Serialize(jsonTextWriter, obj);
                 return stringWriter.ToString();
             }
         }
@@ -51,7 +39,7 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
             using (var stringReader = new StringReader(content))
             using (var jsonTextReader = new JsonTextReader(stringReader))
             {
-                return serializer.Deserialize<T>(jsonTextReader);
+                return Serializer.Deserialize<T>(jsonTextReader);
             }
         }
     }
