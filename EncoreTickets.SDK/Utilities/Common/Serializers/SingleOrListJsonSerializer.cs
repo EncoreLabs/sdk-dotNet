@@ -1,15 +1,17 @@
-﻿namespace EncoreTickets.SDK.Utilities.Common.Serializers
+﻿using Newtonsoft.Json;
+
+namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    class SingleOrListJsonSerializer<T> : DefaultJsonSerializer
+    internal class SingleOrListJsonSerializer<T> : DefaultJsonSerializer
     {
-        protected override Newtonsoft.Json.JsonSerializer Serializer
+        private JsonSerializerSettings settings;
+        protected override JsonSerializerSettings Settings => settings ?? (settings = CreateSettings());
+
+        private JsonSerializerSettings CreateSettings()
         {
-            get
-            {
-                var serializer = base.Serializer;
-                serializer.Converters.Add(new SingleOrListConverter<T>());
-                return serializer;
-            }
+            var settings = base.Settings;
+            settings.Converters.Add(new SingleOrListConverter<T>());
+            return settings;
         }
     }
 }

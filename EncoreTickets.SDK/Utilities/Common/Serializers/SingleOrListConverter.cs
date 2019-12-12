@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    class SingleOrListConverter<T> : JsonConverter
+    internal class SingleOrListConverter<T> : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
