@@ -12,8 +12,9 @@ namespace EncoreTickets.SDK.Api.Helpers
     /// </summary>
     public class ApiRequestExecutor
     {
-        private readonly ApiContext context;
-        private readonly string baseUrl;
+        public ApiContext Context { get; }
+
+        public string BaseUrl { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiRequestExecutor"/>
@@ -22,8 +23,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="baseUrl">The site URL.</param>
         public ApiRequestExecutor(ApiContext context, string baseUrl)
         {
-            this.context = context;
-            this.baseUrl = baseUrl;
+            Context = context;
+            BaseUrl = baseUrl;
         }
 
         /// <summary>
@@ -110,8 +111,8 @@ namespace EncoreTickets.SDK.Api.Helpers
             string dateFormat)
             where T : class, new()
         {
-            var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
-            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method,
+            var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(Context);
+            var parameters = ApiClientWrapperBuilder.CreateClientWrapperParameters(Context, BaseUrl, endpoint, method,
                 body, query, dateFormat);
             var client = clientWrapper.GetRestClient(parameters);
             var request = clientWrapper.GetRestRequest(parameters);
@@ -124,7 +125,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         {
             return !restResponse.IsSuccessful
                 ? CreateApiResultForError<T>(restResponse, wrappedError)
-                : new ApiResult<T>(restResponse.Data, restResponse, context);
+                : new ApiResult<T>(restResponse.Data, restResponse, Context);
         }
 
         private ApiResult<T> CreateApiResult<T, TApiResponse, TResponse>(
@@ -139,7 +140,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             }
 
             var data = restWrappedResponse.Data;
-            return new ApiResult<T>(data?.Data, restWrappedResponse, context, data?.context, data?.request);
+            return new ApiResult<T>(data?.Data, restWrappedResponse, Context, data?.context, data?.request);
         }
 
         private ApiResult<T> CreateApiResultForError<T>(IRestResponse restResponse, bool wrappedError)
@@ -148,11 +149,11 @@ namespace EncoreTickets.SDK.Api.Helpers
             if (wrappedError)
             {
                 var errorData = DeserializeResponse<WrappedError>(restResponse);
-                return new ApiResult<T>(default, restResponse, context, errorData?.context, errorData?.request);
+                return new ApiResult<T>(default, restResponse, Context, errorData?.context, errorData?.request);
             }
 
             var apiError = DeserializeResponse<UnwrappedError>(restResponse);
-            return new ApiResult<T>(default, restResponse, context, apiError?.message);
+            return new ApiResult<T>(default, restResponse, Context, apiError?.message);
         }
 
         private T DeserializeResponse<T>(IRestResponse response)
