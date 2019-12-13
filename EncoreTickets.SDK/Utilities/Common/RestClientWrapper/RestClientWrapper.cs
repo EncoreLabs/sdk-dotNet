@@ -91,7 +91,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// <param name="client">The prepared rest client.</param>
         /// <param name="request">The prepared rest request.</param>
         /// <returns>Rest response.</returns>
-        public IRestResponse Execute(IRestClient client, IRestRequest request)
+        public virtual IRestResponse Execute(IRestClient client, IRestRequest request)
         {
             var response = Policy
                 .Handle<Exception>()
@@ -108,7 +108,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// <param name="client">The prepared rest client.</param>
         /// <param name="request">The prepared rest request.</param>
         /// <returns>Rest response.</returns>
-        public IRestResponse<T> Execute<T>(IRestClient client, IRestRequest request)
+        public virtual IRestResponse<T> Execute<T>(IRestClient client, IRestRequest request)
             where T : class, new()
         {
             var response = Policy

@@ -2,6 +2,7 @@
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -225,7 +226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
             var result = exception.Errors;
 
-            AssertExtension.EnumerableAreEquals(expectedErrors, result);
+            AssertExtension.AreObjectsValuesEqual(expectedErrors, result);
         }
 
         [TestCaseSource(nameof(SourceForMessagesProperty))]
@@ -247,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
             var result = exception.Details;
 
-            AssertExtension.EnumerableAreEquals(expected, result);
+            AssertExtension.AreObjectsValuesEqual(expected, result);
         }
     }
 }

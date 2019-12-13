@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Authentication
     /// </summary>
     public class JwtAuthenticationService : BaseApi, IAuthenticationService
     {
-        private readonly string endpoint;
+        protected readonly string endpoint;
 
         /// <summary>
         /// Initializes an instance for the JWT authentication service.

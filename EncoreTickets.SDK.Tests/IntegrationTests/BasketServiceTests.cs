@@ -6,6 +6,7 @@ using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
@@ -103,7 +104,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var basketDetails = service.UpsertPromotion(upsertBasketResult.reference, coupon);
 
                 Assert.Null(upsertBasketResult.coupon);
-                AssertExtension.SimplePropertyValuesAreEquals(coupon, basketDetails.coupon);
+                AssertExtension.AreObjectsValuesEqual(coupon, basketDetails.coupon);
                 Assert.NotNull(basketDetails.appliedPromotion);
             }
             finally
@@ -158,8 +159,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.NotNull(result.checksum);
             Assert.AreEqual(request.channelId, result.channelId);
             Assert.AreEqual(request.delivery.method, result.delivery.method);
-            AssertExtension.SimplePropertyValuesAreEquals(request.delivery.charge, result.delivery.charge);
-            AssertExtension.SimplePropertyValuesAreEquals(request.coupon, result.coupon);
+            AssertExtension.AreObjectsValuesEqual(request.delivery.charge, result.delivery.charge);
+            AssertExtension.AreObjectsValuesEqual(request.coupon, result.coupon);
             Assert.NotNull(result.appliedPromotion);
             Assert.NotNull(result.reservations);
         }

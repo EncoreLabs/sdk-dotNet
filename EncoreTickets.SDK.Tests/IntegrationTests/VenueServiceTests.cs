@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Venue;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -48,7 +49,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
 
-            AssertExtension.SimplePropertyValuesAreEquals(sourceAttribute, updatedAttribute);
+            AssertExtension.AreObjectsValuesEqual(sourceAttribute, updatedAttribute);
         }
 
         [Test]

@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
         /// </summary>
         /// <param name="context">API context.</param>
         /// <returns>Initialized client wrapper.</returns>
-        public RestClientWrapper CreateClientWrapper(ApiContext context)
+        public virtual RestClientWrapper CreateClientWrapper(ApiContext context)
         {
             var credentials = context == null
                 ? null
@@ -36,7 +36,9 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
         /// <param name="context">API context.</param>
         /// <param name="baseUrl">Site URL.</param>
         /// <returns>Initialized client wrapper parameters.</returns>
-        public RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl,
+        public RestClientParameters CreateClientWrapperParameters(
+            ApiContext context,
+            string baseUrl,
             ExecuteApiRequestParameters requestParameters)
         {
             return new RestClientParameters

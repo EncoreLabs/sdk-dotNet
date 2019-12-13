@@ -21,6 +21,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// </summary>
         /// <param name="context">The API context for requests.</param>
         /// <param name="baseUrl">The site URL.</param>
+        /// <param name="restClientBuilder"></param>
         public ApiRequestExecutor(ApiContext context, string baseUrl, IApiRestClientBuilder restClientBuilder)
         {
             this.context = context;
@@ -34,7 +35,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="parameters"></param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = false)
+        public ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = false)
             where T : class, new()
         {
             var restResponse = GetRestResponse<T>(requestParameters);
@@ -47,7 +48,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="parameters"></param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
+        public ApiResult<T> ExecuteApiWithWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
             where T : class
         {
             var restWrappedResponse = GetRestResponse<ApiResponse<T>>(requestParameters);
@@ -62,10 +63,10 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
         /// <param name="parameters"></param>
         /// <returns>Result of request execution.</returns>
-        public virtual ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
+        public ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
             where T : class
-            where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
+            where TResponse : class
         {
             var restWrappedResponse = GetRestResponse<TApiResponse>(requestParameters);
             return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, wrappedError);
@@ -118,7 +119,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             return new ApiResult<T>(default, restResponse, context, apiError?.message);
         }
 
-        private T DeserializeResponse<T>(IRestResponse response)
+        private static T DeserializeResponse<T>(IRestResponse response)
         {
             try
             {

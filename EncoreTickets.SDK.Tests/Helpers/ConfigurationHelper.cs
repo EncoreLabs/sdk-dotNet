@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace EncoreTickets.SDK.Tests
+namespace EncoreTickets.SDK.Tests.Helpers
 {
-    static class ConfigurationHelper
+    internal static class ConfigurationHelper
     {
         private static readonly object Lock = new object();
         private static IConfiguration Configuration;

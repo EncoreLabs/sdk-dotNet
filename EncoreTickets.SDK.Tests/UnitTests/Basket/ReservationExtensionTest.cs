@@ -1,5 +1,6 @@
 ﻿using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using NUnit.Framework;
 
@@ -23,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalAdjustedAmountInOfficeCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalAdjustedAmountInShopperCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalAdjustmentAmountInOfficeCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalAdjustmentAmountInShopperCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalSalePriceInOfficeCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -73,7 +74,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalSalePriceInShopperCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalFaceValueInOfficeCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = reservation.GetTotalFaceValueInShopperCurrency();
 
-            AssertExtension.SimplePropertyValuesAreEquals(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+            AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
     }
 }

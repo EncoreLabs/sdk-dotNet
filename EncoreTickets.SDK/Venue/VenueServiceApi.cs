@@ -41,8 +41,7 @@ namespace EncoreTickets.SDK.Venue
                 Endpoint = "v1/venues",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(
-                parameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
             return result.DataOrException;
         }
 
