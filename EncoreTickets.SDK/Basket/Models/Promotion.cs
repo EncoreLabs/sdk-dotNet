@@ -4,20 +4,20 @@ namespace EncoreTickets.SDK.Basket.Models
 {
     public class Promotion
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string displayText { get; set; }
+        public string DisplayText { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public string reference { get; set; }
+        public string Reference { get; set; }
 
-        public string reportingCode { get; set; }
+        public string ReportingCode { get; set; }
 
-        public DateTimeOffset validFrom { get; set; }
+        public DateTimeOffset ValidFrom { get; set; }
 
-        public DateTimeOffset validTo { get; set; }
+        public DateTimeOffset ValidTo { get; set; }
     }
 }

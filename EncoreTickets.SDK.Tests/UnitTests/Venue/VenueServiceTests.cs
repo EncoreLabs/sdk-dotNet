@@ -5,6 +5,7 @@ using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Venue.Models;
@@ -50,7 +51,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         null,
                         null,
                         null,
-                        true))
+                        true,
+                        null,
+                        null))
                 .Returns(() => new ApiResult<List<SDK.Venue.Models.Venue>>(
                     venues,
                     TestHelper.GetSuccessResponse(),
@@ -67,7 +70,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true), Times.Once);
+                    true,
+                    null,
+                    null), Times.Once);
             AssertExtension.EnumerableAreEquals(venues, result.ToList());
         }
 
@@ -83,7 +88,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         null,
                         null,
                         null,
-                        true))
+                        true,
+                        null,
+                        null))
                 .Returns(() => new ApiResult<List<SDK.Venue.Models.Venue>>(
                     venues,
                     TestHelper.GetFailedResponse(),
@@ -103,7 +110,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true), Times.Once);
+                    true,
+                    null,
+                    null), Times.Once);
         }
 
         [Test]
@@ -117,7 +126,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<SDK.Venue.Models.Venue>(
                     new SDK.Venue.Models.Venue(),
                     TestHelper.GetSuccessResponse(),
@@ -133,7 +144,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
@@ -147,7 +160,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<SDK.Venue.Models.Venue>(
                     null,
                     TestHelper.GetFailedResponse(),
@@ -166,7 +181,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
@@ -181,7 +198,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<SeatAttribute>>(
                     seatAttributes,
                     TestHelper.GetSuccessResponse(),
@@ -197,7 +216,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
             AssertExtension.EnumerableAreEquals(seatAttributes, result.ToList());
         }
 
@@ -213,7 +234,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<SeatAttribute>>(
                     seatAttributes,
                     TestHelper.GetFailedResponse(),
@@ -232,7 +255,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
@@ -247,7 +272,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<SeatAttribute>>(
                     seatAttributes,
                     TestHelper.GetSuccessResponse(),
@@ -255,7 +282,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     It.IsAny<Context>(),
                     It.IsAny<Request>()));
 
-            var result = GetSeatAttributes(new SDK.Venue.Models.Venue { internalId = venueId });
+            var result = GetSeatAttributes(new SDK.Venue.Models.Venue { InternalId = venueId });
 
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
                 It.Is<string>(x => x.Contains(venueId)),
@@ -263,7 +290,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
             AssertExtension.EnumerableAreEquals(seatAttributes, result.ToList());
         }
 
@@ -279,7 +308,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<SeatAttribute>>(
                     seatAttributes,
                     TestHelper.GetFailedResponse(),
@@ -289,7 +320,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             Assert.Catch<ApiException>(() =>
             {
-                var result = GetSeatAttributes(new SDK.Venue.Models.Venue { internalId = venueId });
+                var result = GetSeatAttributes(new SDK.Venue.Models.Venue { InternalId = venueId });
             });
 
             executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
@@ -298,7 +329,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
@@ -312,7 +345,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<StandardAttribute>>(
                     attributes,
                     TestHelper.GetSuccessResponse(),
@@ -328,7 +363,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
             AssertExtension.EnumerableAreEquals(attributes, result.ToList());
         }
 
@@ -343,7 +380,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<List<StandardAttribute>>(
                     attributes,
                     TestHelper.GetFailedResponse(),
@@ -362,13 +401,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
         public void Venue_VenueServiceApi_UpsertStandardAttributeByTitle_IfSuccess_ReturnsUpdated()
         {
-            var attribute = new StandardAttribute { description = "desc", title = "title", intention = "" };
+            var attribute = new StandardAttribute { Description = "desc", Title = "title", Intention = "" };
             executorMock
                 .Setup(x => x.ExecuteApiWithWrappedResponse<StandardAttribute>(
                     It.IsAny<string>(),
@@ -376,7 +417,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     It.IsAny<object>(),
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<StandardAttribute>(
                     attribute,
                     TestHelper.GetSuccessResponse(),
@@ -392,14 +435,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 It.IsAny<object>(),
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
             AssertExtension.SimplePropertyValuesAreEquals(attribute, result);
         }
 
         [Test]
         public void Venue_VenueServiceApi_UpsertStandardAttributeByTitle_IfNotSuccess_ThrowsApiException()
         {
-            var attribute = new StandardAttribute { description = "desc", title = "title", intention = "" };
+            var attribute = new StandardAttribute { Description = "desc", Title = "title", Intention = "" };
             executorMock
                 .Setup(x => x.ExecuteApiWithWrappedResponse<StandardAttribute>(
                     It.IsAny<string>(),
@@ -407,7 +452,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     It.IsAny<object>(),
                     null,
                     null,
-                    true))
+                    true,
+                    null,
+                    null))
                 .Returns(() => new ApiResult<StandardAttribute>(
                     attribute,
                     TestHelper.GetFailedResponse(),
@@ -426,7 +473,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 It.IsAny<object>(),
                 null,
                 null,
-                true), Times.Once);
+                true,
+                null,
+                null), Times.Once);
         }
 
         [Test]
@@ -435,15 +484,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             const string venueId = "3456";
             var seatAttributes = new List<SeatAttribute> { new SeatAttribute(), new SeatAttribute() };
             executorMock
-                .Setup(x => x.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+                .Setup(x => x.ExecuteApiWithWrappedResponse<List<string>>(
                     It.IsAny<string>(),
                     It.IsAny<RequestMethod>(),
                     It.IsAny<object>(),
                     null,
                     null,
-                    true))
-                .Returns(() => new ApiResult<IEnumerable<string>>(
-                    new[] { "Success" },
+                    true,
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<ISerializerWithDateFormat>()))
+                .Returns(() => new ApiResult<List<string>>(
+                    new List<string> { "Success" },
                     TestHelper.GetSuccessResponse(),
                     It.IsAny<ApiContext>(),
                     It.IsAny<Context>(),
@@ -451,13 +502,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             var result = UpsertSeatAttributes(venueId, seatAttributes);
 
-            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
-                true), Times.Once);
+                true,
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
             Assert.IsTrue(result);
         }
 
@@ -467,15 +520,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             const string venueId = "3456";
             var seatAttributes = new List<SeatAttribute> { new SeatAttribute(), new SeatAttribute() };
             executorMock
-                .Setup(x => x.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+                .Setup(x => x.ExecuteApiWithWrappedResponse<List<string>>(
                     It.IsAny<string>(),
                     It.IsAny<RequestMethod>(),
                     It.IsAny<object>(),
                     null,
                     null,
-                    true))
-                .Returns(() => new ApiResult<IEnumerable<string>>(
-                    new[] { "" },
+                    true,
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<ISerializerWithDateFormat>()))
+                .Returns(() => new ApiResult<List<string>>(
+                    new List<string>  { "" },
                     TestHelper.GetSuccessResponse(),
                     It.IsAny<ApiContext>(),
                     It.IsAny<Context>(),
@@ -483,13 +538,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             var result = UpsertSeatAttributes(venueId, seatAttributes);
 
-            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
-                true), Times.Once);
+                true,
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
             Assert.IsFalse(result);
         }
 
@@ -499,14 +556,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             const string venueId = "3456";
             var seatAttributes = new List<SeatAttribute> { new SeatAttribute(), new SeatAttribute() };
             executorMock
-                .Setup(x => x.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+                .Setup(x => x.ExecuteApiWithWrappedResponse<List<string>>(
                     It.IsAny<string>(),
                     It.IsAny<RequestMethod>(),
                     It.IsAny<object>(),
                     null,
                     null,
-                    true))
-                .Returns(() => new ApiResult<IEnumerable<string>>(
+                    true,
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<ISerializerWithDateFormat>()))
+                .Returns(() => new ApiResult<List<string>>(
                     null,
                     TestHelper.GetFailedResponse(),
                     It.IsAny<ApiContext>(),
@@ -518,13 +577,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 var result = UpsertSeatAttributes(venueId, seatAttributes);
             });
 
-            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+            executorMock.Verify(mock => mock.ExecuteApiWithWrappedResponse<List<string>>(
                 It.Is<string>(x => x.Contains(venueId)),
                 It.IsAny<RequestMethod>(),
-                It.Is<SeatAttributesRequest>(x => Equals(x.seats, seatAttributes)),
+                It.Is<SeatAttributesRequest>(x => Equals(x.Seats, seatAttributes)),
                 null,
                 null,
-                true), Times.Once);
+                true,
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
         }
     }
 }

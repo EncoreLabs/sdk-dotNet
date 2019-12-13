@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Exceptions;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Venue.Exceptions;
 using EncoreTickets.SDK.Venue.Models;
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Venue
         {
             TriggerAutomaticAuthentication();
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
-                $"v1/admin/venues/{venue.internalId}",
+                $"v1/admin/venues/{venue.InternalId}",
                 RequestMethod.Post,
                 venue);
             return result.DataOrException;
@@ -62,7 +62,7 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
-            return GetSeatAttributes(venue.internalId);
+            return GetSeatAttributes(venue.InternalId);
         }
 
         /// <inheritdoc/>
@@ -99,11 +99,12 @@ namespace EncoreTickets.SDK.Venue
         {
             TriggerAutomaticAuthentication();
             const string successStatus = "Success";
-            var body = new SeatAttributesRequest { seats = seatAttributes };
-            var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
+            var body = new SeatAttributesRequest { Seats = seatAttributes };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,
-                body);
+                body,
+                deserializer: new SingleOrListJsonSerializer<string>());
 
             try
             {

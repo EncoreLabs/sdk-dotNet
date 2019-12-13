@@ -23,8 +23,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 new List<string> {"notValidPromotionCode"},
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error>(), info = new List<Info>()},
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new Context {Errors = new List<Error>(), Info = new List<Info>()},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -32,18 +32,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
-                    errors = new List<Error>
+                    Errors = new List<Error>
                     {
-                        new Error {message = "Product [9] is not found"},
-                        new Error {message = "Unauthorized"},
+                        new Error {Message = "Product [9] is not found"},
+                        new Error {Message = "Unauthorized"},
                         new Error
                         {
-                            message = "This value should not be blank.", code = "validation_error",
-                            field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -51,12 +51,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
-                        new Info {message = "Some info", code = "someInfo", type = "information"}
+                        new Info {Message = "Some info", Code = "someInfo", Type = "information"}
                     }
                 },
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -65,24 +65,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
                         new Info
                         {
-                            message =
+                            Message =
                                 "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                            code = "notValidPromotionCode", type = "information", name = "coupon"
+                            Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                         },
-                        new Info {message = "Some info", code = "someInfo", type = "information"}
+                        new Info {Message = "Some info", Code = "someInfo", Type = "information"}
                     }
                 },
                 new[]
                 {
                     new Info
                     {
-                        message =
+                        Message =
                             "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                        Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                     }
                 },
             },
@@ -92,14 +92,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
-                        new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                        new Info {Message = "", Code = "notValidPromotionCode", Type = "information", Name = "coupon"}
                     }
                 },
                 new[]
                 {
-                    new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                    new Info {Message = "", Code = "notValidPromotionCode", Type = "information", Name = "coupon"}
                 },
             },
             new object[]
@@ -112,26 +112,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
                         new Info
                         {
-                            message =
+                            Message =
                                 "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                            code = "notValidPromotionCode", type = "information", name = "coupon"
+                            Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                         },
-                        new Info {message = "The warning", code = "warning"},
+                        new Info {Message = "The warning", Code = "warning"},
                     }
                 },
                 new[]
                 {
                     new Info
                     {
-                        message =
+                        Message =
                             "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                        Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                     },
-                    new Info {message = "The warning", code = "warning"},
+                    new Info {Message = "The warning", Code = "warning"},
                 },
             },
         };
@@ -149,8 +149,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 "notValidPromotionCode",
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error>(), info = new List<Info>()},
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new Context {Errors = new List<Error>(), Info = new List<Info>()},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -158,18 +158,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
-                    errors = new List<Error>
+                    Errors = new List<Error>
                     {
-                        new Error {message = "Product [9] is not found"},
-                        new Error {message = "Unauthorized"},
+                        new Error {Message = "Product [9] is not found"},
+                        new Error {Message = "Unauthorized"},
                         new Error
                         {
-                            message = "This value should not be blank.", code = "validation_error",
-                            field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -177,12 +177,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
-                        new Info {message = "Some info", code = "someInfo", type = "information"}
+                        new Info {Message = "Some info", Code = "someInfo", Type = "information"}
                     }
                 },
-                new[] {new Info {code = "notValidPromotionCode"}},
+                new[] {new Info {Code = "notValidPromotionCode"}},
             },
             new object[]
             {
@@ -190,13 +190,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
                         new Info
                         {
-                            message =
+                            Message =
                                 "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                            code = "notValidPromotionCode", type = "information", name = "coupon"
+                            Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                         }
                     }
                 },
@@ -204,9 +204,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 {
                     new Info
                     {
-                        message =
+                        Message =
                             "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                        Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                     }
                 },
             },
@@ -216,14 +216,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
-                        new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                        new Info {Message = "", Code = "notValidPromotionCode", Type = "information", Name = "coupon"}
                     }
                 },
                 new[]
                 {
-                    new Info {message = "", code = "notValidPromotionCode", type = "information", name = "coupon"}
+                    new Info {Message = "", Code = "notValidPromotionCode", Type = "information", Name = "coupon"}
                 }
             },
             new object[]
@@ -232,26 +232,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "OK"},
                 new Context
                 {
-                    info = new List<Info>
+                    Info = new List<Info>
                     {
                         new Info
                         {
-                            message =
+                            Message =
                                 "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                            code = "notValidPromotionCode", type = "information", name = "coupon"
+                            Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                         },
-                        new Info {message = "The warning", code = "warning"},
+                        new Info {Message = "The warning", Code = "warning"},
                     }
                 },
                 new[]
                 {
                     new Info
                     {
-                        message =
+                        Message =
                             "The supplied promotion code [TEST] was not applied as it didn't match a valid promotion code",
-                        code = "notValidPromotionCode", type = "information", name = "coupon"
+                        Code = "notValidPromotionCode", Type = "information", Name = "coupon"
                     },
-                    new Info {message = "The warning", code = "warning"},
+                    new Info {Message = "The warning", Code = "warning"},
                 },
             },
         };
@@ -276,7 +276,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    body = "{ username : admin, password : pwd }"
+                    Body = "{ username : admin, password : pwd }"
                 }
             },
             new object[]
@@ -288,7 +288,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    query = new Dictionary<string, object>
+                    Query = new Dictionary<string, object>
                     {
                         {"productId", "9"},
                         {"quantity", "2"},
@@ -303,7 +303,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    urlParams = new Dictionary<string, object>
+                    UrlParams = new Dictionary<string, object>
                     {
                         {"promoId", "19"},
                     }
@@ -320,16 +320,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    query = new Dictionary<string, object>
+                    Query = new Dictionary<string, object>
                     {
                         {"productId", "9"},
                         {"quantity", "2"},
                     },
-                    urlParams = new Dictionary<string, object>
+                    UrlParams = new Dictionary<string, object>
                     {
                         {"promoId", "19"},
                     },
-                    body = "{ username : admin, password : pwd }"
+                    Body = "{ username : admin, password : pwd }"
                 }
             },
         };

@@ -5,8 +5,8 @@
     /// </summary>
     internal class UnwrappedError
     {
-        public string code { get; set; }
+        public string Code { get; set; }
 
-        public string message { get; set; }
+        public string Message { get; set; }
     }
 }

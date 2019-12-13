@@ -4,14 +4,14 @@ namespace EncoreTickets.SDK.Venue.Models
 {
     public class SeatAttribute
     {
-        public string seatIdentifier { get; set; }
+        public string SeatIdentifier { get; set; }
 
-        public string startDate { get; set;}
+        public string StartDate { get; set;}
         
-        public string endDate { get; set; }
+        public string EndDate { get; set; }
         
-        public List<string> performanceTimes { get; set; }
+        public List<string> PerformanceTimes { get; set; }
 
-        public List<Attribute> attributes { get; set; }
+        public List<Attribute> Attributes { get; set; }
     }
 }

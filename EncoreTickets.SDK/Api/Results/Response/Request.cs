@@ -5,10 +5,10 @@
     /// </summary>
     public class Request
     {
-        public string body { get; set; }
+        public string Body { get; set; }
 
-        public dynamic query { get; set; }
+        public dynamic Query { get; set; }
 
-        public dynamic urlParams { get; set; }
+        public dynamic UrlParams { get; set; }
     }
 }

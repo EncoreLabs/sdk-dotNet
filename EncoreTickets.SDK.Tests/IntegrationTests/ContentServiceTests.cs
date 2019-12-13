@@ -24,9 +24,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             foreach (var location in locations)
             {
-                Assert.False(string.IsNullOrEmpty(location.name));
-                Assert.False(string.IsNullOrEmpty(location.isoCode));
-                Assert.False(location.subLocations.Any(loc => string.IsNullOrEmpty(loc.name)));
+                Assert.False(string.IsNullOrEmpty(location.Name));
+                Assert.False(string.IsNullOrEmpty(location.IsoCode));
+                Assert.False(location.SubLocations.Any(loc => string.IsNullOrEmpty(loc.Name)));
             }
         }
 
@@ -37,11 +37,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             foreach (var product in products)
             {
-                Assert.False(string.IsNullOrEmpty(product.name));
-                Assert.False(string.IsNullOrEmpty(product.id));
-                if (product.venue != null)
+                Assert.False(string.IsNullOrEmpty(product.Name));
+                Assert.False(string.IsNullOrEmpty(product.Id));
+                if (product.Venue != null)
                 {
-                    Assert.False(string.IsNullOrEmpty(product.venue.name));
+                    Assert.False(string.IsNullOrEmpty(product.Venue.Name));
                 }
             }
         }

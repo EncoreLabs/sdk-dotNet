@@ -2,10 +2,10 @@
 {
     public interface IPriceWithCurrency
     {
-        int? value { get; set; }
+        int? Value { get; set; }
 
-        int? decimalPlaces { get; set; }
+        int? DecimalPlaces { get; set; }
 
-        string currency { get; set; }
+        string Currency { get; set; }
     }
 }

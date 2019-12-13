@@ -2,6 +2,6 @@
 {
     public class Facility
     {
-        public string description { get; set; }
+        public string Description { get; set; }
     }
 }

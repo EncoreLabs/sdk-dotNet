@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Api.Results
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
             ResponseContext = error != null
-                ? new Response.Context { errors = new List<Error> { new Error { message = error } } }
+                ? new Response.Context { Errors = new List<Error> { new Error { Message = error } } }
                 : null;
             InitializeCommonParameters(data, response, context);
         }
@@ -110,12 +110,12 @@ namespace EncoreTickets.SDK.Api.Results
         public T GetDataOrContextException(IEnumerable<string> codesOfInfosAsErrors)
         {
             var data = DataOrException;
-            if (ResponseContext?.info == null)
+            if (ResponseContext?.Info == null)
             {
                 return data;
             }
 
-            var infosAsErrors = ResponseContext.info.Where(x => codesOfInfosAsErrors.Contains(x.code));
+            var infosAsErrors = ResponseContext.Info.Where(x => codesOfInfosAsErrors.Contains(x.Code));
             if (!infosAsErrors.Any())
             {
                 return data;

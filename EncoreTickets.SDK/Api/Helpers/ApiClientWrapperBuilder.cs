@@ -2,6 +2,7 @@
 using System.Reflection;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Helpers
@@ -40,10 +41,16 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="body">Request body.</param>
         /// <param name="queryObject">Object for request query.</param>
         /// <param name="dateFormat">Request date format.</param>
+        /// <param name="serializer">JsonSerializer used for a request.</param>
+        /// <param name="deserializer">JsonDeserializer used for a request.</param>
         /// <returns>Initialized client wrapper parameters.</returns>
         public static RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl, string endpoint,
-            RequestMethod method, object body, object queryObject, string dateFormat)
+            RequestMethod method, object body, object queryObject, string dateFormat, ISerializerWithDateFormat serializer, ISerializerWithDateFormat deserializer)
         {
+            var customSerializer = serializer ?? new DefaultJsonSerializer();
+            customSerializer.DateFormat = dateFormat;
+            var customDeserializer = deserializer ?? new DefaultJsonSerializer();
+            customDeserializer.DateFormat = dateFormat;
             return new RestClientParameters
             {
                 BaseUrl = baseUrl,
@@ -54,6 +61,8 @@ namespace EncoreTickets.SDK.Api.Helpers
                 RequestDateFormat = dateFormat,
                 RequestBody = body,
                 RequestQueryParameters = GetQueryParameters(queryObject),
+                Serializer = customSerializer,
+                Deserializer = customDeserializer
             };
         }
 

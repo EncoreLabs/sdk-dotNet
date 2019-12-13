@@ -4,18 +4,18 @@ namespace EncoreTickets.SDK.Inventory.Models
 {
     public class Pricing
     {
-        public string priceReference { get; set; }
+        public string PriceReference { get; set; }
 
-        public Price salePrice { get; set; }
+        public Price SalePrice { get; set; }
 
-        public Price faceValue { get; set; }
+        public Price FaceValue { get; set; }
 
-        public int? percentage { get; set; }
+        public int? Percentage { get; set; }
 
-        public bool? offer { get; set; }
+        public bool? Offer { get; set; }
 
-        public bool? noBookingFee { get; set; }
+        public bool? NoBookingFee { get; set; }
 
-        public DateTime? timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
     }
 }
