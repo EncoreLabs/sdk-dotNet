@@ -1,5 +1,6 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Authentication.Models;
 using EncoreTickets.SDK.Utilities.Enums;
 
@@ -42,16 +43,17 @@ namespace EncoreTickets.SDK.Authentication
 
         private AccessToken JwtLogin()
         {
-            var credentials = new Credentials
+            var parameters = new ExecuteApiRequestParameters
             {
-                username = Context.UserName ?? string.Empty,
-                password = Context.Password ?? string.Empty
+                Endpoint = endpoint,
+                Method = RequestMethod.Post,
+                Body = new Credentials
+                {
+                    username = Context.UserName ?? string.Empty,
+                    password = Context.Password ?? string.Empty
+                }
             };
-            var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(
-                endpoint,
-                RequestMethod.Post,
-                credentials,
-                wrappedError: true);
+            var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(parameters, true);
             return result.DataOrException;
         }
     }

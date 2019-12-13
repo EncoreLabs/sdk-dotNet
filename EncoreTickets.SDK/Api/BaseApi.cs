@@ -1,5 +1,6 @@
 ﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 
 namespace EncoreTickets.SDK.Api
 {
@@ -16,7 +17,7 @@ namespace EncoreTickets.SDK.Api
         /// <summary>
         /// Gets an executor of requests to the service based on context and base URL.
         /// </summary>
-        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
+        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl, new ApiRestClientBuilder());
 
         /// <summary>
         /// Gets API host.

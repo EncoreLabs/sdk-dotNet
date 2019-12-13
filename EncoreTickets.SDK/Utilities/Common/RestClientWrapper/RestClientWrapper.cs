@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
     /// </summary>
     public class RestClientWrapper
     {
-        private const int MaxExecutionsCount = 2;
+        private const int DefaultMaxExecutionsCount = 2;
 
         private static readonly List<HttpStatusCode> SuccessfulStatusCodes = new List<HttpStatusCode>
         {
@@ -26,15 +26,28 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             HttpStatusCode.TemporaryRedirect,
         };
 
+        private static readonly Dictionary<RequestMethod, Method> MethodMaps = new Dictionary<RequestMethod, Method>
+        {
+            {RequestMethod.Get, Method.GET},
+            {RequestMethod.Post, Method.POST},
+            {RequestMethod.Patch, Method.PATCH},
+            {RequestMethod.Put, Method.PUT},
+            {RequestMethod.Delete, Method.DELETE},
+        };
+
         private readonly RestClientWrapperCredentials credentials;
+        private readonly int maxExecutionsCount;
 
         /// <summary>
         /// Initializes a new instance of <see cref="RestClientWrapper"/>
         /// </summary>
         /// <param name="restClientWrapperCredentials">Credentials for requests.</param>
-        public RestClientWrapper(RestClientWrapperCredentials restClientWrapperCredentials)
+        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed</param>
+        public RestClientWrapper(RestClientWrapperCredentials restClientWrapperCredentials,
+            int executionsCount = DefaultMaxExecutionsCount)
         {
             credentials = restClientWrapperCredentials;
+            maxExecutionsCount = executionsCount;
         }
 
         /// <summary>
@@ -73,18 +86,6 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         }
 
         /// <summary>
-        /// Executes a request initialized with parameters.
-        /// </summary>
-        /// <param name="restClientParameters">Parameters.</param>
-        /// <returns>Rest response.</returns>
-        public IRestResponse Execute(RestClientParameters restClientParameters)
-        {
-            var client = GetRestClient(restClientParameters);
-            var request = GetRestRequest(restClientParameters);
-            return Execute(client, request);
-        }
-
-        /// <summary>
         /// Executes a request.
         /// </summary>
         /// <param name="client">The prepared rest client.</param>
@@ -95,7 +96,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             var response = Policy
                 .Handle<Exception>()
                 .OrResult<IRestResponse>(resp => !IsGoodResponse(resp))
-                .Retry(MaxExecutionsCount)
+                .Retry(maxExecutionsCount)
                 .Execute(() => client.Execute(request));
             return response;
         }
@@ -113,7 +114,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             var response = Policy
                 .Handle<Exception>()
                 .OrResult<IRestResponse<T>>(resp => !IsGoodResponse(resp))
-                .Retry(MaxExecutionsCount)
+                .Retry(maxExecutionsCount)
                 .Execute(() => client.Execute<T>(request));
             return response;
         }
@@ -155,31 +156,17 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 
         private Method GetRequestMethod(RestClientParameters restClientParameters)
         {
-            switch (restClientParameters.RequestMethod)
-            {
-                case RequestMethod.Get:
-                    return Method.GET;
-                case RequestMethod.Post:
-                    return Method.POST;
-                case RequestMethod.Put:
-                    return Method.PUT;
-                case RequestMethod.Patch:
-                    return Method.PATCH;
-                case RequestMethod.Delete:
-                    return Method.DELETE;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            return MethodMaps[restClientParameters.RequestMethod];
         }
 
-        private DataFormat GetDataFormat(RestClientParameters restClientParameters)
+        private static DataFormat GetDataFormat(RestClientParameters restClientParameters)
         {
             return restClientParameters.RequestFormat == RequestFormat.Xml
                 ? DataFormat.Xml
                 : DataFormat.Json;
         }
 
-        private void SetRequestParameters(RestRequest request, Dictionary<string, string> parameters, ParameterType type)
+        private static void SetRequestParameters(IRestRequest request, Dictionary<string, string> parameters, ParameterType type)
         {
             if (parameters == null)
             {
@@ -192,7 +179,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             }
         }
 
-        private void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
+        private static void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
         {
             if (restClientParameters.RequestBody != null)
             {

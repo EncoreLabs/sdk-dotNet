@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
@@ -17,65 +18,86 @@ namespace EncoreTickets.SDK.Basket
     /// </summary>
     public class BasketServiceApi : BaseApi, IBasketServiceApi
     {
+        private const string BasketApiHost = "basket-service.{0}tixuk.io/api/";
+
         /// <summary>
         /// Default constructor for the Basket service.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
-        public BasketServiceApi(ApiContext context) : base(context, "basket-service.{0}tixuk.io/api/")
+        public BasketServiceApi(ApiContext context) : base(context, BasketApiHost)
         {
         }
 
         /// <inheritdoc />
         public Promotion GetPromotionDetails(string promotionId)
         {
-            var path = $"v1/promotions/{promotionId}";
-            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(path, RequestMethod.Get);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/promotions/{promotionId}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc />
         public BasketDetails GetBasketDetails(string basketReference)
         {
-            var path = $"v1/baskets/{basketReference}";
-            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(path, RequestMethod.Get);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/baskets/{basketReference}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc />
         public BasketDetails UpsertPromotion(string basketId, Coupon coupon)
         {
-            var body = new ApplyPromotionRequest {coupon = coupon};
-            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
-                $"v1/baskets/{basketId}/applyPromotion",
-                RequestMethod.Patch,
-                body);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/baskets/{basketId}/applyPromotion",
+                Method = RequestMethod.Patch,
+                Body = new ApplyPromotionRequest {coupon = coupon}
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return GetUpsertPromotionResult(result, coupon, basketId);
         }
 
         /// <inheritdoc />
         public BasketDetails UpsertBasket(UpsertBasketRequest request)
         {
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
-                "v1/baskets",
-                RequestMethod.Patch,
-                request);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/baskets",
+                Method = RequestMethod.Patch,
+                Body = request
+            };
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return response.DataOrException;
         }
 
         /// <inheritdoc />
         public BasketDetails RemoveReservation(string basketId, int reservationId)
         {
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
-                $"v1/baskets/{basketId}/reservations/{reservationId}",
-                RequestMethod.Delete);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/baskets/{basketId}/reservations/{reservationId}",
+                Method = RequestMethod.Delete
+            };
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return response.DataOrException;
         }
 
         public BasketDetails ClearBasket(string basketId)
         {
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(
-                $"v1/baskets/{basketId}/clear",
-                RequestMethod.Patch);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/baskets/{basketId}/clear",
+                Method = RequestMethod.Patch
+            };
+            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return response.DataOrException;
         }
 

@@ -4,19 +4,19 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Enums;
 
-namespace EncoreTickets.SDK.Api.Helpers
+namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
 {
     /// <summary>
     /// Helper class for creating entities for the rest client wrapper of API services.
     /// </summary>
-    internal static class ApiClientWrapperBuilder
+    internal class ApiRestClientBuilder : IApiRestClientBuilder
     {
         /// <summary>
         /// Creates <see cref="RestClientWrapper"></see> for requests to API./>
         /// </summary>
         /// <param name="context">API context.</param>
         /// <returns>Initialized client wrapper.</returns>
-        public static RestClientWrapper CreateClientWrapper(ApiContext context)
+        public RestClientWrapper CreateClientWrapper(ApiContext context)
         {
             var credentials = context == null
                 ? null
@@ -35,25 +35,19 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// </summary>
         /// <param name="context">API context.</param>
         /// <param name="baseUrl">Site URL.</param>
-        /// <param name="endpoint">Resource endpoint.</param>
-        /// <param name="method">Request method.</param>
-        /// <param name="body">Request body.</param>
-        /// <param name="queryObject">Object for request query.</param>
-        /// <param name="dateFormat">Request date format.</param>
         /// <returns>Initialized client wrapper parameters.</returns>
-        public static RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl, string endpoint,
-            RequestMethod method, object body, object queryObject, string dateFormat)
+        public RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl,
+            ExecuteApiRequestParameters requestParameters)
         {
             return new RestClientParameters
             {
                 BaseUrl = baseUrl,
-                RequestUrl = endpoint,
+                RequestUrl = requestParameters.Endpoint,
+                RequestMethod = requestParameters.Method,
+                RequestBody = requestParameters.Body,
                 RequestFormat = RequestFormat.Json,
                 RequestHeaders = GetHeaders(context),
-                RequestMethod = method,
-                RequestDateFormat = dateFormat,
-                RequestBody = body,
-                RequestQueryParameters = GetQueryParameters(queryObject),
+                RequestQueryParameters = GetQueryParameters(requestParameters.Query),
             };
         }
 
