@@ -10,8 +10,8 @@ namespace EncoreTickets.SDK.Inventory.Models.ResponseModels
     internal class ProductSearchResponse : ApiResponse<List<Product>>
     {
         /// <inheritdoc/>
-        public override List<Product> Data => product;
+        public override List<Product> Data => Product;
 
-        public List<Product> product { get; set; }
+        public List<Product> Product { get; set; }
     }
 }

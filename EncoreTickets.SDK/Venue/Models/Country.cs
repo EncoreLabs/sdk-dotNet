@@ -2,8 +2,8 @@
 {
     public class Country
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string isoCode { get; set; }
+        public string IsoCode { get; set; }
     }
 }

@@ -78,7 +78,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
     public static class VenueServiceTestsSource
     {
-        public static IEnumerable<TestCaseData> GetVenues_IfApiResponseSuccessful_ReturnsVenues = new []
+        public static IEnumerable<TestCaseData> GetVenues_IfApiResponseSuccessful_ReturnsVenues = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{}},\"response\":{\"results\":[{\"compositeId\":\"THEB00-VEN-LDN~12\",\"internalId\":\"12\",\"title\":\"test!!!\",\"address\":{\"firstLine\":\"Upper Street\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"N1 2UD\",\"region\":{\"name\":\"LDN\",\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.541490\",\"longitude\":\"-0.102537\"},\"contentOverriddenAt\":\"2019-10-07T14:31:34+00:00\"},{\"compositeId\":\"THEB00-VEN-LDN~138\",\"internalId\":\"138\",\"title\":\"Apollo Victoria Theatre v3\",\"address\":{\"firstLine\":\"Rosebery Avenue\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"EC1R 4TN\",\"region\":{\"name\":\"London\",\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.5294\",\"longitude\":\"-0.1062\"},\"contentOverriddenAt\":\"2019-09-03T14:13:28+00:00\"}]},\"context\":null}",
@@ -86,57 +86,57 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     new SDK.Venue.Models.Venue
                     {
-                        compositeId = "THEB00-VEN-LDN~12",
-                        internalId = "12",
-                        title = "test!!!",
-                        address = new Address
+                        CompositeId = "THEB00-VEN-LDN~12",
+                        InternalId = "12",
+                        Title = "test!!!",
+                        Address = new Address
                         {
-                            firstLine = "Upper Street",
-                            secondLine = null,
-                            thirdLine = null,
-                            city = "London",
-                            postcode = "N1 2UD",
-                            region = new Region
+                            FirstLine = "Upper Street",
+                            SecondLine = null,
+                            ThirdLine = null,
+                            City = "London",
+                            Postcode = "N1 2UD",
+                            Region = new Region
                             {
-                                name = "LDN",
-                                isoCode = "LDN"
+                                Name = "LDN",
+                                IsoCode = "LDN"
                             },
-                            country = new Country
+                            Country = new Country
                             {
-                                name = "Great Britain",
-                                isoCode = "GBR"
+                                Name = "Great Britain",
+                                IsoCode = "GBR"
                             },
-                            latitude = "51.541490",
-                            longitude = "-0.102537"
+                            Latitude = "51.541490",
+                            Longitude = "-0.102537"
                         },
-                        contentOverriddenAt = new DateTime(2019, 10, 7, 14, 31, 34)
+                        ContentOverriddenAt = new DateTime(2019, 10, 7, 14, 31, 34)
                     },
                     new SDK.Venue.Models.Venue
                     {
-                        compositeId = "THEB00-VEN-LDN~138",
-                        internalId = "138",
-                        title = "Apollo Victoria Theatre v3",
-                        address = new Address
+                        CompositeId = "THEB00-VEN-LDN~138",
+                        InternalId = "138",
+                        Title = "Apollo Victoria Theatre v3",
+                        Address = new Address
                         {
-                            firstLine = "Rosebery Avenue",
-                            secondLine = null,
-                            thirdLine = null,
-                            city = "London",
-                            postcode = "EC1R 4TN",
-                            region = new Region
+                            FirstLine = "Rosebery Avenue",
+                            SecondLine = null,
+                            ThirdLine = null,
+                            City = "London",
+                            Postcode = "EC1R 4TN",
+                            Region = new Region
                             {
-                                name = "London",
-                                isoCode = "LDN"
+                                Name = "London",
+                                IsoCode = "LDN"
                             },
-                            country = new Country
+                            Country = new Country
                             {
-                                name = "Great Britain",
-                                isoCode = "GBR"
+                                Name = "Great Britain",
+                                IsoCode = "GBR"
                             },
-                            latitude = "51.5294",
-                            longitude = "-0.1062"
+                            Latitude = "51.5294",
+                            Longitude = "-0.1062"
                         },
-                        contentOverriddenAt = new DateTime(2019, 9, 3, 14, 13, 28)
+                        ContentOverriddenAt = new DateTime(2019, 9, 3, 14, 13, 28)
                     },
                 }
             ) {TestName = $"{nameof(GetVenues_IfApiResponseSuccessful_ReturnsVenues)}: API returns venues"},

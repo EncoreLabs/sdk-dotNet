@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Basket
             {
                 Endpoint = $"v1/baskets/{basketId}/applyPromotion",
                 Method = RequestMethod.Patch,
-                Body = new ApplyPromotionRequest {coupon = coupon}
+                Body = new ApplyPromotionRequest {Coupon = coupon}
             };
             var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
             return GetUpsertPromotionResult(result, coupon, basketId);

@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Authentication
         public ApiContext Authenticate()
         {
             var accessToken = JwtLogin();
-            Context.AccessToken = accessToken.token;
+            Context.AccessToken = accessToken.Token;
             return Context;
         }
 
@@ -49,8 +49,8 @@ namespace EncoreTickets.SDK.Authentication
                 Method = RequestMethod.Post,
                 Body = new Credentials
                 {
-                    username = Context.UserName ?? string.Empty,
-                    password = Context.Password ?? string.Empty
+                    Username = Context.UserName ?? string.Empty,
+                    Password = Context.Password ?? string.Empty
                 }
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(parameters, true);

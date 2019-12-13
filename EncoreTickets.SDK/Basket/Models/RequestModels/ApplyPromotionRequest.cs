@@ -2,6 +2,6 @@
 {
     internal class ApplyPromotionRequest
     {
-        public Coupon coupon { get; set; }
+        public Coupon Coupon { get; set; }
     }
 }

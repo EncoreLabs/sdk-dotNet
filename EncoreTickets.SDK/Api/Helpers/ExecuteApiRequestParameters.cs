@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Utilities.Enums;
+﻿using EncoreTickets.SDK.Utilities.Common.Serializers;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
@@ -28,5 +29,9 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// Gets or sets request date format
         /// </summary>
         public string DateFormat { get; set; } = null;
+
+        public ISerializerWithDateFormat Serializer { get; set; } = new DefaultJsonSerializer();
+
+        public ISerializerWithDateFormat Deserializer { get; set; } = new DefaultJsonSerializer();
     }
 }

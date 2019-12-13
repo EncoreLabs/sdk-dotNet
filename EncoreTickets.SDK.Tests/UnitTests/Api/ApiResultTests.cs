@@ -17,8 +17,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             null,
             new Context(),
-            new Context {info = new List<Info>()},
-            new Context {info = new List<Info> {new Info {code = "information"}}},
+            new Context {Info = new List<Info>()},
+            new Context {Info = new List<Info> {new Info {Code = "information"}}},
         };
 
         [Test]
@@ -136,7 +136,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             var infosAsErrors = new[] { CodeOfInfoAsError };
             var data = new[] { new object(), new object(), };
             var response = RestResponseFactory.GetSuccessResponse();
-            var responseContext = new Context {info = new List<Info> {new Info {code = CodeOfInfoAsError } }};
+            var responseContext = new Context {Info = new List<Info> {new Info {Code = CodeOfInfoAsError}}};
 
             var result = new ApiResult<object[]>(data, response, It.IsAny<ApiContext>(), responseContext, It.IsAny<Request>());
 

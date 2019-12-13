@@ -4,6 +4,7 @@ using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using NUnit.Framework;
 
@@ -88,11 +89,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 RequestUrlSegments = null,
                 RequestHeaders = expectedHeaders,
                 RequestQueryParameters = expectedQuery,
+                Serializer = new DefaultJsonSerializer(),
+                Deserializer = new DefaultJsonSerializer()
             };
 
             var result = new ApiRestClientBuilder().CreateClientWrapperParameters(context, baseUrl, parameters);
 
             AssertExtension.AreObjectsValuesEqual(expectedParameters, result);
+            Assert.NotNull(result.Serializer);
+            Assert.NotNull(result.Deserializer);
         }
     }
 }

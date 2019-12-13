@@ -2,8 +2,8 @@
 {
     public class Attributes
     {
-        public bool restrictedView { get; set; }
+        public bool RestrictedView { get; set; }
 
-        public bool sideView { get; set; }
+        public bool SideView { get; set; }
     }
 }

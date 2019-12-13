@@ -2,6 +2,6 @@
 {
     internal class AccessToken
     {
-        public string token { get; set; }
+        public string Token { get; set; }
     }
 }

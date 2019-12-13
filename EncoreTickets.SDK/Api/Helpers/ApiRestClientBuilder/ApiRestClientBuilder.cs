@@ -41,6 +41,8 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
             string baseUrl,
             ExecuteApiRequestParameters requestParameters)
         {
+            requestParameters.Serializer.DateFormat = requestParameters.DateFormat;
+            requestParameters.Deserializer.DateFormat = requestParameters.DateFormat;
             return new RestClientParameters
             {
                 BaseUrl = baseUrl,
@@ -50,6 +52,8 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
                 RequestFormat = RequestFormat.Json,
                 RequestHeaders = GetHeaders(context),
                 RequestQueryParameters = GetQueryParameters(requestParameters.Query),
+                Serializer = requestParameters.Serializer,
+                Deserializer = requestParameters.Deserializer
             };
         }
 

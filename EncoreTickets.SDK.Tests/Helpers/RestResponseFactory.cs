@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using EncoreTickets.SDK.Api.Helpers;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.Helpers
@@ -51,7 +52,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
         {
             response.Content = content;
             response.Request = request;
-            response.ContentType = "application/json";
+            response.ContentType = ContentTypes.ApplicationJson;
             return client.Deserialize<T>(response);
         }
     }

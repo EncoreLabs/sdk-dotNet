@@ -5,32 +5,32 @@ namespace EncoreTickets.SDK.Basket.Models
 {
     public class BasketDetails
     {
-        public string reference { get; set; }
+        public string Reference { get; set; }
 
-        public string checksum { get; set; }
+        public string Checksum { get; set; }
 
-        public string channelId { get; set; }
+        public string ChannelId { get; set; }
 
-        public bool mixed { get; set; }
+        public bool Mixed { get; set; }
 
-        public decimal exchangeRate { get; set; }
+        public decimal ExchangeRate { get; set; }
 
-        public Delivery delivery { get; set; }
+        public Delivery Delivery { get; set; }
 
-        public bool allowFlexiTickets { get; set; }
+        public bool AllowFlexiTickets { get; set; }
 
-        public string status { get; set; }
+        public string Status { get; set; }
 
-        public DateTimeOffset expiredAt { get; set; }
+        public DateTimeOffset ExpiredAt { get; set; }
 
-        public DateTimeOffset createdAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
-        public List<Reservation> reservations { get; set; }
+        public List<Reservation> Reservations { get; set; }
 
-        public Coupon coupon { get; set; }
+        public Coupon Coupon { get; set; }
 
-        public Promotion appliedPromotion { get; set; }
+        public Promotion AppliedPromotion { get; set; }
 
-        public List<Promotion> missedPromotions { get; set; }
+        public List<Promotion> MissedPromotions { get; set; }
     }
 }

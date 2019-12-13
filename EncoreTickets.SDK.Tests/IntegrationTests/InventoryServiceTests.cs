@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var products = service.Search(searchTerm);
 
-            Assert.False(products.Any(p => string.IsNullOrEmpty(p.name)));
+            Assert.False(products.Any(p => string.IsNullOrEmpty(p.Name)));
         }
 
         [Test]
@@ -44,8 +44,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             foreach (var performance in performances)
             {
-                Assert.NotNull(performance.largestLumpOfTickets);
-                Assert.AreNotEqual(performance.datetime, default);
+                Assert.NotNull(performance.LargestLumpOfTickets);
+                Assert.AreNotEqual(performance.Datetime, default);
             }
         }
 
@@ -55,14 +55,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var productId = configuration["Inventory:TestProductId"];
             var performance = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1)).First();
 
-            var seats = service.GetAvailability(productId, 2, performance.datetime);
+            var seats = service.GetAvailability(productId, 2, performance.Datetime);
 
-            Assert.IsNotEmpty(seats.areas);
-            foreach (var area in seats.areas)
+            Assert.IsNotEmpty(seats.Areas);
+            foreach (var area in seats.Areas)
             {
-                Assert.NotNull(area.availableCount);
-                Assert.False(string.IsNullOrEmpty(area.name));
-                Assert.False(string.IsNullOrEmpty(area.itemReference));
+                Assert.NotNull(area.AvailableCount);
+                Assert.False(string.IsNullOrEmpty(area.Name));
+                Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
         }
 

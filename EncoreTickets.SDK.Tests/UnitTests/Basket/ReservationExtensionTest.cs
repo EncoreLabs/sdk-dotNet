@@ -10,9 +10,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     {
         private static readonly Price DefaultPrice = new Price
         {
-            currency = "GBP",
-            decimalPlaces = 2,
-            value = 2500
+            Currency = "GBP",
+            DecimalPlaces = 2,
+            Value = 2500
         };
 
         private static readonly int DefaultQuantity = 2;
@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalAdjustedAmountInOfficeCurrency_Correct()
         {
-            var reservation = new Reservation { adjustedSalePriceInOfficeCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { AdjustedSalePriceInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalAdjustedAmountInOfficeCurrency();
 
@@ -30,7 +30,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalAdjustedAmountInShopperCurrency_Correct()
         {
-            var reservation = new Reservation { adjustedSalePriceInShopperCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { AdjustedSalePriceInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalAdjustedAmountInShopperCurrency();
 
@@ -40,7 +40,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalAdjustmentInOfficeCurrency_Correct()
         {
-            var reservation = new Reservation { adjustmentAmountInOfficeCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { AdjustmentAmountInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalAdjustmentAmountInOfficeCurrency();
 
@@ -50,7 +50,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalAdjustmentInShopperCurrency_Correct()
         {
-            var reservation = new Reservation { adjustmentAmountInShopperCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { AdjustmentAmountInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalAdjustmentAmountInShopperCurrency();
 
@@ -60,7 +60,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalSalePriceInOfficeCurrency_Correct()
         {
-            var reservation = new Reservation { salePriceInOfficeCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { SalePriceInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalSalePriceInOfficeCurrency();
 
@@ -70,7 +70,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalSalePriceInShopperCurrency_Correct()
         {
-            var reservation = new Reservation { salePriceInShopperCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { SalePriceInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalSalePriceInShopperCurrency();
 
@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalFaceInOfficeCurrency_Correct()
         {
-            var reservation = new Reservation { faceValueInOfficeCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { FaceValueInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalFaceValueInOfficeCurrency();
 
@@ -90,7 +90,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [Test]
         public void Reservation_TotalFaceInShopperCurrency_Correct()
         {
-            var reservation = new Reservation { faceValueInShopperCurrency = DefaultPrice, quantity = DefaultQuantity };
+            var reservation = new Reservation { FaceValueInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
             var result = reservation.GetTotalFaceValueInShopperCurrency();
 

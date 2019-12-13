@@ -4,20 +4,20 @@ namespace EncoreTickets.SDK.Basket.Models.RequestModels
 {
     public class UpsertBasketRequest
     {
-        public string reference { get; set; }
+        public string Reference { get; set; }
 
-        public string channelId { get; set; }
+        public string ChannelId { get; set; }
 
-        public Delivery delivery { get; set; }
+        public Delivery Delivery { get; set; }
 
-        public bool hasFlexiTickets { get; set; }
+        public bool HasFlexiTickets { get; set; }
 
-        public string shopperCurrency { get; set; }
+        public string ShopperCurrency { get; set; }
 
-        public string shopperReference { get; set; }
+        public string ShopperReference { get; set; }
 
-        public List<ReservationRequest> reservations { get; set; }
+        public List<ReservationRequest> Reservations { get; set; }
 
-        public Coupon coupon { get; set; }
+        public Coupon Coupon { get; set; }
     }
 }

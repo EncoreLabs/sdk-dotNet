@@ -8,16 +8,16 @@
         /// <summary>
         /// Gets or sets easily read message.
         /// </summary>
-        public string message { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets or sets a code of the error.
         /// </summary>
-        public string code { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets a name of field that is a cause of the error.
         /// </summary>
-        public string field { get; set; }
+        public string Field { get; set; }
     }
 }

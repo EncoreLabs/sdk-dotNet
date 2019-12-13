@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         public void Api_ApiResponse_DataProperty_ReturnsCorrectValue<T>(T instance)
             where T : class
         {
-            var response = new ApiResponse<T> {response = instance};
+            var response = new ApiResponse<T> {Response = instance};
             Assert.AreEqual(instance, response.Data);
         }
     }

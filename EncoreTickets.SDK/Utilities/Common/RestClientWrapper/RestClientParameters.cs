@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
@@ -17,11 +18,6 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// Gets or sets the relative path of a site resource.
         /// </summary>
         public string RequestUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the format for dates.
-        /// </summary>
-        public string RequestDateFormat { get; set; }
 
         /// <summary>
         /// Gets or sets request headers: key - header name; value - header value.
@@ -52,6 +48,16 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// Gets or sets request format.
         /// </summary>
         public RequestFormat RequestFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets json serializer used for a request.
+        /// </summary>
+        public ISerializerWithDateFormat Serializer { get; set; }
+
+        /// <summary>
+        /// Gets or sets json deserializer used for a request.
+        /// </summary>
+        public ISerializerWithDateFormat Deserializer { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="RestClientParameters"/>
