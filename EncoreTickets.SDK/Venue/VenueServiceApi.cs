@@ -104,7 +104,7 @@ namespace EncoreTickets.SDK.Venue
                 $"v1/admin/venues/{venueId}/seats/attributes",
                 RequestMethod.Patch,
                 body,
-                deserializer: JsonSerializer.CreateInstance<SingleOrListJsonSerializer<string>>());
+                deserializer: new SingleOrListJsonSerializer<string>());
 
             try
             {

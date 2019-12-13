@@ -2,10 +2,9 @@
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using RestSharp;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
@@ -48,8 +47,8 @@ namespace EncoreTickets.SDK.Api.Helpers
             object query = null,
             string dateFormat = null,
             bool wrappedError = false,
-            ISerializer serializer = null,
-            IDeserializer deserializer = null)
+            ISerializerWithDateFormat serializer = null,
+            IDeserializerWithDateFormat deserializer = null)
             where T : class, new()
         {
             var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat, serializer, deserializer);
@@ -76,8 +75,8 @@ namespace EncoreTickets.SDK.Api.Helpers
             object query = null,
             string dateFormat = null,
             bool wrappedError = true,
-            ISerializer serializer = null,
-            IDeserializer deserializer = null)
+            ISerializerWithDateFormat serializer = null,
+            IDeserializerWithDateFormat deserializer = null)
             where T : class
         {
             var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat, serializer, deserializer);
@@ -106,8 +105,8 @@ namespace EncoreTickets.SDK.Api.Helpers
             object query = null,
             string dateFormat = null,
             bool wrappedError = true,
-            ISerializer serializer = null,
-            IDeserializer deserializer = null)
+            ISerializerWithDateFormat serializer = null,
+            IDeserializerWithDateFormat deserializer = null)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
@@ -122,8 +121,8 @@ namespace EncoreTickets.SDK.Api.Helpers
             object body,
             object query,
             string dateFormat,
-            ISerializer serializer,
-            IDeserializer deserializer)
+            ISerializerWithDateFormat serializer,
+            IDeserializerWithDateFormat deserializer)
             where T : class, new()
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);

@@ -2,14 +2,15 @@
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    internal class SingleOrListJsonSerializer<T> : DefaultJsonSerializer
+    public class SingleOrListJsonSerializer<T> : DefaultJsonSerializer
     {
-        private JsonSerializerSettings settings;
-        protected override JsonSerializerSettings Settings => settings ?? (settings = CreateSettings());
-
-        private JsonSerializerSettings CreateSettings()
+        public SingleOrListJsonSerializer() : base(CreateSettings())
         {
-            var settings = base.Settings;
+        }
+
+        private new static JsonSerializerSettings CreateSettings()
+        {
+            var settings = DefaultJsonSerializer.CreateSettings();
             settings.Converters.Add(new SingleOrListConverter<T>());
             return settings;
         }

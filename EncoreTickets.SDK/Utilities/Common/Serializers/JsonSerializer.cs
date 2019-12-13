@@ -1,26 +1,25 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    internal abstract class JsonSerializer : ISerializer, IDeserializer
+    public abstract class JsonSerializer : ISerializerWithDateFormat, IDeserializerWithDateFormat
     {
-        protected abstract JsonSerializerSettings Settings { get; }
-
-        public static T CreateInstance<T>(string dateFormat = null) 
-            where T : JsonSerializer, new()
-        {
-            var serializer = new T();
-            if (!string.IsNullOrEmpty(dateFormat))
-            {
-                serializer.Settings.DateFormatString = dateFormat;
-            }
-            return serializer;
-        }
+        private readonly JsonSerializerSettings settings;
 
         public string ContentType { get; set; } = "application/json"; // Required by RestSharp
+
+        protected JsonSerializerSettings Settings => settings;
+
+        public string DateFormat
+        {
+            set => Settings.DateFormatString = value;
+        }
+
+        protected JsonSerializer(JsonSerializerSettings settings)
+        {
+            this.settings = settings;
+        }
 
         public string Serialize(object obj)
         {

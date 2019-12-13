@@ -3,12 +3,23 @@ using Newtonsoft.Json.Serialization;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    internal class DefaultJsonSerializer : JsonSerializer
+    public class DefaultJsonSerializer : JsonSerializer
     {
-        protected override JsonSerializerSettings Settings { get; }  = new JsonSerializerSettings
+        public DefaultJsonSerializer() : base(CreateSettings())
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc
-        };
+        }
+
+        protected DefaultJsonSerializer(JsonSerializerSettings settings) : base(settings)
+        {
+        }
+
+        protected static JsonSerializerSettings CreateSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
+            };
+        }
     }
 }

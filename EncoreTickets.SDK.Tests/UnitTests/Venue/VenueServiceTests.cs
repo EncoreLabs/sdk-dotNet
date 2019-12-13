@@ -5,6 +5,7 @@ using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Venue.Models;
@@ -12,8 +13,6 @@ using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
 using Moq;
 using NUnit.Framework;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 {
@@ -492,8 +491,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     true,
-                    It.IsAny<ISerializer>(),
-                    It.IsAny<IDeserializer>()))
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<IDeserializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     new List<string> { "Success" },
                     TestHelper.GetSuccessResponse(),
@@ -510,8 +509,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 true,
-                It.IsAny<ISerializer>(),
-                It.IsAny<IDeserializer>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
             Assert.IsTrue(result);
         }
 
@@ -528,8 +527,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     true,
-                    It.IsAny<ISerializer>(),
-                    It.IsAny<IDeserializer>()))
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<IDeserializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     new List<string>  { "" },
                     TestHelper.GetSuccessResponse(),
@@ -546,8 +545,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 true,
-                It.IsAny<ISerializer>(),
-                It.IsAny<IDeserializer>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
             Assert.IsFalse(result);
         }
 
@@ -564,8 +563,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     null,
                     true,
-                    It.IsAny<ISerializer>(),
-                    It.IsAny<IDeserializer>()))
+                    It.IsAny<ISerializerWithDateFormat>(),
+                    It.IsAny<IDeserializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     null,
                     TestHelper.GetFailedResponse(),
@@ -585,8 +584,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 null,
                 true,
-                It.IsAny<ISerializer>(),
-                It.IsAny<IDeserializer>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>(),
+                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
         }
     }
 }

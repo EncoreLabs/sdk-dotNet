@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 {
@@ -58,12 +57,12 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// <summary>
         /// Gets or sets json serializer used for a request.
         /// </summary>
-        public ISerializer Serializer { get; set; }
+        public ISerializerWithDateFormat Serializer { get; set; }
 
         /// <summary>
         /// Gets or sets json deserializer used for a request.
         /// </summary>
-        public IDeserializer Deserializer { get; set; }
+        public IDeserializerWithDateFormat Deserializer { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="RestClientParameters"/>

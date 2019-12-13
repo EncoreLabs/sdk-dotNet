@@ -5,8 +5,10 @@ using Newtonsoft.Json.Linq;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    internal class SingleOrListConverter<T> : JsonConverter
+    public class SingleOrListConverter<T> : JsonConverter
     {
+        public override bool CanWrite => true;
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(List<T>);
@@ -26,7 +28,5 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
         {
             serializer.Serialize(writer, value);
         }
-
-        public override bool CanWrite => true;
     }
 }
