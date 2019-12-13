@@ -492,7 +492,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     true,
                     It.IsAny<ISerializerWithDateFormat>(),
-                    It.IsAny<IDeserializerWithDateFormat>()))
+                    It.IsAny<ISerializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     new List<string> { "Success" },
                     TestHelper.GetSuccessResponse(),
@@ -510,7 +510,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 true,
                 It.IsAny<ISerializerWithDateFormat>(),
-                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
             Assert.IsTrue(result);
         }
 
@@ -528,7 +528,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     true,
                     It.IsAny<ISerializerWithDateFormat>(),
-                    It.IsAny<IDeserializerWithDateFormat>()))
+                    It.IsAny<ISerializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     new List<string>  { "" },
                     TestHelper.GetSuccessResponse(),
@@ -546,7 +546,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 true,
                 It.IsAny<ISerializerWithDateFormat>(),
-                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
             Assert.IsFalse(result);
         }
 
@@ -564,7 +564,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     null,
                     true,
                     It.IsAny<ISerializerWithDateFormat>(),
-                    It.IsAny<IDeserializerWithDateFormat>()))
+                    It.IsAny<ISerializerWithDateFormat>()))
                 .Returns(() => new ApiResult<List<string>>(
                     null,
                     TestHelper.GetFailedResponse(),
@@ -585,7 +585,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 null,
                 true,
                 It.IsAny<ISerializerWithDateFormat>(),
-                It.IsAny<IDeserializerWithDateFormat>()), Times.Once);
+                It.IsAny<ISerializerWithDateFormat>()), Times.Once);
         }
     }
 }

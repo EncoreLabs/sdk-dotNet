@@ -1,9 +1,10 @@
-﻿using RestSharp.Serializers;
+﻿using RestSharp.Deserializers;
+using RestSharp.Serializers;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    public interface ISerializerWithDateFormat : ISerializer
+    public interface ISerializerWithDateFormat : ISerializer, IDeserializer
     {
-        string DateFormat { set; }
+        string DateFormat { get; set; }
     }
 }

@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             string dateFormat = null,
             bool wrappedError = false,
             ISerializerWithDateFormat serializer = null,
-            IDeserializerWithDateFormat deserializer = null)
+            ISerializerWithDateFormat deserializer = null)
             where T : class, new()
         {
             var restResponse = GetRestResponse<T>(endpoint, method, body, query, dateFormat, serializer, deserializer);
@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             string dateFormat = null,
             bool wrappedError = true,
             ISerializerWithDateFormat serializer = null,
-            IDeserializerWithDateFormat deserializer = null)
+            ISerializerWithDateFormat deserializer = null)
             where T : class
         {
             var restWrappedResponse = GetRestResponse<ApiResponse<T>>(endpoint, method, body, query, dateFormat, serializer, deserializer);
@@ -106,7 +106,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             string dateFormat = null,
             bool wrappedError = true,
             ISerializerWithDateFormat serializer = null,
-            IDeserializerWithDateFormat deserializer = null)
+            ISerializerWithDateFormat deserializer = null)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
@@ -122,7 +122,7 @@ namespace EncoreTickets.SDK.Api.Helpers
             object query,
             string dateFormat,
             ISerializerWithDateFormat serializer,
-            IDeserializerWithDateFormat deserializer)
+            ISerializerWithDateFormat deserializer)
             where T : class, new()
         {
             var clientWrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);

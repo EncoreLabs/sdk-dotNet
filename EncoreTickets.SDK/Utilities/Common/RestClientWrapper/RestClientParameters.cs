@@ -62,7 +62,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
         /// <summary>
         /// Gets or sets json deserializer used for a request.
         /// </summary>
-        public IDeserializerWithDateFormat Deserializer { get; set; }
+        public ISerializerWithDateFormat Deserializer { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="RestClientParameters"/>

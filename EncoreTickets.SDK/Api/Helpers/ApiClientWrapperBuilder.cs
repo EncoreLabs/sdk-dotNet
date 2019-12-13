@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <param name="deserializer">JsonDeserializer used for a request.</param>
         /// <returns>Initialized client wrapper parameters.</returns>
         public static RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl, string endpoint,
-            RequestMethod method, object body, object queryObject, string dateFormat, ISerializerWithDateFormat serializer, IDeserializerWithDateFormat deserializer)
+            RequestMethod method, object body, object queryObject, string dateFormat, ISerializerWithDateFormat serializer, ISerializerWithDateFormat deserializer)
         {
             var customSerializer = serializer ?? new DefaultJsonSerializer();
             customSerializer.DateFormat = dateFormat;
