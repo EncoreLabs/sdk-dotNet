@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    public abstract class JsonSerializer : ISerializerWithDateFormat
+    public abstract class BaseJsonSerializer : ISerializerWithDateFormat
     {
 
         public string ContentType { get; set; } = ContentTypes.ApplicationJson; // Required by RestSharp
@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
 
         protected JsonSerializerSettings Settings { get; }
 
-        protected JsonSerializer(JsonSerializerSettings settings)
+        protected BaseJsonSerializer(JsonSerializerSettings settings)
         {
             Settings = settings;
         }

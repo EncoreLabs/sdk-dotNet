@@ -3,6 +3,9 @@ using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
+    /// <summary>
+    /// Parameters to get a result of API execution
+    /// </summary>
     public class ExecuteApiRequestParameters
     {
         /// <summary>
@@ -30,8 +33,14 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// </summary>
         public string DateFormat { get; set; } = null;
 
-        public ISerializerWithDateFormat Serializer { get; set; } = new DefaultJsonSerializer();
+        /// <summary>
+        /// Gets or sets JSON serializer for requests
+        /// </summary>
+        public ISerializerWithDateFormat Serializer { get; set; }
 
-        public ISerializerWithDateFormat Deserializer { get; set; } = new DefaultJsonSerializer();
+        /// <summary>
+        /// Gets or sets JSON deserializer for responses
+        /// </summary>
+        public ISerializerWithDateFormat Deserializer { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
@@ -9,13 +10,10 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
     /// <summary>
     /// Helper class for creating entities for the rest client wrapper of API services.
     /// </summary>
+    /// <inheritdoc/>
     internal class ApiRestClientBuilder : IApiRestClientBuilder
     {
-        /// <summary>
-        /// Creates <see cref="RestClientWrapper"></see> for requests to API./>
-        /// </summary>
-        /// <param name="context">API context.</param>
-        /// <returns>Initialized client wrapper.</returns>
+        /// <inheritdoc/>
         public virtual RestClientWrapper CreateClientWrapper(ApiContext context)
         {
             var credentials = context == null
@@ -30,19 +28,12 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
             return new RestClientWrapper(credentials);
         }
 
-        /// <summary>
-        /// Creates <see cref="RestClientParameters"></see> for requests to API./>
-        /// </summary>
-        /// <param name="context">API context.</param>
-        /// <param name="baseUrl">Site URL.</param>
-        /// <returns>Initialized client wrapper parameters.</returns>
+        /// <inheritdoc/>
         public RestClientParameters CreateClientWrapperParameters(
             ApiContext context,
             string baseUrl,
             ExecuteApiRequestParameters requestParameters)
         {
-            requestParameters.Serializer.DateFormat = requestParameters.DateFormat;
-            requestParameters.Deserializer.DateFormat = requestParameters.DateFormat;
             return new RestClientParameters
             {
                 BaseUrl = baseUrl,
@@ -52,8 +43,8 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
                 RequestFormat = RequestFormat.Json,
                 RequestHeaders = GetHeaders(context),
                 RequestQueryParameters = GetQueryParameters(requestParameters.Query),
-                Serializer = requestParameters.Serializer,
-                Deserializer = requestParameters.Deserializer
+                Serializer = GetInitializedSerializer(requestParameters.Serializer, requestParameters.DateFormat),
+                Deserializer = GetInitializedSerializer(requestParameters.Deserializer, requestParameters.DateFormat),
             };
         }
 
@@ -101,6 +92,13 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
             }
 
             return result.Count == 0 ? null : result;
+        }
+
+        private static ISerializerWithDateFormat GetInitializedSerializer(ISerializerWithDateFormat sourceSerializer, string dateFormat)
+        {
+            var serializer = sourceSerializer ?? new DefaultJsonSerializer();
+            serializer.DateFormat = dateFormat;
+            return serializer;
         }
     }
 }

@@ -3,8 +3,6 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
-using EncoreTickets.SDK.Utilities.Common.Serializers;
-using EncoreTickets.SDK.Utilities.Enums;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Helpers
@@ -23,7 +21,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// </summary>
         /// <param name="context">The API context for requests.</param>
         /// <param name="baseUrl">The site URL.</param>
-        /// <param name="restClientBuilder"></param>
+        /// <param name="restClientBuilder">The builder for objects that initialize RestSharp requests</param>
         public ApiRequestExecutor(ApiContext context, string baseUrl, IApiRestClientBuilder restClientBuilder)
         {
             this.context = context;
@@ -35,7 +33,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// Get an object of <typeparamref name="T"/> from API when expected data should not be wrapped with extra data on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
-        /// <param name="parameters"></param>
+        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = false)
             where T : class, new()
@@ -48,7 +47,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// Get an object of <typeparamref name="T"/> from API when expected data should be standard wrapped with extra data on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
-        /// <param name="parameters"></param>
+        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
             where T : class
@@ -63,7 +63,8 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <typeparam name="TApiResponse">Type of the response object.</typeparam>
         /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
-        /// <param name="parameters"></param>
+        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
             where T : class
