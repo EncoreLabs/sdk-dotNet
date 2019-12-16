@@ -96,8 +96,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             var result = new ApiRestClientBuilder().CreateClientWrapperParameters(context, baseUrl, parameters);
 
             AssertExtension.AreObjectsValuesEqual(expectedParameters, result);
-            Assert.NotNull(result.Serializer);
-            Assert.NotNull(result.Deserializer);
         }
     }
 }

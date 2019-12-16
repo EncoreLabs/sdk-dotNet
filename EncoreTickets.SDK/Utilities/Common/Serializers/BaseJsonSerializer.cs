@@ -6,7 +6,6 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
     public abstract class BaseJsonSerializer : ISerializerWithDateFormat
     {
-
         public string ContentType { get; set; } = ContentTypes.ApplicationJson; // Required by RestSharp
 
         public string DateFormat
