@@ -4,13 +4,14 @@ using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results.Exceptions;
+using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
-using Moq;
 using NUnit.Framework;
 using RestSharp;
+using Attribute = EncoreTickets.SDK.Venue.Models.Attribute;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 {
@@ -25,20 +26,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         {
         }
 
+        #region GetVenues
+
+        [Test]
+        public void GetVenues_CallsApiWithCorrectParameters()
+        {
+            mockers = new MockersForApiService();
+            mockers.SetupAnyExecution<VenuesResponse>();
+
+            try
+            {
+                GetVenues();
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<VenuesResponse>(BaseUrl, "v1/venues", Method.GET);
+        }
+
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenues_IfApiResponseSuccessful_ReturnsVenues))]
         public void GetVenues_IfApiResponseSuccessful_ReturnsVenues(string responseContent,
             List<SDK.Venue.Models.Venue> expected)
         {
             mockers = new MockersForApiService();
-            mockers.RestClientWrapperMock
-                .Setup(x => x.Execute<VenuesResponse>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
-                .Returns((IRestClient client, IRestRequest request) =>
-                    RestResponseFactory.GetSuccessJsonResponse<VenuesResponse>(client, request, responseContent));
+            mockers.SetupSuccessfulExecution<VenuesResponse>(responseContent);
 
-            var result = GetVenues();
+            var actual = GetVenues();
 
-            AssertExtension.AreObjectsValuesEqual(expected, result);
-            VerifyClientWrapperForGetVenues();
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
         [Test]
@@ -47,33 +64,33 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             mockers = new MockersForApiService();
             var code = HttpStatusCode.InternalServerError;
             var responseContent = ""; // pass real data
-            mockers.RestClientWrapperMock
-                .Setup(x => x.Execute<VenuesResponse>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
-                .Returns((IRestClient client, IRestRequest request) =>
-                    RestResponseFactory.GetFailedJsonResponse<VenuesResponse>(client, request, responseContent, code));
+            mockers.SetupFailedExecution<VenuesResponse>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var result = GetVenues();
+                var actual = GetVenues();
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
-            VerifyClientWrapperForGetVenues();
         }
 
-        private void VerifyClientWrapperForGetVenues()
+        #endregion
+
+        #region UpsertSeatAttributes
+
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue))]
+        public void UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue(string venueId,
+            IEnumerable<SeatAttribute> seatAttributes, string responseContent)
         {
-            mockers.RestClientWrapperMock.Verify(
-                x => x.Execute<VenuesResponse>(
-                    It.Is<IRestClient>(client =>
-                        client.BaseUrl.ToString() == BaseUrl
-                    ),
-                    It.Is<IRestRequest>(request =>
-                        request.Method == Method.GET &&
-                        request.Resource == "v1/venues" &&
-                        request.RequestFormat == DataFormat.Json)
-                ), Times.Once);
+            mockers = new MockersForApiService();
+            mockers.SetupSuccessfulExecution<ApiResponse<List<string>>>(responseContent);
+
+            var actual = UpsertSeatAttributes(venueId, seatAttributes);
+
+            Assert.True(actual);
         }
+
+        #endregion
     }
 
     public static class VenueServiceTestsSource
@@ -139,7 +156,40 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         ContentOverriddenAt = new DateTime(2019, 9, 3, 14, 13, 28)
                     },
                 }
-            ) {TestName = $"{nameof(GetVenues_IfApiResponseSuccessful_ReturnsVenues)}: API returns venues"},
+            ) {TestName = $"{nameof(GetVenues_IfApiResponseSuccessful_ReturnsVenues)}"},
+        };
+
+        public static IEnumerable<TestCaseData> UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue = new[]
+        {
+            new TestCaseData(
+                "163",
+                new List<SeatAttribute>
+                {
+                    new SeatAttribute
+                    {
+                        SeatIdentifier = "STALLS-O2",
+                        StartDate = "",
+                        EndDate = "",
+                        PerformanceTimes = new List<string>(),
+                        Attributes = new List<Attribute>
+                        {
+                            new Attribute
+                            {
+                                Title = "RestrictedView",
+                                Description = "Restricted view",
+                                Intention = "negative"
+                            },
+                            new Attribute
+                            {
+                                Title = "PillarInView",
+                                Description = "Pillar in view",
+                                Intention = "negative"
+                            },
+                        }
+                    },
+                },
+                "{\"request\":{\"body\":\"{\\\"seats\\\":[{\\\"seatIdentifier\\\":\\\"STALLS-O2\\\",\\\"startDate\\\":\\\"\\\",\\\"endDate\\\":\\\"\\\",\\\"performanceTimes\\\":[],\\\"attributes\\\":[{\\\"title\\\":\\\"RestrictedView\\\",\\\"description\\\":\\\"Restricted view\\\",\\\"intention\\\":\\\"negative\\\"}]}]}\",\"query\":{},\"urlParams\":{\"venueId\":\"163\"}},\"response\":\"Success\",\"context\":null}"
+            ) {TestName = $"{nameof(UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue)}"},
         };
     }
 }

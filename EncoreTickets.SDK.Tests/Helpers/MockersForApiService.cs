@@ -1,7 +1,9 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using System.Net;
+using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
 using Moq;
+using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.Helpers
 {
@@ -15,6 +17,47 @@ namespace EncoreTickets.SDK.Tests.Helpers
         {
             RestClientWrapperMock = GetRestClientWrapperMock();
             RestClientBuilderMock = GetApiRestClientBuilderMock(RestClientWrapperMock);
+        }
+
+        public void SetupAnyExecution<T>()
+            where T : class, new()
+        {
+            RestClientWrapperMock
+                .Setup(x => x.Execute<T>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
+                .Returns((IRestClient client, IRestRequest request) => new RestResponse<T>());
+        }
+
+        public void SetupSuccessfulExecution<T>(string responseContent)
+            where T : class, new()
+        {
+            RestClientWrapperMock
+                .Setup(x => x.Execute<T>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
+                .Returns((IRestClient client, IRestRequest request) =>
+                    RestResponseFactory.GetSuccessJsonResponse<T>(client, request, responseContent));
+        }
+
+        public void SetupFailedExecution<T>(string responseContent, HttpStatusCode code)
+            where T : class, new()
+        {
+            RestClientWrapperMock
+                .Setup(x => x.Execute<T>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
+                .Returns((IRestClient client, IRestRequest request) =>
+                    RestResponseFactory.GetFailedJsonResponse<T>(client, request, responseContent, code));
+        }
+
+        public void VerifyExecution<T>(string baseUrl, string resource, Method method)
+            where T : class, new()
+        {
+            RestClientWrapperMock.Verify(
+                x => x.Execute<T>(
+                    It.Is<IRestClient>(client =>
+                        client.BaseUrl.ToString() == baseUrl
+                    ),
+                    It.Is<IRestRequest>(request =>
+                        request.Method == method &&
+                        request.Resource == resource &&
+                        request.RequestFormat == DataFormat.Json)
+                ), Times.Once());
         }
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
