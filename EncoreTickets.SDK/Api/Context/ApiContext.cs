@@ -18,9 +18,9 @@ namespace EncoreTickets.SDK.Api.Context
         public string Password { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the access token.
+        /// Gets the environment.
         /// </summary>
-        public string AccessToken { get; set; }
+        public Environments Environment { get; protected set; }
 
         /// <summary>
         /// Gets or sets the type of authentication that should be used to login.
@@ -28,14 +28,9 @@ namespace EncoreTickets.SDK.Api.Context
         public AuthenticationMethod AuthenticationMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets the environment.
+        /// Gets or sets the access token.
         /// </summary>
-        public Environments Environment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the timeout milliseconds.
-        /// </summary>
-        public int TimeoutMilliseconds { get; set; }
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets the affiliate.
@@ -62,18 +57,17 @@ namespace EncoreTickets.SDK.Api.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext(Environments env)
+        public ApiContext() : this(Environments.Production)
         {
-            AuthenticationMethod = AuthenticationMethod.JWT;
-            Environment = env;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext() : this(Environments.Production)
+        public ApiContext(Environments env)
         {
-            TimeoutMilliseconds = 120000;
+            AuthenticationMethod = AuthenticationMethod.JWT;
+            Environment = env;
         }
     }
 }
