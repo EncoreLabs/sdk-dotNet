@@ -2,10 +2,10 @@
 {
     public class VenueTerminal
     {
-        public string directions { get; set; }
+        public string Directions { get; set; }
         
-        public string journeyTime { get; set; }
+        public string JourneyTime { get; set; }
 
-        public Terminal terminal { get; set; }
+        public Terminal Terminal { get; set; }
     }
 }

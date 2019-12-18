@@ -1,5 +1,6 @@
 ﻿using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Pricing;
+using EncoreTickets.SDK.Tests.Helpers;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.IntegrationTests
@@ -25,11 +26,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(rates);
             foreach (var rate in rates)
             {
-                Assert.NotNull(rate.baseCurrency);
-                Assert.NotNull(rate.targetCurrency);
-                Assert.True(rate.rate > 0);
-                Assert.True(rate.encoreRate > 0);
-                Assert.True(rate.protectionMargin >= 0);
+                Assert.NotNull(rate.BaseCurrency);
+                Assert.NotNull(rate.TargetCurrency);
+                Assert.True(rate.Rate > 0);
+                Assert.True(rate.EncoreRate > 0);
+                Assert.True(rate.ProtectionMargin >= 0);
             }
         }
     }

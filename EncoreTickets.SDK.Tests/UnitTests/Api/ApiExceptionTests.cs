@@ -2,6 +2,7 @@
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -40,24 +41,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 new List<string>(),
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error>()},
+                new Context {Errors = new List<Error>()},
             },
             new object[]
             {
                 new List<string> {"Venue [9] is not found"},
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error>
+                new Context {Errors = new List<Error>
                 {
-                    new Error {message = "Venue [9] is not found"}
+                    new Error {Message = "Venue [9] is not found"}
                 }},
             },
             new object[]
             {
                 new List<string> {"coupon.code - This value should not be blank."},
                 new RestResponse {StatusDescription = "OK"},
-                new Context {errors = new List<Error>
+                new Context {Errors = new List<Error>
                 {
-                    new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                    new Error {Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"}
                 }},
             },
             new object[]
@@ -66,11 +67,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
-                    errors = new List<Error>
+                    Errors = new List<Error>
                     {
-                        new Error {message = "Product [9] is not found"},
-                        new Error {message = "Unauthorized"},
-                        new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                        new Error {Message = "Product [9] is not found"},
+                        new Error {Message = "Unauthorized"},
+                        new Error {Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"}
                     }
                 },
             },
@@ -106,21 +107,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 "API exception occured",
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error>()},
+                new Context {Errors = new List<Error>()},
             },
             new object[]
             {
                 "Venue [9] is not found",
                 new RestResponse {StatusDescription = "Not found"},
-                new Context {errors = new List<Error> {new Error {message = "Venue [9] is not found"}}},
+                new Context {Errors = new List<Error> {new Error {Message = "Venue [9] is not found"}}},
             },
             new object[]
             {
                 "coupon.code - This value should not be blank.",
                 new RestResponse {StatusDescription = "OK"},
-                new Context {errors = new List<Error>
+                new Context {Errors = new List<Error>
                 {
-                    new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                    new Error {Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"}
                 }},
             },
             new object[]
@@ -129,11 +130,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 new RestResponse {StatusDescription = "Not found"},
                 new Context
                 {
-                    errors = new List<Error>
+                    Errors = new List<Error>
                     {
-                        new Error {message = "Product [9] is not found"},
-                        new Error {message = "Unauthorized"},
-                        new Error {message = "This value should not be blank.", code = "validation_error", field = "coupon.code"}
+                        new Error {Message = "Product [9] is not found"},
+                        new Error {Message = "Unauthorized"},
+                        new Error {Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"}
                     }
                 },
             },
@@ -155,11 +156,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             {
                 new Dictionary<string, object>
                 {
-                    {"body", "{ username : admin, password : pwd }"},
+                    {"Body", "{ username : admin, password : pwd }"},
                 },
                 new Request
                 {
-                    body = "{ username : admin, password : pwd }"
+                    Body = "{ username : admin, password : pwd }"
                 }
             },
             new object[]
@@ -171,7 +172,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    query = new Dictionary<string, object>
+                    Query = new Dictionary<string, object>
                     {
                         {"productId", "9"},
                         {"quantity", "2"},
@@ -186,7 +187,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 },
                 new Request
                 {
-                    urlParams = new Dictionary<string, object>
+                    UrlParams = new Dictionary<string, object>
                     {
                         {"promoId", "19"},
                     }
@@ -199,20 +200,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                     {"productId", "9"},
                     {"quantity", "2"},
                     {"promoId", "19"},
-                    {"body", "{ username : admin, password : pwd }"},
+                    {"Body", "{ username : admin, password : pwd }"},
                 },
                 new Request
                 {
-                    query = new Dictionary<string, object>
+                    Query = new Dictionary<string, object>
                     {
                         {"productId", "9"},
                         {"quantity", "2"},
                     },
-                    urlParams = new Dictionary<string, object>
+                    UrlParams = new Dictionary<string, object>
                     {
                         {"promoId", "19"},
                     },
-                    body = "{ username : admin, password : pwd }"
+                    Body = "{ username : admin, password : pwd }"
                 }
             },
         };
@@ -225,7 +226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
             var result = exception.Errors;
 
-            AssertExtension.EnumerableAreEquals(expectedErrors, result);
+            AssertExtension.AreObjectsValuesEqual(expectedErrors, result);
         }
 
         [TestCaseSource(nameof(SourceForMessagesProperty))]
@@ -247,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
             var result = exception.Details;
 
-            AssertExtension.EnumerableAreEquals(expected, result);
+            AssertExtension.AreObjectsValuesEqual(expected, result);
         }
     }
 }

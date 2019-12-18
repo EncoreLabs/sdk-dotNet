@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static bool IsExpired(this BasketDetails basketDetails) 
-            => basketDetails.expiredAt.UtcDateTime <= DateTime.UtcNow;
+            => basketDetails.ExpiredAt.UtcDateTime <= DateTime.UtcNow;
 
         /// <summary>
         /// Calculates the total number of items in all of the reservations in the basket.
@@ -21,7 +21,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static int ItemCount(this BasketDetails basketDetails)
-            => basketDetails.reservations?.Sum(r => r.quantity) ?? 0;
+            => basketDetails.Reservations?.Sum(r => r.Quantity) ?? 0;
 
         /// <summary>
         /// Determines whether the basket has any automatic promotions.
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static bool HasAutomaticPromotion(this BasketDetails basketDetails)
-            => basketDetails.coupon == null && basketDetails.HasPromotion();
+            => basketDetails.Coupon == null && basketDetails.HasPromotion();
 
         /// <summary>
         /// Determines whether the basket has any promotions.
@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <param name="basketDetails"></param>
         /// <returns></returns>
         public static bool HasPromotion(this BasketDetails basketDetails) 
-            => basketDetails.appliedPromotion != null;
+            => basketDetails.AppliedPromotion != null;
 
         /// <summary>
         /// Gets total adjusted amount in office currency.
@@ -111,14 +111,14 @@ namespace EncoreTickets.SDK.Basket.Extensions
         public static Price GetBasketTotalWithoutDelivery(this BasketDetails basketDetails)
         {
             var total = basketDetails.GetBasketTotalInOfficeCurrency();
-            return total != null && basketDetails.delivery?.charge != null
-                ? total.Subtract(basketDetails.delivery.charge)
+            return total != null && basketDetails.Delivery?.Charge != null
+                ? total.Subtract(basketDetails.Delivery.Charge)
                 : total;
         }
 
         private static Price GetTotalFromAllReservations(this BasketDetails basketDetails, Func<Reservation, Price> priceFunc) 
-             => basketDetails.reservations?.Count > 0 
-                 ? basketDetails.reservations.Select(priceFunc).Aggregate((x, y) => x.Add(y)) 
+             => basketDetails.Reservations?.Count > 0 
+                 ? basketDetails.Reservations.Select(priceFunc).Aggregate((x, y) => x.Add(y)) 
                  : null;
     }
 }

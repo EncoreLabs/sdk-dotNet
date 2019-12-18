@@ -10,11 +10,11 @@ namespace EncoreTickets.SDK.Api.Results.Response
         /// <summary>
         /// Gets or sets an errors collection.
         /// </summary>
-        public List<Error> errors { get; set; }
+        public List<Error> Errors { get; set; }
 
         /// <summary>
         /// Gets or sets an infos collection.
         /// </summary>
-        public List<Info> info { get; set; }
+        public List<Info> Info { get; set; }
     }
 }

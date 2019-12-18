@@ -57,7 +57,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private static string ConvertInfoToString(Info info)
         {
-            return string.IsNullOrEmpty(info.message) ? info.code : info.message;
+            return string.IsNullOrEmpty(info.Message) ? info.Code : info.Message;
         }
     }
 }

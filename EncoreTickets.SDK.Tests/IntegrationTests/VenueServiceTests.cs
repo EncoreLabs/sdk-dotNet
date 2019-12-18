@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Venue;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -36,8 +37,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(attributes);
             foreach (var attribute in attributes)
             {
-                Assert.NotNull(attribute.title);
-                Assert.NotNull(attribute.intention);
+                Assert.NotNull(attribute.Title);
+                Assert.NotNull(attribute.Intention);
             }
         }
 
@@ -48,7 +49,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
 
-            AssertExtension.SimplePropertyValuesAreEquals(sourceAttribute, updatedAttribute);
+            AssertExtension.AreObjectsValuesEqual(sourceAttribute, updatedAttribute);
         }
 
         [Test]
@@ -59,9 +60,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(attributes);
             foreach (var attribute in attributes)
             {
-                Assert.NotNull(attribute.seatIdentifier);
-                Assert.IsNotEmpty(attribute.attributes);
-                Assert.True(attribute.attributes.All(a => !string.IsNullOrEmpty(a.title)));
+                Assert.NotNull(attribute.SeatIdentifier);
+                Assert.IsNotEmpty(attribute.Attributes);
+                Assert.True(attribute.Attributes.All(a => !string.IsNullOrEmpty(a.Title)));
             }
         }
 
@@ -111,9 +112,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         private void AssertVenueHasDetails(Venue.Models.Venue venue)
         {
-            Assert.False(string.IsNullOrEmpty(venue.title));
-            Assert.False(string.IsNullOrEmpty(venue.internalId));
-            Assert.False(string.IsNullOrEmpty(venue.compositeId));
+            Assert.False(string.IsNullOrEmpty(venue.Title));
+            Assert.False(string.IsNullOrEmpty(venue.InternalId));
+            Assert.False(string.IsNullOrEmpty(venue.CompositeId));
         }
     }
 }

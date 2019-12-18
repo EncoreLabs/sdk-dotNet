@@ -109,7 +109,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <returns></returns>
         protected List<string> GetErrors()
         {
-            if (ContextInResponse?.errors == null)
+            if (ContextInResponse?.Errors == null)
             {
                 return new List<string>
                 {
@@ -119,17 +119,17 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
                 };
             }
 
-            var contextErrors = ContextInResponse.errors.Select(ConvertErrorToString)
+            var contextErrors = ContextInResponse.Errors.Select(ConvertErrorToString)
                 .Where(x => !string.IsNullOrEmpty(x));
             return contextErrors.ToList();
         }
 
         private string ConvertErrorToString(Error error)
         {
-            var message = error.message;
-            if (!string.IsNullOrEmpty(error.field))
+            var message = error.Message;
+            if (!string.IsNullOrEmpty(error.Field))
             {
-                message = $"{error.field} - {message}";
+                message = $"{error.Field} - {message}";
             }
 
             return message;
@@ -143,11 +143,11 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             var details = new Dictionary<string, object>();
-            AddDynamicToDictionary(details, RequestInResponse.query);
-            AddDynamicToDictionary(details, RequestInResponse.urlParams);
-            if (!string.IsNullOrEmpty(RequestInResponse.body))
+            AddDynamicToDictionary(details, RequestInResponse.Query);
+            AddDynamicToDictionary(details, RequestInResponse.UrlParams);
+            if (!string.IsNullOrEmpty(RequestInResponse.Body))
             {
-                details.Add(nameof(RequestInResponse.body), RequestInResponse.body);
+                details.Add(nameof(RequestInResponse.Body), RequestInResponse.Body);
             }
 
             return details;

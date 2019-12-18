@@ -2,8 +2,8 @@
 {
     public class Delivery
     {
-        public string method { get; set; }
+        public string Method { get; set; }
 
-        public Price charge { get; set; }
+        public Price Charge { get; set; }
     }
 }

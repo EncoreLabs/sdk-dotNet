@@ -9,6 +9,6 @@
         where T : class
     {
         /// <inheritdoc/>>
-        public override T Data => response;
+        public override T Data => Response;
     }
 }

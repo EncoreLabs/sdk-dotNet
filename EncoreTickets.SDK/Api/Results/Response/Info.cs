@@ -8,21 +8,21 @@
         /// <summary>
         /// Gets or sets easily read message.
         /// </summary>
-        public string message { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets or sets a code of the information.
         /// </summary>
-        public string code { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets a type of the information.
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets a name of the information.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 }

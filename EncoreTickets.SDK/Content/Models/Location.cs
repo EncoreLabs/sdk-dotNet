@@ -7,10 +7,10 @@ namespace EncoreTickets.SDK.Content.Models
     /// </summary>
     public class Location
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string isoCode { get; set; }
+        public string IsoCode { get; set; }
 
-        public List<Location> subLocations { get; set; }
+        public List<Location> SubLocations { get; set; }
     }
 }

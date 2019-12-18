@@ -1,5 +1,6 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Pricing.Models;
 using EncoreTickets.SDK.Pricing.Models.RequestModels;
@@ -14,7 +15,7 @@ namespace EncoreTickets.SDK.Pricing
     /// </summary>
     public class PricingServiceApi : BaseApiWithAuthentication, IPricingServiceApi
     {
-        private const string PricingHost = "pricing-service.{0}tixuk.io/api/";
+        private const string PricingApiHost = "pricing-service.{0}tixuk.io/api/";
         private const string DateFormat = "yyyy-MM-ddTHH:mm:sszzz";
 
         /// <summary>
@@ -22,20 +23,24 @@ namespace EncoreTickets.SDK.Pricing
         /// </summary>
         /// <param name="context"></param>
         /// /// <param name="automaticAuthentication"></param>
-        public PricingServiceApi(ApiContext context, bool automaticAuthentication = false) : base(context, PricingHost, automaticAuthentication)
+        public PricingServiceApi(ApiContext context, bool automaticAuthentication = false)
+            : base(context, PricingApiHost, automaticAuthentication)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
 
         /// <inheritdoc />
-        public ResponseForPage<ExchangeRate> GetExchangeRates(ExchangeRatesParameters parameters)
+        public ResponseForPage<ExchangeRate> GetExchangeRates(ExchangeRatesParameters ratesParameters)
         {
             TriggerAutomaticAuthentication();
-            var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(
-                "v2/admin/exchange_rates",
-                RequestMethod.Get,
-                query: parameters,
-                dateFormat: DateFormat);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v2/admin/exchange_rates",
+                Method = RequestMethod.Get,
+                Query = ratesParameters,
+                DateFormat = DateFormat
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(parameters);
             return result.DataOrException;
         }
     }

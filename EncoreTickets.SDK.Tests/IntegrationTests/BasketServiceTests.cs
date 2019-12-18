@@ -6,6 +6,7 @@ using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
@@ -32,9 +33,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var request = CreateDefaultBasketRequest(reference);
             var upsertBasketResult = service.UpsertBasket(request);
 
-            var removeReservationResult = service.RemoveReservation(upsertBasketResult.reference, 1);
+            var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, 1);
 
-            Assert.IsEmpty(removeReservationResult.reservations);
+            Assert.IsEmpty(removeReservationResult.Reservations);
         }
 
         [Test]
@@ -44,9 +45,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var request = CreateDefaultBasketRequest(reference);
             var upsertBasketResult = service.UpsertBasket(request);
 
-            var clearBasketResult = service.ClearBasket(upsertBasketResult.reference);
+            var clearBasketResult = service.ClearBasket(upsertBasketResult.Reference);
 
-            Assert.IsEmpty(clearBasketResult.reservations);
+            Assert.IsEmpty(clearBasketResult.Reservations);
         }
 
         [Test]
@@ -59,15 +60,15 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var request = CreateDefaultBasketRequest(reference);
                 upsertBasketResult = service.UpsertBasket(request);
 
-                var basketDetails = service.GetBasketDetails(upsertBasketResult.reference);
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
                 AssertUpsertBasketSuccess(request, basketDetails);
-                Assert.AreEqual(upsertBasketResult.reference, basketDetails.reference);
-                Assert.AreEqual(upsertBasketResult.checksum, basketDetails.checksum);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
             finally
             {
-                service.ClearBasket(upsertBasketResult?.reference);
+                service.ClearBasket(upsertBasketResult?.Reference);
             }
         }
 
@@ -78,14 +79,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var promoDetails = service.GetPromotionDetails(promoId);
 
-            Assert.AreEqual(promoId, promoDetails.id);
-            Assert.NotNull(promoDetails.reference);
-            Assert.NotNull(promoDetails.description);
-            Assert.NotNull(promoDetails.displayText);
-            Assert.NotNull(promoDetails.name);
-            Assert.NotNull(promoDetails.reportingCode);
-            Assert.AreNotEqual(promoDetails.validFrom, default);
-            Assert.AreNotEqual(promoDetails.validTo, default);
+            Assert.AreEqual(promoId, promoDetails.Id);
+            Assert.NotNull(promoDetails.Reference);
+            Assert.NotNull(promoDetails.Description);
+            Assert.NotNull(promoDetails.DisplayText);
+            Assert.NotNull(promoDetails.Name);
+            Assert.NotNull(promoDetails.ReportingCode);
+            Assert.AreNotEqual(promoDetails.ValidFrom, default);
+            Assert.AreNotEqual(promoDetails.ValidTo, default);
         }
 
         [Test]
@@ -96,19 +97,19 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasketRequest(reference);
-                request.coupon = null;
+                request.Coupon = null;
                 upsertBasketResult = service.UpsertBasket(request);
-                var coupon = new Coupon { code = configuration["Basket:ValidPromoCode"] };
+                var coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] };
 
-                var basketDetails = service.UpsertPromotion(upsertBasketResult.reference, coupon);
+                var basketDetails = service.UpsertPromotion(upsertBasketResult.Reference, coupon);
 
-                Assert.Null(upsertBasketResult.coupon);
-                AssertExtension.SimplePropertyValuesAreEquals(coupon, basketDetails.coupon);
-                Assert.NotNull(basketDetails.appliedPromotion);
+                Assert.Null(upsertBasketResult.Coupon);
+                AssertExtension.AreObjectsValuesEqual(coupon, basketDetails.Coupon);
+                Assert.NotNull(basketDetails.AppliedPromotion);
             }
             finally
             {
-                service.ClearBasket(upsertBasketResult?.reference);
+                service.ClearBasket(upsertBasketResult?.Reference);
             }
         }
 
@@ -117,7 +118,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var reference = configuration["Basket:TestReferences:0"];
             var request = CreateDefaultBasketRequest(reference);
-            request.reservations[0].items[0].aggregateReference = "invalid";
+            request.Reservations[0].Items[0].AggregateReference = "invalid";
 
             Assert.Throws<ApiException>(() => service.UpsertBasket(request));
         }
@@ -126,27 +127,27 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             return new UpsertBasketRequest
             {
-                channelId = "test-channel",
-                coupon = new Coupon { code = configuration["Basket:ValidPromoCode"] },
-                delivery = new Delivery
+                ChannelId = "test-channel",
+                Coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] },
+                Delivery = new Delivery
                 {
-                    charge = new Price
+                    Charge = new Price
                     {
-                        currency = "GBP",
-                        decimalPlaces = 2,
-                        value = 145
+                        Currency = "GBP",
+                        DecimalPlaces = 2,
+                        Value = 145
                     },
-                    method = "postage"
+                    Method = "postage"
                 },
-                reservations = new List<ReservationRequest>
+                Reservations = new List<ReservationRequest>
                 {
                     new ReservationRequest
                     {
-                        date = new DateTimeOffset(2020, 4, 30, 19, 30, 0, TimeSpan.Zero),
-                        productId = "1587",
-                        venueId = "138",
-                        quantity = references.Length,
-                        items = references.Select(r => new ItemRequest { aggregateReference = r }).ToList()
+                        Date = new DateTimeOffset(2020, 4, 30, 19, 30, 0, TimeSpan.Zero),
+                        ProductId = "1587",
+                        VenueId = "138",
+                        Quantity = references.Length,
+                        Items = references.Select(r => new ItemRequest { AggregateReference = r }).ToList()
                     }
                 }
             };
@@ -154,14 +155,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         private void AssertUpsertBasketSuccess(UpsertBasketRequest request, BasketDetails result)
         {
-            Assert.NotNull(result.reference);
-            Assert.NotNull(result.checksum);
-            Assert.AreEqual(request.channelId, result.channelId);
-            Assert.AreEqual(request.delivery.method, result.delivery.method);
-            AssertExtension.SimplePropertyValuesAreEquals(request.delivery.charge, result.delivery.charge);
-            AssertExtension.SimplePropertyValuesAreEquals(request.coupon, result.coupon);
-            Assert.NotNull(result.appliedPromotion);
-            Assert.NotNull(result.reservations);
+            Assert.NotNull(result.Reference);
+            Assert.NotNull(result.Checksum);
+            Assert.AreEqual(request.ChannelId, result.ChannelId);
+            Assert.AreEqual(request.Delivery.Method, result.Delivery.Method);
+            AssertExtension.AreObjectsValuesEqual(request.Delivery.Charge, result.Delivery.Charge);
+            AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
+            Assert.NotNull(result.AppliedPromotion);
+            Assert.NotNull(result.Reservations);
         }
     }
 }

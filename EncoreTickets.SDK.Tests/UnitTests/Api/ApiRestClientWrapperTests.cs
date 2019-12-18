@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Enums;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using RestSharp;

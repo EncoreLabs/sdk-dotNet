@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Utilities.Enums;
 
@@ -13,45 +14,37 @@ namespace EncoreTickets.SDK.Content
     /// </summary>
     public class ContentServiceApi : BaseApi, IContentServiceApi
     {
+        private const string ContentApiHost = "content-service.{0}tixuk.io/api/";
+
         /// <summary>
         /// Default constructor for the content service
         /// </summary>
         /// <param name="context"></param>
-        public ContentServiceApi(ApiContext context) : base(context, "content-service.{0}tixuk.io/api/")
-        {
-        }
-
-        /// <summary>
-        /// Constructor for the content service
-        /// </summary>
-        public ContentServiceApi(ApiContext context, string baseUrl) : base(context, baseUrl)
+        public ContentServiceApi(ApiContext context) : base(context, ContentApiHost)
         {
         }
 
         /// <inheritdoc />
         public IList<Location> GetLocations()
         {
-            var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(
-                "v1/locations",
-                RequestMethod.Get);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/locations",
+                Method = RequestMethod.Get
+            };
+            var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(parameters);
             return results.DataOrException;
         }
 
         /// <inheritdoc />
         public IList<Product> GetProducts()
         {
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(
-                "v1/products?page=1&limit=1000",
-                RequestMethod.Get);
-            return result.DataOrException;
-        }
-
-        /// <inheritdoc />
-        public Product GetProductById(string id)
-        {
-            var result = Executor.ExecuteApiWithWrappedResponse<Product>(
-                $"v1/products/{id}",
-                RequestMethod.Get);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/products?page=1&limit=1000",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(parameters);
             return result.DataOrException;
         }
 
@@ -59,6 +52,18 @@ namespace EncoreTickets.SDK.Content
         public Product GetProductById(int id)
         {
             return GetProductById(id.ToString());
+        }
+
+        /// <inheritdoc />
+        public Product GetProductById(string id)
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/products/{id}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Product>(parameters);
+            return result.DataOrException;
         }
     }
 }
