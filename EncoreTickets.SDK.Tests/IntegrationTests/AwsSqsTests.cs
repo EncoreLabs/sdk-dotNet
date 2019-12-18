@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using EncoreTickets.SDK.Aws;
+using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 

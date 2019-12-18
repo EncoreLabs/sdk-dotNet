@@ -11,7 +11,8 @@ namespace EncoreTickets.SDK.Utilities.Common.Serializers
         private new static JsonSerializerSettings CreateSettings()
         {
             var settings = DefaultJsonSerializer.CreateSettings();
-            settings.Converters.Add(new SingleOrListConverter<T>());
+            var converter = new SingleOrListConverter<T>();
+            settings.Converters.Add(converter);
             return settings;
         }
     }

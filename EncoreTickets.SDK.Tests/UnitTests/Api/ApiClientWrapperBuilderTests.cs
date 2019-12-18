@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
-using Moq;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
-        private const string SdkVersion = "1.1.0";
+        private const string SdkVersion = "2.4.0";
 
         private static TestCaseData[] sourceForCreateClientWrapperTests =
         {
@@ -56,7 +58,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(ApiContext context)
         {
             //Act
-            var wrapper = ApiClientWrapperBuilder.CreateClientWrapper(context);
+            var wrapper = new ApiRestClientBuilder().CreateClientWrapper(context);
 
             //Assert
             Assert.NotNull(wrapper);
@@ -67,10 +69,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             ApiContext context, RequestMethod method, object queryObject,
             Dictionary<string, string> expectedHeaders, Dictionary<string, string> expectedQuery)
         {
-            var baseUrl = It.IsAny<string>();
-            var endpoint = It.IsAny<string>();
-            var body = It.IsAny<object>();
-            var dateFormat = It.IsAny<string>();
+            var baseUrl = "url";
+            var endpoint = "resource endpoint";
+            var body = new object();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = endpoint,
+                Body = body,
+                Method = method,
+                Query = queryObject
+            };
             var expectedParameters = new RestClientParameters
             {
                 BaseUrl = baseUrl,
@@ -79,24 +87,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
                 RequestFormat = RequestFormat.Json,
                 RequestMethod = method,
                 RequestUrlSegments = null,
-                RequestDateFormat = dateFormat
+                RequestHeaders = expectedHeaders,
+                RequestQueryParameters = expectedQuery,
+                Serializer = new DefaultJsonSerializer(),
+                Deserializer = new DefaultJsonSerializer()
             };
 
-            var result = ApiClientWrapperBuilder.CreateClientWrapperParameters(context, baseUrl, endpoint, method, body,
-                queryObject, dateFormat, null, null);
+            var result = new ApiRestClientBuilder().CreateClientWrapperParameters(context, baseUrl, parameters);
 
-            Assert.AreEqual(expectedParameters.BaseUrl, result.BaseUrl);
-            Assert.AreEqual(expectedParameters.RequestUrl, result.RequestUrl);
-            Assert.AreEqual(expectedParameters.RequestBody, result.RequestBody);
-            Assert.AreEqual(expectedParameters.RequestFormat, result.RequestFormat);
-            Assert.AreEqual(expectedParameters.RequestMethod, result.RequestMethod);
-            Assert.AreEqual(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
-            Assert.AreEqual(expectedParameters.RequestDateFormat, result.RequestDateFormat);
-            Assert.NotNull(result.Serializer);
-            Assert.NotNull(result.Deserializer);
-            AssertExtension.EnumerableAreEquals(expectedParameters.RequestUrlSegments, result.RequestUrlSegments);
-            AssertExtension.EnumerableAreEquals(expectedParameters.RequestQueryParameters, expectedQuery);
-            AssertExtension.EnumerableAreEquals(expectedParameters.RequestHeaders, expectedHeaders);
+            AssertExtension.AreObjectsValuesEqual(expectedParameters, result);
         }
     }
 }

@@ -3,6 +3,7 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         public void Api_ApiResult_ConstructorWith5Args_IfSuccessfulResponse_InitializesCommonProperties()
         {
             var data = new[] {new object(), new object(),};
-            var response = TestHelper.GetSuccessResponse();
+            var response = RestResponseFactory.GetSuccessResponse();
             var responseContext = new Context();
             var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
@@ -44,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         [Test]
         public void Api_ApiResult_ConstructorWith5Args_IfUnsuccessfulResponse_InitializesCommonProperties()
         {
-            var response = TestHelper.GetFailedResponse();
+            var response = RestResponseFactory.GetFailedResponse();
             var responseContext = new Context();
             var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
@@ -67,7 +68,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         [Test]
         public void Api_ApiResult_ConstructorWith4Args_IfNullError_DoesNotInitializeApiException()
         {
-            var response = TestHelper.GetSuccessResponse();
+            var response = RestResponseFactory.GetSuccessResponse();
             var data = new[] { new object(), new object(), };
             string error = null;
 
@@ -80,7 +81,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         [Test]
         public void Api_ApiResult_ConstructorWith4Args_IfNotNullError_InitializesApiException()
         {
-            var response = TestHelper.GetFailedResponse();
+            var response = RestResponseFactory.GetFailedResponse();
             object[] data = null;
             var error = "Error";
 
@@ -97,7 +98,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         [Test]
         public void Api_ApiResult_ConstructorWith4Args_IfUnsuccessfulResponse_InitializesCommonProperties()
         {
-            var response = TestHelper.GetFailedResponse();
+            var response = RestResponseFactory.GetFailedResponse();
             var responseContext = new Context();
             var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
@@ -122,7 +123,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             var infosAsErrors = new[] { CodeOfInfoAsError };
             var data = new[] { new object(), new object(), };
-            var response = TestHelper.GetSuccessResponse();
+            var response = RestResponseFactory.GetSuccessResponse();
 
             var result = new ApiResult<object[]>(data, response, It.IsAny<ApiContext>(), responseContext, It.IsAny<Request>());
 
@@ -134,8 +135,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             var infosAsErrors = new[] { CodeOfInfoAsError };
             var data = new[] { new object(), new object(), };
-            var response = TestHelper.GetSuccessResponse();
-            var responseContext = new Context {Info = new List<Info> {new Info {Code = CodeOfInfoAsError } }};
+            var response = RestResponseFactory.GetSuccessResponse();
+            var responseContext = new Context {Info = new List<Info> {new Info {Code = CodeOfInfoAsError}}};
 
             var result = new ApiResult<object[]>(data, response, It.IsAny<ApiContext>(), responseContext, It.IsAny<Request>());
 

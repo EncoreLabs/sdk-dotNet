@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace EncoreTickets.SDK.Utilities.Common.Serializers
 {
-    public class DefaultJsonSerializer : JsonSerializer
+    public class DefaultJsonSerializer : BaseJsonSerializer
     {
         public DefaultJsonSerializer() : base(CreateSettings())
         {

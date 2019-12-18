@@ -2,6 +2,7 @@
 using System.Linq;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Inventory;
+using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
