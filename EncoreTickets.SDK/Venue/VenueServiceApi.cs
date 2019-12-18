@@ -127,11 +127,11 @@ namespace EncoreTickets.SDK.Venue
                 Body = new SeatAttributesRequest {Seats = seatAttributes},
                 Deserializer = new SingleOrListJsonSerializer<string>()
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return GetUpsertSeatAttributesResult(result);
         }
 
-        private bool GetUpsertSeatAttributesResult(ApiResult<IEnumerable<string>> apiResult)
+        private bool GetUpsertSeatAttributesResult(ApiResult<List<string>> apiResult)
         {
             const string successStatus = "Success";
             try
