@@ -14,7 +14,10 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <inheritdoc />
         public override List<string> Errors => GetContextErrorsAsStrings();
 
-        public readonly IEnumerable<Info> ContextErrors;
+        /// <summary>
+        /// Gets infos that should be errors
+        /// </summary>
+        public IEnumerable<Info> ContextErrors { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContextApiException"/>
@@ -52,7 +55,8 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private List<string> GetContextErrorsAsStrings()
         {
-            return ContextErrors?.Select(ConvertInfoToString).ToList();
+            var errors = ContextErrors?.Select(ConvertInfoToString);
+            return FilterErrorsAsStrings(errors);
         }
 
         private static string ConvertInfoToString(Info info)
