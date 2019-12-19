@@ -101,13 +101,17 @@ namespace EncoreTickets.SDK.Api.Results
             return GetDataOrContextException(new[] {codeOfInfoAsError});
         }
 
-        /// <summary>
-        /// Gets <c>data</c> if the API request was successful and response context does not have warnings, <see cref="T"/>;
-        /// otherwise, <c> throws the API context exception</c>, <see cref="ContextApiException"/>;.
-        /// </summary>
-        /// <param name="codesOfInfosAsErrors">Information codes in the context of the response, which are errors.</param>
-        /// <returns>Data</returns>
-        public T GetDataOrContextException(IEnumerable<string> codesOfInfosAsErrors)
+        private void InitializeCommonParameters(T data, IRestResponse response, ApiContext context)
+        {
+            apiData = data;
+            RestResponse = response;
+            Context = context;
+            ApiException = IsSuccessful
+                ? null
+                : new ApiException(RestResponse, Context, ResponseContext, RequestInResponse);
+        }
+
+        private T GetDataOrContextException(IEnumerable<string> codesOfInfosAsErrors)
         {
             var data = DataOrException;
             if (ResponseContext?.Info == null)
@@ -122,16 +126,6 @@ namespace EncoreTickets.SDK.Api.Results
             }
 
             throw new ContextApiException(infosAsErrors, RestResponse, Context, ResponseContext, RequestInResponse);
-        }
-
-        private void InitializeCommonParameters(T data, IRestResponse response, ApiContext context)
-        {
-            apiData = data;
-            RestResponse = response;
-            Context = context;
-            ApiException = IsSuccessful
-                ? null
-                : new ApiException(RestResponse, Context, ResponseContext, RequestInResponse);
         }
     }
 }
