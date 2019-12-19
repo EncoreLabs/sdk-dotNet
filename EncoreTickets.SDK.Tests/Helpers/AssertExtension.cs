@@ -15,6 +15,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
             else
             {
                 actual.Should().BeEquivalentTo(expected, options => options
+                    .RespectingRuntimeTypes()
                     .ComparingByMembers<T>()
                     .WithStrictOrdering()
                     .WithTracing());

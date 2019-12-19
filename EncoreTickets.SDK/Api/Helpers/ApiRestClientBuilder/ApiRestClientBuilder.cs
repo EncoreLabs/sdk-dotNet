@@ -56,7 +56,7 @@ namespace EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder
                 {"x-SDK", $"EncoreTickets.SDK.NET {buildNumber}"}
             };
 
-            if (!string.IsNullOrWhiteSpace(context.Affiliate))
+            if (!string.IsNullOrWhiteSpace(context?.Affiliate))
             {
                 headers.Add("affiliateId", context.Affiliate);
             }

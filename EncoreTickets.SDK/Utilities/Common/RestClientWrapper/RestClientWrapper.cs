@@ -36,19 +36,34 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             {RequestMethod.Delete, Method.DELETE},
         };
 
-        private readonly RestClientWrapperCredentials credentials;
-        private readonly int maxExecutionsCount;
+        public int MaxExecutionsCount { get; }
+
+        public RestClientWrapperCredentials Credentials { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="RestClientWrapper"/>
         /// </summary>
         /// <param name="restClientWrapperCredentials">Credentials for requests.</param>
-        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed</param>
-        public RestClientWrapper(RestClientWrapperCredentials restClientWrapperCredentials,
-            int executionsCount = DefaultMaxExecutionsCount)
+        public RestClientWrapper(RestClientWrapperCredentials restClientWrapperCredentials)
+            : this(DefaultMaxExecutionsCount)
         {
-            credentials = restClientWrapperCredentials;
-            maxExecutionsCount = executionsCount;
+            Credentials = restClientWrapperCredentials;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// </summary>
+        public RestClientWrapper() : this(DefaultMaxExecutionsCount)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// </summary>
+        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed</param>
+        public RestClientWrapper(int executionsCount)
+        {
+            MaxExecutionsCount = executionsCount;
         }
 
         /// <summary>
@@ -98,7 +113,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             var response = Policy
                 .Handle<Exception>()
                 .OrResult<IRestResponse>(resp => !IsGoodResponse(resp))
-                .Retry(maxExecutionsCount)
+                .Retry(MaxExecutionsCount)
                 .Execute(() => client.Execute(request));
             return response;
         }
@@ -116,7 +131,7 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
             var response = Policy
                 .Handle<Exception>()
                 .OrResult<IRestResponse<T>>(resp => !IsGoodResponse(resp))
-                .Retry(maxExecutionsCount)
+                .Retry(MaxExecutionsCount)
                 .Execute(() => client.Execute<T>(request));
             return response;
         }
@@ -138,19 +153,19 @@ namespace EncoreTickets.SDK.Utilities.Common.RestClientWrapper
 
         private IAuthenticator GetAuthenticator()
         {
-            if (credentials == null)
+            if (Credentials == null)
             {
                 return null;
             }
 
-            switch (credentials.AuthenticationMethod)
+            switch (Credentials.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:
-                    return string.IsNullOrEmpty(credentials.AccessToken)
+                    return string.IsNullOrEmpty(Credentials.AccessToken)
                         ? null
-                        : new JwtAuthenticator(credentials.AccessToken);
+                        : new JwtAuthenticator(Credentials.AccessToken);
                 case AuthenticationMethod.Basic:
-                    return new HttpBasicAuthenticator(credentials.Username, credentials.Password);
+                    return new HttpBasicAuthenticator(Credentials.Username, Credentials.Password);
                 default:
                     return null;
             }

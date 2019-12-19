@@ -62,7 +62,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
         {
-            return new Mock<RestClientWrapper>(It.IsAny<RestClientWrapperCredentials>(), It.IsAny<int>());
+            return new Mock<RestClientWrapper>();
         }
 
         private Mock<ApiRestClientBuilder> GetApiRestClientBuilderMock(Mock<RestClientWrapper> restClientWrapperMock)
