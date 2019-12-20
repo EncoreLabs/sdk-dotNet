@@ -5,14 +5,14 @@ namespace EncoreTickets.SDK.Utilities.Common.Cache
     /// <summary>
     /// A lazy-loading wrapper over the ICache implementations
     /// </summary>
-    public class LazyCacheHandler : ICache
+    public class LazyCacheDecorator : ICache
     {
         private readonly ICache cache;
 
         /// <summary>
-        /// Initializes the instance of the <see cref="LazyCacheHandler"/> class.
+        /// Initializes the instance of the <see cref="LazyCacheDecorator"/> class.
         /// </summary>
-        public LazyCacheHandler(ICache cache)
+        public LazyCacheDecorator(ICache cache)
         {
             this.cache = cache;
         }
@@ -20,7 +20,6 @@ namespace EncoreTickets.SDK.Utilities.Common.Cache
         /// <inheritdoc />
         public T AddOrGetExisting<T>(string key, Func<T> factory, TimeSpan? lifeSpan)
         {
-            factory = factory ?? (() => default);
             var lazyFactory = (Func<Lazy<T>>)(() => new Lazy<T>(factory));
             var result = cache.AddOrGetExisting(key, lazyFactory, lifeSpan);
             return result.Value;
@@ -29,7 +28,8 @@ namespace EncoreTickets.SDK.Utilities.Common.Cache
         /// <inheritdoc />
         public void Set<T>(string key, Func<T> factory, TimeSpan? lifeSpan)
         {
-            cache.Set(key, () => new Lazy<T>(factory), lifeSpan);
+            var lazyFactory = (Func<Lazy<T>>)(() => new Lazy<T>(factory));
+            cache.Set(key, lazyFactory, lifeSpan);
         }
 
         /// <inheritdoc />
