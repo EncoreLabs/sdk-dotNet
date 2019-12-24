@@ -21,17 +21,17 @@ namespace EncoreTickets.SDK.Api.Helpers
         /// <summary>
         /// Gets or sets request body
         /// </summary>
-        public object Body { get; set; } = null;
+        public object Body { get; set; }
 
         /// <summary>
         /// Gets or sets object for request query
         /// </summary>
-        public object Query { get; set; } = null;
+        public object Query { get; set; }
 
         /// <summary>
         /// Gets or sets request date format
         /// </summary>
-        public string DateFormat { get; set; } = null;
+        public string DateFormat { get; set; }
 
         /// <summary>
         /// Gets or sets JSON serializer for requests
