@@ -32,6 +32,14 @@ namespace EncoreTickets.SDK.Basket.Extensions
             => basketDetails.Coupon == null && basketDetails.HasPromotion();
 
         /// <summary>
+        /// Determines whether the basket has any NON automatic promotions.
+        /// </summary>
+        /// <param name="basketDetails"></param>
+        /// <returns></returns>
+        public static bool HasNonAutomaticPromotion(this BasketDetails basketDetails)
+            => basketDetails.Coupon != null && basketDetails.HasPromotion();
+
+        /// <summary>
         /// Determines whether the basket has any promotions.
         /// </summary>
         /// <param name="basketDetails"></param>
