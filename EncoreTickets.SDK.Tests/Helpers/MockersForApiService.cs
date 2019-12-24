@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;

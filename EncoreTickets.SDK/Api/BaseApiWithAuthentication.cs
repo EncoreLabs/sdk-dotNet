@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using System;
+using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
 
 namespace EncoreTickets.SDK.Api
@@ -10,13 +11,20 @@ namespace EncoreTickets.SDK.Api
     /// </summary>
     public abstract class BaseApiWithAuthentication : BaseApi, IServiceApiWithAuthentication
     {
-        private IAuthenticationService authenticationService;
-
         /// <inheritdoc />
-        public virtual IAuthenticationService AuthenticationService => authenticationService ?? (authenticationService = GetAuthenticationService(Context));
+        public virtual IAuthenticationService AuthenticationService => GetAuthenticationService(Context);
 
-        private bool AutomaticAuthentication { get; }
+        /// <summary>
+        /// Gets the flag enabled automatic authentication
+        /// </summary>
+        protected bool AutomaticAuthentication { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseApiWithAuthentication"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="host">The host.</param>
+        /// <param name="automaticAuthentication">Optional: the flag enables automatic authentication</param>
         protected BaseApiWithAuthentication(ApiContext context, string host, bool automaticAuthentication = false) : base(context, host)
         {
             AutomaticAuthentication = automaticAuthentication;
@@ -26,14 +34,24 @@ namespace EncoreTickets.SDK.Api
         public virtual IAuthenticationService GetAuthenticationService(ApiContext context)
         {
             const string standardLoginEndpoint = "login";
-            return AuthenticationServiceFactory.Create(context, Host, standardLoginEndpoint);
+            try
+            {
+                return AuthenticationServiceFactory.Create(context, Host, standardLoginEndpoint);
+            }
+            catch (NotImplementedException)
+            {
+                return null;
+            }
         }
 
+        /// <summary>
+        /// Triggers authentication if automatic authentication is enabled and an authentication service exists
+        /// </summary>
         protected void TriggerAutomaticAuthentication()
         {
             if (AutomaticAuthentication)
             {
-                AuthenticationService.Authenticate();
+                AuthenticationService?.Authenticate();
             }
         }
     }
