@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Utilities.Enums;
@@ -9,54 +10,38 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 {
     internal class AuthenticationServiceFactoryTests
     {
-        private static readonly object[] SourceForCreate_IfServiceForAuthMethodExists =
+        [TestCaseSource(typeof(AuthenticationServiceFactoryTestsSource), nameof(AuthenticationServiceFactoryTestsSource.Create_IfServiceForAuthMethodExists_ReturnsService))]
+        public void Create_IfServiceForAuthMethodExists_ReturnsService(AuthenticationMethod authMethod, Type expectedType)
         {
-            new object[]
-            {
-                typeof(JwtAuthenticationService),
-                AuthenticationMethod.JWT,
-            },
-        };
-
-        private static readonly object[] SourceForCreate_IfServiceForAuthMethodDoesNotExist =
-        {
-            new object[]
-            {
-                AuthenticationMethod.Basic,
-            },
-            new object[]
-            {
-                (AuthenticationMethod) 1090,
-            },
-        };
-
-        [TestCaseSource(nameof(SourceForCreate_IfServiceForAuthMethodExists))]
-        public void Authentication_AuthenticationServiceFactory_Create_IfServiceForAuthMethodExists_ReturnsService(
-            Type expectedType, AuthenticationMethod authMethod)
-        {
-            // Arrange
             var context = new ApiContext(It.IsAny<Environments>()) {AuthenticationMethod = authMethod};
 
-            // Act
             var service = AuthenticationServiceFactory.Create(context, It.IsAny<string>(), It.IsAny<string>());
 
-            // Assert
             Assert.IsInstanceOf(expectedType, service);
         }
 
-        [TestCaseSource(nameof(SourceForCreate_IfServiceForAuthMethodDoesNotExist))]
+        [TestCase(AuthenticationMethod.Basic)]
+        [TestCase((AuthenticationMethod)1090)]
         public void
-            Authentication_AuthenticationServiceFactory_Create_IfServiceForAuthMethodDoesNotExist_ThrowsNotImplementedException(
-                AuthenticationMethod authMethod)
+            Create_IfServiceForAuthMethodDoesNotExist_ThrowsNotImplementedException(AuthenticationMethod authMethod)
         {
-            // Arrange
             var context = new ApiContext(It.IsAny<Environments>()) {AuthenticationMethod = authMethod};
 
-            // Act + Assert
             Assert.Throws<NotImplementedException>(() =>
             {
                 AuthenticationServiceFactory.Create(context, It.IsAny<string>(), It.IsAny<string>());
             });
         }
+    }
+
+    public static class AuthenticationServiceFactoryTestsSource
+    {
+        public static IEnumerable<TestCaseData> Create_IfServiceForAuthMethodExists_ReturnsService = new[]
+        {
+            new TestCaseData(
+                AuthenticationMethod.JWT,
+                typeof(JwtAuthenticationService)
+            ),
+        };
     }
 }

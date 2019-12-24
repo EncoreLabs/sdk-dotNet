@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
@@ -45,7 +47,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
                     RestResponseFactory.GetFailedJsonResponse<T>(client, request, responseContent, code));
         }
 
-        public void VerifyExecution<T>(string baseUrl, string resource, Method method)
+        public void VerifyExecution<T>(string baseUrl, string resource, Method method, bool isBodyExpected = false)
             where T : class, new()
         {
             RestClientWrapperMock.Verify(
@@ -56,6 +58,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
                     It.Is<IRestRequest>(request =>
                         request.Method == method &&
                         request.Resource == resource &&
+                        (!isBodyExpected || IsBodyInRequest(request)) &&
                         request.RequestFormat == DataFormat.Json)
                 ), Times.Once());
         }
@@ -72,6 +75,12 @@ namespace EncoreTickets.SDK.Tests.Helpers
                 .Setup(x => x.CreateClientWrapper(It.IsAny<ApiContext>()))
                 .Returns(() => restClientWrapperMock.Object);
             return restClientBuilderMock;
+        }
+
+        private bool IsBodyInRequest(IRestRequest request)
+        {
+            var bodyParameter = request.Parameters.FirstOrDefault(p => p.Type == ParameterType.RequestBody);
+            return bodyParameter != null;
         }
     }
 }

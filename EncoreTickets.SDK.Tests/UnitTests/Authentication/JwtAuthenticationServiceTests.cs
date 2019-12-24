@@ -30,15 +30,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             Context = new ApiContext(It.IsAny<Environments>(), "admin", "valid_password");
             var expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni";
             var responseContent = $"{{\"token\":\"{expectedToken}\"}}";
-            mockers.RestClientWrapperMock
-                .Setup(x => x.Execute<AccessToken>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
-                .Returns((IRestClient client, IRestRequest request) =>
-                    RestResponseFactory.GetSuccessJsonResponse<AccessToken>(client, request, responseContent));
+            mockers.SetupSuccessfulExecution<AccessToken>(responseContent);
 
-            var result = Authenticate();
+            var actual = Authenticate();
 
-            Assert.AreEqual(expectedToken, result.AccessToken);
-            VerifyClientWrapperForAuthenticate();
+            Assert.AreEqual(expectedToken, actual.AccessToken);
+            mockers.VerifyExecution<AccessToken>(BaseUrl, endpoint, Method.POST, true);
         }
 
         [Test]
@@ -48,39 +45,25 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             Context = new ApiContext(It.IsAny<Environments>(), "admin", "invalid_password");
             var code = HttpStatusCode.Unauthorized;
             var responseContent = "{\r\n    \"request\": {\r\n        \"body\": \"{\\n\\t\\\"username\\\": \\\"admin\\\",\\n\\t\\\"password\\\": \\\"invalid_password\\\"\\n}\",\r\n        \"query\": {},\r\n        \"urlParams\": {}\r\n    },\r\n    \"response\": \"\",\r\n    \"context\": {\r\n        \"errors\": [\r\n            {\r\n                \"message\": \"Bad credentials, please verify that your username/password are correctly set\"\r\n            }\r\n        ]\r\n    }\r\n}";
-            mockers.RestClientWrapperMock
-                .Setup(x => x.Execute<AccessToken>(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()))
-                .Returns((IRestClient client, IRestRequest request) =>
-                    RestResponseFactory.GetFailedJsonResponse<AccessToken>(client, request, responseContent, code));
+            mockers.SetupFailedExecution<AccessToken>(responseContent, code);
             
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var result = Authenticate();
+                var actual = Authenticate();
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
-            VerifyClientWrapperForAuthenticate();
-        }
-
-        private void VerifyClientWrapperForAuthenticate()
-        {
-            mockers.RestClientWrapperMock.Verify(
-                x => x.Execute<AccessToken>(
-                    It.Is<IRestClient>(client =>
-                        client.BaseUrl.ToString() == BaseUrl
-                    ),
-                    It.Is<IRestRequest>(request =>
-                        request.Method == Method.POST &&
-                        request.Resource == endpoint &&
-                        request.RequestFormat == DataFormat.Json)
-                ), Times.Once);
+            mockers.VerifyExecution<AccessToken>(BaseUrl, endpoint, Method.POST, true);
         }
 
         [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.IsThereAuthentication_ReturnsCorrectly))]
         public void IsThereAuthentication_ReturnsCorrectly(ApiContext context, bool expectedResult)
         {
             var service = new JwtAuthenticationService(context, It.IsAny<string>(), It.IsAny<string>());
-            Assert.AreEqual(expectedResult, service.IsThereAuthentication());
+
+            var actual = service.IsThereAuthentication();
+
+            Assert.AreEqual(expectedResult, actual);
         }
     }
 
