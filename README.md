@@ -32,6 +32,14 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 3.0
+- All exceptions related to the API calls are now inheriting from ApiException
+- Removed obsolete classes and functionality (including Entertain API)
+- Refactored multiple classes which resulted in namespace changes as well as splitting of some classes
+- Added multiple helper methods for common operations with API models
+- Improved request and response JSON serialization and deserialization
+- Added cache handling logic
+
 #### 2.4
 - Added a method to the BasketServiceApi to call PATCH /api/v1/baskets endpoint
 - Added a method to the BasketServiceApi to call DELETE /api/v1/baskets/{reference}/reservations/{reservationId} endpoint

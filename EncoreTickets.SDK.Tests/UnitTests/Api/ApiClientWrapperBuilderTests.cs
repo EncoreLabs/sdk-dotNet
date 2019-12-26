@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
@@ -13,7 +12,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
-        private const string SdkVersion = "2.4.0";
+        private const string SdkVersion = "3.0.0";
 
         private static TestCaseData[] sourceForCreateClientWrapperTests =
         {

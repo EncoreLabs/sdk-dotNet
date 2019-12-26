@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
-using FluentAssertions;
-using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
