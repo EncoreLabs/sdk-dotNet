@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
@@ -54,13 +55,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             },
         };
 
-        [TestCaseSource(nameof(sourceForCreateClientWrapperTests))]
-        public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(ApiContext context)
+        [TestCase(true, TestName = "NULL API context")]
+        [TestCase(false, TestName = "Empty API context")]
+        public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(bool contextShouldBeNull)
         {
-            //Act
+            var context = contextShouldBeNull ? null : new ApiContext();
+
             var wrapper = new ApiRestClientBuilder().CreateClientWrapper(context);
 
-            //Assert
             Assert.NotNull(wrapper);
         }
 

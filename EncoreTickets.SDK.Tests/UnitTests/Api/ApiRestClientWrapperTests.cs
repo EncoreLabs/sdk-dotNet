@@ -480,7 +480,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             },
             new object[]
             {
-                new RestResponse<TestObject>
+                new RestResponse<ApiRestClientWrapperTests>
                 {
                     StatusCode = HttpStatusCode.BadRequest
                 },
