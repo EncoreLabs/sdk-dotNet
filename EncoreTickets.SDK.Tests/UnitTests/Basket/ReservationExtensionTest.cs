@@ -1,7 +1,14 @@
-﻿using EncoreTickets.SDK.Basket.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
+using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
+using FluentAssertions;
+using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
@@ -95,6 +102,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             var result = reservation.GetTotalFaceValueInShopperCurrency();
 
             AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
+        }
+
+        [Test]
+        public void Reservation_ToReservationRequest_Correct()
+        {
+            var reservation = new Reservation
+            {
+                Date = DateTimeOffset.Now,
+                ProductId = "1234",
+                VenueId = "123",
+                Items = new List<Seat> { new Seat { AggregateReference = "reference1" }, new Seat { AggregateReference = "reference2" } },
+                Quantity = 2
+            };
+
+            var result = reservation.ConvertToReservationRequest();
+
+            result.ShouldBeEquivalentToObjectWithMoreProperties(reservation);
         }
     }
 }

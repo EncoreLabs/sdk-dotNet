@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -19,6 +21,16 @@ namespace EncoreTickets.SDK.Tests.Helpers
                     .WithStrictOrdering()
                     .WithTracing());
             }
+        }
+
+        public static void ShouldBeEquivalentToObjectWithMoreProperties<TActual, TExpected>(this TActual actual,
+            TExpected expected)
+        {
+            var properties = typeof(TActual)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+            actual.Should().BeEquivalentTo(expected, options => options
+                .Including(ctx => properties.Select(property => property.Name)
+                    .Contains(ctx.SelectedMemberPath)));
         }
     }
 }

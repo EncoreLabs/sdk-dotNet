@@ -60,6 +60,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestCase(true, "2600000034", "DISCOUNT")]
+        [TestCase(false, "260000035", null)]
+        [TestCase(false, null, null)]
+        public void Basket_HasNonAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
+        {
+            var basketDetails = SetupBasketWithPromotion(appliedPromotionId, couponCode);
+
+            var result = basketDetails.HasNonAutomaticPromotion();
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
         [Test]
         public void Basket_TotalInOfficeCurrency_Correct()
         {
