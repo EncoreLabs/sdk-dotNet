@@ -1,6 +1,6 @@
 ﻿namespace EncoreTickets.SDK.Basket.Models.RequestModels
 {
-    public class ItemRequest
+    internal class ItemRequest
     {
         public string AggregateReference { get; set; }
     }

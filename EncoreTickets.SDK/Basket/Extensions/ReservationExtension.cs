@@ -76,18 +76,17 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// </summary>
         /// <param name="reservation">Source reservation</param>
         /// <returns></returns>
-        public static ReservationRequest ConvertToReservationRequest(this Reservation reservation)
-        {
-            return new ReservationRequest
+        internal static ReservationRequest ConvertToReservationRequest(this Reservation reservation) 
+            => new ReservationRequest
             {
                 Date = reservation.Date,
-                Items = reservation.Items
+                Items = reservation.Items?
+                    .Where(it => it != null)
                     .Select(it => new ItemRequest { AggregateReference = it.AggregateReference })
                     .ToList(),
                 ProductId = reservation.ProductId,
                 Quantity = reservation.Quantity,
                 VenueId = reservation.VenueId
             };
-        }
     }
 }

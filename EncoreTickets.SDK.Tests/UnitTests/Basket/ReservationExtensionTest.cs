@@ -114,6 +114,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             var result = reservation.ConvertToReservationRequest();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(reservation);
+            for (int i = 0; i < result.Items.Count; i++)
+            {
+                result.Items[i].ShouldBeEquivalentToObjectWithMoreProperties(reservation.Items[i]);
+            }
         }
     }
 }

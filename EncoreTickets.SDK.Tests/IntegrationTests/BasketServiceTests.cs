@@ -5,7 +5,6 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -53,7 +52,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void UpsertBasket_GetBasket_Successful()
         {
-            var upsertBasketResult = (BasketDetails)null;
+            var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
@@ -92,7 +91,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void ApplyPromotion_Successful()
         {
-            var upsertBasketResult = (BasketDetails)null;
+            var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
@@ -123,9 +122,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.Throws<ApiException>(() => service.UpsertBasket(request));
         }
 
-        private UpsertBasketRequest CreateDefaultBasketRequest(params string[] references)
+        private Basket.Models.Basket CreateDefaultBasketRequest(params string[] references)
         {
-            return new UpsertBasketRequest
+            return new Basket.Models.Basket
             {
                 ChannelId = "test-channel",
                 Coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] },
@@ -139,21 +138,21 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     },
                     Method = "postage"
                 },
-                Reservations = new List<ReservationRequest>
+                Reservations = new List<Reservation>
                 {
-                    new ReservationRequest
+                    new Reservation
                     {
                         Date = new DateTimeOffset(2020, 4, 30, 19, 30, 0, TimeSpan.Zero),
                         ProductId = "1587",
                         VenueId = "138",
                         Quantity = references.Length,
-                        Items = references.Select(r => new ItemRequest { AggregateReference = r }).ToList()
+                        Items = references.Select(r => new Seat { AggregateReference = r }).ToList()
                     }
                 }
             };
         }
 
-        private void AssertUpsertBasketSuccess(UpsertBasketRequest request, BasketDetails result)
+        private void AssertUpsertBasketSuccess(Basket.Models.Basket request, Basket.Models.Basket result)
         {
             Assert.NotNull(result.Reference);
             Assert.NotNull(result.Checksum);

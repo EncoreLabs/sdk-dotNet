@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EncoreTickets.SDK.Basket.Models.RequestModels
 {
-    public class ReservationRequest
+    internal class ReservationRequest
     {
         public string VenueId { get; set; }
 

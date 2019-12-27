@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EncoreTickets.SDK.Basket.Models
 {
-    public class BasketDetails
+    public class Basket
     {
         public string Reference { get; set; }
 
@@ -12,6 +12,12 @@ namespace EncoreTickets.SDK.Basket.Models
         public string ChannelId { get; set; }
 
         public bool Mixed { get; set; }
+
+        public string OfficeCurrency { get; set; }
+
+        public string ShopperCurrency { get; set; }
+
+        public string ShopperReference { get; set; }
 
         public decimal ExchangeRate { get; set; }
 
