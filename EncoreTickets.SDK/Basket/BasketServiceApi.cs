@@ -5,8 +5,10 @@ using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
+using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Basket
@@ -41,19 +43,19 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public BasketDetails GetBasketDetails(string basketReference)
+        public Models.Basket GetBasketDetails(string basketReference)
         {
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v1/baskets/{basketReference}",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc />
-        public BasketDetails UpsertPromotion(string basketId, Coupon coupon)
+        public Models.Basket UpsertPromotion(string basketId, Coupon coupon)
         {
             var parameters = new ExecuteApiRequestParameters
             {
@@ -61,47 +63,48 @@ namespace EncoreTickets.SDK.Basket
                 Method = RequestMethod.Patch,
                 Body = new ApplyPromotionRequest {Coupon = coupon}
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return GetUpsertPromotionResult(result, coupon, basketId);
         }
 
         /// <inheritdoc />
-        public BasketDetails UpsertBasket(UpsertBasketRequest request)
+        public Models.Basket UpsertBasket(Models.Basket source)
         {
+            var request = source.Map<Models.Basket, UpsertBasketRequest>();
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = "v1/baskets",
                 Method = RequestMethod.Patch,
                 Body = request
             };
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
+            var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
         }
 
         /// <inheritdoc />
-        public BasketDetails RemoveReservation(string basketId, int reservationId)
+        public Models.Basket RemoveReservation(string basketId, int reservationId)
         {
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v1/baskets/{basketId}/reservations/{reservationId}",
                 Method = RequestMethod.Delete
             };
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
+            var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
         }
 
-        public BasketDetails ClearBasket(string basketId)
+        public Models.Basket ClearBasket(string basketId)
         {
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v1/baskets/{basketId}/clear",
                 Method = RequestMethod.Patch
             };
-            var response = Executor.ExecuteApiWithWrappedResponse<BasketDetails>(parameters);
+            var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
         }
 
-        private BasketDetails GetUpsertPromotionResult(ApiResult<BasketDetails> apiResult, Coupon coupon, string basketId)
+        private Models.Basket GetUpsertPromotionResult(ApiResult<Models.Basket> apiResult, Coupon coupon, string basketId)
         {
             try
             {

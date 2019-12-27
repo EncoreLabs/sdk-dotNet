@@ -1,88 +1,145 @@
 ﻿using System;
-using EncoreTickets.SDK.Utilities.Common;
-using Moq;
+using EncoreTickets.SDK.Utilities.Common.Cache;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
 {
+    [TestFixture]
     internal class UtilitiesCacheHandlerTests
     {
+        private LazyCacheDecorator lazyCache;
+
+        [SetUp]
+        public void SetupCache()
+        {
+            lazyCache = new LazyCacheDecorator(new MemoryCache(GetRandomKey()));
+        }
+
         [Test]
-        public void Utilities_CacheHandler_IfDataWithKeyWasAdded_ExistMethodReturnsTrue()
+        public void Utilities_Cache_IfDataWithKeyWasAdded_ContainsMethodReturnsTrue()
         {
             var key = GetRandomKey();
-            CacheHandler.Add(new object(), key, null);
-            var result = CacheHandler.Exists(key);
+            lazyCache.Set(key, () => new object(), null);
+
+            var result = lazyCache.Contains(key);
+
             Assert.IsTrue(result);
         }
 
         [Test]
-        public void Utilities_CacheHandler_IfDataWithKeyWasNotAdded_ExistMethodReturnsFalse()
+        public void Utilities_Cache_IfDataWithKeyWasNotAdded_ContainsMethodReturnsFalse()
         {
             var key = GetRandomKey();
-            var result = CacheHandler.Exists(key);
+
+            var result = lazyCache.Contains(key);
+
             Assert.IsFalse(result);
         }
 
         [TestCase(4)]
         [TestCase("test")]
         [TestCase(1.2)]
-        public void Utilities_CacheHandler_IfDataWithKeyWasAdded_GetMethodReturnsData<T>(T data)
+        public void Utilities_Cache_IfDataWithKeyWasAdded_GetMethodReturnsData<T>(T data)
         {
             var key = GetRandomKey();
-            CacheHandler.Add(data, key, null);
-            var result = CacheHandler.Get<T>(key);
+            lazyCache.Set(key, () => data, null);
+
+            var result = lazyCache.Get<T>(key);
+
             Assert.AreEqual(data, result);
         }
 
-        [TestCase(4)]
-        [TestCase("test")]
-        [TestCase(1.2)]
-        public void Utilities_CacheHandler_IfDataWithKeyWasNotAdded_GetMethodReturnsDefault<T>(T instance)
+        [Test]
+        public void Utilities_Cache_IfDataWithKeyWasNotAdded_GetMethodThrowsException()
         {
             var key = GetRandomKey();
-            var result = CacheHandler.Get<T>(key);
-            Assert.AreEqual(default(T), result);
+
+            Assert.Throws<CacheKeyNotFoundException>(() => lazyCache.Get<object>(key));
         }
 
         [TestCase(4)]
         [TestCase("test")]
         [TestCase(1.2)]
-        public void Utilities_CacheHandler_IfDataWithKeyWasAddedAndNotNull_GetWithCacheMethodReturnsData<T>(T data)
+        public void Utilities_Cache_IfDataWithKeyWasAddedAndNotNull_AddOrGetExistingMethodReturnsData<T>(T data)
         {
             var key = GetRandomKey();
-            CacheHandler.Add(data, key, null);
-            var result = CacheHandler.Get<T>(null, key);
+            lazyCache.Set(key, () => data, null);
+            var factoryCalled = false;
+
+            var result = lazyCache.AddOrGetExisting<T>(key, () =>
+            {
+                factoryCalled = true;
+                return default;
+            }, null);
+
+            Assert.IsFalse(factoryCalled);
             Assert.AreEqual(data, result);
         }
 
         [TestCase("1730")]
         [TestCase("Success")]
-        public void Utilities_CacheHandler_IfDataWithKeyWasNotAddedAndDefaultDataIsNull_GetWithCacheMethodAddAndReturnsData<T>(T instance)
+        public void Utilities_Cache_IfDataWithKeyWasNotAddedAndDefaultDataIsNull_AddOrGetExistingMethodAddAndReturnsData_And_FactoryIsCalled<T>(T instance)
         {
             var key = GetRandomKey();
-            T CacheMethod() => instance;
-            var result = CacheHandler.Get(CacheMethod, key);
+            var factoryCalled = false;
+
+            var result = lazyCache.AddOrGetExisting(key, () =>
+            {
+                factoryCalled = true;
+                return instance;
+            }, null);
+
+            Assert.IsTrue(factoryCalled);
             Assert.AreEqual(instance, result);
-            Assert.IsTrue(CacheHandler.Exists(key));
+            Assert.IsTrue(lazyCache.Contains(key));
         }
 
         [Test]
-        public void Utilities_CacheHandler_IfAddedItemsWereDeleted_ExistMethodReturnsFalseForAllDeletedItems()
+        public void Utilities_Cache_SetMethodOverwritesExistingValue_And_FactoryIsCalled()
+        {
+            var key = GetRandomKey();
+            var instance = new object();
+            var firstFactoryCalled = false;
+            var secondFactoryCalled = false;
+
+            lazyCache.Set(key, () =>
+            {
+                firstFactoryCalled = true;
+                return new object();
+            }, null);
+            lazyCache.Set(key, () =>
+            {
+                secondFactoryCalled = true;
+                return instance;
+            }, null);
+
+            Assert.AreEqual(instance, lazyCache.Get<object>(key));
+            Assert.IsFalse(firstFactoryCalled);
+            Assert.IsTrue(secondFactoryCalled);
+        }
+
+        [Test]
+        public void Utilities_Cache_IfAddedItemsWereDeleted_ContainsMethodReturnsFalseForAllDeletedItems()
         {
             var keys = new[] {GetRandomKey(), GetRandomKey()};
-            CacheHandler.Add(new object(), keys[0], null);
-            CacheHandler.Add(new object(), keys[1], null);
-            CacheHandler.Delete(It.IsAny<bool>(), keys);
-            Assert.IsFalse(CacheHandler.Exists(keys[0]));
-            Assert.IsFalse(CacheHandler.Exists(keys[1]));
+            lazyCache.Set(keys[0], () => new object(), null);
+            lazyCache.Set(keys[1], () => new object(), null);
+
+            lazyCache.Remove(keys[0]);
+            lazyCache.Remove(keys[1]);
+
+            Assert.IsFalse(lazyCache.Contains(keys[0]));
+            Assert.IsFalse(lazyCache.Contains(keys[1]));
         }
 
         [Test]
-        public void Utilities_CacheHandler_IfTryToDeleteDataByNullKeys_DeleteMethodDoesNOtThrowExceptions()
+        public void Utilities_Cache_IfTryToDeleteDataByNullKeys_RemoveMethodDoesNOtThrowExceptions()
         {
             var keys = new[] { null, "test", null };
-            Assert.DoesNotThrow(() => CacheHandler.Delete(It.IsAny<bool>(), keys));
+
+            Assert.DoesNotThrow(() => lazyCache.Remove(keys[0]));
+            Assert.DoesNotThrow(() => lazyCache.Remove(keys[1]));
+            Assert.DoesNotThrow(() => lazyCache.Remove(keys[2]));
         }
 
         private static string GetRandomKey() => Guid.NewGuid().ToString();

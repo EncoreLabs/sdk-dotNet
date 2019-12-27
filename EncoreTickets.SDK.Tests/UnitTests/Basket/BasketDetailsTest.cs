@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase(false, 15)]
         public void Basket_IsExpired_Correct(bool expectedResult, int minutesFromNow)
         {
-            var basketDetails = new BasketDetails { ExpiredAt = DateTimeOffset.Now.AddMinutes(minutesFromNow) };
+            var basketDetails = new SDK.Basket.Models.Basket { ExpiredAt = DateTimeOffset.Now.AddMinutes(minutesFromNow) };
 
             var result = basketDetails.IsExpired();
 
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         public void Basket_ItemCount_Correct(int expectedResult, params int[] quantities)
         {
             var reservations = quantities?.Select(q => new Reservation {Quantity = q}).ToList();
-            var basketDetails = new BasketDetails {Reservations = reservations};
+            var basketDetails = new SDK.Basket.Models.Basket {Reservations = reservations};
 
             var result = basketDetails.ItemCount();
 
@@ -60,6 +60,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestCase(true, "2600000034", "DISCOUNT")]
+        [TestCase(false, "260000035", null)]
+        [TestCase(false, null, null)]
+        public void Basket_HasNonAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
+        {
+            var basketDetails = SetupBasketWithPromotion(appliedPromotionId, couponCode);
+
+            var result = basketDetails.HasNonAutomaticPromotion();
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
         [Test]
         public void Basket_TotalInOfficeCurrency_Correct()
         {
@@ -69,7 +81,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetBasketTotalInOfficeCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -81,7 +93,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetBasketTotalInShopperCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -93,7 +105,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalDiscountInOfficeCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -105,7 +117,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalDiscountInShopperCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -117,7 +129,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalSalePriceInOfficeCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -129,7 +141,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalSalePriceInShopperCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -141,7 +153,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalFaceValueInOfficeCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -153,7 +165,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetTotalFaceValueInShopperCurrency();
 
-            AssertPriceIsCorrect(sumOfPrices, result);
+            AssertPriceIsCorrect(sumOfPrices.Value, result);
         }
 
         [Test]
@@ -175,22 +187,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var result = basketDetails.GetBasketTotalWithoutDelivery();
 
-            AssertPriceIsCorrect(sumOfPrices - basketDetails.Delivery.Charge.Value.Value, result);
+            AssertPriceIsCorrect(sumOfPrices.Value - basketDetails.Delivery.Charge.Value.Value, result);
         }
 
-        private BasketDetails SetupBasketWithPromotion(string appliedPromotionId, string couponCode)
+        private SDK.Basket.Models.Basket SetupBasketWithPromotion(string appliedPromotionId, string couponCode)
         {
             var promotion = appliedPromotionId != null ? new Promotion { Id = appliedPromotionId } : null;
             var coupon = couponCode != null ? new Coupon { Code = couponCode } : null;
-            return new BasketDetails { AppliedPromotion = promotion, Coupon = coupon };
+            return new SDK.Basket.Models.Basket { AppliedPromotion = promotion, Coupon = coupon };
         }
 
-        private (int sumOfPrices, BasketDetails basketDetails) CreateBasketDetailsFromDefaultPrices(Func<Price, int, Reservation> reservationFunc, Func<Reservation, Price> reverseFunc)
+        private (int? sumOfPrices, SDK.Basket.Models.Basket basketDetails) CreateBasketDetailsFromDefaultPrices(Func<Price, int, Reservation> reservationFunc, Func<Reservation, Price> reverseFunc = null)
         {
             var defaultPrices = CreateDefaultListOfPrices();
             var reservations = defaultPrices.Select(reservationFunc).ToList();
-            var sumOfPrices = reservations.Sum(r => r.Quantity * reverseFunc(r).Value).Value;
-            var basketDetails = new BasketDetails { Reservations = reservations };
+            var sumOfPrices = reverseFunc != null ? reservations.Sum(r => r.Quantity * reverseFunc(r).Value).Value : (int?)null;
+            var basketDetails = new SDK.Basket.Models.Basket { Reservations = reservations };
             return (sumOfPrices, basketDetails);
         }
 

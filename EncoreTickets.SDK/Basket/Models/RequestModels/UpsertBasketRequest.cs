@@ -2,7 +2,7 @@
 
 namespace EncoreTickets.SDK.Basket.Models.RequestModels
 {
-    public class UpsertBasketRequest
+    internal class UpsertBasketRequest
     {
         public string Reference { get; set; }
 
