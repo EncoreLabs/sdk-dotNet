@@ -12,7 +12,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class ApiClientWrapperBuilderTests
     {
-        private const string SdkVersion = "2.4.0";
+        private const string SdkVersion = "3.0.0";
 
         private static TestCaseData[] sourceForCreateClientWrapperTests =
         {
@@ -54,13 +54,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             },
         };
 
-        [TestCaseSource(nameof(sourceForCreateClientWrapperTests))]
-        public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(ApiContext context)
+        [TestCase(true, TestName = "NULL API context")]
+        [TestCase(false, TestName = "Empty API context")]
+        public void Api_ApiClientWrapperBuilder_CreateClientWrapper_ReturnsClientWrapper(bool contextShouldBeNull)
         {
-            //Act
+            var context = contextShouldBeNull ? null : new ApiContext();
+
             var wrapper = new ApiRestClientBuilder().CreateClientWrapper(context);
 
-            //Assert
             Assert.NotNull(wrapper);
         }
 
