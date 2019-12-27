@@ -53,7 +53,9 @@ namespace EncoreTickets.SDK.Tests.Helpers
             response.Content = content;
             response.Request = request;
             response.ContentType = ContentTypes.ApplicationJson;
-            return client.Deserialize<T>(response);
+            var responseWithDeserializedData = client.Deserialize<T>(response);
+            responseWithDeserializedData.Content = content;
+            return responseWithDeserializedData;
         }
     }
 }

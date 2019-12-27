@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Authentication
     /// </summary>
     public class JwtAuthenticationService : BaseApi, IAuthenticationService
     {
-        protected readonly string endpoint;
+        protected readonly string Endpoint;
 
         /// <summary>
         /// Initializes an instance for the JWT authentication service.
@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Authentication
         public JwtAuthenticationService(ApiContext context, string host, string loginEndpoint)
             : base(context, host)
         {
-            endpoint = loginEndpoint;
+            Endpoint = loginEndpoint;
         }
 
         /// <inheritdoc />
@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Authentication
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = endpoint,
+                Endpoint = Endpoint,
                 Method = RequestMethod.Post,
                 Body = new Credentials
                 {

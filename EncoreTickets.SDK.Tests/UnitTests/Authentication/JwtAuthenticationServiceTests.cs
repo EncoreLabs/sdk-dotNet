@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Authentication.Models;
-using EncoreTickets.SDK.Tests.Helpers;
+using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -19,32 +20,51 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public JwtAuthenticationServiceTests() : base(new ApiContext(), "some-service.{0}tixuk.io/api/", "login")
+        public JwtAuthenticationServiceTests() : base(new ApiContext(Environments.Sandbox), "some-service.{0}tixuk.io/api/", "login")
         {
         }
 
-        [Test]
-        public void Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext()
+        [SetUp]
+        public void CreateMockers()
         {
-            mockers = new MockersForApiService();
-            Context = new ApiContext(It.IsAny<Environments>(), "admin", "valid_password");
-            var expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni";
+            mockers = new MockersForApiServiceWithAuthentication();
+        }
+
+        [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.Authenticate_CallsApiWithRightParameters))]
+        public void Authenticate_CallsApiWithRightParameters(ApiContext context, string expectedRequestBody)
+        {
+            Context = context;
+            mockers.SetupAnyExecution<AccessToken>();
+
+            try
+            {
+                var actual = Authenticate();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<AccessToken>(BaseUrl, Endpoint, Method.POST, expectedRequestBody);
+        }
+
+        [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext))]
+        public void Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext(string expectedToken)
+        {
             var responseContent = $"{{\"token\":\"{expectedToken}\"}}";
             mockers.SetupSuccessfulExecution<AccessToken>(responseContent);
 
             var actual = Authenticate();
 
             Assert.AreEqual(expectedToken, actual.AccessToken);
-            mockers.VerifyExecution<AccessToken>(BaseUrl, endpoint, Method.POST, true);
         }
 
-        [Test]
-        public void Authenticate_IfApiResponseFailedWithBadCredentialsError_ThrowsApiExceptionWith401Code()
+        [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.Authenticate_IfApiResponseFailed_ThrowsApiException))]
+        public void Authenticate_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
         {
-            mockers = new MockersForApiService();
-            Context = new ApiContext(It.IsAny<Environments>(), "admin", "invalid_password");
-            var code = HttpStatusCode.Unauthorized;
-            var responseContent = "{\r\n    \"request\": {\r\n        \"body\": \"{\\n\\t\\\"username\\\": \\\"admin\\\",\\n\\t\\\"password\\\": \\\"invalid_password\\\"\\n}\",\r\n        \"query\": {},\r\n        \"urlParams\": {}\r\n    },\r\n    \"response\": \"\",\r\n    \"context\": {\r\n        \"errors\": [\r\n            {\r\n                \"message\": \"Bad credentials, please verify that your username/password are correctly set\"\r\n            }\r\n        ]\r\n    }\r\n}";
             mockers.SetupFailedExecution<AccessToken>(responseContent, code);
             
             var exception = Assert.Catch<ApiException>(() =>
@@ -53,7 +73,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
-            mockers.VerifyExecution<AccessToken>(BaseUrl, endpoint, Method.POST, true);
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.IsThereAuthentication_ReturnsCorrectly))]
@@ -69,6 +89,34 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 
     public static class JwtAuthenticationServiceTestsSource
     {
+        public static IEnumerable<TestCaseData> Authenticate_CallsApiWithRightParameters = new[]
+        {
+            new TestCaseData(
+                new ApiContext(It.IsAny<Environments>(), "admin", "valid_password"),
+                "{\"username\":\"admin\",\"password\":\"valid_password\"}"
+            ),
+            new TestCaseData(
+                new ApiContext(It.IsAny<Environments>(), "admin", "invalid_password"),
+                "{\"username\":\"admin\",\"password\":\"invalid_password\"}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext = new[]
+        {
+            new TestCaseData(
+                "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\\"username\\\":\\\"admin\\\",\\\"password\\\":\\\"invalid_password\\\"}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Bad credentials, please verify that your username/password are correctly set\"}]}}",
+                HttpStatusCode.Unauthorized,
+                "Bad credentials, please verify that your username/password are correctly set"
+            ),
+        };
+
         public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
         {
             new TestCaseData(

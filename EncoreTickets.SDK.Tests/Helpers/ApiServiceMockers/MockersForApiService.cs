@@ -6,7 +6,7 @@ using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
 using Moq;
 using RestSharp;
 
-namespace EncoreTickets.SDK.Tests.Helpers
+namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 {
     internal class MockersForApiService
     {
@@ -46,20 +46,27 @@ namespace EncoreTickets.SDK.Tests.Helpers
                     RestResponseFactory.GetFailedJsonResponse<T>(client, request, responseContent, code));
         }
 
-        public void VerifyExecution<T>(string baseUrl, string resource, Method method, bool isBodyExpected = false)
+        public void VerifyExecution<T>(string baseUrl, string resource, Method method, string bodyInJson = null)
             where T : class, new()
         {
-            RestClientWrapperMock.Verify(
-                x => x.Execute<T>(
-                    It.Is<IRestClient>(client =>
-                        client.BaseUrl.ToString() == baseUrl
-                    ),
-                    It.Is<IRestRequest>(request =>
-                        request.Method == method &&
-                        request.Resource == resource &&
-                        (!isBodyExpected || IsBodyInRequest(request)) &&
-                        request.RequestFormat == DataFormat.Json)
-                ), Times.Once());
+            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, bodyInJson);
+        }
+
+        public void VerifyExecution<T>(Times times, string baseUrl, string resource, Method method, string bodyInJson = null)
+            where T : class, new()
+        {
+            RestClientWrapperMock
+                .Verify(
+                    x => x.Execute<T>(
+                        It.Is<IRestClient>(client =>
+                            client.BaseUrl.ToString() == baseUrl
+                        ),
+                        It.Is<IRestRequest>(request =>
+                            request.Method == method &&
+                            request.Resource == resource &&
+                            request.RequestFormat == DataFormat.Json &&
+                            IsJsonBodyInRequest(request, bodyInJson))
+                    ), times);
         }
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
@@ -76,10 +83,21 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return restClientBuilderMock;
         }
 
-        private bool IsBodyInRequest(IRestRequest request)
+        private bool IsJsonBodyInRequest(IRestRequest request, string bodyInJson)
         {
             var bodyParameter = request.Parameters.FirstOrDefault(p => p.Type == ParameterType.RequestBody);
-            return bodyParameter != null;
+            if (bodyInJson == null)
+            {
+                return bodyParameter == null;
+            }
+
+            if (bodyParameter == null)
+            {
+                return false;
+            }
+
+            var serializedBody = request.JsonSerializer.Serialize(bodyParameter.Value);
+            return serializedBody == bodyInJson;
         }
     }
 }
