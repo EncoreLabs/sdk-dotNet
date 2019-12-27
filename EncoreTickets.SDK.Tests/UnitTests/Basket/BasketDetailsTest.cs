@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Tests.Helpers;
-using FluentAssertions;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
@@ -190,40 +188,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             var result = basketDetails.GetBasketTotalWithoutDelivery();
 
             AssertPriceIsCorrect(sumOfPrices.Value - basketDetails.Delivery.Charge.Value.Value, result);
-        }
-
-        [Test]
-        public void Basket_ToUpsertBasketRequest_Correct()
-        {
-            var (_, sourceBasket) = CreateBasketDetailsFromDefaultPrices(
-                (p, i) => new Reservation {Quantity = i + 1});
-            sourceBasket.Coupon = new Coupon { Code = "DISCOUNT"};
-            sourceBasket.Reference = "1234567";
-            sourceBasket.AllowFlexiTickets = true;
-            sourceBasket.ChannelId = "test-channel";
-            sourceBasket.Delivery = new Delivery
-            {
-                Method = "postage",
-                Charge = new Price
-                {
-                    Currency = DefaultCurrency,
-                    DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 145
-                }
-            };
-            sourceBasket.ShopperReference = "test reference";
-            sourceBasket.ShopperCurrency = "USD";
-
-            var result = sourceBasket.ConvertToUpsertBasketRequest();
-
-            result.ShouldBeEquivalentToObjectWithMoreProperties(sourceBasket);
-            Assert.AreEqual(sourceBasket.AllowFlexiTickets, result.HasFlexiTickets);
-            result.Delivery.Should().BeEquivalentTo(sourceBasket.Delivery);
-            result.Coupon.Should().BeEquivalentTo(sourceBasket.Coupon);
-            for (int i = 0; i < result.Reservations.Count; i++)
-            {
-                result.Reservations[i].ShouldBeEquivalentToObjectWithMoreProperties(sourceBasket.Reservations[i]);
-            }
         }
 
         private SDK.Basket.Models.Basket SetupBasketWithPromotion(string appliedPromotionId, string couponCode)

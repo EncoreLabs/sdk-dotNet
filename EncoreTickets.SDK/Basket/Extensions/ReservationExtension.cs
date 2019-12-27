@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Basket.Extensions
@@ -70,23 +71,5 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// <returns></returns>
         public static Price GetTotalFaceValueInShopperCurrency(this Reservation reservation) 
             => reservation.FaceValueInShopperCurrency.MultiplyByNumber(reservation.Quantity);
-
-        /// <summary>
-        /// Converts reservation to a reservation request object
-        /// </summary>
-        /// <param name="reservation">Source reservation</param>
-        /// <returns></returns>
-        internal static ReservationRequest ConvertToReservationRequest(this Reservation reservation) 
-            => new ReservationRequest
-            {
-                Date = reservation.Date,
-                Items = reservation.Items?
-                    .Where(it => it != null)
-                    .Select(it => new ItemRequest { AggregateReference = it.AggregateReference })
-                    .ToList(),
-                ProductId = reservation.ProductId,
-                Quantity = reservation.Quantity,
-                VenueId = reservation.VenueId
-            };
     }
 }

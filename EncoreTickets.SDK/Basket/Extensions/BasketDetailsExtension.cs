@@ -2,6 +2,7 @@
 using System.Linq;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Basket.Extensions
@@ -124,27 +125,6 @@ namespace EncoreTickets.SDK.Basket.Extensions
                 ? total.Subtract(basket.Delivery.Charge)
                 : total;
         }
-
-        /// <summary>
-        /// Converts basket details to an upsert basket request object
-        /// </summary>
-        /// <param name="basket">Source basket details</param>
-        /// <returns></returns>
-        internal static UpsertBasketRequest ConvertToUpsertBasketRequest(this Models.Basket basket) 
-            => new UpsertBasketRequest
-            {
-                ChannelId = basket.ChannelId,
-                Coupon = basket.Coupon,
-                Delivery = basket.Delivery,
-                HasFlexiTickets = basket.AllowFlexiTickets,
-                Reference = basket.Reference,
-                Reservations = basket.Reservations?
-                    .Select(ReservationExtension.ConvertToReservationRequest)
-                    .ToList(),
-                ShopperCurrency = basket.ShopperCurrency,
-                ShopperReference = basket.ShopperReference
-            };
-        
 
         private static Price GetTotalFromAllReservations(this Models.Basket basket, Func<Reservation, Price> priceFunc) 
              => basket.Reservations?.Count > 0 

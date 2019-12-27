@@ -8,6 +8,7 @@ using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Basket
@@ -69,7 +70,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertBasket(Models.Basket source)
         {
-            var request = source.ConvertToUpsertBasketRequest();
+            var request = source.Map<Models.Basket, UpsertBasketRequest>();
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = "v1/baskets",
