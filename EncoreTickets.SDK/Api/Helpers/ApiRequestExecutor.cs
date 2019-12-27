@@ -3,7 +3,9 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.Serializers;
 using RestSharp;
+using RestSharp.Deserializers;
 
 namespace EncoreTickets.SDK.Api.Helpers
 {
@@ -12,6 +14,8 @@ namespace EncoreTickets.SDK.Api.Helpers
     /// </summary>
     public class ApiRequestExecutor
     {
+        private static readonly IDeserializer SourceDeserializer = new DefaultJsonSerializer();
+
         private readonly IApiRestClientBuilder restClientBuilder;
 
         public string BaseUrl { get; }
@@ -128,7 +132,7 @@ namespace EncoreTickets.SDK.Api.Helpers
         {
             try
             {
-                return SimpleJson.DeserializeObject<T>(response.Content);
+                return SourceDeserializer.Deserialize<T>(response);
             }
             catch (Exception)
             {
