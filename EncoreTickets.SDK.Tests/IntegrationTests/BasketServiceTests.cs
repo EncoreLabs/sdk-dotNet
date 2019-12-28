@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class BasketServiceTests
+    internal class BasketServiceTests
     {
         private IConfiguration configuration;
         private BasketServiceApi service;

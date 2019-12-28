@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 {
-    class ReservationExtensionTest
+    internal class ReservationExtensionTest
     {
         private static readonly Price DefaultPrice = new Price
         {

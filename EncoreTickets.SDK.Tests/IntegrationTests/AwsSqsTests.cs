@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class AwsSqsTests
+    internal class AwsSqsTests
     {
         private IConfiguration configuration;
         private AwsSqs sqs;
