@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
 {
-    class PriceWithCurrencyTests
+    internal class PriceWithCurrencyTests
     {
         private static readonly string DefaultCurrency = "GBP";
         private static readonly int DefaultDecimalPlaces = 2;

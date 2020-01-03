@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class InventoryServiceTests
+    internal class InventoryServiceTests
     {
         private IConfiguration configuration;
         private InventoryServiceApi service;

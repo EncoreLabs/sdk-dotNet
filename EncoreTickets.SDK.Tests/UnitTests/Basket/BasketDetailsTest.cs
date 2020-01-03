@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 {
-    class BasketDetailsTest
+    internal class BasketDetailsTest
     {
         private const string DefaultCurrency = "GBP";
         private const int DefaultDecimalPlaces = 2;

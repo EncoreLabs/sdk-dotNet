@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class VenueServiceTests
+    internal class VenueServiceTests
     {
         private IConfiguration configuration;
         private VenueServiceApi service;

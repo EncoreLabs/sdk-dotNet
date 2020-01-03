@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class ContentServiceTests
+    internal class ContentServiceTests
     {
         private ContentServiceApi service;
 

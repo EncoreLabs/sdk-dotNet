@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class PricingServiceTests
+    internal class PricingServiceTests
     {
         private PricingServiceApi service;
 
