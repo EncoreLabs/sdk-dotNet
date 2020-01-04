@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
@@ -46,27 +48,38 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
                     RestResponseFactory.GetFailedJsonResponse<T>(client, request, responseContent, code));
         }
 
-        public void VerifyExecution<T>(string baseUrl, string resource, Method method, string bodyInJson = null)
+        public void VerifyExecution<T>(
+            string baseUrl,
+            string resource,
+            Method method,
+            Dictionary<string, object> expectedQueryParameters = null,
+            string bodyInJson = null)
             where T : class, new()
         {
-            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, bodyInJson);
+            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, expectedQueryParameters, bodyInJson);
         }
 
-        public void VerifyExecution<T>(Times times, string baseUrl, string resource, Method method, string bodyInJson = null)
+        public void VerifyExecution<T>(
+            Times times,
+            string baseUrl,
+            string resource,
+            Method method,
+            Dictionary<string, object> expectedQueryParameters = null,
+            string bodyInJson = null)
             where T : class, new()
         {
-            RestClientWrapperMock
-                .Verify(
-                    x => x.Execute<T>(
-                        It.Is<IRestClient>(client =>
-                            client.BaseUrl.ToString() == baseUrl
-                        ),
-                        It.Is<IRestRequest>(request =>
-                            request.Method == method &&
-                            request.Resource == resource &&
-                            request.RequestFormat == DataFormat.Json &&
-                            IsJsonBodyInRequest(request, bodyInJson))
-                    ), times);
+            RestClientWrapperMock.Verify(
+                x => x.Execute<T>(
+                    It.Is<IRestClient>(client =>
+                        baseUrl.Equals(client.BaseUrl.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                    ),
+                    It.Is<IRestRequest>(request =>
+                        request.Method == method &&
+                        request.Resource.Equals(resource, StringComparison.InvariantCultureIgnoreCase) &&
+                        request.RequestFormat == DataFormat.Json &&
+                        AreQueryParametersInRequest(request, expectedQueryParameters) &&
+                        IsJsonBodyInRequest(request, bodyInJson))
+                ), times);
         }
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
@@ -83,10 +96,42 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             return restClientBuilderMock;
         }
 
-        private bool IsJsonBodyInRequest(IRestRequest request, string bodyInJson)
+        private bool AreQueryParametersInRequest(IRestRequest request,
+            Dictionary<string, object> expectedQueryParameters)
+        {
+            var queryParameters = request.Parameters.Where(p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode);
+            if (expectedQueryParameters == null)
+            {
+                return !queryParameters.Any();
+            }
+
+            if (expectedQueryParameters.Count != queryParameters.Count())
+            {
+                return false;
+            }
+
+            foreach (var (key, value) in expectedQueryParameters)
+            {
+                var parameter = queryParameters.FirstOrDefault(x => x.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+                if (parameter == null || !parameter.Value.ToString().Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return false;
+                }
+
+                var expectedParameter = parameter.Value.ToString();
+                if (!expectedParameter.Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsJsonBodyInRequest(IRestRequest request, string expectedBodyInJson)
         {
             var bodyParameter = request.Parameters.FirstOrDefault(p => p.Type == ParameterType.RequestBody);
-            if (bodyInJson == null)
+            if (expectedBodyInJson == null)
             {
                 return bodyParameter == null;
             }
@@ -97,7 +142,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             }
 
             var serializedBody = request.JsonSerializer.Serialize(bodyParameter.Value);
-            return serializedBody == bodyInJson;
+            return serializedBody == expectedBodyInJson;
         }
     }
 }

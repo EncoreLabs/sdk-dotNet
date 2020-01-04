@@ -190,7 +190,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             mockers.VerifyAuthenticateExecution(Times.Once());
             mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v1/admin/venues/{venue.InternalId}",
-                Method.POST, requestBody);
+                Method.POST, bodyInJson: requestBody);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpdateVenueById_IfApiResponseSuccessful_ReturnsVenue))]
@@ -304,7 +304,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             mockers.VerifyAuthenticateExecution(Times.Once());
             mockers.VerifyExecution<ApiResponse<Attribute>>(BaseUrl, "v1/admin/attributes",
-                Method.PATCH, bodyInRequest);
+                Method.PATCH, bodyInJson: bodyInRequest);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertStandardAttributeByTitle_IfApiResponseSuccessful_ReturnsUpdatedAttribute))]
@@ -445,7 +445,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             mockers.VerifyAuthenticateExecution(Times.Once());
             mockers.VerifyExecution<ApiResponse<List<string>>>(BaseUrl, $"v1/admin/venues/{venueId}/seats/attributes",
-                Method.PATCH, requestBody);
+                Method.PATCH, bodyInJson: requestBody);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue))]

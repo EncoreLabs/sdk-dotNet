@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                 // ignored
             }
 
-            mockers.VerifyExecution<AccessToken>(BaseUrl, Endpoint, Method.POST, expectedRequestBody);
+            mockers.VerifyExecution<AccessToken>(BaseUrl, Endpoint, Method.POST, bodyInJson: expectedRequestBody);
         }
 
         [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext))]

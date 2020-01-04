@@ -14,7 +14,7 @@ using Attribute = EncoreTickets.SDK.Venue.Models.Attribute;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class VenueServiceTests
+    internal class VenueServiceTests
     {
         private IConfiguration configuration;
         private ApiContext context;
@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void Authentication_IfBadCredentials_Exception()
+        public void Authentication_IfBadCredentials_Exception401()
         {
             var apiContext = new ApiContext(context.Environment, "admin", "invalid_password");
             service = new VenueServiceApi(apiContext);
@@ -47,7 +47,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 service.AuthenticationService.Authenticate();
             });
 
-            AssertApiException(exception, (HttpStatusCode)401);
+            AssertApiException(exception, HttpStatusCode.Unauthorized);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetVenueById_VenueNotFoundException()
+        public void GetVenueById_Exception404()
         {
             var venueId = configuration["Venue:TestVenueIdNotExisting"];
 
@@ -82,7 +82,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var venue = service.GetVenueById(venueId);
             });
 
-            AssertApiException(exception, (HttpStatusCode)404);
+            AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedVenue = service.UpdateVenueById(sourceVenue);
             });
 
-            AssertApiException(exception, (HttpStatusCode)400);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedVenue = service.UpdateVenueById(sourceVenue);
             });
 
-            AssertApiException(exception, (HttpStatusCode)401);
+            AssertApiException(exception, HttpStatusCode.Unauthorized);
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedVenue = service.UpdateVenueById(sourceVenue);
             });
 
-            AssertApiException(exception, (HttpStatusCode)403);
+            AssertApiException(exception, HttpStatusCode.Forbidden);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedVenue = service.UpdateVenueById(sourceVenue);
             });
 
-            AssertApiException(exception, (HttpStatusCode)404);
+            AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
             });
 
-            AssertApiException(exception, (HttpStatusCode)400);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
             });
 
-            AssertApiException(exception, (HttpStatusCode)400);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
             });
 
-            AssertApiException(exception, (HttpStatusCode)401);
+            AssertApiException(exception, HttpStatusCode.Unauthorized);
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var updatedAttribute = service.UpsertStandardAttributeByTitle(sourceAttribute);
             });
 
-            AssertApiException(exception, (HttpStatusCode)403);
+            AssertApiException(exception, HttpStatusCode.Forbidden);
         }
 
         [Test]
@@ -274,7 +274,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var attributes = service.GetSeatAttributes(venueId);
             });
 
-            AssertApiException(exception, (HttpStatusCode) 404);
+            AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -306,7 +306,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var result = service.UpsertSeatAttributes(venueId, attributes);
             });
 
-            AssertApiException(exception, (HttpStatusCode)400);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
@@ -321,7 +321,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
             });
 
-            AssertApiException(exception, (HttpStatusCode)401);
+            AssertApiException(exception, HttpStatusCode.Unauthorized);
         }
 
         [Test]
@@ -337,7 +337,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
             });
 
-            AssertApiException(exception, (HttpStatusCode)403);
+            AssertApiException(exception, HttpStatusCode.Forbidden);
         }
 
         [Test]
@@ -359,7 +359,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
             });
 
-            AssertApiException(exception, (HttpStatusCode) 404);
+            AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
         private void AssertVenueHasDetails(Venue.Models.Venue venue)
