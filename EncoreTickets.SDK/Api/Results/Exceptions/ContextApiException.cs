@@ -57,7 +57,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         private List<string> GetContextErrorsAsStrings()
         {
             var errors = ContextErrors?.Select(ConvertInfoToString);
-            return errors.ExcludeEmptyStrings().ToList();
+            return errors.ExcludeEmptyStrings().NullIfEmptyEnumerable();
         }
 
         private static string ConvertInfoToString(Info info)

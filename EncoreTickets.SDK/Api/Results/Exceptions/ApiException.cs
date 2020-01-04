@@ -96,7 +96,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         protected List<string> GetErrors()
         {
             var errors = GetErrorsAsString(Response, ContextInResponse);
-            return errors.ExcludeEmptyStrings().ToList();
+            return errors.ExcludeEmptyStrings().NullIfEmptyEnumerable();
         }
 
         /// <summary>
