@@ -6,6 +6,15 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
     public static class PriceWithCurrencyExtension
     {
         /// <summary>
+        /// Returns the price in string format.
+        /// </summary>
+        /// <param name="price"></param>
+        /// <returns>The user-friendly string with value and currency.</returns>
+        public static string ToStringFormat<T>(this T price)
+            where T : IPriceWithCurrency
+            => $"{price.Value / Math.Pow(10, price.DecimalPlaces ?? 2)}{price.Currency}";
+
+        /// <summary>
         /// Adds two prices together.
         /// </summary>
         /// <param name="firstPrice"></param>

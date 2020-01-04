@@ -5,10 +5,29 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities
 {
-    class PriceWithCurrencyTests
+    internal class PriceWithCurrencyTests
     {
-        private static readonly string DefaultCurrency = "GBP";
-        private static readonly int DefaultDecimalPlaces = 2;
+        private const string DefaultCurrency = "GBP";
+        private const int DefaultDecimalPlaces = 2;
+
+        [TestCase(4, "USD", null, "0.04USD")]
+        [TestCase(400, "GBP", null, "4GBP")]
+        [TestCase(999999999, "USD", null, "9999999.99USD")]
+        [TestCase(null, "JPY", null, "JPY")]
+        [TestCase(10000, "GBP", 4, "1GBP")]
+        public void Price_ToStringFormat_ReturnsCorrectly(int? value, string currency, int? decimalPlaces, string expected)
+        {
+            var price = new Price
+            {
+                Value = value,
+                Currency = currency,
+                DecimalPlaces = decimalPlaces
+            };
+
+            var actual = price.ToStringFormat();
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [TestCase(6551, 4500, 2051)]
         [TestCase(50, 50, null)]

@@ -3,12 +3,12 @@ using EncoreTickets.SDK.Inventory.Models;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
+namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Models
 {
-    internal class InventoryProductSearchResponseTests
+    internal class ProductSearchResponseTests
     {
         [Test]
-        public void Inventory_ProductSearchResponse_Data_IsCorrect()
+        public void Data_IsCorrect()
         {
             var product1 = new Product();
             var product2 = new Product();
