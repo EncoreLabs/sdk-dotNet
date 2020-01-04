@@ -52,11 +52,11 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             string baseUrl,
             string resource,
             Method method,
-            Dictionary<string, object> expectedQueryParameters = null,
-            string bodyInJson = null)
+            string bodyInJson = null,
+            Dictionary<string, object> expectedQueryParameters = null)
             where T : class, new()
         {
-            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, expectedQueryParameters, bodyInJson);
+            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, bodyInJson, expectedQueryParameters);
         }
 
         public void VerifyExecution<T>(
@@ -64,8 +64,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             string baseUrl,
             string resource,
             Method method,
-            Dictionary<string, object> expectedQueryParameters = null,
-            string bodyInJson = null)
+            string bodyInJson = null,
+            Dictionary<string, object> expectedQueryParameters = null)
             where T : class, new()
         {
             RestClientWrapperMock.Verify(
@@ -105,27 +105,22 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
                 return !queryParameters.Any();
             }
 
-            if (expectedQueryParameters.Count != queryParameters.Count())
+            return expectedQueryParameters.Count == queryParameters.Count() &&
+                   expectedQueryParameters.All(x => IsQueryParameterInRequest(queryParameters, x.Key, x.Value));
+        }
+
+        private bool IsQueryParameterInRequest(IEnumerable<Parameter> queryParameters, string expectedParameterName, object expectedParameterValue)
+        {
+            var parameter = queryParameters.FirstOrDefault(x =>
+                x.Name.Equals(expectedParameterName, StringComparison.InvariantCultureIgnoreCase));
+            if (parameter == null)
             {
                 return false;
             }
 
-            foreach (var (key, value) in expectedQueryParameters)
-            {
-                var parameter = queryParameters.FirstOrDefault(x => x.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase));
-                if (parameter == null || !parameter.Value.ToString().Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return false;
-                }
-
-                var expectedParameter = parameter.Value.ToString();
-                if (!expectedParameter.Equals(value.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            var expectedParameter = parameter.Value.ToString();
+            return expectedParameter.Equals(expectedParameterValue.ToString(),
+                StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsJsonBodyInRequest(IRestRequest request, string expectedBodyInJson)

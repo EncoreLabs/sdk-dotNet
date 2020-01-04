@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Response;
-using EncoreTickets.SDK.Utilities.Common.TypeExtensions;
+using EncoreTickets.SDK.Utilities.Common.Extensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions

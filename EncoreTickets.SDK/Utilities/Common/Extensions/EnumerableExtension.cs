@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace EncoreTickets.SDK.Utilities.Common.TypeExtensions
+namespace EncoreTickets.SDK.Utilities.Common.Extensions
 {
     internal static class EnumerableExtension
     {

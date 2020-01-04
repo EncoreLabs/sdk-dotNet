@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             foreach (var product in products)
             {
-                AssertProduct(product);
+                AssertProductPropertiesAreSet(product);
             }
         }
 
@@ -55,7 +55,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var product = service.GetProductById(productId);
 
-            AssertProduct(product);
+            AssertProductPropertiesAreSet(product);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 
-        private void AssertProduct(Product product)
+        private void AssertProductPropertiesAreSet(Product product)
         {
             Assert.False(string.IsNullOrEmpty(product.Name));
             Assert.False(string.IsNullOrEmpty(product.Id));
