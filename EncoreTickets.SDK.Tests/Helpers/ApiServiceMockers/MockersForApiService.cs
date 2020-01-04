@@ -84,7 +84,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
         {
-            return new Mock<RestClientWrapper>();
+            return new Mock<RestClientWrapper>(MockBehavior.Loose);
         }
 
         private Mock<ApiRestClientBuilder> GetApiRestClientBuilderMock(Mock<RestClientWrapper> restClientWrapperMock)

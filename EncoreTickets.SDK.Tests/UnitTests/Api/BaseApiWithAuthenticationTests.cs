@@ -5,13 +5,14 @@ using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Tests.Helpers.ApiWrappers;
 using EncoreTickets.SDK.Utilities.Enums;
+using Moq;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class BaseApiWithAuthenticationTests : BaseApiWithAuthentication
     {
-        public BaseApiWithAuthenticationTests() : base(new ApiContext(), BaseApiWithAuthenticationTestsSource.TestHost)
+        public BaseApiWithAuthenticationTests() : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
         {
         }
 
@@ -79,6 +80,40 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             var actual = GetAuthenticationService(context);
 
             Assert.IsNull(actual);
+        }
+    }
+
+    public class BaseApiWithAuthenticationTestsWithMockers : BaseApiWithAuthentication
+    {
+        private readonly Mock<IAuthenticationService> authenticationServiceMocker;
+
+        public override IAuthenticationService AuthenticationService => authenticationServiceMocker.Object;
+
+        public BaseApiWithAuthenticationTestsWithMockers() : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
+        {
+            authenticationServiceMocker = new Mock<IAuthenticationService>();
+        }
+
+        [Test]
+        public void TriggerAutomaticAuthentication_IfAutomaticAuthenticationTrue_CallsAuthentication()
+        {
+            AutomaticAuthentication = true;
+            authenticationServiceMocker.Setup(x => x.Authenticate()).Callback(() => { });
+
+            TriggerAutomaticAuthentication();
+
+            authenticationServiceMocker.Verify(x => x.Authenticate(), Times.Once);
+        }
+
+        [Test]
+        public void TriggerAutomaticAuthentication_IfAutomaticAuthenticationFalse_DoesNotCallAuthentication()
+        {
+            AutomaticAuthentication = false;
+            authenticationServiceMocker.Setup(x => x.Authenticate()).Callback(() => { });
+
+            TriggerAutomaticAuthentication();
+
+            authenticationServiceMocker.Verify(x => x.Authenticate(), Times.Never);
         }
     }
 
