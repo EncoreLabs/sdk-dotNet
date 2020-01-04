@@ -2,6 +2,7 @@
 using System.Linq;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.TypeExtensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions
@@ -56,7 +57,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         private List<string> GetContextErrorsAsStrings()
         {
             var errors = ContextErrors?.Select(ConvertInfoToString);
-            return FilterErrorsAsStrings(errors);
+            return errors.ExcludeEmptyStrings().ToList();
         }
 
         private static string ConvertInfoToString(Info info)

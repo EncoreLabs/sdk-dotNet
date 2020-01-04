@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Context;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.Common.TypeExtensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions
@@ -95,7 +96,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         protected List<string> GetErrors()
         {
             var errors = GetErrorsAsString(Response, ContextInResponse);
-            return FilterErrorsAsStrings(errors);
+            return errors.ExcludeEmptyStrings().ToList();
         }
 
         /// <summary>
@@ -112,17 +113,6 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             return Errors != null && Errors.Any()
                 ? string.Join("; ", Errors)
                 : DefaultMessage;
-        }
-
-        protected List<string> FilterErrorsAsStrings(IEnumerable<string> errors)
-        {
-            if (errors == null)
-            {
-                return null;
-            }
-
-            var notEmptyErrors = errors.Where(x => !string.IsNullOrEmpty(x)).ToList();
-            return notEmptyErrors.Any() ? notEmptyErrors : null;
         }
 
         private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Response.Context context)
