@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Tests.Helpers.ApiWrappers;
 using EncoreTickets.SDK.Utilities.Enums;

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
-using EncoreTickets.SDK.Utilities.Common.Serializers;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Exceptions;
+using EncoreTickets.SDK.Utilities.Serializers;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;

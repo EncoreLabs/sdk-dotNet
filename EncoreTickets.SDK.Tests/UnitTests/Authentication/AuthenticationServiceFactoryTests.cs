@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Utilities.Enums;
 using Moq;

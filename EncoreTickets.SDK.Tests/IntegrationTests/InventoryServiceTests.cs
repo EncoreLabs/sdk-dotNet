@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Inventory;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;

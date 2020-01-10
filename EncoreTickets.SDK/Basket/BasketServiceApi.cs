@@ -1,15 +1,14 @@
 ﻿using System.Net;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket.Exceptions;
-using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
-using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.Enums;
+using EncoreTickets.SDK.Utilities.Mapping;
 
 namespace EncoreTickets.SDK.Basket
 {

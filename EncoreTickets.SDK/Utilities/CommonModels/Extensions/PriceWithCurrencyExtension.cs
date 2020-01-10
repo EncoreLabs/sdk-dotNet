@@ -12,7 +12,14 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
         /// <returns>The user-friendly string with value and currency.</returns>
         public static string ToStringFormat<T>(this T price)
             where T : IPriceWithCurrency
-            => $"{price.Value / Math.Pow(10, price.DecimalPlaces ?? 2)}{price.Currency}";
+        {
+            var powerToConvertToRealValue = Math.Pow(10, price.DecimalPlaces ?? 2);
+            var realValue = price.Value / powerToConvertToRealValue;
+            var valueAsStr = realValue.HasValue && realValue - Math.Truncate(realValue.Value) > 0D
+                ? $"{realValue:F20}".TrimEnd('0')
+                : realValue.ToString();
+            return $"{valueAsStr}{price.Currency}";
+        }
 
         /// <summary>
         /// Adds two prices together.

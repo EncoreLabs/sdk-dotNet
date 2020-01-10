@@ -1,4 +1,4 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
 
 namespace EncoreTickets.SDK.Api

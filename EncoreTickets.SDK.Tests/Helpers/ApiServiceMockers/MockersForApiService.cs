@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
-using EncoreTickets.SDK.Utilities.Common.RestClientWrapper;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
+using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using Moq;
 using RestSharp;
 
@@ -74,8 +74,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
                         baseUrl.Equals(client.BaseUrl.ToString(), StringComparison.InvariantCultureIgnoreCase)
                     ),
                     It.Is<IRestRequest>(request =>
-                        request.Method == method &&
                         request.Resource.Equals(resource, StringComparison.InvariantCultureIgnoreCase) &&
+                        request.Method == method &&
                         request.RequestFormat == DataFormat.Json &&
                         AreQueryParametersInRequest(request, expectedQueryParameters) &&
                         IsJsonBodyInRequest(request, bodyInJson))

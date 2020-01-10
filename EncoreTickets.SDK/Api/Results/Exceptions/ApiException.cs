@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
-using EncoreTickets.SDK.Utilities.Common.Extensions;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions

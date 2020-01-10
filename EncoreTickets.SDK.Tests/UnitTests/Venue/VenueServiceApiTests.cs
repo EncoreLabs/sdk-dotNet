@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Authentication;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;

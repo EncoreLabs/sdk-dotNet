@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Content;
 using EncoreTickets.SDK.Content.Models;

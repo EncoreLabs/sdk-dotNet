@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Inventory.Models;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
-using EncoreTickets.SDK.Utilities.Business;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Inventory
