@@ -8,6 +8,7 @@ using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Utilities.Enums;
+using EncoreTickets.SDK.Utilities.Exceptions;
 using EncoreTickets.SDK.Utilities.Mapping;
 
 namespace EncoreTickets.SDK.Basket
@@ -30,20 +31,13 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public Promotion GetPromotionDetails(string promotionId)
-        {
-            var parameters = new ExecuteApiRequestParameters
-            {
-                Endpoint = $"v1/promotions/{promotionId}",
-                Method = RequestMethod.Get
-            };
-            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
-            return result.DataOrException;
-        }
-
-        /// <inheritdoc />
         public Models.Basket GetBasketDetails(string basketReference)
         {
+            if (string.IsNullOrEmpty(basketReference))
+            {
+                throw new BadArgumentsException("basket ID must be set");
+            }
+
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v1/baskets/{basketReference}",
@@ -51,19 +45,6 @@ namespace EncoreTickets.SDK.Basket
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return result.DataOrException;
-        }
-
-        /// <inheritdoc />
-        public Models.Basket UpsertPromotion(string basketId, Coupon coupon)
-        {
-            var parameters = new ExecuteApiRequestParameters
-            {
-                Endpoint = $"v1/baskets/{basketId}/applyPromotion",
-                Method = RequestMethod.Patch,
-                Body = new ApplyPromotionRequest {Coupon = coupon}
-            };
-            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
-            return GetUpsertPromotionResult(result, coupon, basketId);
         }
 
         /// <inheritdoc />
@@ -75,6 +56,17 @@ namespace EncoreTickets.SDK.Basket
                 Endpoint = "v1/baskets",
                 Method = RequestMethod.Patch,
                 Body = request
+            };
+            var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
+            return response.DataOrException;
+        }
+
+        public Models.Basket ClearBasket(string basketId)
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/baskets/{basketId}/clear",
+                Method = RequestMethod.Patch
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
@@ -92,15 +84,34 @@ namespace EncoreTickets.SDK.Basket
             return response.DataOrException;
         }
 
-        public Models.Basket ClearBasket(string basketId)
+        /// <inheritdoc />
+        public Promotion GetPromotionDetails(string promotionId)
+        {
+            if (string.IsNullOrEmpty(promotionId))
+            {
+                throw new BadArgumentsException("promotion ID must be set");
+            }
+
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/promotions/{promotionId}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public Models.Basket UpsertPromotion(string basketId, Coupon coupon)
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/baskets/{basketId}/clear",
-                Method = RequestMethod.Patch
+                Endpoint = $"v1/baskets/{basketId}/applyPromotion",
+                Method = RequestMethod.Patch,
+                Body = new ApplyPromotionRequest {Coupon = coupon}
             };
-            var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
-            return response.DataOrException;
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
+            return GetUpsertPromotionResult(result, coupon, basketId);
         }
 
         private Models.Basket GetUpsertPromotionResult(ApiResult<Models.Basket> apiResult, Coupon coupon, string basketId)

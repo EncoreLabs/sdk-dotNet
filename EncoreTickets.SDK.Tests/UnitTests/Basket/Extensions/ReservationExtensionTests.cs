@@ -4,9 +4,9 @@ using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.UnitTests.Basket
+namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 {
-    class ReservationExtensionTest
+    internal class ReservationExtensionTests
     {
         private static readonly Price DefaultPrice = new Price
         {
@@ -18,7 +18,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         private static readonly int DefaultQuantity = 2;
 
         [Test]
-        public void Reservation_TotalAdjustedAmountInOfficeCurrency_Correct()
+        public void TotalAdjustedAmountInOfficeCurrency_Correct()
         {
             var reservation = new Reservation { AdjustedSalePriceInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalAdjustedAmountInShopperCurrency_Correct()
+        public void TotalAdjustedAmountInShopperCurrency_Correct()
         {
             var reservation = new Reservation { AdjustedSalePriceInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -38,7 +38,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalAdjustmentInOfficeCurrency_Correct()
+        public void TotalAdjustmentInOfficeCurrency_Correct()
         {
             var reservation = new Reservation { AdjustmentAmountInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalAdjustmentInShopperCurrency_Correct()
+        public void TotalAdjustmentInShopperCurrency_Correct()
         {
             var reservation = new Reservation { AdjustmentAmountInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -58,7 +58,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalSalePriceInOfficeCurrency_Correct()
+        public void TotalSalePriceInOfficeCurrency_Correct()
         {
             var reservation = new Reservation { SalePriceInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -68,7 +68,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalSalePriceInShopperCurrency_Correct()
+        public void TotalSalePriceInShopperCurrency_Correct()
         {
             var reservation = new Reservation { SalePriceInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -78,7 +78,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalFaceInOfficeCurrency_Correct()
+        public void TotalFaceInOfficeCurrency_Correct()
         {
             var reservation = new Reservation { FaceValueInOfficeCurrency = DefaultPrice, Quantity = DefaultQuantity };
 
@@ -88,7 +88,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Reservation_TotalFaceInShopperCurrency_Correct()
+        public void TotalFaceInShopperCurrency_Correct()
         {
             var reservation = new Reservation { FaceValueInShopperCurrency = DefaultPrice, Quantity = DefaultQuantity };
 

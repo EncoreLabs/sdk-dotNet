@@ -5,18 +5,18 @@ using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.UnitTests.Basket
+namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 {
-    class BasketDetailsTest
+    internal class BasketExtensionTests
     {
         private const string DefaultCurrency = "GBP";
         private const int DefaultDecimalPlaces = 2;
 
         [TestCase(true, -15)]
         [TestCase(false, 15)]
-        public void Basket_IsExpired_Correct(bool expectedResult, int minutesFromNow)
+        public void IsExpired_Correct(bool expectedResult, int minutesFromNow)
         {
-            var basketDetails = new SDK.Basket.Models.Basket { ExpiredAt = DateTimeOffset.Now.AddMinutes(minutesFromNow) };
+            var basketDetails = new SDK.Basket.Models.Basket { ExpiredAt = DateTimeOffset.UtcNow.AddMinutes(minutesFromNow) };
 
             var result = basketDetails.IsExpired();
 
@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase(6, 3, 2, 1)]
         [TestCase(0, 0, 0)]
         [TestCase(0)]
-        public void Basket_ItemCount_Correct(int expectedResult, params int[] quantities)
+        public void ItemCount_Correct(int expectedResult, params int[] quantities)
         {
             var reservations = quantities?.Select(q => new Reservation {Quantity = q}).ToList();
             var basketDetails = new SDK.Basket.Models.Basket {Reservations = reservations};
@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase(true, "2600000034", "DISCOUNT")]
         [TestCase(true, "260000035", null)]
         [TestCase(false, null, null)]
-        public void Basket_HasPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
+        public void HasPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
         {
             var basketDetails = SetupBasketWithPromotion(appliedPromotionId, couponCode);
 
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase(false, "2600000034", "DISCOUNT")]
         [TestCase(true, "260000035", null)]
         [TestCase(false, null, null)]
-        public void Basket_HasAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
+        public void HasAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
         {
             var basketDetails = SetupBasketWithPromotion(appliedPromotionId, couponCode);
 
@@ -63,7 +63,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase(true, "2600000034", "DISCOUNT")]
         [TestCase(false, "260000035", null)]
         [TestCase(false, null, null)]
-        public void Basket_HasNonAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
+        public void HasNonAutomaticPromotion_Correct(bool expectedResult, string appliedPromotionId, string couponCode)
         {
             var basketDetails = SetupBasketWithPromotion(appliedPromotionId, couponCode);
 
@@ -73,7 +73,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalInOfficeCurrency_Correct()
+        public void TotalInOfficeCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                     (p, i) => new Reservation { Quantity = i + 1, AdjustedSalePriceInOfficeCurrency = p },
@@ -85,7 +85,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalInShopperCurrency_Correct()
+        public void TotalInShopperCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, AdjustedSalePriceInShopperCurrency = p },
@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalDiscountInOfficeCurrency_Correct()
+        public void TotalDiscountInOfficeCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, AdjustmentAmountInOfficeCurrency = p },
@@ -109,7 +109,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalDiscountInShopperCurrency_Correct()
+        public void TotalDiscountInShopperCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, AdjustmentAmountInShopperCurrency = p },
@@ -121,7 +121,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalSalePriceInOfficeCurrency_Correct()
+        public void TotalSalePriceInOfficeCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, SalePriceInOfficeCurrency = p },
@@ -133,7 +133,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalSalePriceInShopperCurrency_Correct()
+        public void TotalSalePriceInShopperCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, SalePriceInShopperCurrency = p },
@@ -145,7 +145,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalFaceInOfficeCurrency_Correct()
+        public void TotalFaceInOfficeCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, FaceValueInOfficeCurrency = p },
@@ -157,7 +157,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalFaceInShopperCurrency_Correct()
+        public void TotalFaceInShopperCurrency_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, FaceValueInShopperCurrency = p },
@@ -169,7 +169,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [Test]
-        public void Basket_TotalInOfficeCurrencyWithoutDelivery_Correct()
+        public void TotalInOfficeCurrencyWithoutDelivery_Correct()
         {
             var (sumOfPrices, basketDetails) = CreateBasketDetailsFromDefaultPrices(
                 (p, i) => new Reservation { Quantity = i + 1, AdjustedSalePriceInOfficeCurrency = p },

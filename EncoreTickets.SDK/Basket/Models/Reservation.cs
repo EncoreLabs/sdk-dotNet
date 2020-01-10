@@ -7,11 +7,15 @@ namespace EncoreTickets.SDK.Basket.Models
     {
         public int Id { get; set; }
 
+        public int LinkedReservationId { get; set; }
+
         public string VenueId { get; set; }
 
         public string VenueName { get; set; }
 
         public string ProductId { get; set; }
+
+        public string ProductType { get; set; }
 
         public string ProductName { get; set; }
 

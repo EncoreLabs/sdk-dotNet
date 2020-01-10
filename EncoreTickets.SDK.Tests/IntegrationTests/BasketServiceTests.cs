@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 namespace EncoreTickets.SDK.Tests.IntegrationTests
 {
     [TestFixture]
-    class BasketServiceTests
+    internal class BasketServiceTests
     {
         private IConfiguration configuration;
         private BasketServiceApi service;
@@ -26,27 +27,42 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void RemoveReservation_Successful()
+        public void GetBasket_Successful()
         {
-            var reference = configuration["Basket:TestReferences:0"];
-            var request = CreateDefaultBasketRequest(reference);
-            var upsertBasketResult = service.UpsertBasket(request);
+            var reference = configuration["Basket:TestBasketReference"];
 
-            var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, 1);
+            var result = service.GetBasketDetails(reference);
 
-            Assert.IsEmpty(removeReservationResult.Reservations);
+            Assert.NotNull(result);
+            Assert.AreEqual(reference, result.Reference);
+            Assert.NotNull(result.Checksum);
+            Assert.NotNull(result.ChannelId);
         }
 
         [Test]
-        public void ClearBasket_Successful()
+        public void GetBasket_Exception400()
         {
-            var reference = configuration["Basket:TestReferences:0"];
-            var request = CreateDefaultBasketRequest(reference);
-            var upsertBasketResult = service.UpsertBasket(request);
+            var reference = "test";
 
-            var clearBasketResult = service.ClearBasket(upsertBasketResult.Reference);
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
 
-            Assert.IsEmpty(clearBasketResult.Reservations);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void GetBasket_Exception404()
+        {
+            var reference = configuration["Basket:TestBasketReferenceNotFound"];
+            
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -56,7 +72,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
-                var request = CreateDefaultBasketRequest(reference);
+                var request = CreateDefaultBasket(reference);
                 upsertBasketResult = service.UpsertBasket(request);
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
@@ -69,6 +85,40 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 service.ClearBasket(upsertBasketResult?.Reference);
             }
+        }
+
+        [Test]
+        public void UpsertBasket_Failed()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            request.Reservations[0].Items[0].AggregateReference = "invalid";
+
+            Assert.Throws<ApiException>(() => service.UpsertBasket(request));
+        }
+
+        [Test]
+        public void ClearBasket_Successful()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+
+            var clearBasketResult = service.ClearBasket(upsertBasketResult.Reference);
+
+            Assert.IsEmpty(clearBasketResult.Reservations);
+        }
+
+        [Test]
+        public void RemoveReservation_Successful()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+
+            var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, 1);
+
+            Assert.IsEmpty(removeReservationResult.Reservations);
         }
 
         [Test]
@@ -95,7 +145,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
-                var request = CreateDefaultBasketRequest(reference);
+                var request = CreateDefaultBasket(reference);
                 request.Coupon = null;
                 upsertBasketResult = service.UpsertBasket(request);
                 var coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] };
@@ -112,17 +162,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             }
         }
 
-        [Test]
-        public void UpsertBasket_Failed()
-        {
-            var reference = configuration["Basket:TestReferences:0"];
-            var request = CreateDefaultBasketRequest(reference);
-            request.Reservations[0].Items[0].AggregateReference = "invalid";
-
-            Assert.Throws<ApiException>(() => service.UpsertBasket(request));
-        }
-
-        private Basket.Models.Basket CreateDefaultBasketRequest(params string[] references)
+        private Basket.Models.Basket CreateDefaultBasket(params string[] references)
         {
             return new Basket.Models.Basket
             {
@@ -150,6 +190,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     }
                 }
             };
+        }
+
+        private void AssertApiException(ApiException exception, HttpStatusCode code)
+        {
+            Assert.AreEqual(code, exception.ResponseCode);
         }
 
         private void AssertUpsertBasketSuccess(Basket.Models.Basket request, Basket.Models.Basket result)
