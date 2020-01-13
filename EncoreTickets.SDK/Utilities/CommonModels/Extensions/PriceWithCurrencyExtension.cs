@@ -13,10 +13,9 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
         public static string ToStringFormat<T>(this T price)
             where T : IPriceWithCurrency
         {
-            var powerToConvertToRealValue = Math.Pow(10, price.DecimalPlaces ?? 2);
-            var realValue = price.Value / powerToConvertToRealValue;
-            var valueAsStr = realValue.HasValue && realValue - Math.Truncate(realValue.Value) > 0D
-                ? $"{realValue:F20}".TrimEnd('0')
+            var realValue = CalculatePriceValue(price);
+            var valueAsStr = realValue.HasValue && HasNoMoreSignsThanCertainNumberAfterPoint(realValue.Value, 2)
+                ? $"{realValue:F2}"
                 : realValue.ToString();
             return $"{valueAsStr}{price.Currency}";
         }
@@ -59,6 +58,19 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
                     Value = (price.Value ?? 0) * number
                 }
                 : null;
+
+        private static decimal? CalculatePriceValue<T>(this T price)
+            where T : IPriceWithCurrency
+        {
+            var powerToConvertToRealValue = (decimal)Math.Pow(10, price.DecimalPlaces ?? 2);
+            var realValue = price.Value / powerToConvertToRealValue;
+            return realValue;
+        }
+
+        private static bool HasNoMoreSignsThanCertainNumberAfterPoint(decimal value, int numberOfSignsAfterPoint)
+        {
+            return (value - Math.Truncate(value)) * (decimal) Math.Pow(10, numberOfSignsAfterPoint) % 1 == 0M;
+        }
 
         private static T PerformArithmeticOperation<T>(this T firstPrice, T secondPrice, Func<int, int, int> operation)
             where T : class, IPriceWithCurrency, new()

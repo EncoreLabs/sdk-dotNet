@@ -12,12 +12,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
         private const int DefaultDecimalPlaces = 2;
 
         [TestCase(4, "USD", null, "0.04USD")]
-        [TestCase(400, "GBP", null, "4GBP")]
+        [TestCase(400, "GBP", null, "4.00GBP")]
         [TestCase(999999999, "USD", null, "9999999.99USD")]
         [TestCase(null, "JPY", null, "JPY")]
-        [TestCase(10000, "GBP", 4, "1GBP")]
+        [TestCase(10000, "GBP", 4, "1.00GBP")]
         [TestCase(10000, "GBP", 10, "0.000001GBP")]
         [TestCase(19876543, "USD", 3, "19876.543USD")]
+        [TestCase(123456789, "USD", 20, "0.00000000000123456789USD")]
+        [TestCase(4550, "USD", 2, "45.50USD")]
         public void ToStringFormat_ReturnsCorrectly(int? value, string currency, int? decimalPlaces, string expected)
         {
             var price = new Price
