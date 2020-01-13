@@ -1,11 +1,15 @@
-﻿namespace EncoreTickets.SDK.Venue.Models
+﻿using System.Collections.Generic;
+
+namespace EncoreTickets.SDK.Venue.Models
 {
     public class Attribute
     {
-        public string title { get; set; }
+        public string Title { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public string intention { get; set; }
+        public string Intention { get; set; }
+
+        public List<string> Mapping { get; set; }
     }
 }

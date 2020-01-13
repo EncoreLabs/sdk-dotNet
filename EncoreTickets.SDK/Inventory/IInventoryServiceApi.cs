@@ -10,46 +10,72 @@ namespace EncoreTickets.SDK.Inventory
     public interface IInventoryServiceApi
     {
         /// <summary>
-        /// Search for a product
+        /// Search for a product by its keyword.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">Search query</param>
+        /// <returns>Products that contain a search query in their names</returns>
         IList<Product> Search(string text);
 
         /// <summary>
         /// Get the performances for a given product.
         /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="quantity"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns></returns>
+        /// <param name="productId">ID product</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="from">start date</param>
+        /// <param name="to">to date</param>
+        /// <returns>Array of performance availabilities</returns>
         IList<Performance> GetPerformances(int productId, int quantity, DateTime from, DateTime to);
 
         /// <summary>
         /// Get the performances for a given product.
         /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="quantity"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns></returns>
-        IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to);
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="fromDate">start date</param>
+        /// <param name="toDate">to date</param>
+        /// <returns>Array of performance availabilities</returns>
+        IList<Performance> GetPerformances(string productId, int quantity, DateTime fromDate, DateTime toDate);
+        
+        /// <summary>
+        /// Get the seats for a performance
+        /// </summary>
+        /// <param name="productId">ID product</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="performance">performance time</param>
+        /// <returns>Array of availability seat</returns>
+        Availability GetAvailability(int productId, int quantity, DateTime? performance = null);
 
         /// <summary>
         /// Get the seats for a performance
         /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="quantity"></param>
-        /// <param name="performance"></param>
-        /// <returns></returns>
-        Availability GetAvailability(string productId, int quantity, DateTime performance);
+        /// <param name="productId">ID product</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="performance">performance time</param>
+        /// <returns>Array of availability seat</returns>
+        Availability GetAvailability(string productId, int quantity, DateTime? performance = null);
+
+        /// <summary>
+        /// Get the seats for a performance
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="date">performance date: if nothing is sent, current date will be used</param>
+        /// <param name="time">performance time: if nothing is sent, current time will be used</param>
+        /// <returns>Array of availability seat</returns>
+        Availability GetAvailability(string productId, int quantity, DateTime? date, DateTime? time);
 
         /// <summary>
         /// Get the first and last bookable dates for a product
         /// </summary>
-        /// <param name="productId"></param>
-        /// <returns></returns>
+        /// <param name="productId">ID product</param>
+        /// <returns>The first and last bookable dates for a product</returns>
+        BookingRange GetBookingRange(int productId);
+
+        /// <summary>
+        /// Get the first and last bookable dates for a product
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <returns>The first and last bookable dates for a product</returns>
         BookingRange GetBookingRange(string productId);
     }
 }

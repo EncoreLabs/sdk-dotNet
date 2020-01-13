@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
-using EncoreTickets.SDK.Venue.Exceptions;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
+using EncoreTickets.SDK.Utilities.Enums;
+using EncoreTickets.SDK.Utilities.Exceptions;
+using EncoreTickets.SDK.Utilities.Serializers;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
@@ -18,13 +19,15 @@ namespace EncoreTickets.SDK.Venue
     /// </summary>
     public class VenueServiceApi : BaseApiWithAuthentication, IVenueServiceApi
     {
-        private const string VenueHost = "venue-service.{0}tixuk.io/api/";
+        private const string VenueApiHost = "venue-service.{0}tixuk.io/api/";
 
         /// <summary>
         /// Default constructor for the Venue service
         /// </summary>
         /// <param name="context"></param>
-        public VenueServiceApi(ApiContext context) : base(context, VenueHost)
+        /// <param name="automaticAuthentication"></param>
+        public VenueServiceApi(ApiContext context, bool automaticAuthentication = false)
+            : base(context, VenueApiHost, automaticAuthentication)
         {
             context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
@@ -32,88 +35,133 @@ namespace EncoreTickets.SDK.Venue
         /// <inheritdoc/>
         public IList<Models.Venue> GetVenues()
         {
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(
-                "v1/venues",
-                RequestMethod.Get);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/venues",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc/>
         public Models.Venue GetVenueById(string id)
         {
-            var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
-                $"v1/venues/{id}",
-                RequestMethod.Get);
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new BadArgumentsException("venue ID must be set");
+            }
+
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/venues/{id}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc/>
         public Models.Venue UpdateVenueById(Models.Venue venue)
         {
-            var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(
-                $"v1/admin/venues/{venue.internalId}",
-                RequestMethod.Post,
-                venue);
+            if (string.IsNullOrEmpty(venue?.InternalId))
+            {
+                throw new BadArgumentsException("venue ID must be set");
+            }
+
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/admin/venues/{venue.InternalId}",
+                Method = RequestMethod.Post,
+                Body = venue
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc/>
+        public IList<Attribute> GetStandardAttributes()
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/attributes/standard",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Attribute>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc/>
+        public Attribute UpsertStandardAttributeByTitle(Attribute attribute)
+        {
+            if (string.IsNullOrEmpty(attribute?.Title))
+            {
+                throw new BadArgumentsException("attribute title must be set");
+            }
+
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/admin/attributes",
+                Method = RequestMethod.Patch,
+                Body = attribute
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Attribute>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
         {
-            return GetSeatAttributes(venue.internalId);
+            var venueId = venue?.InternalId;
+            return GetSeatAttributes(venueId);
         }
 
         /// <inheritdoc/>
         public IList<SeatAttribute> GetSeatAttributes(string venueId)
         {
-            var result = Executor.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(
-                $"v1/venues/{venueId}/seats/attributes/detailed",
-                RequestMethod.Get);
-            return result.DataOrException;
-        }
+            if (string.IsNullOrEmpty(venueId))
+            {
+                throw new BadArgumentsException("venue ID must be set");
+            }
 
-        /// <inheritdoc/>
-        public IList<StandardAttribute> GetStandardAttributes()
-        {
-            var result = Executor.ExecuteApiWithWrappedResponse<List<StandardAttribute>>(
-                "v1/attributes/standard",
-                RequestMethod.Get);
-            return result.DataOrException;
-        }
-
-        /// <inheritdoc/>
-        public StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute)
-        {
-            var result = Executor.ExecuteApiWithWrappedResponse<StandardAttribute>(
-                "v1/admin/attributes",
-                RequestMethod.Patch,
-                attribute);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/venues/{venueId}/seats/attributes/detailed",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc/>
         public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
         {
-            const string successStatus = "Success";
-            var body = new SeatAttributesRequest { seats = seatAttributes };
-            var result = Executor.ExecuteApiWithWrappedResponse<IEnumerable<string>>(
-                $"v1/admin/venues/{venueId}/seats/attributes",
-                RequestMethod.Patch,
-                body);
-
-            try
+            if (string.IsNullOrEmpty(venueId))
             {
-                return result.DataOrException?.Contains(successStatus) ?? false;
+                throw new BadArgumentsException("venue ID must be set");
             }
-            catch (ApiException exception)
+
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
             {
-                if (exception.ResponseCode == default) // hack, because RestSharp is currently returning “request was aborted” for a long response with a 403 status
+                Endpoint = $"v1/admin/venues/{venueId}/seats/attributes",
+                Method = RequestMethod.Patch,
+                Body = new SeatAttributesRequest
                 {
-                    throw new AccessTokenExpiredException(exception);
-                }
+                    Seats = seatAttributes ?? new List<SeatAttribute>()
+                },
+                Deserializer = new SingleOrListJsonSerializer<string>()
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
+            return GetUpsertSeatAttributesResult(result);
+        }
 
-                throw;
-            }
+        private bool GetUpsertSeatAttributesResult(ApiResult<List<string>> apiResult)
+        {
+            const string successStatus = "Success";
+            return apiResult.DataOrException?.Contains(successStatus) ?? false;
         }
     }
 }

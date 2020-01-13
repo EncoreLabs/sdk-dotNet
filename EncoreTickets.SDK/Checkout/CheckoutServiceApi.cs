@@ -1,5 +1,5 @@
 ﻿using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 
 namespace EncoreTickets.SDK.Checkout
 {

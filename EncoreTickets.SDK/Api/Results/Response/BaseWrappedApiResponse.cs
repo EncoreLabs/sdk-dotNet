@@ -17,16 +17,16 @@
         /// <summary>
         /// Gets or sets request.
         /// </summary>
-        public Request request { get; set; }
+        public Request Request { get; set; }
 
         /// <summary>
         /// Gets or sets response.
         /// </summary>
-        public TResponse response { get; set; }
+        public TResponse Response { get; set; }
 
         /// <summary>
         /// Gets or sets the response context.
         /// </summary>
-        public Context context { get; set; }
+        public Context Context { get; set; }
     }
 }

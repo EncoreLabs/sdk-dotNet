@@ -3,10 +3,7 @@
     /// <summary>
     /// The model for simple API errors.
     /// </summary>
-    internal class UnwrappedError
+    internal class UnwrappedError : Error
     {
-        public string code { get; set; }
-
-        public string message { get; set; }
     }
 }

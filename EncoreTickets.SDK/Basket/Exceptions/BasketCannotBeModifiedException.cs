@@ -1,22 +1,16 @@
-﻿using System;
-using EncoreTickets.SDK.Api.Results;
+﻿using EncoreTickets.SDK.Api.Results.Exceptions;
 
 namespace EncoreTickets.SDK.Basket.Exceptions
 {
     /// <summary>
     /// The exception if an API request tried to modify a basket that was not available for change.
     /// </summary>
-    public class BasketCannotBeModifiedException : Exception
+    public class BasketCannotBeModifiedException : ApiException
     {
-        public override string Message => SourceException.Message;
-
-        public ApiException SourceException { get; }
-
         public string BasketId { get; set; }
 
-        public BasketCannotBeModifiedException(ApiException sourceException, string basketId)
+        public BasketCannotBeModifiedException(ApiException sourceException, string basketId) : base(sourceException)
         {
-            SourceException = sourceException;
             BasketId = basketId;
         }
     }

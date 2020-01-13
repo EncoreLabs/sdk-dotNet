@@ -1,7 +1,6 @@
-﻿using EncoreTickets.SDK.Api.Results;
+﻿using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Basket.Models.RequestModels;
 
 namespace EncoreTickets.SDK.Basket
 {
@@ -22,7 +21,7 @@ namespace EncoreTickets.SDK.Basket
         /// </summary>
         /// <param name="basketReference">Basket ID</param>
         /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
-        BasketDetails GetBasketDetails(string basketReference);
+        Models.Basket GetBasketDetails(string basketReference);
 
         /// <summary>
         /// Applies promotion to a basket when this is possible.
@@ -34,15 +33,15 @@ namespace EncoreTickets.SDK.Basket
         /// <exception cref="BasketNotFoundException">The API request failed if a requested basket was not found.</exception>
         /// <exception cref="BasketCannotBeModifiedException">The API request failed if an API request tried to modify a basket that was not available for change.</exception>
         /// <exception cref="InvalidPromoCodeException">The API request was successful, but the response context contains information about the invalid promo code.</exception>
-        BasketDetails UpsertPromotion(string basketId, Coupon coupon);
+        Models.Basket UpsertPromotion(string basketId, Coupon coupon);
 
         /// <summary>
         /// Creates or updates a basket when it is possible.
         /// </summary>
-        /// <param name="request">Object containing the details of the upserted basket</param>
+        /// <param name="source">Object containing the details of the upserted basket</param>
         /// <returns>Details of the upserted basket.</returns>
         /// <exception cref="ApiException">The API request failed.</exception>
-        BasketDetails UpsertBasket(UpsertBasketRequest request);
+        Models.Basket UpsertBasket(Models.Basket source);
 
         /// <summary>
         /// Removes a reservation with the specified ID from the basket.
@@ -51,7 +50,7 @@ namespace EncoreTickets.SDK.Basket
         /// <param name="reservationId">Reservation ID</param>
         /// <returns>Details of the updated basket.</returns>
         /// <exception cref="ApiException">The API request failed.</exception>
-        BasketDetails RemoveReservation(string basketId, int reservationId);
+        Models.Basket RemoveReservation(string basketId, int reservationId);
 
         /// <summary>
         /// Removes all reservations from the basket.
@@ -59,6 +58,6 @@ namespace EncoreTickets.SDK.Basket
         /// <param name="basketId">Basket ID</param>
         /// <returns>Details of the updated basket.</returns>
         /// <exception cref="ApiException">The API request failed.</exception>
-        BasketDetails ClearBasket(string basketId);
+        Models.Basket ClearBasket(string basketId);
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Performance : IObject
+    public class Performance
     {
-        public DateTime datetime { get; set; }
+        public DateTime Datetime { get; set; }
 
-        public int? largestLumpOfTickets { get; set; }
+        public int LargestLumpOfTickets { get; set; }
     }
 }

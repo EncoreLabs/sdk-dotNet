@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
+using Newtonsoft.Json;
 
 namespace EncoreTickets.SDK.Api.Results.Response
 {
@@ -8,33 +8,33 @@ namespace EncoreTickets.SDK.Api.Results.Response
     /// The entity for collecting items received with additional information for pagination.
     /// </summary>
     /// <typeparam name="T">Model type</typeparam>
+    [JsonObject]
     public class ResponseForPage<T> : IEnumerable<T>
-        where T : IObject
     {
         /// <summary>
         /// Gets or sets the collection of received items.
         /// </summary>
-        public List<T> items { get; set; }
+        public List<T> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the page number.
         /// </summary>
-        public int currentPage { get; set; }
+        public int CurrentPage { get; set; }
 
         /// <summary>
         /// Gets or sets the number of all existing pages.
         /// </summary>
-        public int pageCount { get; set; }
+        public int PageCount { get; set; }
 
         /// <summary>
         /// Gets or sets the number of items on this pages.
         /// </summary>
-        public int itemsPerPage { get; set; }
+        public int ItemsPerPage { get; set; }
 
         /// <summary>
         /// Gets or sets the number of all existing items.
         /// </summary>
-        public int totalItemCount { get; set; }
+        public int TotalItemCount { get; set; }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Api.Results.Response
         /// </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return items.GetEnumerator();
+            return Items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

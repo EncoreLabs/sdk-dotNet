@@ -1,10 +1,15 @@
-﻿namespace EncoreTickets.SDK.Api.Results.Response
+﻿using System.Collections.Generic;
+
+namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
-    /// The model for failed API responses when an empty string is returned in the response section instead of null object.
+    /// The model for failed API responses when only errors return
     /// </summary>
-    /// <inheritdoc/>
-    internal class WrappedError : ApiResponse<object>
+    internal class WrappedError
     {
+        /// <summary>
+        /// Gets or sets an errors collection.
+        /// </summary>
+        public List<Error> Errors { get; set; }
     }
 }

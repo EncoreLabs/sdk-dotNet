@@ -2,18 +2,20 @@
 {
     public class Seat
     {
-        public string aggregateReference { get; set; }
+        public string SeatIdentifier { get; set; }
 
-        public string itemReference { get; set; }
+        public string AggregateReference { get; set; }
 
-        public string row { get; set; }
+        public string ItemReference { get; set; }
 
-        public int? number { get; set; }
+        public string Row { get; set; }
 
-        public bool? isAvailable { get; set; }
+        public int? Number { get; set; }
 
-        public Attributes attributes { get; set; }
+        public bool? IsAvailable { get; set; }
 
-        public Pricing pricing { get; set; }
+        public Attributes Attributes { get; set; }
+
+        public Pricing Pricing { get; set; }
     }
 }

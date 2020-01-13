@@ -1,16 +1,16 @@
-﻿namespace EncoreTickets.SDK.Inventory.Models
+﻿using EncoreTickets.SDK.Utilities.CommonModels;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
+
+namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Price
+    public class Price : IPriceWithCurrency
     {
-        public int? value { get; set; }
+        public int? Value { get; set; }
 
-        public string currency { get; set; }
+        public string Currency { get; set; }
 
-        public int? decimalPlaces { get; set; }
+        public int? DecimalPlaces { get; set; }
 
-        public override string ToString()
-        {
-            return $"{currency}{value / 100}";
-        }
+        public override string ToString() => this.ToStringFormat();
     }
 }

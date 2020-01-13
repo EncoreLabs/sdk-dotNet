@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EncoreTickets.SDK.Interfaces;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Venue.Models;
 
 namespace EncoreTickets.SDK.Venue
@@ -44,13 +44,13 @@ namespace EncoreTickets.SDK.Venue
         /// Get the standard attributes
         /// </summary>
         /// <returns></returns>
-        IList<StandardAttribute> GetStandardAttributes();
+        IList<Attribute> GetStandardAttributes();
 
         /// <summary>
         /// Upsert a standard attribute by its title.
         /// </summary>
         /// <returns>The updated standard attribute.</returns>
-        StandardAttribute UpsertStandardAttributeByTitle(StandardAttribute attribute);
+        Attribute UpsertStandardAttributeByTitle(Attribute attribute);
 
         /// <summary>
         /// Upsert venue's seat attributes.

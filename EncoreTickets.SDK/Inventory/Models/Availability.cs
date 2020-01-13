@@ -4,10 +4,10 @@ namespace EncoreTickets.SDK.Inventory.Models
 {
     public class Availability
     {
-        public int? availableCount { get; set; }
+        public int? AvailableCount { get; set; }
 
-        public List<Area> areas { get; set; }
+        public List<Area> Areas { get; set; }
 
-        public bool isAvailable { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

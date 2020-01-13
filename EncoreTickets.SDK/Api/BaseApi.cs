@@ -1,4 +1,6 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
+using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
 
 namespace EncoreTickets.SDK.Api
 {
@@ -7,6 +9,8 @@ namespace EncoreTickets.SDK.Api
     /// </summary>
     public abstract class BaseApi
     {
+        private readonly IApiRestClientBuilder restClientBuilder;
+
         /// <summary>
         /// Gets base API URL.
         /// </summary>
@@ -15,7 +19,7 @@ namespace EncoreTickets.SDK.Api
         /// <summary>
         /// Gets an executor of requests to the service based on context and base URL.
         /// </summary>
-        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl);
+        protected virtual ApiRequestExecutor Executor => new ApiRequestExecutor(Context, BaseUrl, restClientBuilder);
 
         /// <summary>
         /// Gets API host.
@@ -36,6 +40,7 @@ namespace EncoreTickets.SDK.Api
         {
             Host = host;
             Context = context;
+            restClientBuilder = new ApiRestClientBuilder();
         }
 
         private string GetEnvironmentPartOfHost()

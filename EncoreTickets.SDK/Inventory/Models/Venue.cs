@@ -1,12 +1,10 @@
-﻿using EncoreTickets.SDK.Interfaces;
-
-namespace EncoreTickets.SDK.Inventory.Models
+﻿namespace EncoreTickets.SDK.Inventory.Models
 {
     /// <summary>
     /// Represents a venue object
     /// </summary>
-    public class Venue : IIdentifiableObject
+    public class Venue
     {
-        public string id { get; set; }
+        public string Id { get; set; }
     }
 }

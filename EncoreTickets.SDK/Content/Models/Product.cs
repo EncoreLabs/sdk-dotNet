@@ -1,36 +1,39 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Content.Models
 {
-    public class Product : IObject
+    public class Product
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string areaCode { get; set; }
+        public string AreaCode { get; set; }
 
-        public ShowType showType { get; set; }
+        public ShowType ShowType { get; set; }
 
-        public DateTime? firstPreviewDate { get; set; }
+        public DateTime? FirstPreviewDate { get; set; }
 
-        public DateTime? openingDate { get; set; }
+        public DateTime? OpeningDate { get; set; }
 
-        public DateTime? boOpensDate { get; set; }
+        public DateTime? BoOpensDate { get; set; }
 
-        public DateTime? boClosesDate { get; set; }
+        public DateTime? BoClosesDate { get; set; }
 
-        public string runTime { get; set; }
+        public string RunTime { get; set; }
 
-        public int fitMaximum { get; set; }
+        public int FitMaximum { get; set; }
 
-        public Rating rating { get; set; }
+        public Rating Rating { get; set; }
 
-        public string synopsis { get; set; }
+        public string Synopsis { get; set; }
 
-        public Venue venue { get; set; }
+        public Venue Venue { get; set; }
 
-        public string onSale { get; set; }
+        public string OnSale { get; set; }
+        
+        public string ImageUrl { get; set; }
+
+        public bool ShowFaceValue { get; set; }
     }
 }

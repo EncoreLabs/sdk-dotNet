@@ -1,12 +1,11 @@
 ﻿using System;
-using EncoreTickets.SDK.Interfaces;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class BookingRange : IObject
+    public class BookingRange
     {
-        public DateTime? firstBookableDate { get; set; }
+        public DateTime? FirstBookableDate { get; set; }
 
-        public DateTime? lastBookableDate { get; set; }
+        public DateTime? LastBookableDate { get; set; }
     }
 }

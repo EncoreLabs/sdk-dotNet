@@ -26,12 +26,5 @@ namespace EncoreTickets.SDK.Content
         /// <param name="id"></param>
         /// <returns></returns>
         Product GetProductById(string id);
-
-        /// <summary>
-        /// Get the product by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Product GetProductById(int id);
     }
 }

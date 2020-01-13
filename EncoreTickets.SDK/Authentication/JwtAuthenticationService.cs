@@ -1,7 +1,9 @@
 ﻿using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Authentication.Models;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Authentication
 {
@@ -12,7 +14,7 @@ namespace EncoreTickets.SDK.Authentication
     /// </summary>
     public class JwtAuthenticationService : BaseApi, IAuthenticationService
     {
-        private readonly string endpoint;
+        protected readonly string Endpoint;
 
         /// <summary>
         /// Initializes an instance for the JWT authentication service.
@@ -23,14 +25,14 @@ namespace EncoreTickets.SDK.Authentication
         public JwtAuthenticationService(ApiContext context, string host, string loginEndpoint)
             : base(context, host)
         {
-            endpoint = loginEndpoint;
+            Endpoint = loginEndpoint;
         }
 
         /// <inheritdoc />
         public ApiContext Authenticate()
         {
             var accessToken = JwtLogin();
-            Context.AccessToken = accessToken.token;
+            Context.AccessToken = accessToken.Token;
             return Context;
         }
 
@@ -42,16 +44,18 @@ namespace EncoreTickets.SDK.Authentication
 
         private AccessToken JwtLogin()
         {
-            var credentials = new Credentials
+            var requestParameters = new ExecuteApiRequestParameters
             {
-                username = Context.UserName ?? string.Empty,
-                password = Context.Password ?? string.Empty
+                Endpoint = Endpoint,
+                Method = RequestMethod.Post,
+                Body = new Credentials
+                {
+                    Username = Context.UserName ?? string.Empty,
+                    Password = Context.Password ?? string.Empty
+                },
+                ErrorWrappings = new []{ErrorWrapping.Context}
             };
-            var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(
-                endpoint,
-                RequestMethod.Post,
-                credentials,
-                wrappedError: true);
+            var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(requestParameters);
             return result.DataOrException;
         }
     }
