@@ -1,6 +1,11 @@
 ﻿using System.Linq;
-using EncoreTickets.SDK.Api.Context;
+using System.Net;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Content;
+using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Tests.Helpers;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.IntegrationTests
@@ -8,11 +13,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     [TestFixture]
     internal class ContentServiceTests
     {
+        private IConfiguration configuration;
         private ContentServiceApi service;
 
         [SetUp]
         public void SetupState()
         {
+            configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA);
             service = new ContentServiceApi(context);
         }
@@ -37,12 +44,40 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             foreach (var product in products)
             {
-                Assert.False(string.IsNullOrEmpty(product.Name));
-                Assert.False(string.IsNullOrEmpty(product.Id));
-                if (product.Venue != null)
-                {
-                    Assert.False(string.IsNullOrEmpty(product.Venue.Name));
-                }
+                AssertProductPropertiesAreSet(product);
+            }
+        }
+
+        [Test]
+        public void GetProductById_Successful()
+        {
+            var productId = configuration["Content:TestProductId"];
+
+            var product = service.GetProductById(productId);
+
+            AssertProductPropertiesAreSet(product);
+        }
+
+        [Test]
+        public void GetProductById_Exception404()
+        {
+            var productId = "invalid";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var product = service.GetProductById(productId);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        private void AssertProductPropertiesAreSet(Product product)
+        {
+            Assert.False(string.IsNullOrEmpty(product.Name));
+            Assert.False(string.IsNullOrEmpty(product.Id));
+            if (product.Venue != null)
+            {
+                Assert.False(string.IsNullOrEmpty(product.Venue.Name));
             }
         }
     }

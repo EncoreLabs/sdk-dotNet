@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Basket.Models.RequestModels;
-using EncoreTickets.SDK.Utilities.Common.Mapping;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Basket.Extensions

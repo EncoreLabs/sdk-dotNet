@@ -1,6 +1,6 @@
-﻿using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
-using EncoreTickets.SDK.Api.Helpers.ApiRestClientBuilder;
+﻿using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
+using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
 
 namespace EncoreTickets.SDK.Api
 {

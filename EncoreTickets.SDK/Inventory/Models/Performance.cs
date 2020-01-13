@@ -6,6 +6,6 @@ namespace EncoreTickets.SDK.Inventory.Models
     {
         public DateTime Datetime { get; set; }
 
-        public int? LargestLumpOfTickets { get; set; }
+        public int LargestLumpOfTickets { get; set; }
     }
 }

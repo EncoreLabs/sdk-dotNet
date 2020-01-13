@@ -1,20 +1,12 @@
-﻿namespace EncoreTickets.SDK.Pricing.Models.RequestModels
+﻿using EncoreTickets.SDK.Api.Models;
+
+namespace EncoreTickets.SDK.Pricing.Models.RequestModels
 {
     /// <summary>
     /// The helper entity for collecting parameters for obtaining exchange rates.
     /// </summary>
-    public class ExchangeRatesParameters
+    public class ExchangeRatesParameters : PageRequest
     {
-        /// <summary>
-        /// Gets or sets the page number.
-        /// </summary>
-        public int? Page { get; set; }
-
-        /// <summary>
-        /// Gets or sets a number of results you want per page.
-        /// </summary>
-        public int? Limit { get; set; }
-
         /// <summary>
         /// Gets or sets ASC or DESC.
         /// Default value : DESC

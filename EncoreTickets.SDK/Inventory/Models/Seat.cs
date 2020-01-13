@@ -2,6 +2,8 @@
 {
     public class Seat
     {
+        public string SeatIdentifier { get; set; }
+
         public string AggregateReference { get; set; }
 
         public string ItemReference { get; set; }

@@ -1,4 +1,5 @@
 ﻿using EncoreTickets.SDK.Utilities.CommonModels;
+using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
@@ -10,9 +11,6 @@ namespace EncoreTickets.SDK.Inventory.Models
 
         public int? DecimalPlaces { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Currency}{Value / 100}";
-        }
+        public override string ToString() => this.ToStringFormat();
     }
 }

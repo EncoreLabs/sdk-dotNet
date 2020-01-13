@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions
@@ -14,7 +15,10 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <inheritdoc />
         public override List<string> Errors => GetContextErrorsAsStrings();
 
-        public readonly IEnumerable<Info> ContextErrors;
+        /// <summary>
+        /// Gets infos that should be errors
+        /// </summary>
+        public IEnumerable<Info> ContextErrors { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContextApiException"/>
@@ -52,7 +56,8 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private List<string> GetContextErrorsAsStrings()
         {
-            return ContextErrors?.Select(ConvertInfoToString).ToList();
+            var errors = ContextErrors?.Select(ConvertInfoToString);
+            return errors.ExcludeEmptyStrings().NullIfEmptyEnumerable();
         }
 
         private static string ConvertInfoToString(Info info)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
-using EncoreTickets.SDK.Api.Context;
+using System.Net;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Inventory;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,19 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        public void SearchProducts_Exception404()
+        {
+            const string searchTerm = "verylongstrangesearchterm";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var products = service.Search(searchTerm);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
         public void GetPerformances_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
@@ -50,10 +65,49 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void SearchAvailability_Successful()
+        public void GetPerformances_IfIntervalTooBig_Exception400()
         {
             var productId = configuration["Inventory:TestProductId"];
-            var performance = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1)).First();
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(10));
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetPerformances_IfProductIdInvalid_Exception400()
+        {
+            const string productId = "invalid_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetPerformances_IfProductNotFound_Exception404()
+        {
+            const string productId = "invalid-id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetAvailability_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+            var performance = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(2)).First();
 
             var seats = service.GetAvailability(productId, 2, performance.Datetime);
 
@@ -66,5 +120,67 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             }
         }
 
+        [Test]
+        public void GetAvailability_IfProductIdInvalid_Exception400()
+        {
+            var productId = "invalid_id";
+            
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetAvailability_IfProductNotFound_Exception404()
+        {
+            const string productId = "invalidid";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetBookingRange_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+
+            var bookingRange = service.GetBookingRange(productId);
+
+            Assert.NotNull(bookingRange.FirstBookableDate);
+            Assert.NotNull(bookingRange.LastBookableDate);
+        }
+
+        [Test]
+        public void GetBookingRange_Exception400()
+        {
+            const string productId = ",,,";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var products = service.GetBookingRange(productId);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetBookingRange_Exception404()
+        {
+            const string productId = "not_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var products = service.GetBookingRange(productId);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
     }
 }

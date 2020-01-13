@@ -1,4 +1,4 @@
-﻿using EncoreTickets.SDK.Api.Context;
+﻿using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Pricing;
 using EncoreTickets.SDK.Tests.Helpers;
 using NUnit.Framework;

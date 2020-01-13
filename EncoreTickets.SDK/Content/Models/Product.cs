@@ -31,5 +31,9 @@ namespace EncoreTickets.SDK.Content.Models
         public Venue Venue { get; set; }
 
         public string OnSale { get; set; }
+        
+        public string ImageUrl { get; set; }
+
+        public bool ShowFaceValue { get; set; }
     }
 }

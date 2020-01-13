@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
-using EncoreTickets.SDK.Api.Context;
-using EncoreTickets.SDK.Api.Helpers;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Utilities.Enums;
+using EncoreTickets.SDK.Utilities.Exceptions;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -41,22 +42,26 @@ namespace EncoreTickets.SDK.Content
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/products?page=1&limit=1000",
-                Method = RequestMethod.Get
+                Endpoint = "v1/products",
+                Method = RequestMethod.Get,
+                Query = new PageRequest
+                {
+                    Page = 1,
+                    Limit = 1000
+                }
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc />
-        public Product GetProductById(int id)
-        {
-            return GetProductById(id.ToString());
-        }
-
-        /// <inheritdoc />
         public Product GetProductById(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new BadArgumentsException("product ID must be set");
+            }
+
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v1/products/{id}",

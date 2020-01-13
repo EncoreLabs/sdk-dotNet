@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Api.Context;
+using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Results.Exceptions
@@ -23,17 +24,12 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Gets HTTP response status code.
         /// </summary>
-        public virtual HttpStatusCode ResponseCode => Response.StatusCode;
+        public virtual HttpStatusCode ResponseCode => Response?.StatusCode ?? default;
 
         /// <summary>
         /// Gets the API response errors as messages.
         /// </summary>
         public virtual List<string> Errors => GetErrors();
-
-        /// <summary>
-        /// Gets the details of the sent request.
-        /// </summary>
-        public Dictionary<string, object> Details => GetRequestDetails();
 
         /// <summary>
         /// Gets a context object for which the request was made.
@@ -93,38 +89,56 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             Response = response;
         }
 
-        protected string GetMessage()
-        {
-            if (string.IsNullOrEmpty(predefinedMessage))
-            {
-                return Errors.Any() ? string.Join("; ", Errors) : DefaultMessage;
-            }
-
-            return predefinedMessage;
-        }
-
         /// <summary>
         /// Returns easily read errors that are the cause of the exception.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Collection of strings</returns>
         protected List<string> GetErrors()
         {
-            if (ContextInResponse?.Errors == null)
-            {
-                return new List<string>
-                {
-                    string.IsNullOrEmpty(Response.StatusDescription)
-                        ? Response.ErrorMessage
-                        : Response.StatusDescription
-                };
-            }
-
-            var contextErrors = ContextInResponse.Errors.Select(ConvertErrorToString)
-                .Where(x => !string.IsNullOrEmpty(x));
-            return contextErrors.ToList();
+            var errors = GetErrorsAsString(Response, ContextInResponse);
+            return errors.ExcludeEmptyStrings().NullIfEmptyEnumerable();
         }
 
-        private string ConvertErrorToString(Error error)
+        /// <summary>
+        /// Returns a string contained easily read info about errors that are the cause of the exception.
+        /// </summary>
+        /// <returns>Message about errors</returns>
+        protected string GetMessage()
+        {
+            if (predefinedMessage != null)
+            {
+                return predefinedMessage;
+            }
+
+            return Errors != null && Errors.Any()
+                ? string.Join("; ", Errors)
+                : DefaultMessage;
+        }
+
+        private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Response.Context context)
+        {
+            if (context?.Errors != null)
+            {
+                return context.Errors.Select(ConvertErrorToString);
+            }
+
+            if (response == null)
+            {
+                return null;
+            }
+
+            var error = GetErrorAsStringFromRestResponse(response);
+            return new List<string> {error};
+        }
+
+        private static string GetErrorAsStringFromRestResponse(IRestResponse response)
+        {
+            return string.IsNullOrEmpty(response.StatusDescription)
+                ? response.ErrorMessage
+                : response.StatusDescription;
+        }
+
+        private static string ConvertErrorToString(Error error)
         {
             var message = error.Message;
             if (!string.IsNullOrEmpty(error.Field))
@@ -133,37 +147,6 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             return message;
-        }
-
-        private Dictionary<string, object> GetRequestDetails()
-        {
-            if (RequestInResponse == null)
-            {
-                return null;
-            }
-
-            var details = new Dictionary<string, object>();
-            AddDynamicToDictionary(details, RequestInResponse.Query);
-            AddDynamicToDictionary(details, RequestInResponse.UrlParams);
-            if (!string.IsNullOrEmpty(RequestInResponse.Body))
-            {
-                details.Add(nameof(RequestInResponse.Body), RequestInResponse.Body);
-            }
-
-            return details;
-        }
-
-        private void AddDynamicToDictionary(IDictionary<string, object> sourceDictionary, dynamic dynamicObject)
-        {
-            if (!(dynamicObject is IDictionary<string, object> objectDictionary))
-            {
-                return;
-            }
-
-            foreach (var keyValuePair in objectDictionary)
-            {
-                sourceDictionary.Add(keyValuePair.Key, keyValuePair.Value);
-            }
         }
     }
 }
