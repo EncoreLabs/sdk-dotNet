@@ -25,10 +25,5 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
             const string restrictedViewLabel = " (Restricted View)";
             return $"{blockName.ToTitleCase()}{(restrictedView ? restrictedViewLabel : "")}";
         }
-
-        public static bool IsWithNotEmptyCharacters(this string str)
-        {
-            return !string.IsNullOrWhiteSpace(str) && !string.IsNullOrEmpty(str);
-        }
     }
 }

@@ -139,9 +139,9 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             switch (Credentials.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:
-                    return Credentials.AccessToken.IsWithNotEmptyCharacters()
-                        ? new JwtAuthenticator(Credentials.AccessToken)
-                        : null;
+                    return string.IsNullOrWhiteSpace(Credentials.AccessToken)
+                        ? null
+                        : new JwtAuthenticator(Credentials.AccessToken);
                 case AuthenticationMethod.Basic:
                     return new HttpBasicAuthenticator(Credentials.Username, Credentials.Password);
                 default:

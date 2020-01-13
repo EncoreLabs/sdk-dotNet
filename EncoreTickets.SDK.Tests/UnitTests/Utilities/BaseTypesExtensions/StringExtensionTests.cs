@@ -23,21 +23,5 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
 
             Assert.AreEqual(expected, result);
         }
-
-        [TestCase("test", true)]
-        [TestCase("test test", true)]
-        [TestCase("  t", true)]
-        [TestCase(null, false)]
-        [TestCase("", false)]
-        [TestCase(" ", false)]
-        [TestCase("     ", false)]
-        [TestCase("\t", false)]
-        [TestCase("\n", false)]
-        public void IsWithNotEmptyCharacters_Successful(string source, bool expected)
-        {
-            var result = source.IsWithNotEmptyCharacters();
-
-            Assert.AreEqual(expected, result);
-        }
     }
 }
