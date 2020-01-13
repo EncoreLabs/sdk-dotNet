@@ -11,6 +11,7 @@ namespace EncoreTickets.SDK.Utilities.Mapping
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<CommonProfile>();
                 cfg.AddProfile<BasketProfile>();
+                cfg.AddProfile<InventoryProfile>();
             });
             var mapper = config.CreateMapper();
             return mapper;

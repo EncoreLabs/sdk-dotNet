@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Gets or sets the context returned in the API response.
         /// </summary>
-        public Response.Context ResponseContext { get; set; }
+        public Context ResponseContext { get; set; }
 
         /// <summary>
         /// Gets or sets the request returned in the API response.
@@ -61,7 +61,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// Initializes a new instance of <see cref="ApiResult"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
-        public ApiResult(T data, IRestResponse response, ApiContext context, Response.Context responseContext,
+        public ApiResult(T data, IRestResponse response, ApiContext context, Context responseContext,
             Request requestInResponse)
         {
             ResponseContext = responseContext;
@@ -73,10 +73,22 @@ namespace EncoreTickets.SDK.Api.Results
         /// Initializes a new instance of <see cref="ApiResult"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
+        public ApiResult(T data, IRestResponse response, ApiContext context, IEnumerable<Error> errors)
+        {
+            ResponseContext = errors != null
+                ? new Context {Errors = new List<Error>(errors)}
+                : null;
+            InitializeCommonParameters(data, response, context);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApiResult"/>
+        /// <typeparam name="T">Type of expected data.</typeparam>
+        /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
             ResponseContext = error != null
-                ? new Response.Context { Errors = new List<Error> { new Error { Message = error } } }
+                ? new Context { Errors = new List<Error> { new Error { Message = error } } }
                 : null;
             InitializeCommonParameters(data, response, context);
         }

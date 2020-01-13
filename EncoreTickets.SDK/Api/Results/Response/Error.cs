@@ -1,13 +1,16 @@
-﻿namespace EncoreTickets.SDK.Api.Results.Response
+﻿using Newtonsoft.Json;
+
+namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
-    /// The model for API errors returned in a <see cref="Context"/>
+    /// The model for API errors
     /// </summary>
     public class Error
     {
         /// <summary>
         /// Gets or sets easily read message.
         /// </summary>
+        [JsonProperty(Required = Required.Always)]
         public string Message { get; set; }
 
         /// <summary>

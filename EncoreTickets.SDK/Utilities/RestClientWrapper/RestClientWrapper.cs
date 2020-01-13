@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Mapping;
 using Polly;

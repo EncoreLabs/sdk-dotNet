@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
-using EncoreTickets.SDK.Utilities.Serializers;
 using RestSharp;
-using RestSharp.Deserializers;
 
 namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
 {
@@ -14,8 +15,6 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
     /// </summary>
     public class ApiRequestExecutor
     {
-        private static readonly IDeserializer SourceDeserializer = new DefaultJsonSerializer();
-
         private readonly IApiRestClientBuilder restClientBuilder;
 
         public string BaseUrl { get; }
@@ -40,13 +39,12 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="requestParameters">Parameters for initializing an API request</param>
-        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
-        public ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = false)
+        public ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters)
             where T : class, new()
         {
             var restResponse = GetRestResponse<T>(requestParameters);
-            return CreateApiResult(restResponse, wrappedError);
+            return CreateApiResult(restResponse, requestParameters);
         }
 
         /// <summary>
@@ -54,13 +52,13 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <param name="requestParameters">Parameters for initializing an API request</param>
-        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
-        public ApiResult<T> ExecuteApiWithWrappedResponse<T>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
+        public ApiResult<T> ExecuteApiWithWrappedResponse<T>(
+            ExecuteApiRequestParameters requestParameters)
             where T : class
         {
             var restWrappedResponse = GetRestResponse<ApiResponse<T>>(requestParameters);
-            return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, wrappedError);
+            return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, requestParameters);
         }
 
         /// <summary>
@@ -70,15 +68,15 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// <typeparam name="TApiResponse">Type of the response object.</typeparam>
         /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
         /// <param name="requestParameters">Parameters for initializing an API request</param>
-        /// <param name="wrappedError"><c>true</c> if possible API exception should be wrapped with extra data on API side, <see cref="ApiResponse{T}"/>; otherwise, <c>false</c>.</param>
         /// <returns>Result of request execution.</returns>
-        public ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(ExecuteApiRequestParameters requestParameters, bool wrappedError = true)
+        public ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(
+            ExecuteApiRequestParameters requestParameters)
             where T : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
             where TResponse : class
         {
             var restWrappedResponse = GetRestResponse<TApiResponse>(requestParameters);
-            return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, wrappedError);
+            return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, requestParameters);
         }
 
         private IRestResponse<T> GetRestResponse<T>(ExecuteApiRequestParameters requestParameters)
@@ -92,52 +90,55 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             return response;
         }
 
-        private ApiResult<T> CreateApiResult<T>(IRestResponse<T> restResponse, bool wrappedError)
+        private ApiResult<T> CreateApiResult<T>(
+            IRestResponse<T> restResponse,
+            ExecuteApiRequestParameters requestParameters)
             where T : class
         {
-            return !restResponse.IsSuccessful
-                ? CreateApiResultForError<T>(restResponse, wrappedError)
-                : new ApiResult<T>(restResponse.Data, restResponse, Context);
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+            {
+                return new ApiResult<T>(restResponse.Data, restResponse, Context);
+            }
+
+            var errorWrappings = requestParameters.ErrorWrappings ?? new[] { ErrorWrapping.MessageWithCode };
+            return TryToCreateApiResultForError<T>(restResponse, errorWrappings);
         }
 
         private ApiResult<T> CreateApiResult<T, TApiResponse, TResponse>(
-            IRestResponse<TApiResponse> restWrappedResponse, bool wrappedError)
+            IRestResponse<TApiResponse> restWrappedResponse,
+            ExecuteApiRequestParameters requestParameters)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
         {
-            if (!restWrappedResponse.IsSuccessful && restWrappedResponse.Data?.Context == null)
+            if (restWrappedResponse.StatusCode == HttpStatusCode.OK)
             {
-                return CreateApiResultForError<T>(restWrappedResponse, wrappedError);
+                var data = restWrappedResponse.Data;
+                return new ApiResult<T>(data?.Data, restWrappedResponse, Context, data?.Context, data?.Request);
             }
 
-            var data = restWrappedResponse.Data;
-            return new ApiResult<T>(data?.Data, restWrappedResponse, Context, data?.Context, data?.Request);
+            var errorWrappings = requestParameters.ErrorWrappings ?? new[] {ErrorWrapping.Context};
+            return TryToCreateApiResultForError<T>(restWrappedResponse, errorWrappings);
         }
 
-        private ApiResult<T> CreateApiResultForError<T>(IRestResponse restResponse, bool wrappedError)
+        private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse, IEnumerable<ErrorWrapping> errorWrappings)
             where T : class
         {
-            if (wrappedError)
+            Exception innerException = null;
+            foreach (var errorWrapping in errorWrappings)
             {
-                var errorData = DeserializeResponse<WrappedError>(restResponse);
-                return new ApiResult<T>(default, restResponse, Context, errorData?.Context, errorData?.Request);
+                try
+                {
+                    return ApiResultForErrorFactory.Create<T>(errorWrapping, restResponse, Context);
+                }
+                catch (Exception e)
+                {
+                    innerException = e;
+                }
             }
 
-            var apiError = DeserializeResponse<UnwrappedError>(restResponse);
-            return new ApiResult<T>(default, restResponse, Context, apiError?.Message);
-        }
-
-        private static T DeserializeResponse<T>(IRestResponse response)
-        {
-            try
-            {
-                return SourceDeserializer.Deserialize<T>(response);
-            }
-            catch (Exception)
-            {
-                return default;
-            }
+            var errorWrappingsAsStr = string.Join(", ", errorWrappings.Select(x => x.ToString()));
+            throw new Exception($"Cannot convert API error correctly: {errorWrappingsAsStr}", innerException);
         }
     }
 }
