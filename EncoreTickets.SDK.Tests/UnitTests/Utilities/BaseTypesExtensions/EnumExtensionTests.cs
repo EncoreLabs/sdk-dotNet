@@ -3,33 +3,50 @@ using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
+using Moq;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
 {
     internal class EnumExtensionTests
     {
-        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetListWithAllEnumValues_ReturnsCorrectly))]
-        public void GetListWithAllEnumValues_ReturnsCorrectly<T>(List<T> expected)
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumValues_ReturnsCorrectly))]
+        public void GetEnumValues_ReturnsCorrectly<T>(List<T> expected)
             where T : Enum
         {
-            var actual = EnumExtension.GetListWithAllEnumValues<T>();
+            var actual = EnumExtension.GetEnumValues<T>();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumFromString_IfEnumValueExists_ReturnsCorrectly))]
+        public void GetEnumFromString_IfEnumValueExists_ReturnsCorrectly<T>(string source, T expected)
+            where T : Enum
+        {
+            var actual = EnumExtension.GetEnumFromString<T>(source);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException))]
+        public void GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException<T>(string source, T expected)
+            where T : Enum
+        {
+            Assert.Catch<ArgumentException>(() => EnumExtension.GetEnumFromString<T>(source));
         }
     }
 
     public static class EnumExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> GetListWithAllEnumValues_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> GetEnumValues_ReturnsCorrectly = new[]
         {
             new TestCaseData(
                 new List<Environments>
                 {
-                    Environments.Production,
-                    Environments.Staging,
+                    Environments.Sandbox,
                     Environments.QA,
-                    Environments.Sandbox
+                    Environments.Staging,
+                    Environments.Production,
                 }
             ),
             new TestCaseData(
@@ -39,6 +56,54 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                     ErrorWrapping.Errors,
                     ErrorWrapping.MessageWithCode
                 }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueExists_ReturnsCorrectly = new[]
+        {
+            new TestCaseData(
+                "1234",
+                (Environments) 1234
+            ),
+            new TestCaseData(
+                "Sandbox",
+                Environments.Sandbox
+            ),
+            new TestCaseData(
+                "sandbox",
+                Environments.Sandbox
+            ),
+            new TestCaseData(
+                "Production",
+                Environments.Production
+            ),
+            new TestCaseData(
+                "Staging",
+                Environments.Staging
+            ),
+            new TestCaseData(
+                "QA",
+                Environments.QA
+            ),
+            new TestCaseData(
+                "qa",
+                Environments.QA
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException = new[]
+        {
+            new TestCaseData(
+                "dev",
+                It.IsAny<Environments>()
+            ),
+            new TestCaseData(
+                "prod",
+                It.IsAny<Environments>()
+            ),
+            new TestCaseData(
+                "12.34",
+                It.IsAny<Environments>()
             ),
         };
     }

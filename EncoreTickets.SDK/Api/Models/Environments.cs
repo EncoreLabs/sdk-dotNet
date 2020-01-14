@@ -5,9 +5,9 @@
     /// </summary>
     public enum Environments
     {
-        Production,
-        Staging,
+        Sandbox,
         QA,
-        Sandbox
+        Staging,
+        Production,
     }
 }
