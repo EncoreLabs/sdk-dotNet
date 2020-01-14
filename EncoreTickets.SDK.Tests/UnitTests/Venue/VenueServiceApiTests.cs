@@ -364,7 +364,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         public void GetSeatAttributes_IfVenueIdIsSet_CallsApiWithRightParameters(string venueId)
         {
             AutomaticAuthentication = true;
-            mockers.SetupAnyExecution<ApiResponse<List<SeatAttribute>>>();
+            mockers.SetupAnyExecution<ApiResponse<List<SeatDetailed>>>();
 
             try
             {
@@ -376,16 +376,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Never());
-            mockers.VerifyExecution<ApiResponse<List<SeatAttribute>>>(BaseUrl,
+            mockers.VerifyExecution<ApiResponse<List<SeatDetailed>>>(BaseUrl,
                 $"v1/venues/{venueId}/seats/attributes/detailed", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes))]
         public void GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes(
             string responseContent,
-            List<SeatAttribute> expected)
+            List<SeatDetailed> expected)
         {
-            mockers.SetupSuccessfulExecution<ApiResponse<List<SeatAttribute>>>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponse<List<SeatDetailed>>>(responseContent);
 
             var actual = GetSeatAttributes(TestVenueValidId);
 
@@ -398,7 +398,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             HttpStatusCode code,
             string expectedMessage)
         {
-            mockers.SetupFailedExecution<ApiResponse<List<SeatAttribute>>>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponse<List<SeatDetailed>>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {
@@ -417,7 +417,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         [TestCase("")]
         public void UpsertSeatAttributes_IfVenueIdIsNotSet_ThrowsBadArgumentsException(string venueId)
         {
-            var seatAttributes = It.IsAny<List<SeatAttribute>>();
+            var seatAttributes = It.IsAny<List<SeatDetailed>>();
 
             var exception = Assert.Catch<BadArgumentsException>(() =>
             {
@@ -428,7 +428,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertSeatAttributes_IfVenueIdIsSet_CallsApiWithRightParameters))]
         public void UpsertSeatAttributes_IfVenueIdIsSet_CallsApiWithRightParameters(
             string venueId,
-            IEnumerable<SeatAttribute> seatAttributes,
+            IEnumerable<SeatDetailed> seatAttributes,
             string requestBody)
         {
             AutomaticAuthentication = true;
@@ -452,7 +452,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         public void UpsertSeatAttributes_IfApiResponseSuccessful_ReturnsTrue(
             string responseContent)
         {
-            var seatAttributes = It.IsAny<List<SeatAttribute>>();
+            var seatAttributes = It.IsAny<List<SeatDetailed>>();
             mockers.SetupSuccessfulExecution<ApiResponse<List<string>>>(responseContent);
 
             var actual = UpsertSeatAttributes(TestVenueValidId, seatAttributes);
@@ -466,7 +466,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             HttpStatusCode code,
             string expectedMessage)
         {
-            var seatAttributes = It.IsAny<List<SeatAttribute>>();
+            var seatAttributes = It.IsAny<List<SeatDetailed>>();
             mockers.SetupFailedExecution<ApiResponse<List<string>>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -1482,13 +1482,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"venueId\":\"163\"}},\"response\":[{\"seatIdentifier\":\"STALLS-O3\",\"startDate\":\"\",\"endDate\":\"\",\"performanceTimes\":[],\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\"},{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\"}]},{\"seatIdentifier\":\"UPPER_CIRCLE-G14\",\"startDate\":\"2019-03-10\",\"endDate\":\"2019-03-30\",\"performanceTimes\":[\"1500\",\"1700\",\"1900\"],\"attributes\":[{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\"}]}],\"context\":null}",
-                new List<SeatAttribute>
+                new List<SeatDetailed>
                 {
-                    new SeatAttribute
+                    new SeatDetailed
                     {
                         SeatIdentifier = "STALLS-O3",
-                        StartDate = "",
-                        EndDate = "",
+                        StartDate = null,
+                        EndDate = null,
                         PerformanceTimes = new List<string>(),
                         Attributes = new List<Attribute>
                         {
@@ -1506,11 +1506,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             }
                         }
                     },
-                    new SeatAttribute
+                    new SeatDetailed
                     {
                         SeatIdentifier = "UPPER_CIRCLE-G14",
-                        StartDate = "2019-03-10",
-                        EndDate = "2019-03-30",
+                        StartDate = new DateTime(2019, 03, 10),
+                        EndDate = new DateTime(2019, 03, 30),
                         PerformanceTimes = new List<string>
                         {
                             "1500",
@@ -1550,13 +1550,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         {
             new TestCaseData(
                 "163",
-                new List<SeatAttribute>
+                new List<SeatDetailed>
                 {
-                    new SeatAttribute
+                    new SeatDetailed
                     {
                         SeatIdentifier = "STALLS-O2",
-                        StartDate = "",
-                        EndDate = "",
+                        StartDate = null,
+                        EndDate = null,
                         PerformanceTimes = new List<string>(),
                         Attributes = new List<Attribute>
                         {
@@ -1575,17 +1575,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         }
                     },
                 },
-                "{\"seats\":[{\"seatIdentifier\":\"STALLS-O2\",\"startDate\":\"\",\"endDate\":\"\",\"performanceTimes\":[],\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\",\"mapping\":null}]}]}"
+                "{\"seats\":[{\"seatIdentifier\":\"STALLS-O2\",\"startDate\":null,\"endDate\":null,\"performanceTimes\":[],\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\",\"mapping\":null}]}]}"
             ),
             new TestCaseData(
                 "163",
-                new List<SeatAttribute>
+                new List<SeatDetailed>
                 {
-                    new SeatAttribute
+                    new SeatDetailed
                     {
                         SeatIdentifier = "UPPER_CIRCLE-G14",
-                        StartDate = "2019-03-10",
-                        EndDate = "2019-03-30",
+                        StartDate = new DateTime(2019, 03, 10),
+                        EndDate = new DateTime(2019, 03, 30),
                         PerformanceTimes = new List<string>
                         {
                             "1500",
@@ -1612,7 +1612,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             ),
             new TestCaseData(
                 "164",
-                new List<SeatAttribute>(),
+                new List<SeatDetailed>(),
                 "{\"seats\":[]}"
             ),
         };

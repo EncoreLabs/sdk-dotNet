@@ -31,14 +31,14 @@ namespace EncoreTickets.SDK.Venue
         /// </summary>
         /// <param name="venue"></param>
         /// <returns></returns>
-        IList<SeatAttribute> GetSeatAttributes(Models.Venue venue);
+        IList<SeatDetailed> GetSeatAttributes(Models.Venue venue);
 
         /// <summary>
         /// Get detailed seat attributes
         /// </summary>
         /// <param name="venueId"></param>
         /// <returns></returns>
-        IList<SeatAttribute> GetSeatAttributes(string venueId);
+        IList<SeatDetailed> GetSeatAttributes(string venueId);
 
         /// <summary>
         /// Get the standard attributes
@@ -56,6 +56,6 @@ namespace EncoreTickets.SDK.Venue
         /// Upsert venue's seat attributes.
         /// </summary>
         /// <returns><c>true</c> If the seat attributes were updated ; otherwise, <c>false</c>.</returns>
-        bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes);
+        bool UpsertSeatAttributes(string venueId, IEnumerable<SeatDetailed> seatsWithAttributes);
     }
 }
