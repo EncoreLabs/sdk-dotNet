@@ -26,17 +26,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         [Test]
         public void ConstructorWithMessage_DoesNotInitializeResponseProperties()
         {
-            var exception = new ApiException(It.IsAny<string>());
+            var response = new RestResponse();
+            var context = new ApiContext();
+            var exception = new ApiException(It.IsAny<string>(), response, context);
 
-            Assert.Null(exception.Context);
-            Assert.Null(exception.Response);
+            Assert.AreEqual(context, exception.Context);
+            Assert.AreEqual(response, exception.Response);
             Assert.Null(exception.RequestInResponse);
             Assert.Null(exception.ContextInResponse);
         }
 
         [TestCaseSource(typeof(ApiExceptionTestsSource), nameof(ApiExceptionTestsSource.ConstructorWithResponseArguments_InitializesResponseProperties))]
         public void ConstructorWithResponseArguments_InitializesResponseProperties(IRestResponse response,
-            ApiContext apiContext, SDK.Api.Results.Response.Context context, Request request)
+            ApiContext apiContext, Context context, Request request)
         {
             var exception = new ApiException(response, apiContext, context, request);
 
@@ -70,7 +72,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         }
 
         [TestCaseSource(typeof(ApiExceptionTestsSource), nameof(ApiExceptionTestsSource.Errors_ReturnsExpectedValue))]
-        public void Errors_ReturnsExpectedValue(IRestResponse response, SDK.Api.Results.Response.Context context, List<string> expected)
+        public void Errors_ReturnsExpectedValue(IRestResponse response, Context context, List<string> expected)
         {
             var exception = new ApiException(response, It.IsAny<ApiContext>(), context, It.IsAny<Request>());
 
@@ -83,7 +85,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         [TestCase("Test message")]
         public void Message_IfPredefinedMessageExists_ReturnsPredefinedMessage(string predefinedMessage)
         {
-            var exception = new ApiException(predefinedMessage);
+            var exception = new ApiException(predefinedMessage, It.IsAny<IRestResponse>(), It.IsAny<ApiContext>());
 
             var actual = exception.Message;
 
@@ -117,11 +119,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
     {
         public static IEnumerable<TestCaseData> ConstructorWithResponseArguments_InitializesResponseProperties = new[]
         {
-            new TestCaseData(new RestResponse(), new ApiContext(), new SDK.Api.Results.Response.Context(), new Request()),
-            new TestCaseData(null, new ApiContext(), new SDK.Api.Results.Response.Context(), new Request()),
-            new TestCaseData(new RestResponse(), null, new SDK.Api.Results.Response.Context(), new Request()),
+            new TestCaseData(new RestResponse(), new ApiContext(), new Context(), new Request()),
+            new TestCaseData(null, new ApiContext(), new Context(), new Request()),
+            new TestCaseData(new RestResponse(), null, new Context(), new Request()),
             new TestCaseData(new RestResponse(), new ApiContext(), null, new Request()),
-            new TestCaseData(new RestResponse(), new ApiContext(), new SDK.Api.Results.Response.Context(), null),
+            new TestCaseData(new RestResponse(), new ApiContext(), new Context(), null),
         };
 
         public static IEnumerable<TestCaseData> ConstructorWithSourceException_InitializesResponseProprtiesBasedOnSourceException = new[]

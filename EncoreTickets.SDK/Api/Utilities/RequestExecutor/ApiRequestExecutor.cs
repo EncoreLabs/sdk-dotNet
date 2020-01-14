@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
 using RestSharp;
@@ -138,7 +139,8 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             }
 
             var errorWrappingsAsStr = string.Join(", ", errorWrappings.Select(x => x.ToString()));
-            throw new Exception($"Cannot convert API error correctly: {errorWrappingsAsStr}", innerException);
+            throw new ApiException($"Cannot convert API error correctly: {errorWrappingsAsStr}.\n\n{restResponse.Content}",
+                restResponse, Context);
         }
     }
 }

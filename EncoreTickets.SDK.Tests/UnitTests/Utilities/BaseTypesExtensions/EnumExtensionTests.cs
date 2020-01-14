@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
+using EncoreTickets.SDK.Venue.Models;
 using Moq;
 using NUnit.Framework;
 
@@ -88,6 +89,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             new TestCaseData(
                 "qa",
                 Environments.QA
+            ),
+            new TestCaseData(
+                "Negative",
+                Intention.Negative
             ),
         };
 
