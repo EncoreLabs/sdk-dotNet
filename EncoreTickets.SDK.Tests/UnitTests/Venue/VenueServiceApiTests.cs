@@ -501,12 +501,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             ThirdLine = null,
                             City = "London",
                             Postcode = "N1 2UD",
-                            Region = new Region
+                            Region = new IsoLocation
                             {
                                 Name = "LDN",
                                 IsoCode = "LDN"
                             },
-                            Country = new Country
+                            Country = new IsoLocation
                             {
                                 Name = "Great Britain",
                                 IsoCode = "GBR"
@@ -528,12 +528,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             ThirdLine = null,
                             City = "London",
                             Postcode = "EC1R 4TN",
-                            Region = new Region
+                            Region = new IsoLocation
                             {
                                 Name = "London",
                                 IsoCode = "LDN"
                             },
-                            Country = new Country
+                            Country = new IsoLocation
                             {
                                 Name = "Great Britain",
                                 IsoCode = "GBR"
@@ -573,12 +573,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         ThirdLine = null,
                         City = "London",
                         Postcode = "W1D 7ES",
-                        Region = new Region
+                        Region = new IsoLocation
                         {
                             Name = null,
                             IsoCode = "LDN"
                         },
-                        Country = new Country
+                        Country = new IsoLocation
                         {
                             Name = "Great Britain",
                             IsoCode = "GBR"
@@ -617,13 +617,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 },
@@ -637,7 +637,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -680,19 +680,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "SlightlyRestrictedView",
                                             Description = "Slightly restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -799,12 +799,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         ThirdLine = null,
                         City = "London",
                         Postcode = "W1D 7ES",
-                        Region = new Region
+                        Region = new IsoLocation
                         {
                             Name = null,
                             IsoCode = "LDN"
                         },
-                        Country = new Country
+                        Country = new IsoLocation
                         {
                             Name = "Great Britain",
                             IsoCode = "GBR"
@@ -843,13 +843,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 },
@@ -863,7 +863,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -906,19 +906,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "SlightlyRestrictedView",
                                             Description = "Slightly restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -1013,12 +1013,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         ThirdLine = null,
                         City = "London",
                         Postcode = "W1D 7ES",
-                        Region = new Region
+                        Region = new IsoLocation
                         {
                             Name = null,
                             IsoCode = "LDN"
                         },
-                        Country = new Country
+                        Country = new IsoLocation
                         {
                             Name = "Great Britain",
                             IsoCode = "GBR"
@@ -1057,14 +1057,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative",
+                                            Intention = Intention.Negative,
                                             Mapping = new List<string>()
                                         },
                                         new Attribute
                                         {
                                             Title = "PillarInView",
                                             Description = "Pillar in view",
-                                            Intention = "negative",
+                                            Intention = Intention.Negative,
                                             Mapping = new List<string>()
                                         }
                                     }
@@ -1079,13 +1079,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 },
@@ -1099,7 +1099,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -1142,19 +1142,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "SlightlyRestrictedView",
                                             Description = "Slightly restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = "negative"
+                                            Intention = Intention.Negative
                                         }
                                     }
                                 }
@@ -1265,56 +1265,56 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     {
                         Title = "EndOfRow",
                         Description = "Seat at end of row",
-                        Intention = "positive",
+                        Intention = Intention.Positive,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "AisleSeat",
                         Description = "Aisle seat",
-                        Intention = "positive",
+                        Intention = Intention.Positive,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "ExtraLegRoom",
                         Description = "Extra legroom",
-                        Intention = "positive",
+                        Intention = Intention.Positive,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "SlightlyRestrictedView",
                         Description = "Slightly restricted view",
-                        Intention = "negative",
+                        Intention = Intention.Negative,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "RestrictedView",
                         Description = "Restricted view",
-                        Intention = "negative",
+                        Intention = Intention.Negative,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "VeryRestrictedView",
                         Description = "Very restricted view",
-                        Intention = "negative",
+                        Intention = Intention.Negative,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "MissMoments",
                         Description = "Might miss certain moments",
-                        Intention = "negative",
+                        Intention = Intention.Negative,
                         Mapping = new List<string>()
                     },
                     new Attribute
                     {
                         Title = "SideView",
                         Description = "Side view",
-                        Intention = "negative",
+                        Intention = Intention.Negative,
                         Mapping = new List<string>()
                     }
                 }
@@ -1349,7 +1349,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "EndOfRow",
                     Description = "Seat at end of row",
-                    Intention = "positive",
+                    Intention = Intention.Positive,
                     Mapping = null
                 },
                 "{\"title\":\"EndOfRow\",\"description\":\"Seat at end of row\",\"intention\":\"positive\",\"mapping\":null}"
@@ -1359,7 +1359,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "test4",
                     Description = "test description3",
-                    Intention = "positive",
+                    Intention = Intention.Positive,
                     Mapping = new List<string>
                     {
                         "sssss",
@@ -1373,7 +1373,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "test",
                     Description = "",
-                    Intention = "negative"
+                    Intention = Intention.Negative
                 },
                 "{\"title\":\"test\",\"description\":\"\",\"intention\":\"negative\",\"mapping\":null}"
             ),
@@ -1381,7 +1381,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 new Attribute
                 {
                     Title = "test",
-                    Intention = "negative"
+                    Intention = Intention.Negative
                 },
                 "{\"title\":\"test\",\"description\":null,\"intention\":\"negative\",\"mapping\":null}"
             ),
@@ -1390,26 +1390,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "test",
                     Description = "test description",
-                    Intention = "test intention"
                 },
-                "{\"title\":\"test\",\"description\":\"test description\",\"intention\":\"test intention\",\"mapping\":null}"
-            ),
-            new TestCaseData(
-                new Attribute
-                {
-                    Title = "test",
-                    Description = "test description",
-                    Intention = ""
-                },
-                "{\"title\":\"test\",\"description\":\"test description\",\"intention\":\"\",\"mapping\":null}"
-            ),
-            new TestCaseData(
-                new Attribute
-                {
-                    Title = "test",
-                    Description = "test description",
-                },
-                "{\"title\":\"test\",\"description\":\"test description\",\"intention\":null,\"mapping\":null}"
+                "{\"title\":\"test\",\"description\":\"test description\",\"intention\":\"neutral\",\"mapping\":null}"
             ),
         };
 
@@ -1421,7 +1403,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "EndOfRow",
                     Description = "Seat at end of row",
-                    Intention = "positive",
+                    Intention = Intention.Positive,
                     Mapping = new List<string>()
                 }
             ),
@@ -1431,7 +1413,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "test4",
                     Description = "test description3",
-                    Intention = "positive",
+                    Intention = Intention.Positive,
                     Mapping = new List<string>
                     {
                         "sssss",
@@ -1455,17 +1437,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 "description - The description of attribute is required"
             ),
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\\"title\\\":\\\"test\\\",\\\"description\\\":\\\"test description\\\",\\\"intention\\\":\\\"test intention\\\",\\\"mapping\\\":null}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"field\":\"intention\",\"message\":\"The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'.\"}]}}",
-                HttpStatusCode.BadRequest,
-                "intention - The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'."
-            ),
-            new TestCaseData(
-                "{\"request\":{\"body\":\"{\\\"title\\\":\\\"test\\\",\\\"description\\\":\\\"test description\\\",\\\"intention\\\":\\\"\\\",\\\"mapping\\\":null}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"field\":\"intention\",\"message\":\"The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'.\"}]}}",
-                HttpStatusCode.BadRequest,
-                "intention - The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'."
-            ),
-            new TestCaseData(
-                "{\"request\":{\"body\":\"{\\\"title\\\":\\\"test\\\",\\\"description\\\":\\\"test description\\\",\\\"intention\\\":null,\\\"mapping\\\":null}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"field\":\"intention\",\"message\":\"The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'.\"}]}}",
+                "{\"request\":{\"body\":\"{\\\"title\\\":\\\"test\\\",\\\"description\\\":\\\"test description\\\",\\\"intention\\\":100,\\\"mapping\\\":null}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"field\":\"intention\",\"message\":\"The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'.\"}]}}",
                 HttpStatusCode.BadRequest,
                 "intention - The seat attribute intention is required. Allowed values are 'neutral' or 'positive' or 'negative'."
             ),
@@ -1524,13 +1496,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "RestrictedView",
                                 Description = "Restricted view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             },
                             new Attribute
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             }
                         }
                     },
@@ -1551,7 +1523,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             }
                         }
                     }
@@ -1592,13 +1564,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "RestrictedView",
                                 Description = "Restricted view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             },
                             new Attribute
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             },
                         }
                     },
@@ -1626,7 +1598,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = "negative"
+                                Intention = Intention.Negative
                             }
                         }
                     }

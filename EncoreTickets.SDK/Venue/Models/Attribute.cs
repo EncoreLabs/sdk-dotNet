@@ -8,7 +8,7 @@ namespace EncoreTickets.SDK.Venue.Models
 
         public string Description { get; set; }
 
-        public string Intention { get; set; }
+        public Intention Intention { get; set; }
 
         public List<string> Mapping { get; set; }
     }

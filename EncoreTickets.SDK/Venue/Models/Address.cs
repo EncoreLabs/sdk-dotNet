@@ -12,9 +12,9 @@
 
         public string Postcode { get; set; }
 
-        public Region Region { get; set; }
+        public IsoLocation Region { get; set; }
 
-        public Country Country { get; set; }
+        public IsoLocation Country { get; set; }
 
         public string Latitude { get; set; }
 

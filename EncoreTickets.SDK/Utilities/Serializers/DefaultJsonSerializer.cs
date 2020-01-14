@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace EncoreTickets.SDK.Utilities.Serializers
@@ -15,11 +16,14 @@ namespace EncoreTickets.SDK.Utilities.Serializers
 
         protected static JsonSerializerSettings CreateSettings()
         {
-            return new JsonSerializerSettings
+            var settings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc
             };
+            var enumConverter = new StringEnumConverter(new CamelCaseNamingStrategy());
+            settings.Converters.Add(enumConverter);
+            return settings;
         }
     }
 }

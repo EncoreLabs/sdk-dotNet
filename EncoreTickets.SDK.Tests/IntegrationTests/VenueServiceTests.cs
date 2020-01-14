@@ -193,7 +193,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var sourceAttribute = new Attribute
             {
                 Title = "test",
-                Intention = "negative"
+                Intention = Intention.Negative
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -211,6 +211,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 Title = "test",
                 Description = "test description",
+                Intention = (Intention)100
             };
 
             var exception = Assert.Catch<ApiException>(() =>
