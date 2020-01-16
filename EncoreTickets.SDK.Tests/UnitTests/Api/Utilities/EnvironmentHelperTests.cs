@@ -14,17 +14,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
         [TestCase("production", Environments.Production)]
         [TestCase("pRoD", Environments.Production)]
         [TestCase("DEV", Environments.Sandbox)]
-        public void EnvironmentFromName_IfValidNameIsProvided_ReturnsCorrectEnvironment(string name, Environments expectedResult)
+        public void GetApiEnvironmentByName_IfValidNameIsProvided_ReturnsCorrectEnvironment(string name, Environments expectedResult)
         {
-            var environment = EnvironmentHelper.EnvironmentFromName(name);
+            var environment = EnvironmentHelper.GetApiEnvironmentByName(name);
 
             Assert.AreEqual(expectedResult, environment);
         }
 
-        [Test]
-        public void EnvironmentFromName_IfInvalidNameIsProvided_ThrowsException()
+        [TestCase("invalid")]
+        [TestCase("stage")]
+        [TestCase("sandbox")]
+        [TestCase("Sandbox")]
+        public void GetApiEnvironmentByName_IfInvalidNameIsProvided_ThrowsException(string name)
         {
-            Assert.Throws<ArgumentException>(() => EnvironmentHelper.EnvironmentFromName("invalid"));
+            Assert.Throws<ArgumentException>(() => EnvironmentHelper.GetApiEnvironmentByName(name));
         }
     }
 }

@@ -138,9 +138,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 }
             }
 
-            var errorWrappingsAsStr = string.Join(", ", errorWrappings.Select(x => x.ToString()));
-            throw new ApiException($"Cannot convert API error correctly: {errorWrappingsAsStr}.\n\n{restResponse.Content}",
-                restResponse, Context);
+            throw new ApiException($"Cannot convert API error correctly.\n\n{restResponse.Content}", restResponse, Context);
         }
     }
 }
