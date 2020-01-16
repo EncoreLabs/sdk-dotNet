@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Aws
     /// </summary>
     public class AwsSqs : IAwsSqs
     {
-        private readonly IAmazonSQS client;
+        protected IAmazonSQS Client { get; }
 
         /// <summary>
         /// Constructor that instantiates this class by the name of an AWS profile and the name of an AWS region.
@@ -22,7 +22,7 @@ namespace EncoreTickets.SDK.Aws
         /// <param name="regionName">The requested AWS region name.</param>
         public AwsSqs(string profileName, string regionName)
         {
-            client = CreateClient(profileName, regionName);
+            Client = CreateClient(profileName, regionName);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Aws
         public AwsSqs(string profileName, string regionName, string accessKey, string secretKey)
         {
             RegisterProfile(profileName, accessKey, secretKey);
-            client = CreateClient(profileName, regionName);
+            Client = CreateClient(profileName, regionName);
         }
 
         /// <inheritdoc cref="IAwsSqs"/>
@@ -47,7 +47,17 @@ namespace EncoreTickets.SDK.Aws
                 QueueUrl = queueUrl,
                 MessageBody = messageBody
             };
-            return await client.SendMessageAsync(sqsRequest);
+            return await Client.SendMessageAsync(sqsRequest);
+        }
+
+        protected virtual ICredentialProfileStore CreateCredentialProfileStore()
+        {
+            return new SharedCredentialsFile();
+        }
+
+        protected virtual IAmazonSQS CreateAmazonSqsClient(AWSOptions options)
+        {
+            return options.CreateServiceClient<IAmazonSQS>();
         }
 
         private void RegisterProfile(string profileName, string accessKey, string secretKey)
@@ -58,8 +68,8 @@ namespace EncoreTickets.SDK.Aws
                 SecretKey = secretKey
             };
             var profile = new CredentialProfile(profileName, options);
-            var netSdkFile = new SharedCredentialsFile();
-            netSdkFile.RegisterProfile(profile);
+            var credentialsFile = CreateCredentialProfileStore();
+            credentialsFile.RegisterProfile(profile);
         }
 
         private IAmazonSQS CreateClient(string profileName, string regionName)
@@ -69,7 +79,7 @@ namespace EncoreTickets.SDK.Aws
                 Profile = profileName,
                 Region = RegionEndpoint.GetBySystemName(regionName)
             };
-            return options.CreateServiceClient<IAmazonSQS>();
+            return CreateAmazonSqsClient(options);
         }
     }
 }
