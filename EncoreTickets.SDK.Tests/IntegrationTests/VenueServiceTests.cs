@@ -193,7 +193,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var sourceAttribute = new Attribute
             {
                 Title = "test",
-                Intention = "negative"
+                Intention = Intention.Negative
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -211,6 +211,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 Title = "test",
                 Description = "test description",
+                Intention = (Intention)100
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -293,10 +294,74 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var venueId = configuration["Venue:TestVenueIdWithSeatAttributes"];
             var sourceAttributes = service.GetSeatAttributes(venueId);
-            var newAttributes = new List<SeatAttribute>
+            var newAttributes = new List<SeatDetailed>
             {
-                new SeatAttribute
+                new SeatDetailed
                 {
+                }
+            };
+            var attributes = newAttributes.Concat(sourceAttributes);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.UpsertSeatAttributes(venueId, attributes);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        public void UpsertSeatAttributes_IfSeatAttributeHasAttributeWithoutTitle_Exception400(string title)
+        {
+            var venueId = configuration["Venue:TestVenueIdWithSeatAttributes"];
+            var sourceAttributes = service.GetSeatAttributes(venueId);
+            var newAttributes = new List<SeatDetailed>
+            {
+                new SeatDetailed
+                {
+                    SeatIdentifier = "DRESS_CIRCLE-G3",
+                    Attributes = new List<Attribute>
+                    {
+                        new Attribute
+                        {
+                            Title = title,
+                            Description = "test description",
+                            Intention = Intention.Neutral
+                        }
+                    }
+                }
+            };
+            var attributes = newAttributes.Concat(sourceAttributes);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.UpsertSeatAttributes(venueId, attributes);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        public void UpsertSeatAttributes_IfSeatAttributeHasAttributeWithoutDescription_Exception400(string description)
+        {
+            var venueId = configuration["Venue:TestVenueIdWithSeatAttributes"];
+            var sourceAttributes = service.GetSeatAttributes(venueId);
+            var newAttributes = new List<SeatDetailed>
+            {
+                new SeatDetailed
+                {
+                    SeatIdentifier = "DRESS_CIRCLE-G3",
+                    Attributes = new List<Attribute>
+                    {
+                        new Attribute
+                        {
+                            Title = "test title",
+                            Description = description,
+                            Intention = Intention.Neutral
+                        }
+                    }
                 }
             };
             var attributes = newAttributes.Concat(sourceAttributes);
@@ -344,19 +409,50 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void UpsertSeatAttributes_IfVenueNotFound_Exception404()
         {
             var venueId = configuration["Venue:TestVenueIdWithoutSeatAttributesAndVenueNotFound"];
-            IList<SeatAttribute> sourceAttributes;
+            IList<SeatDetailed> sourceAttributes;
             try
             {
                 sourceAttributes = service.GetSeatAttributes(venueId);
             }
             catch (Exception e)
             {
-                sourceAttributes = new List<SeatAttribute>();
+                sourceAttributes = new List<SeatDetailed>();
             }
 
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void UpsertSeatAttributes_IfSeatAttributeHasNotStandardAndNotOtherName_Exception404()
+        {
+            var venueId = configuration["Venue:TestVenueIdWithSeatAttributes"];
+            var sourceAttributes = service.GetSeatAttributes(venueId);
+            var newAttributes = new List<SeatDetailed>
+            {
+                new SeatDetailed
+                {
+                    SeatIdentifier = "DRESS_CIRCLE-G3",
+                    Attributes = new List<Attribute>
+                    {
+                        new Attribute
+                        {
+                            Title = "test_not_existing_title",
+                            Description = "test description",
+                            Intention = Intention.Neutral
+                        }
+                    }
+                }
+            };
+            var attributes = newAttributes.Concat(sourceAttributes);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.UpsertSeatAttributes(venueId, attributes);
             });
 
             AssertApiException(exception, HttpStatusCode.NotFound);

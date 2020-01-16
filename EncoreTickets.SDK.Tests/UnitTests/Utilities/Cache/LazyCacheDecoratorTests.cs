@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Cache;
 using NUnit.Framework;
 
@@ -74,7 +76,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [TestCase(4)]
         [TestCase("test")]
         [TestCase(1.2)]
-        public void AddOrGetExisting_IfDataWithKeyWasAddedAndNotNull_ReturnsData<T>(T data)
+        public void AddOrGetExisting_IfDataWithKeyWasAdded_ReturnsData<T>(T data)
         {
             var key = GetRandomKey();
             lazyCache.Set(key, () => data, null);
@@ -90,9 +92,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             Assert.AreEqual(data, result);
         }
 
-        [TestCase("1730")]
-        [TestCase("Success")]
-        public void AddOrGetExisting_IfDataWithKeyWasNotAddedAndDefaultDataIsNull_AddAndReturnsData_And_FactoryIsCalled<T>(T instance)
+        [TestCaseSource(typeof(LazyCacheDecoratorTestsSource), nameof(LazyCacheDecoratorTestsSource.AddOrGetExisting_IfDataWithKeyWasNotAdded_AddsAndReturnsData))]
+        public void AddOrGetExisting_IfDataWithKeyWasNotAddedAndNotNull_AddsAndReturnsData<T>(T instance)
         {
             var key = GetRandomKey();
             var factoryCalled = false;
@@ -104,8 +105,25 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             }, null);
 
             Assert.IsTrue(factoryCalled);
-            Assert.AreEqual(instance, result);
             Assert.IsTrue(lazyCache.Contains(key));
+            AssertExtension.AreObjectsValuesEqual(instance, result);
+        }
+
+        [Test]
+        public void AddOrGetExisting_IfDataWithKeyWasNotAddedAndNull_AddsAndReturnsData()
+        {
+            var key = GetRandomKey();
+            var factoryCalled = false;
+
+            var result = lazyCache.AddOrGetExisting<List<string>>(key, () =>
+            {
+                factoryCalled = true;
+                return null;
+            }, null);
+
+            Assert.IsTrue(factoryCalled);
+            Assert.IsTrue(lazyCache.Contains(key));
+            Assert.Null(result);
         }
 
         [Test]
@@ -143,5 +161,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         }
 
         private static string GetRandomKey() => Guid.NewGuid().ToString();
+    }
+
+    public static class LazyCacheDecoratorTestsSource
+    {
+        public static IEnumerable<TestCaseData> AddOrGetExisting_IfDataWithKeyWasNotAdded_AddsAndReturnsData = new[]
+        {
+            new TestCaseData("1730"),
+            new TestCaseData("Success"),
+            new TestCaseData(new List<string> {"a", "b", "c"})
+        };
     }
 }
