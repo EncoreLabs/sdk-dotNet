@@ -9,5 +9,7 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         DataFormat SerializedDataFormat { get; }
 
         string DateFormat { get; set; }
+
+        T Deserialize<T>(string content);
     }
 }

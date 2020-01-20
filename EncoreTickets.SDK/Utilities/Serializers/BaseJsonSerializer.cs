@@ -39,6 +39,11 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         public T Deserialize<T>(IRestResponse response)
         {
             var content = response.Content;
+            return Deserialize<T>(content);
+        }
+
+        public T Deserialize<T>(string content)
+        {
             return JsonConvert.DeserializeObject<T>(content, Settings);
         }
     }
