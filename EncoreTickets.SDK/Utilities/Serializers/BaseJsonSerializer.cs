@@ -5,7 +5,7 @@ using DataFormat = EncoreTickets.SDK.Utilities.Enums.DataFormat;
 
 namespace EncoreTickets.SDK.Utilities.Serializers
 {
-    public abstract class BaseJsonSerializer : ISerializerWithDateFormat
+    public abstract class BaseJsonSerializer : ISerializerWithDateFormat, ISerializer, IDeserializer
     {
         public DataFormat SerializedDataFormat => DataFormat.Json;
 
