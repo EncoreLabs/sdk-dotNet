@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
@@ -125,7 +124,6 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse, IEnumerable<ErrorWrapping> errorWrappings)
             where T : class
         {
-            Exception innerException = null;
             foreach (var errorWrapping in errorWrappings)
             {
                 try
@@ -134,7 +132,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 }
                 catch (Exception e)
                 {
-                    innerException = e;
+                    // ignored
                 }
             }
 
