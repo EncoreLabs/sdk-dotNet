@@ -1,10 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime.CredentialManagement;
-using Amazon.SQS;
 using Amazon.SQS.Model;
 using EncoreTickets.SDK.Aws;
+using EncoreTickets.SDK.Tests.UnitTests.Aws.Helpers;
 using Moq;
 using NUnit.Framework;
 
@@ -12,56 +11,46 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
 {
     internal class AwsSqsTests : AwsSqs
     {
-        public static AwsSqsMockers Mockers;
+        private static readonly FactoryForAwsSqsTests SourceFactory;
 
         static AwsSqsTests()
         {
-            Mockers = new AwsSqsMockers();
+            SourceFactory = new FactoryForAwsSqsTests();
         }
 
-        public AwsSqsTests() : base("profile_name", "region_name")
+        public AwsSqsTests() : base(SourceFactory, "profile_name", "region_name")
         {
-        }
-
-        protected override ICredentialProfileStore CreateCredentialProfileStore()
-        {
-            return Mockers.SharedCredentialsFileMock.Object;
-        }
-
-        protected override IAmazonSQS CreateAmazonSqsClient(AWSOptions options)
-        {
-            return Mockers.ClientMock.Object;
         }
 
         [TestCase("dev", "eu-west-1")]
         public void Constructor_IfProfileAndRegionArguments_InitializesClient(string profileName, string regionName)
         {
-            AwsSqsWrapper.Mockers = new AwsSqsMockers();
+            var factory = new FactoryForAwsSqsWrapper();
 
-            var aws = new AwsSqsWrapper(profileName, regionName);
+            var aws = new AwsSqsWrapper(factory, profileName, regionName);
 
-            AwsSqsWrapper.Mockers.SharedCredentialsFileMock.Verify(
+            factory.Mockers.SharedCredentialsFileMock.Verify(
                 x => x.RegisterProfile(It.IsAny<CredentialProfile>()), Times.Never());
             Assert.NotNull(aws.SourceClient);
-            Assert.NotNull(aws.OptionsUsedForCreatingAmazonSqs);
-            Assert.AreEqual(profileName, aws.OptionsUsedForCreatingAmazonSqs.Profile);
-            Assert.AreEqual(regionName, aws.OptionsUsedForCreatingAmazonSqs.Region.SystemName);
+            Assert.NotNull(factory.OptionsUsedForCreatingAmazonSqs);
+            Assert.AreEqual(profileName, factory.OptionsUsedForCreatingAmazonSqs.Profile);
+            Assert.AreEqual(regionName, factory.OptionsUsedForCreatingAmazonSqs.Region.SystemName);
         }
 
         [TestCase("dev", "eu-west-1", "access_key", "secret_key")]
         public void Constructor_IfProfileAndRegionAndKeysArguments_RegistersProfileAndInitializesClient(
             string profileName, string regionName, string accessKey, string secretKey)
         {
-            AwsSqsWrapper.Mockers = new AwsSqsMockers();
+            var factory = new FactoryForAwsSqsWrapper();
 
-            var aws = new AwsSqsWrapper(profileName, regionName, accessKey, secretKey);
+            var aws = new AwsSqsWrapper(factory, profileName, regionName, accessKey, secretKey);
 
-            AwsSqsWrapper.Mockers.SharedCredentialsFileMock.Verify(x => x.RegisterProfile(It.Is<CredentialProfile>(pr =>
+            factory.Mockers.SharedCredentialsFileMock.Verify(x => x.RegisterProfile(It.Is<CredentialProfile>(pr =>
                 pr.Name == profileName && pr.Options.AccessKey == accessKey && pr.Options.SecretKey == secretKey)), Times.Once);
             Assert.NotNull(aws.SourceClient);
-            Assert.NotNull(aws.OptionsUsedForCreatingAmazonSqs);
-            Assert.AreEqual(profileName, aws.OptionsUsedForCreatingAmazonSqs.Profile);
-            Assert.AreEqual(regionName, aws.OptionsUsedForCreatingAmazonSqs.Region.SystemName);
+            Assert.NotNull(factory.OptionsUsedForCreatingAmazonSqs);
+            Assert.AreEqual(profileName, factory.OptionsUsedForCreatingAmazonSqs.Profile);
+            Assert.AreEqual(regionName, factory.OptionsUsedForCreatingAmazonSqs.Region.SystemName);
         }
 
         [TestCase("url", "some message")]
@@ -69,7 +58,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
         {
             var result = await SendMessageAsync(queueUrl, messageBody);
 
-            Mockers.ClientMock.Verify(x =>
+            SourceFactory.Mockers.ClientMock.Verify(x =>
                 x.SendMessageAsync(
                     It.Is<SendMessageRequest>(arg => arg.QueueUrl == queueUrl && arg.MessageBody == messageBody),
                     It.Is<CancellationToken>(arg => arg == default)), Times.Once);

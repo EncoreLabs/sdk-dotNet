@@ -4,7 +4,7 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Moq;
 
-namespace EncoreTickets.SDK.Tests.UnitTests.Aws
+namespace EncoreTickets.SDK.Tests.UnitTests.Aws.Helpers
 {
     internal class AwsSqsMockers
     {
