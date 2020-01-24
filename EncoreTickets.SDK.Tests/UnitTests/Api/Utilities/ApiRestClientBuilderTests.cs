@@ -9,8 +9,8 @@ using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
 using Moq;
 using NUnit.Framework;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
+using IDeserializer = RestSharp.Deserializers.IDeserializer;
+using ISerializer = RestSharp.Serializers.ISerializer;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 {

@@ -7,23 +7,14 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
 {
-    [TestFixture]
-    internal class LazyCacheDecoratorTests
+    internal class MemoryCacheTests
     {
-        private LazyCacheDecorator cache;
-
-        [SetUp]
-        public void SetupCache()
-        {
-            var memoryCache = new MemoryCache();
-            cache = new LazyCacheDecorator(memoryCache);
-        }
-
         #region AddOrGetExisting
 
         [Test]
         public void AddOrGetExisting_IfKeyIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             string key = null;
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -33,35 +24,25 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         }
 
         [Test]
-        public void AddOrGetExisting_IfNullDataWithKeyWasNotAddedAndLifeSpanIsNull_AddsDataForDefaultTimeAndReturnsData()
+        public void AddOrGetExisting_IfKeyIsNotNullAndDataIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
-            var factoryCalled = false;
 
-            var actual = cache.AddOrGetExisting<object>(key, () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                factoryCalled = true;
-                return default;
-            }, null);
-
-            Assert.IsTrue(factoryCalled);
-            Assert.True(cache.Contains(key));
-            Assert.Null(actual);
+                cache.AddOrGetExisting<object>(key, () => null, null);
+            });
         }
 
         [TestCaseSource(typeof(MemoryCacheTestsSource), nameof(MemoryCacheTestsSource.TestCasesWithNotNullData))]
-        public void AddOrGetExisting_IfNotNullDataWithKeyWasNotAddedAndLifeSpanIsNull_AddsDataForDefaultTimeAndReturnsData<T>(T data)
+        public void AddOrGetExisting_IfDataWithKeyWasNotAddedAndLifeSpanIsNull_AddsDataForDefaultTimeAndReturnsData<T>(T data)
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
-            var factoryCalled = false;
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return data;
-            }, null);
+            var actual = cache.AddOrGetExisting(key, () => data, null);
 
-            Assert.IsTrue(factoryCalled);
             Assert.True(cache.Contains(key));
             AssertExtension.AreObjectsValuesEqual(data, actual);
         }
@@ -69,17 +50,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [TestCaseSource(typeof(MemoryCacheTestsSource), nameof(MemoryCacheTestsSource.TestCasesWithNotNullData))]
         public void AddOrGetExisting_IfDataWithKeyWasNotAddedAndLifeSpanIsSet_AddsDataForCertainTimeAndReturnsData<T>(T data)
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
-            var factoryCalled = false;
             var lifeTime = new TimeSpan(0, 0, 0, 0, 100);
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return data;
-            }, lifeTime);
+            var actual = cache.AddOrGetExisting(key, () => data, lifeTime);
 
-            Assert.IsTrue(factoryCalled);
             Assert.True(cache.Contains(key));
             AssertExtension.AreObjectsValuesEqual(data, actual);
             Thread.Sleep(lifeTime);
@@ -89,40 +65,30 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void AddOrGetExisting_IfDataWithKeyAndWithSameTypeWasAdded_ReturnsAndDoesNotOverwriteExistingValue()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
-            var factoryCalled = false;
             var instance1 = new object();
             cache.Set(key, () => instance1, null);
             var instance2 = new object();
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return instance2;
-            }, null);
+            var actual = cache.AddOrGetExisting(key, () => instance2, null);
 
-            Assert.IsFalse(factoryCalled);
             Assert.AreEqual(instance1, actual);
         }
 
         [Test]
         public void AddOrGetExisting_IfDataWithKeyAndWithOtherTypeWasAdded_ThrowsInvalidCastException()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
-            var factoryCalled = false;
             const string strInstance = "string";
             cache.Set(key, () => strInstance, null);
             const int intInstance = 100;
 
             Assert.Throws<InvalidCastException>(() =>
             {
-                var result = cache.AddOrGetExisting(key, () =>
-                {
-                    factoryCalled = true;
-                    return intInstance;
-                }, null);
+                var result = cache.AddOrGetExisting(key, () => intInstance, null);
             });
-            Assert.IsFalse(factoryCalled);
         }
 
         #endregion
@@ -132,6 +98,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Set_IfKeyIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             string key = null;
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -143,17 +110,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Set_IfKeyIsNotNullAndDataIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
 
-            cache.Set<object>(key, () => null, null);
-
-            Assert.True(cache.Contains(key));
-            Assert.Null(cache.Get<object>(key));
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                cache.Set<object>(key, () => null, null);
+            });
         }
 
         [TestCaseSource(typeof(MemoryCacheTestsSource), nameof(MemoryCacheTestsSource.TestCasesWithNotNullData))]
         public void Set_IfKeyIsNotNullAndLifeSpanIsNull_AddsDataToCacheForDefaultTime<T>(T data)
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
 
             cache.Set(key, () => data, null);
@@ -164,6 +133,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [TestCaseSource(typeof(MemoryCacheTestsSource), nameof(MemoryCacheTestsSource.TestCasesWithNotNullData))]
         public void Set_IfKeyIsNotNullAndLifeSpanIsSet_AddsDataToCacheForCertainTime<T>(T data)
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             var lifeTime = new TimeSpan(0, 0, 0, 0, 100);
 
@@ -177,6 +147,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Set_IfDataWithKeyAndWithSameTypeExists_OverwritesExistingValue()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => new object(), null);
             var instance = new object();
@@ -189,6 +160,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Set_IfDataWithKeyAndWithOtherTypeExists_OverwritesExistingValue()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             const string strInstance = "string";
             cache.Set(key, () => strInstance, null);
@@ -210,6 +182,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Get_IfKeyIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             const string key = null;
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -218,9 +191,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             });
         }
 
-        [TestCaseSource(typeof(LazyCacheDecoratorTestsSource), nameof(LazyCacheDecoratorTestsSource.TestCasesWithNotNullData))]
+        [TestCaseSource(typeof(MemoryCacheTestsSource), nameof(MemoryCacheTestsSource.TestCasesWithNotNullData))]
         public void Get_IfDataWithKeyWasAddedAndTryToGetDataWithSameType_ReturnsData<T>(T data)
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => data, null);
 
@@ -232,6 +206,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Get_IfDataWithKeyWasAddedAndTryToGetDataWithOtherType_ThrowsCacheKeyNotFoundException()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => "string", null);
 
@@ -244,6 +219,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Get_IfDataWithKeyWasNotAdded_ThrowsCacheKeyNotFoundException()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
 
             Assert.Throws<CacheKeyNotFoundException>(() =>
@@ -259,6 +235,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Remove_IfKeyIsNull_ReturnsFalseAndDoesNotThrowExceptions()
         {
+            var cache = new MemoryCache();
+
             var actual = cache.Remove(null);
 
             Assert.False(actual);
@@ -267,6 +245,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Remove_IfKeyIsNotNullAndObjectByKeyDoesNotExist_ReturnsFalseAndDoesNotThrowExceptions()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
 
             var actual = cache.Remove(key);
@@ -277,6 +256,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Remove_IfKeyIsNotNullAndObjectByKeyExists_ReturnsTrue()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => new object(), null);
 
@@ -292,6 +272,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Contains_IfKeyIsNull_ThrowsArgumentNullException()
         {
+            var cache = new MemoryCache();
             const string key = null;
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -303,6 +284,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Contains_IfDataWithKeyWasAdded_ReturnsTrue()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => new object(), null);
 
@@ -314,6 +296,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Contains_IfDataWithKeyWasNotAdded_ReturnsFalse()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
 
             var result = cache.Contains(key);
@@ -324,6 +307,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         [Test]
         public void Contains_IfAddedItemsWereDeleted_ReturnsFalseForAllDeletedItems()
         {
+            var cache = new MemoryCache();
             var key = GetRandomKey();
             cache.Set(key, () => new object(), null);
             cache.Remove(key);
@@ -338,7 +322,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         private static string GetRandomKey() => Guid.NewGuid().ToString();
     }
 
-    public static class LazyCacheDecoratorTestsSource
+    public static class MemoryCacheTestsSource
     {
         public static IEnumerable<TestCaseData> TestCasesWithNotNullData = new[]
         {

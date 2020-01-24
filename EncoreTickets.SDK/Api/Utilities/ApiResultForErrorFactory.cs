@@ -4,7 +4,6 @@ using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Utilities.Serializers;
 using RestSharp;
-using RestSharp.Deserializers;
 
 namespace EncoreTickets.SDK.Api.Utilities
 {
@@ -13,7 +12,7 @@ namespace EncoreTickets.SDK.Api.Utilities
     /// </summary>
     internal static class ApiResultForErrorFactory
     {
-        private static readonly IDeserializer ErrorsDeserializer = new DefaultJsonSerializer();
+        private static readonly RestSharp.Deserializers.IDeserializer ErrorsDeserializer = new DefaultJsonSerializer();
 
         /// <summary>
         /// Creates an instance of <see cref="ApiResult{T}"/> for API errors in a certain format
