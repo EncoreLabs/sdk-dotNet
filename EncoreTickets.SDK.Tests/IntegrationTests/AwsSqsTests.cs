@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using EncoreTickets.SDK.Aws;
-using EncoreTickets.SDK.Aws.Factories;
+using EncoreTickets.SDK.Aws.Utilities;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var region = options.Region.SystemName;
             var accessKey = configuration["AWS_SQS:Credentials:AccessKey"];
             var secretKey = configuration["AWS_SQS:Credentials:SecretKey"];
-            return new AwsSqs(new AwsSqsFactory(), profile, region, accessKey, secretKey);
+            return new AwsSqs(new AmazonSqsClientFactory(), new ProfileRegistrar(), profile, region, accessKey, secretKey);
         }
     }
 }
