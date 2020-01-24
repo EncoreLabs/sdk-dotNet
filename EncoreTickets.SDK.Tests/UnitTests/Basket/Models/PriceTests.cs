@@ -1,7 +1,7 @@
-﻿using EncoreTickets.SDK.Inventory.Models;
+﻿using EncoreTickets.SDK.Basket.Models;
 using NUnit.Framework;
 
-namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Models
+namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Models
 {
     internal class PriceTests
     {
