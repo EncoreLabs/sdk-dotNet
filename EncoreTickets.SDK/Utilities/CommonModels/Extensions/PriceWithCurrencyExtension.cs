@@ -1,4 +1,5 @@
 ﻿using System;
+using EncoreTickets.SDK.Utilities.BusinessHelpers;
 using EncoreTickets.SDK.Utilities.Exceptions;
 
 namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
@@ -8,16 +9,57 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
         /// <summary>
         /// Returns the price in string format.
         /// </summary>
-        /// <param name="price"></param>
+        /// <param name="price">The source price</param>
         /// <returns>The user-friendly string with value and currency.</returns>
         public static string ToStringFormat<T>(this T price)
             where T : IPriceWithCurrency
         {
-            var realValue = CalculatePriceValue(price);
-            var valueAsStr = realValue.HasValue && HasNoMoreSignsThanCertainNumberAfterPoint(realValue.Value, 2)
-                ? $"{realValue:F2}"
-                : realValue.ToString();
+            if (price == null)
+            {
+                return null;
+            }
+
+            var valueAsStr = price.Value == null ? null : price.ValueToDecimalAsString();
             return $"{valueAsStr}{price.Currency}";
+        }
+
+        /// <summary>
+        /// Sets the value represented as decimal to price.
+        /// </summary>
+        /// <param name="price">The target price</param>
+        /// <param name="sourceValue">Real price value</param>
+        /// <returns>Price value as int</returns>
+        public static int SetDecimalValue<T>(this T price, decimal sourceValue)
+            where T : IPriceWithCurrency
+        {
+            var value = MoneyHelper.ConvertFromDecimalRepresentationToInt(sourceValue, price.DecimalPlaces);
+            price.Value = value;
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the real price value
+        /// </summary>
+        /// <param name="price">The source price</param>
+        /// <returns>The real price value</returns>
+        public static decimal ValueToDecimal<T>(this T price)
+            where T : IPriceWithCurrency
+        {
+            return price?.Value == null
+                ? 0M
+                : MoneyHelper.ConvertFromIntRepresentationToDecimal(price.Value.Value, price.DecimalPlaces);
+        }
+
+        /// <summary>
+        /// Returns the price value in string format.
+        /// </summary>
+        /// <param name="price">The source price</param>
+        /// <returns>The user-friendly string with real price value.</returns>
+        public static string ValueToDecimalAsString<T>(this T price)
+            where T : IPriceWithCurrency
+        {
+            var amount = ValueToDecimal(price);
+            return MoneyHelper.ConvertFromDecimalRepresentationToString(amount, price?.DecimalPlaces);
         }
 
         /// <summary>
@@ -58,19 +100,6 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
                     Value = (price.Value ?? 0) * number
                 }
                 : null;
-
-        private static decimal? CalculatePriceValue<T>(this T price)
-            where T : IPriceWithCurrency
-        {
-            var powerToConvertToRealValue = (decimal)Math.Pow(10, price.DecimalPlaces ?? 2);
-            var realValue = price.Value / powerToConvertToRealValue;
-            return realValue;
-        }
-
-        private static bool HasNoMoreSignsThanCertainNumberAfterPoint(decimal value, int numberOfSignsAfterPoint)
-        {
-            return (value - Math.Truncate(value)) * (decimal) Math.Pow(10, numberOfSignsAfterPoint) % 1 == 0M;
-        }
 
         private static T PerformArithmeticOperation<T>(this T firstPrice, T secondPrice, Func<int, int, int> operation)
             where T : class, IPriceWithCurrency, new()
