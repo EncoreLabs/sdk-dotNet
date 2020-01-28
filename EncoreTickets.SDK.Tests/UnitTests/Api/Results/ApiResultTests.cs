@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         {
             var data = new[] { new object(), new object(), };
             var response = RestResponseFactory.GetSuccessResponse();
-            var responseContext = new SDK.Api.Results.Response.Context();
+            var responseContext = new Context();
             var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
 
@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         public void ConstructorWith5Args_IfUnsuccessfulResponse_InitializesCommonProperties()
         {
             var response = RestResponseFactory.GetFailedResponse();
-            var responseContext = new SDK.Api.Results.Response.Context();
+            var responseContext = new Context();
             var requestInResponse = new Request();
             var context = It.IsAny<ApiContext>();
 
@@ -133,7 +133,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         }
 
         [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData))]
-        public void GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData(string codeOfInfoAsError, SDK.Api.Results.Response.Context responseContext)
+        public void GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData(string codeOfInfoAsError, Context responseContext)
         {
             var data = new[] { new object(), new object(), };
             var response = RestResponseFactory.GetSuccessResponse();
@@ -145,7 +145,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         }
 
         [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException))]
-        public void GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException(string codeOfInfoAsError, SDK.Api.Results.Response.Context responseContext)
+        public void GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException(string codeOfInfoAsError, Context responseContext)
         {
             var data = new[] { new object(), new object(), };
             var response = RestResponseFactory.GetSuccessResponse();
@@ -161,19 +161,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         {
             new TestCaseData(
                 "notValidPromotionCode",
-                new SDK.Api.Results.Response.Context()
+                new Context()
             ) {TestName = "GetDataOrContextException_IfContextIsNull_ReturnsData"},
             new TestCaseData(
                 "notValidPromotionCode",
-                new SDK.Api.Results.Response.Context()
+                new Context()
             ) {TestName = "GetDataOrContextException_IfInfoInContextIsNull_ReturnsData"},
             new TestCaseData(
                 "notValidPromotionCode",
-                new SDK.Api.Results.Response.Context {Info = new List<Info>()}
+                new Context {Info = new List<Info>()}
             ) {TestName = "GetDataOrContextException_IfInfoInContextIsEmptyCollection_ReturnsData"},
             new TestCaseData(
                 "notValidPromotionCode",
-                new SDK.Api.Results.Response.Context {Info = new List<Info> {new Info {Code = "information"}}}
+                new Context {Info = new List<Info> {new Info {Code = "information"}}}
             ) {TestName = "GetDataOrContextException_IfInfoWithCodeDoesNotExistInInfoInContext_ReturnsData"},
         };
 
@@ -182,7 +182,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         {
             new TestCaseData(
                 "notValidPromotionCode",
-                new SDK.Api.Results.Response.Context {Info = new List<Info> {new Info {Code = "notValidPromotionCode" } }}
+                new Context {Info = new List<Info> {new Info {Code = "notValidPromotionCode" } }}
             ) {TestName = "GetDataOrContextException_IfInfoWithCodeExistsInInfoInContext_ThrowsException"},
         };
     }

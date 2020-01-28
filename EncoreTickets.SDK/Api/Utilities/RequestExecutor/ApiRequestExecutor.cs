@@ -130,7 +130,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 {
                     return ApiResultForErrorFactory.Create<T>(errorWrapping, restResponse, Context);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // ignored
                 }

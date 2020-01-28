@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
@@ -10,7 +9,6 @@ using Moq;
 using NUnit.Framework;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Deserializers;
 using DataFormat = EncoreTickets.SDK.Utilities.Enums.DataFormat;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper

@@ -38,7 +38,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
         public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly = new[]
         {
             new TestCaseData(
-                (Attribute) null,
+                null,
                 false
             ),
             new TestCaseData(
@@ -140,7 +140,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
             new TestCaseData(
                 "description",
                 "invalid_value",
-                (Attribute) null
+                null
             ),
         };
 

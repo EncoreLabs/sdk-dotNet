@@ -58,7 +58,7 @@ namespace EncoreTickets.SDK.Api.Results
         public ApiException ApiException { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, Context responseContext,
@@ -70,7 +70,7 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, IEnumerable<Error> errors)
@@ -82,7 +82,7 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
@@ -94,7 +94,7 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>
         /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context)
@@ -131,7 +131,7 @@ namespace EncoreTickets.SDK.Api.Results
                 return data;
             }
 
-            var infosAsErrors = ResponseContext.Info.Where(x => codesOfInfosAsErrors.Contains(x.Code));
+            var infosAsErrors = ResponseContext.Info.Where(x => codesOfInfosAsErrors.Contains(x.Code)).ToList();
             if (!infosAsErrors.Any())
             {
                 return data;

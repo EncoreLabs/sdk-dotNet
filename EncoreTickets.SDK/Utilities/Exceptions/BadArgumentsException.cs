@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace EncoreTickets.SDK.Utilities.Exceptions
@@ -14,7 +13,7 @@ namespace EncoreTickets.SDK.Utilities.Exceptions
         {
         }
 
-        private static string GetMessage(IEnumerable<string> descriptions = null)
+        private static string GetMessage(string[] descriptions = null)
         {
             const string message = "Invalid arguments";
             if (descriptions == null || !descriptions.Any())

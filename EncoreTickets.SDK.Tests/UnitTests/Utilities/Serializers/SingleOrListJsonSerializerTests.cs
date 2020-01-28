@@ -505,8 +505,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
             new TestCaseData(
                 null,
                 "[]",
-                new List<List<object>> {}
-            ),
+                new List<List<object>>()),
             new TestCaseData(
                 null,
                 "\"2020-12-31T23:59:59Z\"",
