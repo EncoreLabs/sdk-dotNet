@@ -64,7 +64,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         public void ResponseCode_ReturnsExpectedValue(IRestResponse response, HttpStatusCode expected)
         {
             var exception = new ApiException(response, It.IsAny<ApiContext>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(), It.IsAny<Request>());
+                It.IsAny<Context>(), It.IsAny<Request>());
 
             var actual = exception.ResponseCode;
 
@@ -94,7 +94,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         [TestCaseSource(typeof(ApiExceptionTestsSource), nameof(ApiExceptionTestsSource.Message_IfPredefinedMessageIsNull_IfErrorsDoesNotExist_ReturnsDefaultMessage))]
         public void Message_IfPredefinedMessageIsNull_IfErrorsDoesNotExist_ReturnsDefaultMessage(
-            IRestResponse response, SDK.Api.Results.Response.Context context)
+            IRestResponse response, Context context)
         {
             var exception = new ApiException(response, It.IsAny<ApiContext>(), context, It.IsAny<Request>());
 
@@ -105,7 +105,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         [TestCaseSource(typeof(ApiExceptionTestsSource), nameof(ApiExceptionTestsSource.Message_IfPredefinedMessageIsNull_IfErrorsExists_ReturnsExpectedValue))]
         public void Message_IfPredefinedMessageIsNull_IfErrorsExists_ReturnsExpectedValue(
-            IRestResponse response, SDK.Api.Results.Response.Context context, string expected)
+            IRestResponse response, Context context, string expected)
         {
             var exception = new ApiException(response, It.IsAny<ApiContext>(), context, It.IsAny<Request>());
 
@@ -128,7 +128,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         public static IEnumerable<TestCaseData> ConstructorWithSourceException_InitializesResponseProprtiesBasedOnSourceException = new[]
         {
-            new TestCaseData(new ApiException(new RestResponse(), new ApiContext(), new SDK.Api.Results.Response.Context(), new Request())),
+            new TestCaseData(new ApiException(new RestResponse(), new ApiContext(), new Context(), new Request())),
             new TestCaseData(new ApiException()),
         };
 
@@ -161,7 +161,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextInResponseIsNull_IfResponseIsNull_ReturnsNull"},
             new TestCaseData(
                 null,
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 null
             ) {TestName = "Errors_IfContextErrorsIsNull_IfResponseIsNull_ReturnsNull"},
             new TestCaseData(
@@ -180,7 +180,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     StatusDescription = "Internal server error"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 new List<string>
                 {
                     "Internal server error"
@@ -204,7 +204,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     StatusDescription = "",
                     ErrorMessage = "Some error has occured"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 new List<string>
                 {
                     "Some error has occured"
@@ -226,7 +226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     ErrorMessage = "Some error has occured"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 new List<string>
                 {
                     "Some error has occured"
@@ -245,7 +245,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     ErrorMessage = ""
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 null
             ) {TestName = "Errors_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsEmpty_ReturnsNull"},
             new TestCaseData(
@@ -255,12 +255,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextInResponseIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsNull_ReturnsNull"},
             new TestCaseData(
                 new RestResponse(),
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 null
             ) {TestName = "Errors_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsNull_ReturnsNull"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>()
                 },
@@ -268,7 +268,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsIsEmpty_ReturnsNull"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -279,7 +279,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsHasNotInitializedError_ReturnsNull"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -290,7 +290,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsHasErrorOnlyWithEmptyMessage_ReturnsNull"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -304,7 +304,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsHasErrorOnlyWithNotEmptyMessage_ReturnsErrorMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -318,7 +318,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsHasErrorOnlyWithNotEmptyField_ReturnsMessageWithField"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -335,7 +335,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Errors_IfContextErrorsHasFullyInitializedError_ReturnsMessageBasedOnErrorMessageAndField"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -370,7 +370,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextInResponseIsNull_IfResponseIsNull_ReturnsDefaultMessage"},
             new TestCaseData(
                 null,
-                new SDK.Api.Results.Response.Context()
+                new Context()
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseIsNull_ReturnsDefaultMessage"},
             new TestCaseData(
                 new RestResponse
@@ -384,7 +384,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     ErrorMessage = ""
                 },
-                new SDK.Api.Results.Response.Context()
+                new Context()
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsEmpty_ReturnsDefaultMessage"},
             new TestCaseData(
                 new RestResponse(),
@@ -392,18 +392,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextInResponseIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsNull_ReturnsDefaultMessage"},
             new TestCaseData(
                 new RestResponse(),
-                new SDK.Api.Results.Response.Context()
+                new Context()
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageIsNull_ReturnsDefaultMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>()
                 }
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsEmpty_ReturnsDefaultMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -413,7 +413,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasNotInitializedError_ReturnsDefaultMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -438,7 +438,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     StatusDescription = "Internal server error"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 "Internal server error"
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionExists_ReturnsResponseStatusDescription"},
             new TestCaseData(
@@ -456,7 +456,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     StatusDescription = "",
                     ErrorMessage = "Some error has occured"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 "Some error has occured"
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsEmpty_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
             new TestCaseData(
@@ -472,12 +472,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     ErrorMessage = "Some error has occured"
                 },
-                new SDK.Api.Results.Response.Context(),
+                new Context(),
                 "Some error has occured"
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -488,7 +488,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasErrorOnlyWithNotEmptyMessage_ReturnsErrorMessage"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -499,7 +499,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasErrorOnlyWithNotEmptyField_ReturnsMessageWithField"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {
@@ -513,7 +513,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasFullyInitializedError_ReturnsMessageBasedOnErrorMessageAndField"},
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
-                new SDK.Api.Results.Response.Context
+                new Context
                 {
                     Errors = new List<Error>
                     {

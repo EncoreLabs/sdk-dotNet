@@ -71,10 +71,10 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
         public ApiException(ApiException sourceException) : this(
-            sourceException.Response,
-            sourceException.Context,
-            sourceException.ContextInResponse,
-            sourceException.RequestInResponse)
+            sourceException?.Response,
+            sourceException?.Context,
+            sourceException?.ContextInResponse,
+            sourceException?.RequestInResponse)
         {
         }
 

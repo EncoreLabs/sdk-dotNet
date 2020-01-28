@@ -30,7 +30,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             Context = context;
 
-            Assert.DoesNotThrow(() => new Uri(BaseUrl, UriKind.Absolute));
+            Assert.DoesNotThrow(() =>
+            {
+                var url = new Uri(BaseUrl, UriKind.Absolute);
+            });
             Assert.AreEqual(expected, BaseUrl);
         }
 

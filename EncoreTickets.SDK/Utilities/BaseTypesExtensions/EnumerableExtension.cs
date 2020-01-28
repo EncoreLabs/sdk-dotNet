@@ -34,7 +34,8 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
         /// <returns>Null or the source enumerable</returns>
         public static List<T> NullIfEmptyEnumerable<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable == null || !enumerable.Any() ? null : enumerable.ToList();
+            var enumerableAsList = enumerable?.ToList();
+            return enumerableAsList == null || !enumerableAsList.Any() ? null : enumerableAsList;
         }
     }
 }

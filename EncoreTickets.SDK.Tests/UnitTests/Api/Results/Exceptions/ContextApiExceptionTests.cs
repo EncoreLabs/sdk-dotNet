@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             var info = new List<Info>();
             var response = new RestResponse();
             var apiContext = new ApiContext();
-            var context = new SDK.Api.Results.Response.Context();
+            var context = new Context();
             var request = new Request();
 
             var exception = new ContextApiException(info, response, apiContext, context, request);
@@ -49,7 +49,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             var info = new List<Info>();
             var response = new RestResponse();
             var apiContext = new ApiContext();
-            var context = new SDK.Api.Results.Response.Context();
+            var context = new Context();
             var request = new Request();
             var sourceException = new ContextApiException(info, response, apiContext, context, request);
 
@@ -64,7 +64,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Errors_ReturnsExpectedValue))]
         public void Errors_ReturnsExpectedValue(IEnumerable<Info> infosAsErrors, IRestResponse response,
-            SDK.Api.Results.Response.Context context, List<string> expected)
+            Context context, List<string> expected)
         {
             var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
                 It.IsAny<Request>());
@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Message_IfErrorsDoesNotExist_ReturnsDefaultMessage))]
         public void Message_IfErrorsDoesNotExist_ReturnsDefaultMessage(IEnumerable<Info> infosAsErrors, IRestResponse response,
-            SDK.Api.Results.Response.Context context)
+            Context context)
         {
             var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
                 It.IsAny<Request>());
@@ -88,7 +88,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Message_IfErrorsExists_ReturnsExpectedValue))]
         public void Message_IfErrorsExists_ReturnsExpectedValue(IEnumerable<Info> infosAsErrors, IRestResponse response,
-            SDK.Api.Results.Response.Context context, string expected)
+            Context context, string expected)
         {
             var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
                 It.IsAny<Request>());
@@ -106,13 +106,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 null,
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 null
             ) {TestName = "Errors_IfContextErrorsIsNull_ReturnsNull"},
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 null
             ) {TestName = "Errors_IfContextErrorsIsEmpty_ReturnsNull"},
             new TestCaseData(
@@ -121,7 +121,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info()
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 null
             ) {TestName = "Errors_IfContextErrorsHasNotInitializedInfo_ReturnsNull"},
             new TestCaseData(
@@ -130,7 +130,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Some info"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 new List<string> {"Some info"}
             ) {TestName = "Errors_IfContextErrorsHasInfoWithMessage_ReturnsInfoMessage"},
             new TestCaseData(
@@ -139,7 +139,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Code = "validation_error"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 new List<string> {"validation_error"}
             ) {TestName = "Errors_IfContextErrorsHasInfoOnlyWithCode_ReturnsInfoCode"},
             new TestCaseData(
@@ -148,7 +148,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 new List<string> {"Validation error"}
             ) {TestName = "Errors_IfContextErrorsHasFullyInitializedInfo_ReturnsInfoMessage"},
             new TestCaseData(
@@ -160,13 +160,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 new List<string> {"Some info", "validation_error", "Validation error"}
             ) {TestName = "Errors_IfContextErrorsHasInfos_ReturnsInfoMessages"},
             new TestCaseData(
                 null,
                 new RestResponse {StatusDescription = "OK"},
-                new SDK.Api.Results.Response.Context {Errors = new List<Error> {new Error {Message = "ERROR"}}},
+                new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}},
                 null
             ) {TestName = "Errors_IfContextErrorsIsNull_IfResponseArgumentsWereSet_ReturnsNull"},
         };
@@ -176,12 +176,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 null,
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>()
+                It.IsAny<Context>()
             ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsNull_ReturnsDefaultMessage"},
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>()
+                It.IsAny<Context>()
             ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsEmpty_ReturnsDefaultMessage"},
             new TestCaseData(
                 new List<Info>
@@ -189,12 +189,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info()
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>()
+                It.IsAny<Context>()
             ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsHasNotInitializedInfo_ReturnsDefaultMessage"},
             new TestCaseData(
                 null,
                 new RestResponse {StatusDescription = "OK"},
-                new SDK.Api.Results.Response.Context {Errors = new List<Error> {new Error {Message = "ERROR"}}}
+                new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}}
             ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsNull_IfResponseArgumentsWereSet_ReturnsDefaultMessage"},
         };
 
@@ -206,7 +206,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Some info"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 "Some info"
             ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfoWithMessage_ReturnsInfoMessage"},
             new TestCaseData(
@@ -215,7 +215,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Code = "validation_error"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 "validation_error"
             ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfoOnlyWithCode_ReturnsInfoCode"},
             new TestCaseData(
@@ -224,7 +224,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 "Validation error"
             ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasFullyInitializedInfo_ReturnsInfoMessage"},
             new TestCaseData(
@@ -236,7 +236,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<SDK.Api.Results.Response.Context>(),
+                It.IsAny<Context>(),
                 "Some info; validation_error; Validation error"
             ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfos_ReturnsInfoMessages"},
         };
