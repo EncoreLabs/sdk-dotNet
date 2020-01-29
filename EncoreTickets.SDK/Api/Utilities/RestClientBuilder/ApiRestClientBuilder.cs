@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -84,23 +85,26 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
                 return null;
             }
 
-            var result = new Dictionary<string, string>();
             var type = queryObject.GetType();
             var properties = type.GetProperties();
-            foreach (var property in properties)
-            {
-                var propertyValue = property.GetValue(queryObject, null);
-                if (propertyValue == null)
-                {
-                    continue;
-                }
+            var queryParameters = properties
+                .Select(x => GetQueryParameter(queryObject, x))
+                .Where(x => x.Item1 != null)
+                .ToDictionary(x => x.Item1, x => x.Item2);
+            return queryParameters.Count == 0 ? null : queryParameters;
+        }
 
-                var parameterName = property.Name.ToLower();
-                var parameterValue = Convert.ToString(propertyValue, CultureInfo.InvariantCulture);
-                result.Add(parameterName, parameterValue);
+        private static (string, string) GetQueryParameter(object queryObject, PropertyInfo property)
+        {
+            var propertyValue = property.GetValue(queryObject, null);
+            if (propertyValue == null)
+            {
+                return (null, null);
             }
 
-            return result.Count == 0 ? null : result;
+            var parameterName = property.Name.ToLower();
+            var parameterValue = Convert.ToString(propertyValue, CultureInfo.InvariantCulture);
+            return (parameterName, parameterValue);
         }
 
         private static ISerializerWithDateFormat GetInitializedSerializer(ISerializerWithDateFormat sourceSerializer, string dateFormat)
