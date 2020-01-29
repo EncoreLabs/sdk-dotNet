@@ -406,25 +406,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void UpsertSeatAttributes_IfVenueNotFound_Exception404()
+        public void UpsertSeatAttributes_IfVenueDoesNotExist_CreatesVenue()
         {
-            var venueId = configuration["Venue:TestVenueIdWithoutSeatAttributesAndVenueNotFound"];
-            IList<SeatDetailed> sourceAttributes;
-            try
-            {
-                sourceAttributes = service.GetSeatAttributes(venueId);
-            }
-            catch (Exception e)
-            {
-                sourceAttributes = new List<SeatDetailed>();
-            }
+            var venueId = Guid.NewGuid().ToString();
+            var sourceAttributes = new List<SeatDetailed>();
 
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
-            });
+            var result = service.UpsertSeatAttributes(venueId, sourceAttributes);
 
-            AssertApiException(exception, HttpStatusCode.NotFound);
+            Assert.True(result);
         }
 
         [Test]
