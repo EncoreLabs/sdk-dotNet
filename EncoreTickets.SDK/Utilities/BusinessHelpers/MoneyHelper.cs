@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace EncoreTickets.SDK.Utilities.BusinessHelpers
 {
@@ -21,7 +22,7 @@ namespace EncoreTickets.SDK.Utilities.BusinessHelpers
         public static string ConvertFromDecimalRepresentationToString(decimal sourceAmount, int? decimalPlaces)
         {
             var places = GetDecimalPlaces(decimalPlaces);
-            return sourceAmount.ToString($"F{places}");
+            return sourceAmount.ToString($"F{places}", CultureInfo.InvariantCulture);
         }
 
         private static decimal GetDecimalPowerForConversion(int? decimalPlaces)

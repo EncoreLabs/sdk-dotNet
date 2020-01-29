@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -88,10 +90,14 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
             foreach (var property in properties)
             {
                 var propertyValue = property.GetValue(queryObject, null);
-                if (propertyValue != null)
+                if (propertyValue == null)
                 {
-                    result.Add(property.Name.ToLower(), propertyValue.ToString());
+                    continue;
                 }
+
+                var parameterName = property.Name.ToLower();
+                var parameterValue = Convert.ToString(propertyValue, CultureInfo.InvariantCulture);
+                result.Add(parameterName, parameterValue);
             }
 
             return result.Count == 0 ? null : result;
