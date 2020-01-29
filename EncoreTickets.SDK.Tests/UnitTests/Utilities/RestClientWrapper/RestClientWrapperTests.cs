@@ -425,6 +425,33 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 {
                     Username = "username",
                     Password = "password",
+                    AccessToken = null,
+                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "",
+                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "   \n",
+                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
                     AccessToken = "token",
                     AuthenticationMethod = (AuthenticationMethod)190000000
                 }
@@ -440,6 +467,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "token",
                     AuthenticationMethod = AuthenticationMethod.JWT
+                },
+                new JwtAuthenticator("token"),
+                "Bearer token"
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "token",
+                    AuthenticationMethod = AuthenticationMethod.ApiKey
                 },
                 new JwtAuthenticator("token"),
                 "Bearer token"

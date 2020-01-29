@@ -22,6 +22,8 @@ namespace EncoreTickets.SDK.Authentication
             {
                 case AuthenticationMethod.JWT:
                     return new JwtAuthenticationService(context, host, loginEndpoint);
+                case AuthenticationMethod.ApiKey:
+                    return new JwtWithApiKeyAuthenticationService(context, host, loginEndpoint);
                 default:
                     throw new NotImplementedException();
             }

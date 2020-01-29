@@ -60,7 +60,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             Assert.AreNotEqual(basicService, jwtService);
         }
 
-        [TestCaseSource(typeof(BaseApiWithAuthenticationTestsSource), nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
+        [TestCaseSource(typeof(BaseApiWithAuthenticationTestsSource),
+            nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
         public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(ApiContext context, Type expectedType)
         {
             var actual = GetAuthenticationService(context);
@@ -70,7 +71,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
         [TestCase(AuthenticationMethod.Basic)]
         [TestCase((AuthenticationMethod)1090)]
-        public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(AuthenticationMethod authenticationMethod)
+        public void GetAuthenticationService_IfCorrespondingAuthServiceDoesNotExist_ReturnsCorrectAuthenticationService(AuthenticationMethod authenticationMethod)
         {
             var context = new ApiContext
             {
@@ -125,7 +126,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
-                typeof(JwtAuthenticationService)
+                typeof(JwtWithApiKeyAuthenticationService)
+            ),
+            new TestCaseData(
+                new ApiContext(),
+                typeof(JwtWithApiKeyAuthenticationService)
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                },
+                typeof(JwtWithApiKeyAuthenticationService)
             ),
             new TestCaseData(
                 new ApiContext

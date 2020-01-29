@@ -42,6 +42,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                 AuthenticationMethod.JWT,
                 typeof(JwtAuthenticationService)
             ),
+            new TestCaseData(
+                AuthenticationMethod.ApiKey,
+                typeof(JwtWithApiKeyAuthenticationService)
+            ),
         };
     }
 }

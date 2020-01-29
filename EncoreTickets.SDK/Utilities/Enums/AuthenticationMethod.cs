@@ -13,6 +13,11 @@
         /// <summary>
         /// Authentication based on username and password.
         /// </summary>
-        Basic
+        Basic,
+
+        /// <summary>
+        /// Authentication based on API key.
+        /// </summary>
+        ApiKey
     }
 }

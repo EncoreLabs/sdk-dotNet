@@ -29,7 +29,6 @@ namespace EncoreTickets.SDK.Venue
         public VenueServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, VenueApiHost, automaticAuthentication)
         {
-            context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
 
         /// <inheritdoc/>

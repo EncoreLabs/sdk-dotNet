@@ -10,27 +10,27 @@ namespace EncoreTickets.SDK.Api.Models
         /// <summary>
         /// Gets the Nova user name of the user that your API calls will run as.
         /// </summary>
-        public string UserName { get; protected set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// Gets the user's password.
         /// </summary>
-        public string Password { get; protected set; }
-
-        /// <summary>
-        /// Gets the environment.
-        /// </summary>
-        public Environments Environment { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the type of authentication that should be used to login.
-        /// </summary>
-        public AuthenticationMethod AuthenticationMethod { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
         public string AccessToken { get; set; }
+
+        /// <summary>
+        /// Gets the environment.
+        /// </summary>
+        public Environments Environment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of authentication that should be used to login.
+        /// </summary>
+        public AuthenticationMethod AuthenticationMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the affiliate.
@@ -40,10 +40,15 @@ namespace EncoreTickets.SDK.Api.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext(Environments environment, string userName, string password) : this(environment)
+        public ApiContext(
+            Environments environment,
+            string userName,
+            string password,
+            AuthenticationMethod authMethod = AuthenticationMethod.JWT) : this(environment)
         {
             UserName = userName;
             Password = password;
+            AuthenticationMethod = authMethod;
         }
 
         /// <summary>
@@ -66,8 +71,8 @@ namespace EncoreTickets.SDK.Api.Models
         /// </summary>
         public ApiContext(Environments env)
         {
-            AuthenticationMethod = AuthenticationMethod.JWT;
             Environment = env;
+            AuthenticationMethod = AuthenticationMethod.ApiKey;
         }
     }
 }

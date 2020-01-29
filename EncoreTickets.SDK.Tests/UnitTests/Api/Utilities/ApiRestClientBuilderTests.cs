@@ -130,27 +130,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     Credentials = null
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextIsNull_ReturnsWrapperWithNullCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.JWT
+                        AuthenticationMethod = AuthenticationMethod.ApiKey
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingNothing_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.JWT
+                        AuthenticationMethod = AuthenticationMethod.ApiKey
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingEnvironment_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "username", "password"),
                 new RestClientWrapper
@@ -162,18 +162,34 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                         Username = "username"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingCredentials_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "dyfuYTI5GLJjkl"),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.JWT,
+                        AuthenticationMethod = AuthenticationMethod.ApiKey,
                         AccessToken = "dyfuYTI5GLJjkl"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingToken_ReturnsWrapperWithCredentials"},
+            ),
+            new TestCaseData(
+                new ApiContext(Environments.QA, "username", "password", AuthenticationMethod.Basic)
+                {
+                    AccessToken = "dyfuYTI5GLJjkl"
+                },
+                new RestClientWrapper
+                {
+                    Credentials = new RestClientCredentials
+                    {
+                        AuthenticationMethod = AuthenticationMethod.Basic,
+                        Password = "password",
+                        Username = "username",
+                        AccessToken = "dyfuYTI5GLJjkl"
+                    }
+                }
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "username", "password")
                 {
@@ -190,7 +206,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                         AccessToken = "dyfuYTI5GLJjkl"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingCredentialsAndPropertiesSetup_ReturnsWrapperWithCredentials"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedBaseProperties = new[]

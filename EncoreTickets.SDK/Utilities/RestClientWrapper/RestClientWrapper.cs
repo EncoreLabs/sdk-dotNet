@@ -138,6 +138,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             switch (Credentials.AuthenticationMethod)
             {
                 case AuthenticationMethod.JWT:
+                case AuthenticationMethod.ApiKey:
                     return string.IsNullOrWhiteSpace(Credentials.AccessToken)
                         ? null
                         : new JwtAuthenticator(Credentials.AccessToken);
