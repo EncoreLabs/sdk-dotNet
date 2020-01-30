@@ -112,7 +112,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             return Errors != null && Errors.Any()
-                ? string.Join("; ", Errors)
+                ? string.Join("\r\n", Errors)
                 : DefaultMessage;
         }
 
