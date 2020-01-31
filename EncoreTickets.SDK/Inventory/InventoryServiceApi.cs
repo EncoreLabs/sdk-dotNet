@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrEmpty(text))
             {
-                throw new BadArgumentsException("search text must be set");
+                throw new ArgumentException("search text must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
@@ -61,7 +61,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
@@ -90,7 +90,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
@@ -118,7 +118,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters

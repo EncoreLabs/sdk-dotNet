@@ -41,9 +41,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         [TestCase(null)]
         [TestCase("")]
-        public void Search_IfTextIsNotSet_ThrowsBadArgumentsException(string text)
+        public void Search_IfTextIsNotSet_ThrowsArgumentException(string text)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 Search(text);
             });
@@ -105,9 +105,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
-        public void GetPerformances_IfProductIdIsNotSet_ThrowsBadArgumentsException(string productId)
+        public void GetPerformances_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetPerformances(productId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
             });
@@ -171,9 +171,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
-        public void GetAvailability_IfTextIsNotSet_ThrowsBadArgumentsException(string productId)
+        public void GetAvailability_IfTextIsNotSet_ThrowsArgumentException(string productId)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetAvailability(productId, It.IsAny<int>());
             });
@@ -292,9 +292,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase(null)]
         [TestCase("")]
         [TestCase("   ")]
-        public void GetBookingRange_IfProductIdIsNotSet_ThrowsBadArgumentsException(string productId)
+        public void GetBookingRange_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetBookingRange(productId);
             });

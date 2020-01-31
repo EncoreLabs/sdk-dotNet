@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -59,7 +60,7 @@ namespace EncoreTickets.SDK.Content
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new BadArgumentsException("product ID must be set");
+                throw new ArgumentException("product ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters

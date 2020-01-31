@@ -104,9 +104,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         [TestCase(null)]
         [TestCase("")]
-        public void GetVenueById_IfVenueIdIsNotSet_ThrowsBadArgumentsException(string venueId)
+        public void GetVenueById_IfVenueIdIsNotSet_ThrowsArgumentException(string venueId)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetVenueById(venueId);
             });
@@ -164,10 +164,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         #region UpdateVenueById
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpdateVenueById_IfVenueIdIsNotSet_ThrowsBadArgumentsException))]
-        public void UpdateVenueById_IfVenueIdIsNotSet_ThrowsBadArgumentsException(SDK.Venue.Models.Venue venue)
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpdateVenueById_IfVenueIdIsNotSet_ThrowsArgumentException))]
+        public void UpdateVenueById_IfVenueIdIsNotSet_ThrowsArgumentException(SDK.Venue.Models.Venue venue)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 var actual = UpdateVenueById(venue);
             });
@@ -276,10 +276,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         #region UpsertStandardAttributeByTitle
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsBadArgumentsException))]
-        public void UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsBadArgumentsException(Attribute attribute)
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsArgumentException))]
+        public void UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsArgumentException(Attribute attribute)
         {
-            var exception = Assert.Catch<BadArgumentsException>(() =>
+            var exception = Assert.Catch<ArgumentException>(() =>
             {
                 UpsertStandardAttributeByTitle(attribute);
             });
@@ -340,10 +340,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         #region GetSeatAttributes
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsBadArgumentsException))]
-        public void GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsBadArgumentsException(SDK.Venue.Models.Venue venue)
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsArgumentException))]
+        public void GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsArgumentException(SDK.Venue.Models.Venue venue)
         {
-            var exception = Assert.Catch<BadArgumentsException>(() =>
+            var exception = Assert.Catch<ArgumentException>(() =>
             {
                 var actual = GetSeatAttributes(venue);
             });
@@ -351,9 +351,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         [TestCase(null)]
         [TestCase("")]
-        public void GetSeatAttributesWithVenueId_IfVenueIdIsNotSet_ThrowsBadArgumentsException(string venueId)
+        public void GetSeatAttributesWithVenueId_IfVenueIdIsNotSet_ThrowsArgumentException(string venueId)
         {
-            var exception = Assert.Catch<BadArgumentsException>(() =>
+            var exception = Assert.Catch<ArgumentException>(() =>
             {
                 var actual = GetSeatAttributes(venueId);
             });
@@ -415,11 +415,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         [TestCase(null)]
         [TestCase("")]
-        public void UpsertSeatAttributes_IfVenueIdIsNotSet_ThrowsBadArgumentsException(string venueId)
+        public void UpsertSeatAttributes_IfVenueIdIsNotSet_ThrowsArgumentException(string venueId)
         {
             var seatAttributes = It.IsAny<List<SeatDetailed>>();
 
-            var exception = Assert.Catch<BadArgumentsException>(() =>
+            var exception = Assert.Catch<ArgumentException>(() =>
             {
                 var actual = UpsertSeatAttributes(venueId, seatAttributes);
             });
@@ -766,7 +766,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             ),
         };
 
-        public static IEnumerable<TestCaseData> UpdateVenueById_IfVenueIdIsNotSet_ThrowsBadArgumentsException = new[]
+        public static IEnumerable<TestCaseData> UpdateVenueById_IfVenueIdIsNotSet_ThrowsArgumentException = new[]
         {
             new TestCaseData(
                 null
@@ -1329,7 +1329,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             ),
         };
 
-        public static IEnumerable<TestCaseData> UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsBadArgumentsException = new[]
+        public static IEnumerable<TestCaseData> UpsertStandardAttributeByTitle_IfAttributeTitleIsNotSet_ThrowsArgumentException = new[]
         {
             new TestCaseData(
                 null
@@ -1462,7 +1462,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsBadArgumentsException = new[]
+        public static IEnumerable<TestCaseData> GetSeatAttributesWithVenue_IfVenueIdIsNotSet_ThrowsArgumentException = new[]
         {
             new TestCaseData(
                 null
