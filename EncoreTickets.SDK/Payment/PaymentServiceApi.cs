@@ -1,6 +1,5 @@
 ﻿using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Payment.Models;
 using EncoreTickets.SDK.Payment.Models.RequestModels;
@@ -25,8 +24,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = "v1/orders",
                 Method = RequestMethod.Post,
-                Body = orderRequest,
-                ErrorWrappings = new[] { ErrorWrapping.MessageWithCode, ErrorWrapping.Context, }
+                Body = orderRequest
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;

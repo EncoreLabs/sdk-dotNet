@@ -41,8 +41,7 @@ namespace EncoreTickets.SDK.Authentication
                 {
                     Username = Context.UserName ?? string.Empty,
                     Password = Context.Password ?? string.Empty
-                },
-                ErrorWrappings = new []{ErrorWrapping.Context}
+                }
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(requestParameters);
             return result.DataOrException;
