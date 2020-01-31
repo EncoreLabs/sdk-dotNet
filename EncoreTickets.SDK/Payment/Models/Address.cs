@@ -31,6 +31,11 @@
         public string CountryCode { get; set; }
 
         /// <summary>
+        /// Gets or sets country code in legacy format.
+        /// </summary>
+        public string LegacyCountryCode { get; set; }
+
+        /// <summary>
         /// Gets or sets USA state or Canadian province abbreviation, it should be a 2 characters string.
         /// </summary>
         public string StateOrProvince { get; set; }
