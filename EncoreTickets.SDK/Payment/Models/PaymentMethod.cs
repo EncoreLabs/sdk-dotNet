@@ -25,7 +25,7 @@ namespace EncoreTickets.SDK.Payment.Models
         /// <summary>
         /// Gets or sets expiry date of a card. Only used when type is 'card'.
         /// </summary>
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
 
         /// <summary>
         /// Gets or sets holder name of a card or account. Only used when type is 'card' or 'paypal'.

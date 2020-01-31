@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.CommonModels;
 
 namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
     /// Stores payment details
     /// </summary>
-    public class Payment
+    public class Payment : IEntityWithStatus
     {
         /// <summary>
         /// Gets or sets ID of the payment.
@@ -37,6 +38,11 @@ namespace EncoreTickets.SDK.Payment.Models
         /// Gets or sets payment method.
         /// </summary>
         public PaymentMethod PaymentMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets payment status.
+        /// </summary>
+        public string Status { get; set; }
 
         /// <summary>
         /// Gets or sets refunds.

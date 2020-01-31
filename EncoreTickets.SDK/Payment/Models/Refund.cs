@@ -1,11 +1,12 @@
 ﻿using System;
+using EncoreTickets.SDK.Utilities.CommonModels;
 
 namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
     /// Stores refund details
     /// </summary>
-    public class Refund
+    public class Refund : IEntityWithStatus
     {
         /// <summary>
         /// Gets or sets ID.
@@ -43,8 +44,8 @@ namespace EncoreTickets.SDK.Payment.Models
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets status in boolean.
+        /// Gets or sets current status.
         /// </summary>
-        public bool Status { get; set; }
+        public string Status { get; set; }
     }
 }
