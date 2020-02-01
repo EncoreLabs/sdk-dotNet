@@ -20,6 +20,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 {
     internal class PaymentServiceApiTests : PaymentServiceApi
     {
+        private const string TestValidChannelId = "channelId";
+        private const string TestValidOrderExternalId = "externalId";
+
         private MockersForApiServiceWithAuthentication mockers;
 
         public override IAuthenticationService AuthenticationService => mockers.AuthenticationServiceMock.Object;
@@ -36,6 +39,79 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             mockers = new MockersForApiServiceWithAuthentication();
         }
+
+        #region GetOrder
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void GetOrder_IfChannelIdIsNotSet_ThrowsArgumentException(string channelId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                var actual = GetOrder(channelId, TestValidOrderExternalId);
+            });
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void GetOrder_IfExternalIdIsNotSet_ThrowsArgumentException(string externalId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                var actual = GetOrder(TestValidChannelId, externalId);
+            });
+        }
+
+        [TestCase(TestValidChannelId, TestValidOrderExternalId)]
+        [TestCase("europa-prod", "1587")]
+        public void GetOrder_CallsApiWithRightParameters(string channelId, string externalId)
+        {
+            mockers.SetupAnyExecution<ApiResponse<Order>>();
+
+            try
+            {
+                GetOrder(channelId, externalId);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{channelId}/{externalId}", Method.GET);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseSuccessful_ReturnsOrder))]
+        public void GetOrder_IfApiResponseSuccessful_ReturnsOrder(
+            string responseContent,
+            Order expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<Order>>(responseContent);
+
+            var actual = GetOrder(TestValidChannelId, TestValidOrderExternalId);
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseFailed_ThrowsApiException))]
+        public void GetOrder_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
+        {
+            mockers.SetupFailedExecution<ApiResponse<Order>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetOrder(TestValidChannelId, TestValidOrderExternalId);
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        #endregion
 
         #region CreateOrder
 
@@ -58,8 +134,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, "v1/orders", Method.POST, bodyInJson: requestBody);
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateOrder_IfApiResponseSuccessful_ReturnsVenue))]
-        public void CreateOrder_IfApiResponseSuccessful_ReturnsVenue(
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder))]
+        public void CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder(
             string responseContent,
             Order expected)
         {
@@ -92,6 +168,224 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
     internal static class PaymentServiceApiTestsSource
     {
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder = new[]
+        {
+            new TestCaseData(
+                "{\"request\":{\"urlParams\":{\"channelId\":\"localhost2\",\"externalId\":\"905909\"}},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":\"UK\"},\"items\":[{\"id\":\"605bd323-cf4a-4a50-a785-eb87960517e8\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"},{\"id\":\"c844050a-ec69-4842-9851-2bbfcf0d9610\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",
+                new Order
+                {
+                    Id = "5b148b26-7e48-489e-8156-89534194f8a6",
+                    CreatedAt = new DateTime(2020, 01, 30, 09, 39, 40),
+                    ChannelId = "localhost2",
+                    ExternalId = "905909",
+                    RedirectUrl =
+                        "https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1",
+                    Origin = "http://localhost:8000",
+                    Payments = new List<SDK.Payment.Models.Payment>
+                    {
+                        new SDK.Payment.Models.Payment
+                        {
+                            Id = "528f136e-54c3-4cbe-b5c3-585beda0c0a6",
+                            CreatedAt = new DateTime(2020, 01, 30, 09, 39, 40),
+                            Amount = new Amount
+                            {
+                                Value = 6200,
+                                Currency = "GBP"
+                            },
+                            Status = "new",
+                            Events = new List<PaymentEvent>(),
+                            Refunds = new List<Refund>(),
+                            Compensations = new List<Refund>()
+                        }
+                    },
+                    Shopper = new Shopper
+                    {
+                        Email = "aburak@encore.co.uk",
+                        FirstName = "Aliaksei",
+                        LastName = "Burak",
+                        Title = "Mr",
+                        ExternalId = "ext-1"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "Line1",
+                        Line2 = "Line2",
+                        PostalCode = "AB1 2EF",
+                        City = "Hometown",
+                        CountryCode = "GB",
+                        LegacyCountryCode = "UK"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Id = "605bd323-cf4a-4a50-a785-eb87960517e8",
+                            Name = "Book Of Mormon",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                        new OrderItem
+                        {
+                            Id = "c844050a-ec69-4842-9851-2bbfcf0d9610",
+                            Name = "Book Of Mormon",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                    },
+                    RiskData = new RiskData
+                    {
+                        DaysToEvent = 2,
+                        DeliveryMethod = "collection"
+                    }
+                }
+            ),
+            new TestCaseData(
+                "{\"request\":{\"urlParams\":{\"channelId\":\"europa-qa\",\"externalId\":\"808842\"}},\"response\":{\"id\":\"2c542ed9-547a-46c1-9001-17666e2cfd9b\",\"createdAt\":\"2020-01-15T14:54:51+00:00\",\"channelId\":\"europa-qa\",\"externalId\":\"808842\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"payments\":[{\"id\":\"6cd73a15-6d88-46ec-8876-653137257042\",\"createdAt\":\"2020-01-15T14:54:51+00:00\",\"amount\":{\"value\":11800,\"currency\":\"GBP\"},\"status\":\"partially_refunded\",\"events\":[{\"type\":\"capture\",\"createdAt\":\"2020-01-15T14:55:17+00:00\",\"pspReference\":\"881579100117023F\",\"pspCreatedAt\":\"2020-01-15T14:55:17+00:00\",\"status\":true},{\"type\":\"authorisation\",\"createdAt\":\"2020-01-15T14:55:15+00:00\",\"pspReference\":\"851579100114678C\",\"pspCreatedAt\":\"2020-01-15T14:55:15+00:00\",\"status\":true}],\"refunds\":[{\"id\":\"15a9ea19-2c1b-4505-8a31-1b3a009eec91\",\"createdAt\":\"2020-01-15T15:13:17+00:00\",\"pspReference\":\"881579101197463E\",\"pspCreatedAt\":\"2020-01-15T15:13:17+00:00\",\"amount\":{\"value\":100,\"currency\":\"GBP\"},\"reason\":\"Test Booking\",\"status\":\"success\"},{\"id\":\"e1bc3e9d-77ca-4cc3-ad29-97faa20f94ba\",\"createdAt\":\"2020-01-16T08:56:00+00:00\",\"pspReference\":\"881579164960934H\",\"pspCreatedAt\":\"2020-01-16T08:56:00+00:00\",\"amount\":{\"value\":100,\"currency\":\"GBP\"},\"reason\":\"Test Booking\",\"status\":\"success\"}],\"compensations\":[],\"paymentMethod\":{\"type\":\"card\",\"holderName\":\"RE\",\"scheme\":\"visa\",\"number\":\"444433******1111\",\"expiryDate\":\"10/2020\"},\"merchantAccount\":\"EncoreTicketsCallCentre\",\"paymentServiceProvider\":\"AdyenTest\"}],\"shopper\":{\"lastName\":\"RE\",\"telephoneNumber\":\"re\"},\"items\":[{\"id\":\"3fe70fd3-600d-4938-926d-053df976ad30\",\"name\":\"WICKED\",\"quantity\":2,\"amount\":{\"value\":5900,\"currency\":\"GBP\"},\"externalId\":\"1587\"}],\"riskData\":{\"daysToEvent\":0,\"deliveryMethod\":\"collection\",\"officeId\":\"1\"}}}",
+                new Order
+                {
+                    Id = "2c542ed9-547a-46c1-9001-17666e2cfd9b",
+                    CreatedAt = new DateTime(2020, 01, 15, 14, 54, 51),
+                    ChannelId = "europa-qa",
+                    ExternalId = "808842",
+                    RedirectUrl = "https://payment-service.qatixuk.io/redirect",
+                    Origin = "https://payment-service.qatixuk.io",
+                    Payments = new List<SDK.Payment.Models.Payment>
+                    {
+                        new SDK.Payment.Models.Payment
+                        {
+                            Id = "6cd73a15-6d88-46ec-8876-653137257042",
+                            CreatedAt = new DateTime(2020, 01, 15, 14, 54, 51),
+                            Amount = new Amount
+                            {
+                                Value = 11800,
+                                Currency = "GBP"
+                            },
+                            Status = "partially_refunded",
+                            Events = new List<PaymentEvent>
+                            {
+                                new PaymentEvent
+                                {
+                                    Type = "capture",
+                                    CreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
+                                    PspReference = "881579100117023F",
+                                    PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
+                                    Status = true
+                                },
+                                new PaymentEvent
+                                {
+                                    Type = "authorisation",
+                                    CreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
+                                    PspReference = "851579100114678C",
+                                    PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
+                                    Status = true
+                                },
+                            },
+                            Refunds = new List<Refund>
+                            {
+                                new Refund
+                                {
+                                    Id = "15a9ea19-2c1b-4505-8a31-1b3a009eec91",
+                                    CreatedAt = new DateTime(2020, 01, 15, 15, 13, 17),
+                                    PspReference = "881579101197463E",
+                                    PspCreatedAt = new DateTime(2020, 01, 15, 15, 13, 17),
+                                    Amount = new Amount
+                                    {
+                                        Value = 100,
+                                        Currency = "GBP"
+                                    },
+                                    Reason = "Test Booking",
+                                    Status = "success"
+                                },
+                                new Refund
+                                {
+                                    Id = "e1bc3e9d-77ca-4cc3-ad29-97faa20f94ba",
+                                    CreatedAt = new DateTime(2020, 01, 16, 08, 56, 00),
+                                    PspReference = "881579164960934H",
+                                    PspCreatedAt = new DateTime(2020, 01, 16, 08, 56, 00),
+                                    Amount = new Amount
+                                    {
+                                        Value = 100,
+                                        Currency = "GBP"
+                                    },
+                                    Reason = "Test Booking",
+                                    Status = "success"
+                                },
+                            },
+                            Compensations = new List<Refund>(),
+                            PaymentMethod = new PaymentMethod
+                            {
+                                Type = "card",
+                                HolderName = "RE",
+                                Scheme = "visa",
+                                Number = "444433******1111",
+                                ExpiryDate = new DateTime(2020, 10, 1)
+                            },
+                            PspMerchantAccount = "EncoreTicketsCallCentre",
+                            PspName = "AdyenTest"
+                        }
+                    },
+                    Shopper = new Shopper
+                    {
+                        LastName = "RE",
+                        TelephoneNumber = "re"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Id = "3fe70fd3-600d-4938-926d-053df976ad30",
+                            Name = "WICKED",
+                            Quantity = 2,
+                            Amount = new Amount
+                            {
+                                Value = 5900,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "1587"
+                        },
+                    },
+                    RiskData = new RiskData
+                    {
+                        DaysToEvent = 0,
+                        DeliveryMethod = "collection",
+                        OfficeId = 1
+                    }
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 404
+            new TestCaseData(
+                "{\"request\":{\"urlParams\":{\"channelId\":\"localhost2\",\"externalId\":\"6690605\"}},\"context\":{\"errors\":[{\"message\":\"Cannot find Order. Please specify a valid orderId.\"}]}}",
+                HttpStatusCode.NotFound,
+                "Cannot find Order. Please specify a valid orderId."
+            ),
+        };
+
         public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters = new[]
         {
             new TestCaseData(
@@ -226,7 +520,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             ),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsVenue = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"{\\n    \\\"channelId\\\": \\\"localhost2\\\",\\n    \\\"externalId\\\": \\\"905909\\\",\\n    \\\"redirectUrl\\\": \\\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\\\",\\n    \\\"origin\\\": \\\"http://localhost:8000\\\",\\n    \\\"amount\\\": {\\n        \\\"value\\\": 6200,\\n        \\\"currency\\\": \\\"GBP\\\"\\n    },\\n    \\\"shopper\\\": {\\n        \\\"email\\\": \\\"aburak@encore.co.uk\\\",\\n        \\\"title\\\": \\\"Mr\\\",\\n        \\\"firstName\\\": \\\"Aliaksei\\\",\\n        \\\"lastName\\\": \\\"Burak\\\",\\n        \\\"externalId\\\": \\\"ext-1\\\"\\n    },\\n    \\\"billingAddress\\\": {\\n        \\\"line1\\\": \\\"Line1\\\",\\n        \\\"line2\\\": \\\"Line2\\\",\\n        \\\"postalCode\\\": \\\"AB1 2EF\\\",\\n        \\\"city\\\": \\\"Hometown\\\",\\n        \\\"countryCode\\\": \\\"UK\\\"\\n    },\\n    \\\"items\\\": [\\n        {\\n            \\\"name\\\": \\\"Book Of Mormon\\\",\\n            \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\n            \\\"quantity\\\": 1,\\n            \\\"externalId\\\": \\\"3608\\\",\\n            \\\"amount\\\": {\\n                \\\"value\\\": 5400,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            }\\n        },\\n        {\\n            \\\"name\\\": \\\"Book Of Mormon\\\",\\n            \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\n            \\\"quantity\\\": 1,\\n            \\\"externalId\\\": \\\"3608\\\",\\n            \\\"amount\\\": {\\n                \\\"value\\\": 5400,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            }\\n        }\\n    ],\\n    \\\"riskData\\\": {\\n        \\\"daysToEvent\\\": \\\"2\\\",\\n        \\\"deliveryMethod\\\": \\\"collection\\\"\\n    }\\n}\"},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":\"UK\"},\"items\":[{\"id\":\"c844050a-ec69-4842-9851-2bbfcf0d9610\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"},{\"id\":\"605bd323-cf4a-4a50-a785-eb87960517e8\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",

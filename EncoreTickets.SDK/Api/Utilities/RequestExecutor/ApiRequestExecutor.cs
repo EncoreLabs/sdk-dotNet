@@ -133,7 +133,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 }
             }
 
-            throw new ApiException($"Cannot convert API error correctly.\n\n{restResponse.Content}", restResponse, Context);
+            throw new ApiException($"Cannot convert API error correctly.\r\n\r\n{restResponse.Content}", restResponse, Context);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using EncoreTickets.SDK.Utilities.CommonModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace EncoreTickets.SDK.Payment.Models
 {
@@ -57,11 +59,13 @@ namespace EncoreTickets.SDK.Payment.Models
         /// <summary>
         /// Gets or sets name of the Payment Service Provider.
         /// </summary>
+        [JsonProperty("paymentServiceProvider")]
         public string PspName { get; set; }
 
         /// <summary>
         /// Gets or sets name of the account for the Payment Service Provider.
         /// </summary>
+        [JsonProperty("merchantAccount")]
         public string PspMerchantAccount { get; set; }
     }
 }
