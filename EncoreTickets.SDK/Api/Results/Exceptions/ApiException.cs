@@ -142,12 +142,13 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         private static string ConvertErrorToString(Error error)
         {
             var message = error.Message;
-            if (!string.IsNullOrEmpty(error.Field))
+            if (string.IsNullOrEmpty(error.Field))
             {
-                message = $"{error.Field} - {message}";
+                return message;
             }
 
-            return message;
+            var extraInfo = string.IsNullOrWhiteSpace(message) ? "this field is invalid" : message;
+            return $"{error.Field}: {extraInfo}";
         }
     }
 }

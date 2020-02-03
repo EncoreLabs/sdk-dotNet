@@ -313,7 +313,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 new List<string>
                 {
-                    "coupon.code - "
+                    "coupon.code: this field is invalid"
                 }
             ),
             new TestCaseData(
@@ -330,7 +330,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 new List<string>
                 {
-                    "coupon.code - This value should not be blank."
+                    "coupon.code: This value should not be blank."
                 }
             ),
             new TestCaseData(
@@ -357,7 +357,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     "Product [9] is not found",
                     "Unauthorized",
-                    "coupon.code - This value should not be blank."
+                    "coupon.code: This value should not be blank."
                 }
             ),
         };
@@ -432,7 +432,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 null,
                 "Internal server error"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextInResponseIsNull_IfResponseStatusDescriptionExists_ReturnsResponseStatusDescription"},
+            ),
             new TestCaseData(
                 new RestResponse
                 {
@@ -440,7 +440,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 new Context(),
                 "Internal server error"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionExists_ReturnsResponseStatusDescription"},
+            ),
             new TestCaseData(
                 new RestResponse
                 {
@@ -449,7 +449,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 null,
                 "Some error has occured"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextInResponseIsNull_IfResponseStatusDescriptionIsEmpty_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
+            ),
             new TestCaseData(
                 new RestResponse
                 {
@@ -458,7 +458,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 new Context(),
                 "Some error has occured"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsEmpty_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
+            ),
             new TestCaseData(
                 new RestResponse
                 {
@@ -466,7 +466,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 null,
                 "Some error has occured"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextInResponseIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
+            ),
             new TestCaseData(
                 new RestResponse
                 {
@@ -474,7 +474,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 new Context(),
                 "Some error has occured"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsIsNull_IfResponseStatusDescriptionIsNull_IfResponseErrorMessageExists_ReturnsResponseErrorMessage"},
+            ),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
                 new Context
@@ -485,7 +485,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     }
                 },
                 "Venue [9] is not found"
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasErrorOnlyWithNotEmptyMessage_ReturnsErrorMessage"},
+            ),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
                 new Context
@@ -495,8 +495,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         new Error {Field = "coupon.code"}
                     }
                 },
-                "coupon.code - "
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasErrorOnlyWithNotEmptyField_ReturnsMessageWithField"},
+                "coupon.code: this field is invalid"
+            ),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
                 new Context
@@ -509,8 +509,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         }
                     }
                 },
-                "coupon.code - This value should not be blank."
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasFullyInitializedError_ReturnsMessageBasedOnErrorMessageAndField"},
+                "coupon.code: This value should not be blank."
+            ),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
                 new Context
@@ -531,8 +531,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         }
                     }
                 },
-                "Product [9] is not found\r\nUnauthorized\r\ncoupon.code - This value should not be blank."
-            ) {TestName = "Message_IfPredefinedMessageIsNull_IfContextErrorsHasErrors_ReturnsMessages"},
+                "Product [9] is not found\r\nUnauthorized\r\ncoupon.code: This value should not be blank."
+            ),
         };
     }
 }

@@ -426,12 +426,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             new TestCaseData(
                 "{\"errors\":[{\"field\":\"fromDate\",\"message\":\"end date should not be more than 90 days from start dates\"}]}",
                 HttpStatusCode.BadRequest,
-                "fromDate - end date should not be more than 90 days from start dates"
+                "fromDate: end date should not be more than 90 days from start dates"
             ),
             new TestCaseData(
                 "{\"errors\":[{\"field\":\"productId\",\"message\":\"The product ID can only contain numbers, letters and dashes\"}]}",
                 HttpStatusCode.BadRequest,
-                "productId - The product ID can only contain numbers, letters and dashes"
+                "productId: The product ID can only contain numbers, letters and dashes"
             ),
 
             // 404
@@ -598,7 +598,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             new TestCaseData(
                 "{\"errors\":[{\"field\":\"productId\",\"message\":\"The product ID can only contain numbers, letters and dashes\"}]}",
                 HttpStatusCode.BadRequest,
-                "productId - The product ID can only contain numbers, letters and dashes"
+                "productId: The product ID can only contain numbers, letters and dashes"
             ),
 
             // 401
