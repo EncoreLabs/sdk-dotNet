@@ -5,6 +5,7 @@ using System.Net;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -683,7 +684,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new SingleOrListJsonSerializer<string>()
+                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 }
             ),
         };
@@ -700,7 +701,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml,
-                    RequestDataSerializer = new SingleOrListJsonSerializer<string>()
+                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 }
             ),
             new TestCaseData(

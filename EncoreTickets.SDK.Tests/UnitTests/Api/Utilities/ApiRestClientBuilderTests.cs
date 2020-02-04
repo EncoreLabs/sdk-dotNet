@@ -7,6 +7,7 @@ using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using Moq;
 using NUnit.Framework;
 using IDeserializer = RestSharp.Deserializers.IDeserializer;
@@ -94,7 +95,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
         }
 
         [Test]
-        public void CreateClientWrapperParameters_IfDeserializerIsNotSe_ReturnsParametersWithInitializedResponseDataFormatAsJson()
+        public void CreateClientWrapperParameters_IfDeserializerIsNotSet_ReturnsParametersWithInitializedResponseDataFormatAsJson()
         {
             var builder = new ApiRestClientBuilder();
 
@@ -397,10 +398,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
-                    Serializer = new SingleOrListJsonSerializer<string>(),
+                    Serializer = new DefaultJsonSerializer(new SingleOrListToListConverter <string>()),
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
-                new SingleOrListJsonSerializer<string>
+                new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 {
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
@@ -429,10 +430,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
-                    Deserializer = new SingleOrListJsonSerializer<string>(),
+                    Deserializer = new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>()),
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
-                new SingleOrListJsonSerializer<string>
+                new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>())
                 {
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },

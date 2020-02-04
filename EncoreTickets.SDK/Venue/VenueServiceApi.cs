@@ -6,6 +6,7 @@ using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
@@ -153,7 +154,7 @@ namespace EncoreTickets.SDK.Venue
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new SingleOrListJsonSerializer<string>()
+                Deserializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return GetUpsertSeatAttributesResult(result);
