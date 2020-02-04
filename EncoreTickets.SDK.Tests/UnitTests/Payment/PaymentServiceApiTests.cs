@@ -22,6 +22,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
     {
         private const string TestValidChannelId = "channelId";
         private const string TestValidOrderExternalId = "externalId";
+        private const string TestValidOrderId = "orderId";
 
         private MockersForApiServiceWithAuthentication mockers;
 
@@ -39,6 +40,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             mockers = new MockersForApiServiceWithAuthentication();
         }
+
+        #region Order
 
         #region GetOrder
 
@@ -164,10 +167,77 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         }
 
         #endregion
+
+        #region UpdateOrder
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void UpdateOrder_IfOrderIdIsNotSet_ThrowsArgumentException(string orderId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                var actual = UpdateOrder(orderId, It.IsAny<UpdateOrderRequest>());
+            });
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UpdateOrder_CallsApiWithRightParameters))]
+        public void UpdateOrder_CallsApiWithRightParameters(string orderId, UpdateOrderRequest order, string requestBody)
+        {
+            AutomaticAuthentication = true;
+            mockers.SetupAnyExecution<ApiResponse<Order>>();
+
+            try
+            {
+                UpdateOrder(orderId, order);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyAuthenticateExecution(Times.Once());
+            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{orderId}", Method.PATCH, bodyInJson: requestBody);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder))]
+        public void UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder(
+            string responseContent,
+            Order expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<Order>>(responseContent);
+
+            var actual = UpdateOrder(TestValidOrderId, It.IsAny<UpdateOrderRequest>());
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UpdateOrder_IfApiResponseFailed_ThrowsApiException))]
+        public void UpdateOrder_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
+        {
+            mockers.SetupFailedExecution<ApiResponse<Order>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = UpdateOrder(TestValidOrderId, It.IsAny<UpdateOrderRequest>());
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        #endregion
+
+        #endregion
     }
 
     internal static class PaymentServiceApiTestsSource
     {
+        #region Order
+
         public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder = new[]
         {
             new TestCaseData(
@@ -372,6 +442,93 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DeliveryMethod = "collection",
                         OfficeId = 1
                     }
+                }
+            ),
+            new TestCaseData(
+                "{\r\n    \"request\": {\r\n        \"urlParams\": {\r\n            \"channelId\": \".net-sdk-integration-test\",\r\n            \"externalId\": \"999999999\"\r\n        }\r\n    },\r\n    \"response\": {\r\n        \"id\": \"d2941460-13e4-43f1-8a13-23a36bc1a714\",\r\n        \"createdAt\": \"2020-02-03T09:00:29+00:00\",\r\n        \"channelId\": \".net-sdk-integration-test\",\r\n        \"externalId\": \"999999999\",\r\n        \"redirectUrl\": \"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\r\n        \"origin\": \"http://localhost:8000\",\r\n        \"payments\": [\r\n            {\r\n                \"id\": \"8495b8df-dcca-4b66-8ae6-96709b155b04\",\r\n                \"createdAt\": \"2020-02-03T09:00:29+00:00\",\r\n                \"amount\": {\r\n                    \"value\": 11000,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"status\": \"new\",\r\n                \"events\": [],\r\n                \"refunds\": [],\r\n                \"compensations\": []\r\n            }\r\n        ],\r\n        \"shopper\": {\r\n            \"email\": \"aburak@encore.co.uk\",\r\n            \"firstName\": \"Tome1918607-70c1-492e-87bb-627122e99fef\",\r\n            \"lastName\": \"Burak\",\r\n            \"title\": \"Mr\",\r\n            \"externalId\": \"ext-1\"\r\n        },\r\n        \"billingAddress\": {\r\n            \"line1\": \"Line1\",\r\n            \"line2\": \"Addresse1918607-70c1-492e-87bb-627122e99fef\",\r\n            \"postalCode\": \"AB1 2EF\",\r\n            \"city\": \"Hometown\",\r\n            \"countryCode\": \"GB\"\r\n        },\r\n        \"items\": [\r\n            {\r\n                \"id\": \"843e8e93-705c-42d1-b6f8-121f953bd47f\",\r\n                \"name\": \"Namee1918607-70c1-492e-87bb-627122e99fef\",\r\n                \"description\": \"Online ticket sale Book Of Mormon\",\r\n                \"quantity\": 1,\r\n                \"amount\": {\r\n                    \"value\": 5400,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"tax\": {\r\n                    \"value\": 100,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"externalId\": \"3608\"\r\n            },\r\n            {\r\n                \"id\": \"cb3d9efc-653b-4938-9c4e-0d840600d865\",\r\n                \"name\": \"Namee1918607-70c1-492e-87bb-627122e99fef\",\r\n                \"description\": \"Online ticket sale Book Of Mormon\",\r\n                \"quantity\": 1,\r\n                \"amount\": {\r\n                    \"value\": 5400,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"tax\": {\r\n                    \"value\": 100,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"externalId\": \"3608\"\r\n            }\r\n        ],\r\n        \"riskData\": []\r\n    }\r\n}",
+                new Order
+                {
+                    Id = "d2941460-13e4-43f1-8a13-23a36bc1a714",
+                    CreatedAt = new DateTime(2020, 02, 03, 09, 00, 29),
+                    ChannelId = ".net-sdk-integration-test",
+                    ExternalId = "999999999",
+                    RedirectUrl =
+                        "https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1",
+                    Origin = "http://localhost:8000",
+                    Payments = new List<SDK.Payment.Models.Payment>
+                    {
+                        new SDK.Payment.Models.Payment
+                        {
+                            Id = "8495b8df-dcca-4b66-8ae6-96709b155b04",
+                            CreatedAt = new DateTime(2020, 02, 03, 09, 00, 29),
+                            Amount = new Amount
+                            {
+                                Value = 11000,
+                                Currency = "GBP",
+                                ExchangeRate = 0.0
+                            },
+                            Status = "new",
+                            Events = new List<PaymentEvent>(),
+                            Refunds = new List<Refund>(),
+                            Compensations = new List<Refund>()
+                        }
+                    },
+                    Shopper = new Shopper
+                    {
+                        Email = "aburak@encore.co.uk",
+                        FirstName = "Tome1918607-70c1-492e-87bb-627122e99fef",
+                        LastName = "Burak",
+                        Title = "Mr",
+                        ExternalId = "ext-1"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "Line1",
+                        Line2 = "Addresse1918607-70c1-492e-87bb-627122e99fef",
+                        PostalCode = "AB1 2EF",
+                        City = "Hometown",
+                        CountryCode = "GB"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Id = "843e8e93-705c-42d1-b6f8-121f953bd47f",
+                            Name = "Namee1918607-70c1-492e-87bb-627122e99fef",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                        new OrderItem
+                        {
+                            Id = "cb3d9efc-653b-4938-9c4e-0d840600d865",
+                            Name = "Namee1918607-70c1-492e-87bb-627122e99fef",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                    },
+                    RiskData = null
                 }
             ),
         };
@@ -703,5 +860,245 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "Invalid JWT Token"
             ),
         };
+
+        public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters = new[]
+        {
+            new TestCaseData(
+                "5b148b26-7e48-489e-8156-89534194f8a6",
+                new UpdateOrderRequest
+                {
+                    Shopper = new Shopper
+                    {
+                        Email = "newshopper@email.tld",
+                        FirstName = "newJohn",
+                        LastName = "newDoe",
+                        Title = "newMr",
+                        ExternalId = "newext-1",
+                        TelephoneNumber = "new+441234567890",
+                        Locale = "fr_FR"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "newHouse 1",
+                        Line2 = "new123 street",
+                        PostalCode = "newAB1 2EF",
+                        City = "newHometown",
+                        CountryCode = "FR"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Name = "newLion King",
+                            Description = "newOnline ticket sale The lion king",
+                            Quantity = 2,
+                            Amount = new Amount
+                            {
+                                Value = 3000,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "123"
+                        }
+                    }
+                },
+                "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder = new[]
+        {
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\n    \\\"shopper\\\": {\\n        \\\"email\\\": \\\"newshopper@email.tld\\\",\\n        \\\"firstName\\\": \\\"newJohn\\\",\\n        \\\"lastName\\\": \\\"newDoe\\\",\\n        \\\"title\\\": \\\"newMr\\\",\\n        \\\"externalId\\\": \\\"newext-1\\\",\\n        \\\"telephoneNumber\\\": \\\"new+441234567890\\\",\\n        \\\"locale\\\": \\\"fr_FR\\\"\\n    },\\n    \\\"billingAddress\\\": {\\n        \\\"line1\\\": \\\"newHouse 1\\\",\\n        \\\"line2\\\": \\\"new123 street\\\",\\n        \\\"postalCode\\\": \\\"newAB1 2EF\\\",\\n        \\\"city\\\": \\\"newHometown\\\",\\n        \\\"countryCode\\\": \\\"FR\\\"\\n    },\\n    \\\"items\\\": [\\n        {\\n            \\\"name\\\": \\\"newLion King\\\",\\n            \\\"description\\\": \\\"newOnline ticket sale The lion king\\\",\\n            \\\"quantity\\\": 2,\\n            \\\"amount\\\": {\\n                \\\"value\\\": 3000,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"externalId\\\": \\\"123\\\"\\n        }   \\n    ]\\n}\",\"urlParams\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\"}},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\"},\"items\":[{\"id\":\"bcd00dca-674b-4506-9604-8c6d8bd8421f\",\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"123\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",
+                new Order
+                {
+                    Id = "5b148b26-7e48-489e-8156-89534194f8a6",
+                    CreatedAt = new DateTime(2020, 01, 30, 09, 39, 40),
+                    ChannelId = "localhost2",
+                    ExternalId = "905909",
+                    RedirectUrl =
+                        "https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1",
+                    Origin = "http://localhost:8000",
+                    Payments = new List<SDK.Payment.Models.Payment>
+                    {
+                        new SDK.Payment.Models.Payment
+                        {
+                            Id = "528f136e-54c3-4cbe-b5c3-585beda0c0a6",
+                            CreatedAt = new DateTime(2020, 01, 30, 09, 39, 40),
+                            Amount = new Amount
+                            {
+                                Value = 6200,
+                                Currency = "GBP"
+                            },
+                            Status = "new",
+                            Events = new List<PaymentEvent>(),
+                            Refunds = new List<Refund>(),
+                            Compensations = new List<Refund>()
+                        }
+                    },
+                    Shopper = new Shopper
+                    {
+                        Email = "newshopper@email.tld",
+                        FirstName = "newJohn",
+                        LastName = "newDoe",
+                        Title = "newMr",
+                        ExternalId = "newext-1",
+                        TelephoneNumber = "new+441234567890",
+                        Locale = "fr_FR"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "newHouse 1",
+                        Line2 = "new123 street",
+                        PostalCode = "newAB1 2EF",
+                        City = "newHometown",
+                        CountryCode = "FR"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Id = "bcd00dca-674b-4506-9604-8c6d8bd8421f",
+                            Name = "newLion King",
+                            Description = "newOnline ticket sale The lion king",
+                            Quantity = 2,
+                            Amount = new Amount
+                            {
+                                Value = 3000,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "123"
+                        }
+                    },
+                    RiskData = new RiskData
+                    {
+                        DaysToEvent = 2,
+                        DeliveryMethod = "collection"
+                    }
+                }
+            ),
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\\"billingAddress\\\":{\\\"line1\\\":\\\"Line1\\\",\\\"line2\\\":\\\"Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"postalCode\\\":\\\"AB1 2EF\\\",\\\"city\\\":\\\"Hometown\\\",\\\"countryCode\\\":\\\"GB\\\",\\\"legacyCountryCode\\\":null,\\\"stateOrProvince\\\":null},\\\"shopper\\\":{\\\"email\\\":\\\"aburak@encore.co.uk\\\",\\\"firstName\\\":\\\"Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"lastName\\\":\\\"Burak\\\",\\\"telephoneNumber\\\":null,\\\"title\\\":\\\"Mr\\\",\\\"externalId\\\":\\\"ext-1\\\",\\\"locale\\\":null},\\\"items\\\":[{\\\"id\\\":\\\"422ac918-fc09-466c-b2fe-051537e1d967\\\",\\\"name\\\":\\\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"description\\\":\\\"Online ticket sale Book Of Mormon\\\",\\\"quantity\\\":1,\\\"amount\\\":{\\\"value\\\":5400,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"amountOriginal\\\":null,\\\"tax\\\":{\\\"value\\\":100,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"externalId\\\":\\\"3608\\\"},{\\\"id\\\":\\\"5a230459-457e-4848-ad99-4561e62380a0\\\",\\\"name\\\":\\\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"description\\\":\\\"Online ticket sale Book Of Mormon\\\",\\\"quantity\\\":1,\\\"amount\\\":{\\\"value\\\":5400,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"amountOriginal\\\":null,\\\"tax\\\":{\\\"value\\\":100,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"externalId\\\":\\\"3608\\\"}],\\\"riskData\\\":{\\\"deliveryMethod\\\":null,\\\"officeId\\\":null,\\\"daysToEvent\\\":null}}\",\"urlParams\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\"}},\"response\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\",\"createdAt\":\"2020-02-03T09:00:29+00:00\",\"channelId\":\".net-sdk-integration-test\",\"externalId\":\"999999999\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"8495b8df-dcca-4b66-8ae6-96709b155b04\",\"createdAt\":\"2020-02-03T09:00:29+00:00\",\"amount\":{\"value\":11000,\"currency\":\"GBP\",\"exchangeRate\":0},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\"},\"items\":[{\"id\":\"7b656d9a-cfb9-4706-b448-06a4213dc215\",\"name\":\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0},\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0},\"externalId\":\"3608\"},{\"id\":\"f6c3faf3-c12a-4082-a396-5040ef8e9e93\",\"name\":\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0},\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0},\"externalId\":\"3608\"}],\"riskData\":[]}}",
+                new Order
+                {
+                    Id = "d2941460-13e4-43f1-8a13-23a36bc1a714",
+                    CreatedAt = new DateTime(2020, 02, 03, 09, 00, 29),
+                    ChannelId = ".net-sdk-integration-test",
+                    ExternalId = "999999999",
+                    RedirectUrl =
+                        "https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1",
+                    Origin = "http://localhost:8000",
+                    Payments = new List<SDK.Payment.Models.Payment>
+                    {
+                        new SDK.Payment.Models.Payment
+                        {
+                            Id = "8495b8df-dcca-4b66-8ae6-96709b155b04",
+                            CreatedAt = new DateTime(2020, 02, 03, 09, 00, 29),
+                            Amount = new Amount
+                            {
+                                Value = 11000,
+                                Currency = "GBP",
+                                ExchangeRate = 0.0
+                            },
+                            Status = "new",
+                            Events = new List<PaymentEvent>(),
+                            Refunds = new List<Refund>(),
+                            Compensations = new List<Refund>()
+                        }
+                    },
+                    Shopper = new Shopper
+                    {
+                        Email = "aburak@encore.co.uk",
+                        FirstName = "Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
+                        LastName = "Burak",
+                        Title = "Mr",
+                        ExternalId = "ext-1"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "Line1",
+                        Line2 = "Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
+                        PostalCode = "AB1 2EF",
+                        City = "Hometown",
+                        CountryCode = "GB"
+                    },
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Id = "7b656d9a-cfb9-4706-b448-06a4213dc215",
+                            Name = "Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                        new OrderItem
+                        {
+                            Id = "f6c3faf3-c12a-4082-a396-5040ef8e9e93",
+                            Name = "Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
+                            Description = "Online ticket sale Book Of Mormon",
+                            Quantity = 1,
+                            Amount = new Amount
+                            {
+                                Value = 5400,
+                                Currency = "GBP"
+                            },
+                            Tax = new Amount
+                            {
+                                Value = 100,
+                                Currency = "GBP"
+                            },
+                            ExternalId = "3608"
+                        },
+                    },
+                    RiskData = null
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 400
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\u0022billingAddress\\u0022:{\\u0022line1\\u0022:\\u0022Line1\\u0022,\\u0022line2\\u0022:\\u0022Address9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022postalCode\\u0022:\\u0022AB1 2EF\\u0022,\\u0022city\\u0022:\\u0022Hometown\\u0022,\\u0022countryCode\\u0022:\\u0022GB\\u0022,\\u0022legacyCountryCode\\u0022:null,\\u0022stateOrProvince\\u0022:null},\\u0022shopper\\u0022:{\\u0022email\\u0022:\\u0022aburak@encore.co.uk\\u0022,\\u0022firstName\\u0022:\\u0022Tom9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022lastName\\u0022:\\u0022Burak\\u0022,\\u0022telephoneNumber\\u0022:null,\\u0022title\\u0022:\\u0022Mr\\u0022,\\u0022externalId\\u0022:\\u0022ext-1\\u0022,\\u0022locale\\u0022:null},\\u0022items\\u0022:[{\\u0022id\\u0022:\\u0022422ac918-fc09-466c-b2fe-051537e1d967\\u0022,\\u0022name\\u0022:\\u0022Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022description\\u0022:\\u0022Online ticket sale Book Of Mormon\\u0022,\\u0022quantity\\u0022:1,\\u0022amount\\u0022:{\\u0022value\\u0022:5400,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022amountOriginal\\u0022:null,\\u0022tax\\u0022:{\\u0022value\\u0022:100,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022externalId\\u0022:\\u00223608\\u0022},{\\u0022id\\u0022:\\u00225a230459-457e-4848-ad99-4561e62380a0\\u0022,\\u0022name\\u0022:\\u0022Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022description\\u0022:\\u0022Online ticket sale Book Of Mormon\\u0022,\\u0022quantity\\u0022:1,\\u0022amount\\u0022:{\\u0022value\\u0022:5400,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022amountOriginal\\u0022:null,\\u0022tax\\u0022:{\\u0022value\\u0022:100,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022externalId\\u0022:\\u00223608\\u0022}],\\u0022riskData\\u0022:{\\u0022deliveryMethod\\u0022:\\u0022DeliveryMethod9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022officeId\\u0022:null,\\u0022daysToEvent\\u0022:2}}\",\"urlParams\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\"}},\"context\":{\"errors\":[{\"field\":\"deliveryMethod\",\"message\":\"Invalid deliveryMethod. Please specify a valid delivery method.\"}]}}",
+                HttpStatusCode.BadRequest,
+                "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."
+            ),
+
+            // 401
+            new TestCaseData(
+                "{\"code\":401,\"message\":\"Invalid JWT Token\"}",
+                HttpStatusCode.Unauthorized,
+                "Invalid JWT Token"
+            ),
+
+            // 404
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\n    \\u0022shopper\\u0022: {\\n        \\u0022email\\u0022: \\u0022newshopper@email.tld\\u0022,\\n        \\u0022firstName\\u0022: \\u0022newJohn\\u0022,\\n        \\u0022lastName\\u0022: \\u0022newDoe\\u0022,\\n        \\u0022title\\u0022: \\u0022newMr\\u0022,\\n        \\u0022externalId\\u0022: \\u0022newext-1\\u0022,\\n        \\u0022telephoneNumber\\u0022: \\u0022new+441234567890\\u0022,\\n        \\u0022locale\\u0022: \\u0022fr_FR\\u0022\\n    },\\n    \\u0022billingAddress\\u0022: {\\n        \\u0022line1\\u0022: \\u0022newHouse 1\\u0022,\\n        \\u0022line2\\u0022: \\u0022new123 street\\u0022,\\n        \\u0022postalCode\\u0022: \\u0022newAB1 2EF\\u0022,\\n        \\u0022city\\u0022: \\u0022newHometown\\u0022,\\n        \\u0022countryCode\\u0022: \\u0022FR\\u0022\\n    },\\n    \\u0022items\\u0022: [\\n        {\\n            \\u0022name\\u0022: \\u0022newLion King\\u0022,\\n            \\u0022description\\u0022: \\u0022newOnline ticket sale The lion king\\u0022,\\n            \\u0022quantity\\u0022: 2,\\n            \\u0022amount\\u0022: {\\n                \\u0022value\\u0022: 3000,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022tax\\u0022: {\\n                \\u0022value\\u0022: 100,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022externalId\\u0022: \\u0022123\\u0022\\n        }   \\n    ]\\n}\",\"urlParams\":{\"id\":\"20c33214-c217-4398-927e-d089b4db06a6\"}},\"context\":{\"errors\":[{\"message\":\"Cannot find Order. Please specify a valid orderId.\"}]}}",
+                HttpStatusCode.NotFound,
+                "Cannot find Order. Please specify a valid orderId."
+            ),
+        };
+
+        #endregion
     }
 }

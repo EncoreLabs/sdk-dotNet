@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EncoreTickets.SDK.Utilities.Serializers.Converters
 {
-    internal class SingleOrListConverter<T> : JsonConverter
+    internal class SingleOrListToSingleConverter<T> : JsonConverter
     {
         public override bool CanWrite => true;
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(List<T>);
+            return objectType == typeof(T);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var token = JToken.Load(reader);
             return token.Type == JTokenType.Array
-                ? token.ToObject<List<T>>()
-                : new List<T> {token.ToObject<T>()};
+                ? token.ToObject<List<T>>().FirstOrDefault()
+                : token.ToObject<T>();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

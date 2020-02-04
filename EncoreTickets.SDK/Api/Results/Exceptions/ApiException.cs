@@ -134,7 +134,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private static string GetErrorAsStringFromRestResponse(IRestResponse response)
         {
-            return string.IsNullOrEmpty(response.StatusDescription)
+            return response.StatusCode == HttpStatusCode.OK || string.IsNullOrEmpty(response.StatusDescription)
                 ? response.ErrorMessage
                 : response.StatusDescription;
         }

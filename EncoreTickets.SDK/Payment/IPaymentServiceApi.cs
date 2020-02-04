@@ -22,5 +22,14 @@ namespace EncoreTickets.SDK.Payment
         /// <returns>If request is correct return data about created order.</returns>
         /// <exception cref="ApiException">If request is invalid return 400 status code with error message.</exception>
         Order CreateOrder(CreateOrderRequest orderRequest);
+
+        /// <summary>
+        /// Update partially an order when this is possible, you cannot update an order that has a payment authorised, captured, refunded or partially_refunded.
+        /// </summary>
+        /// <param name="orderId">Order ID</param>
+        /// <param name="orderRequest">Request body can update billing address, shopper and/or line items. If nothing provided, nothing updated.</param>
+        /// <returns>Return the current state of the updated order.</returns>
+        /// <exception cref="ApiException">If request is invalid return 400 status code with error message.</exception>
+        Order UpdateOrder(string orderId, UpdateOrderRequest orderRequest);
     }
 }

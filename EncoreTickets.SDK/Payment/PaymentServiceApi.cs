@@ -4,6 +4,7 @@ using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Payment.Models;
 using EncoreTickets.SDK.Payment.Models.RequestModels;
+using EncoreTickets.SDK.Payment.Serializers;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Payment
@@ -34,6 +35,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = $"v1/orders/{channelId}/{externalId}",
                 Method = RequestMethod.Get,
+                Deserializer = new JsonResponseToOrderDeserializer()
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;
@@ -47,7 +49,28 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = "v1/orders",
                 Method = RequestMethod.Post,
-                Body = orderRequest
+                Body = orderRequest,
+                Deserializer = new JsonResponseToOrderDeserializer()
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public Order UpdateOrder(string orderId, UpdateOrderRequest orderRequest)
+        {
+            if (string.IsNullOrWhiteSpace(orderId))
+            {
+                throw new ArgumentException("order ID must be set");
+            }
+
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v1/orders/{orderId}",
+                Method = RequestMethod.Patch,
+                Body = orderRequest,
+                Deserializer = new JsonResponseToOrderDeserializer()
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;
