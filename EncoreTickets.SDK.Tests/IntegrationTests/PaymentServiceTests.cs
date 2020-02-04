@@ -237,6 +237,32 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 
+        [Test]
+        public void GetUsStates_Successful()
+        {
+            var states = service.GetUsStates();
+
+            Assert.NotNull(states);
+            states.ForEach(x =>
+            {
+                Assert.NotNull(x.Name);
+                Assert.NotNull(x.Abbreviation);
+            });
+        }
+
+        [Test]
+        public void GetCanadaProvinces_Successful()
+        {
+            var states = service.GetCanadaProvinces();
+
+            Assert.NotNull(states);
+            states.ForEach(x =>
+            {
+                Assert.NotNull(x.Name);
+                Assert.NotNull(x.Abbreviation);
+            });
+        }
+
         private void AssertThatOrderIsCorrect(Order order, string channelId, string externalId)
         {
             Assert.IsNotNull(order.Id);

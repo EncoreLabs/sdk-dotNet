@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Api.Results.Exceptions;
+﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Payment.Models;
 using EncoreTickets.SDK.Payment.Models.RequestModels;
 
@@ -31,5 +32,17 @@ namespace EncoreTickets.SDK.Payment
         /// <returns>Return the current state of the updated order.</returns>
         /// <exception cref="ApiException">If request is invalid return 400 status code with error message.</exception>
         Order UpdateOrder(string orderId, UpdateOrderRequest orderRequest);
+
+        /// <summary>
+        /// Get the list of all United-States states.
+        /// </summary>
+        /// <returns> List of United-states states.</returns>
+        List<CountryTerritorialUnit> GetUsStates();
+
+        /// <summary>
+        /// Get the list of all Canadian provinces.
+        /// </summary>
+        /// <returns> List of Canadian provinces.</returns>
+        List<CountryTerritorialUnit> GetCanadaProvinces();
     }
 }

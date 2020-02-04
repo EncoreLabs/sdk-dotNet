@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -73,6 +74,32 @@ namespace EncoreTickets.SDK.Payment
                 Deserializer = new JsonResponseToOrderDeserializer()
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public List<CountryTerritorialUnit> GetUsStates()
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/countries/usa/states",
+                Method = RequestMethod.Get,
+                Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<CountryTerritorialUnit>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public List<CountryTerritorialUnit> GetCanadaProvinces()
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/countries/canada/provinces",
+                Method = RequestMethod.Get,
+                Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<CountryTerritorialUnit>>(parameters);
             return result.DataOrException;
         }
     }

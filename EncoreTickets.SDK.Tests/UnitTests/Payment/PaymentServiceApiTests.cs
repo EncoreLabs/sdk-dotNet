@@ -232,6 +232,76 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         #endregion
 
         #endregion
+
+        #region Country
+
+        #region GetUsStates
+        
+        [Test]
+        public void GetUsStates_CallsApiWithRightParameters()
+        {
+            mockers.SetupAnyExecution<ApiResponse<List<CountryTerritorialUnit>>>();
+
+            try
+            {
+                GetUsStates();
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/usa/states", Method.GET);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetUsStates_IfApiResponseSuccessful_ReturnsUsStates))]
+        public void GetUsStates_IfApiResponseSuccessful_ReturnsUsStates(
+            string responseContent,
+            List<CountryTerritorialUnit> expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<List<CountryTerritorialUnit>>>(responseContent);
+
+            var actual = GetUsStates();
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region GetCanadaProvinces
+
+        [Test]
+        public void GetCanadaProvinces_CallsApiWithRightParameters()
+        {
+            mockers.SetupAnyExecution<ApiResponse<List<CountryTerritorialUnit>>>();
+
+            try
+            {
+                GetCanadaProvinces();
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/canada/provinces", Method.GET);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces))]
+        public void GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces(
+            string responseContent,
+            List<CountryTerritorialUnit> expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<List<CountryTerritorialUnit>>>(responseContent);
+
+            var actual = GetCanadaProvinces();
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        #endregion
+
+        #endregion
     }
 
     internal static class PaymentServiceApiTestsSource
@@ -1096,6 +1166,70 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "{\"request\":{\"body\":\"{\\n    \\u0022shopper\\u0022: {\\n        \\u0022email\\u0022: \\u0022newshopper@email.tld\\u0022,\\n        \\u0022firstName\\u0022: \\u0022newJohn\\u0022,\\n        \\u0022lastName\\u0022: \\u0022newDoe\\u0022,\\n        \\u0022title\\u0022: \\u0022newMr\\u0022,\\n        \\u0022externalId\\u0022: \\u0022newext-1\\u0022,\\n        \\u0022telephoneNumber\\u0022: \\u0022new+441234567890\\u0022,\\n        \\u0022locale\\u0022: \\u0022fr_FR\\u0022\\n    },\\n    \\u0022billingAddress\\u0022: {\\n        \\u0022line1\\u0022: \\u0022newHouse 1\\u0022,\\n        \\u0022line2\\u0022: \\u0022new123 street\\u0022,\\n        \\u0022postalCode\\u0022: \\u0022newAB1 2EF\\u0022,\\n        \\u0022city\\u0022: \\u0022newHometown\\u0022,\\n        \\u0022countryCode\\u0022: \\u0022FR\\u0022\\n    },\\n    \\u0022items\\u0022: [\\n        {\\n            \\u0022name\\u0022: \\u0022newLion King\\u0022,\\n            \\u0022description\\u0022: \\u0022newOnline ticket sale The lion king\\u0022,\\n            \\u0022quantity\\u0022: 2,\\n            \\u0022amount\\u0022: {\\n                \\u0022value\\u0022: 3000,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022tax\\u0022: {\\n                \\u0022value\\u0022: 100,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022externalId\\u0022: \\u0022123\\u0022\\n        }   \\n    ]\\n}\",\"urlParams\":{\"id\":\"20c33214-c217-4398-927e-d089b4db06a6\"}},\"context\":{\"errors\":[{\"message\":\"Cannot find Order. Please specify a valid orderId.\"}]}}",
                 HttpStatusCode.NotFound,
                 "Cannot find Order. Please specify a valid orderId."
+            ),
+        };
+
+        #endregion
+
+        #region Country
+
+        public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates = new[]
+        {
+            new TestCaseData(
+                "{\"request\":[],\"response\":[{\"name\":\"Alabama\",\"abbreviation\":\"AL\"},{\"name\":\"Alaska\",\"abbreviation\":\"AK\"},{\"name\":\"Arizona\",\"abbreviation\":\"AZ\"},{\"name\":\"West Virginia\",\"abbreviation\":\"WV\"}]}",
+                new List<CountryTerritorialUnit>
+                {
+                    new CountryTerritorialUnit
+                    {
+                        Name = "Alabama",
+                        Abbreviation = "AL"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "Alaska",
+                        Abbreviation = "AK"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "Arizona",
+                        Abbreviation = "AZ"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "West Virginia",
+                        Abbreviation = "WV"
+                    },
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces = new[]
+        {
+            new TestCaseData(
+                "{\"request\":[],\"response\":[{\"name\":\"Alberta\",\"abbreviation\":\"AB\"},{\"name\":\"British Columbia\",\"abbreviation\":\"BC\"},{\"name\":\"Manitoba\",\"abbreviation\":\"MB\"},{\"name\":\"New Brunswick\",\"abbreviation\":\"NB\"}]}",
+                new List<CountryTerritorialUnit>
+                {
+                    new CountryTerritorialUnit
+                    {
+                        Name = "Alberta",
+                        Abbreviation = "AB"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "British Columbia",
+                        Abbreviation = "BC"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "Manitoba",
+                        Abbreviation = "MB"
+                    },
+                    new CountryTerritorialUnit
+                    {
+                        Name = "New Brunswick",
+                        Abbreviation = "NB"
+                    },
+                }
             ),
         };
 
