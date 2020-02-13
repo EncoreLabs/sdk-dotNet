@@ -25,5 +25,14 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
         {
             return enumerable == null || !enumerable.Any() ? null : enumerable.ToList();
         }
+
+        public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T itemToPrepend)
+        {
+            yield return itemToPrepend;
+            foreach (var item in source)
+            {
+                yield return item;
+            }
+        }
     }
 }
