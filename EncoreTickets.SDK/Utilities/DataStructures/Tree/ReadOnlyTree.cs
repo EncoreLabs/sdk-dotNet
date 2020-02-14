@@ -9,14 +9,14 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
     {
         private ReadOnlyTree()
         {
-            Children = new List<ReadOnlyTree<TKey, TValue>>();
+            Children = new LinkedList<ReadOnlyTree<TKey, TValue>>();
         }
 
         public TKey Key { get; private set; }
 
         public TValue Item { get; private set; }
 
-        private List<ReadOnlyTree<TKey, TValue>> Children { get; }
+        private LinkedList<ReadOnlyTree<TKey, TValue>> Children { get; }
 
         private ReadOnlyTree<TKey, TValue> Parent { get; set; }
 
@@ -28,22 +28,22 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
         public static IEnumerable<ReadOnlyTree<TKey, TValue>> BuildMany(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
         {
             var itemCache = source.DistinctBy(item => keySelector(item)).ToDictionary(keySelector, x => new ReadOnlyTree<TKey, TValue> { Key = keySelector(x), Item = x });
-            foreach (var item in itemCache.Values)
+            var treeItems = itemCache.Values;
+            foreach (var item in treeItems)
             {
                 var parentKey = parentKeySelector(item.Item);
                 if (parentKey != null && itemCache.TryGetValue(parentKey, out var parent))
                 {
                     item.Parent = parent;
-                    parent.Children.Add(item);
+                    parent.Children.AddLast(item);
                 }
             }
-            return itemCache.Values.Where(x => x.Parent == null);
+            return treeItems.Where(x => x.Parent == null);
         }
 
         public IEnumerable<TValue> Traverse()
         {
-            var traversedChildren = Children.SelectMany(n => n.Traverse());
-            return EnumerableExtension.Prepend(traversedChildren, Item);
+            return Children.SelectMany(n => n.Traverse()).Prepend(Item);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
             return enumerable == null || !enumerable.Any() ? null : enumerable.ToList();
         }
 
+#if (NET461 || NET462 || NET47)
         public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T itemToPrepend)
         {
             yield return itemToPrepend;
@@ -34,5 +35,6 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
                 yield return item;
             }
         }
+#endif
     }
 }

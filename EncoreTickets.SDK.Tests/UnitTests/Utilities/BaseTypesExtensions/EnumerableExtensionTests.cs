@@ -40,6 +40,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             Assert.AreEqual(source[2], result[1]);
         }
 
+#if (NET461 || NET462 || NET47)
         [Test]
         public void Prepend_Successful()
         {
@@ -60,5 +61,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                 AssertExtension.AreObjectsValuesEqual(originalList[i], result[i + 1]);
             }
         }
+#endif
     }
 }
