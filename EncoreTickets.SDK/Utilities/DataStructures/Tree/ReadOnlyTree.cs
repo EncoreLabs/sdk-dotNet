@@ -43,7 +43,8 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
 
         public IEnumerable<TValue> Traverse()
         {
-            return Children.SelectMany(n => n.Traverse()).Prepend(Item);
+            var traversedChildren = Children.SelectMany(n => n.Traverse());
+            return EnumerableExtension.Prepend(traversedChildren, Item);
         }
     }
 }
