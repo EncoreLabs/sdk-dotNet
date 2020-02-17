@@ -32,11 +32,11 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// Initializes a new instance of <see cref="ContextApiException"/>
         /// </summary>
         public ContextApiException(ContextApiException sourceException) : this(
-            sourceException.ContextErrors,
-            sourceException.Response,
-            sourceException.Context,
-            sourceException.ContextInResponse,
-            sourceException.RequestInResponse)
+            sourceException?.ContextErrors,
+            sourceException?.Response,
+            sourceException?.Context,
+            sourceException?.ContextInResponse,
+            sourceException?.RequestInResponse)
         {
         }
 
@@ -47,7 +47,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             IEnumerable<Info> infosAsErrors,
             IRestResponse response,
             ApiContext requestContext,
-            Response.Context contextInResponse,
+            Context contextInResponse,
             Request requestInResponse)
             : base(response, requestContext, contextInResponse, requestInResponse)
         {

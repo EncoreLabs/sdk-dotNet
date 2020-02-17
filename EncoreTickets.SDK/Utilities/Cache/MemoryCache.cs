@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
     {
         private static readonly TimeSpan DefaultCacheLifeSpan = TimeSpan.FromHours(4);
 
-        private System.Runtime.Caching.MemoryCache cache;
+        private readonly System.Runtime.Caching.MemoryCache cache;
 
         /// <summary>
         /// Creates an instance of <see cref="MemoryCache"/> class with the default instance of <see cref="System.Runtime.Caching.MemoryCache"/> />
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
             return cache.Contains(key);
         }
 
-        private DateTimeOffset GetCacheItemExpiryDate(TimeSpan? lifeSpan)
+        private static DateTimeOffset GetCacheItemExpiryDate(TimeSpan? lifeSpan)
         {
             var resolvedLifeSpan = lifeSpan ?? DefaultCacheLifeSpan;
             return DateTimeOffset.Now + resolvedLifeSpan;

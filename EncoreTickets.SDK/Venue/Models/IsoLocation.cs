@@ -1,6 +1,6 @@
 ﻿namespace EncoreTickets.SDK.Venue.Models
 {
-    public class Region
+    public class IsoLocation
     {
         public string Name { get; set; }
 

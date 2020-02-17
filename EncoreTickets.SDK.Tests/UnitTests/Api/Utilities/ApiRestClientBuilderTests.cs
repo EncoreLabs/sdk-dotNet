@@ -9,8 +9,8 @@ using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
 using Moq;
 using NUnit.Framework;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
+using IDeserializer = RestSharp.Deserializers.IDeserializer;
+using ISerializer = RestSharp.Serializers.ISerializer;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 {
@@ -255,7 +255,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             new TestCaseData(
                 new ExecuteApiRequestParameters(),
                 null
-            ) {TestName = "CreateClientWrapperParameters_IfQueryInExecuteRequestParametersIsNull_ReturnsParametersWithNullAsQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -268,7 +268,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "id", "4" }
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasLowerCaseIntProperty_ReturnsParametersWithInitializedQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -281,7 +281,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "upperid", "4" }
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasUpperCaseIntProperty_ReturnsParametersWithInitializedQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -291,14 +291,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     }
                 },
                 null
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasNullProperty_ReturnsParametersWithNullQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
                     Query = new { }
                 },
                 null
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersDoesNotHaveProperty_ReturnsParametersWithNullQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -314,7 +314,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "completeobject", "{ Id = 8 }" }
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasCompleteAnonymousProperty_ReturnsParametersWithInitializedQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -327,7 +327,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "completeobject", "System.Collections.Generic.List`1[System.String]" }
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasCompleteNotAnonymousProperty_ReturnsParametersWithInitializedQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -338,9 +338,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 },
                 new Dictionary<string, string>
                 {
-                    { "date", "12/31/2019 11:59:59 PM" }
+                    { "date", "12/31/2019 23:59:59" }
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasDateProperty_ReturnsParametersWithInitializedQueryParameters"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -355,9 +355,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "id", "4" },
                     { "slug", "9_to_5" },
-                    { "date", "12/31/2019 11:59:59 PM" },
+                    { "date", "12/31/2019 23:59:59" },
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfQueryParametersHasProperties_ReturnsParametersWithInitializedQueryParameters"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedSerializer = new[]
@@ -398,7 +398,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 new ExecuteApiRequestParameters(),
                 new DefaultJsonSerializer(),
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfDeserializerIsNull_IfDateFormatIsNull_ReturnsParametersWithDefaultDeserializer"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -409,7 +409,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfDeserializerIsNull_IfDateFormatIsNotNull_IfReturnsParametersWithDefaultDeserializer"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -421,7 +421,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfDeserializerIsNotNull_IfReturnsParametersWithInitializedDeserializer"},
+            ),
         };
     }
 }

@@ -49,7 +49,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Gets the context returned in the API response.
         /// </summary>
-        public Response.Context ContextInResponse { get; }
+        public Context ContextInResponse { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
@@ -61,7 +61,8 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
-        public ApiException(string message)
+        public ApiException(string message, IRestResponse response, ApiContext requestContext)
+            : this(response, requestContext, null, null)
         {
             predefinedMessage = message;
         }
@@ -70,17 +71,17 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
         public ApiException(ApiException sourceException) : this(
-            sourceException.Response,
-            sourceException.Context,
-            sourceException.ContextInResponse,
-            sourceException.RequestInResponse)
+            sourceException?.Response,
+            sourceException?.Context,
+            sourceException?.ContextInResponse,
+            sourceException?.RequestInResponse)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
-        public ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
+        public ApiException(IRestResponse response, ApiContext requestContext, Context contextInResponse,
             Request requestInResponse)
         {
             RequestInResponse = requestInResponse;
@@ -115,7 +116,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
                 : DefaultMessage;
         }
 
-        private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Response.Context context)
+        private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Context context)
         {
             if (context?.Errors != null)
             {

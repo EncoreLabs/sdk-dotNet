@@ -18,11 +18,14 @@ namespace EncoreTickets.SDK.Tests.Helpers
                 return;
             }
 
-            actual.Should().BeEquivalentTo(expected, options => options
-                .RespectingRuntimeTypes()
-                .ComparingByMembers<T>()
-                .WithStrictOrdering()
-                .WithTracing());
+            try
+            {
+                CompareByMembers(expected, actual);
+            }
+            catch (InvalidOperationException)
+            {
+                Assert.IsInstanceOf(expected.GetType(), actual);
+            }
         }
 
         public static void ShouldBeEquivalentToObjectWithMoreProperties<TActual, TExpected>(this TActual actual,
@@ -33,6 +36,15 @@ namespace EncoreTickets.SDK.Tests.Helpers
             var propertiesNames = properties.Select(property => property.Name);
             actual.Should().BeEquivalentTo(expected, options => options
                 .Including(ctx => IsValidProperty(ctx, propertiesNames)));
+        }
+
+        private static void CompareByMembers<T>(T expected, T actual)
+        {
+            actual.Should().BeEquivalentTo(expected, options => options
+                .RespectingRuntimeTypes()
+                .ComparingByMembers<T>()
+                .WithStrictOrdering()
+                .WithTracing());
         }
 
         private static bool IsValidProperty(IMemberInfo memberInfo, IEnumerable<string> propertiesNames)

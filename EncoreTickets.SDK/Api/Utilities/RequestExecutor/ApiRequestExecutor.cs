@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
 using RestSharp;
@@ -124,21 +124,19 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse, IEnumerable<ErrorWrapping> errorWrappings)
             where T : class
         {
-            Exception innerException = null;
             foreach (var errorWrapping in errorWrappings)
             {
                 try
                 {
                     return ApiResultForErrorFactory.Create<T>(errorWrapping, restResponse, Context);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    innerException = e;
+                    // ignored
                 }
             }
 
-            var errorWrappingsAsStr = string.Join(", ", errorWrappings.Select(x => x.ToString()));
-            throw new Exception($"Cannot convert API error correctly: {errorWrappingsAsStr}", innerException);
+            throw new ApiException($"Cannot convert API error correctly.\n\n{restResponse.Content}", restResponse, Context);
         }
     }
 }

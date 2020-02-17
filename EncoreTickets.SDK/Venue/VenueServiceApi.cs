@@ -112,14 +112,14 @@ namespace EncoreTickets.SDK.Venue
         }
 
         /// <inheritdoc/>
-        public IList<SeatAttribute> GetSeatAttributes(Models.Venue venue)
+        public IList<SeatDetailed> GetSeatAttributes(Models.Venue venue)
         {
             var venueId = venue?.InternalId;
             return GetSeatAttributes(venueId);
         }
 
         /// <inheritdoc/>
-        public IList<SeatAttribute> GetSeatAttributes(string venueId)
+        public IList<SeatDetailed> GetSeatAttributes(string venueId)
         {
             if (string.IsNullOrEmpty(venueId))
             {
@@ -131,12 +131,12 @@ namespace EncoreTickets.SDK.Venue
                 Endpoint = $"v1/venues/{venueId}/seats/attributes/detailed",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<SeatAttribute>>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<List<SeatDetailed>>(parameters);
             return result.DataOrException;
         }
 
         /// <inheritdoc/>
-        public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatAttribute> seatAttributes)
+        public bool UpsertSeatAttributes(string venueId, IEnumerable<SeatDetailed> seatAttributes)
         {
             if (string.IsNullOrEmpty(venueId))
             {
@@ -150,8 +150,9 @@ namespace EncoreTickets.SDK.Venue
                 Method = RequestMethod.Patch,
                 Body = new SeatAttributesRequest
                 {
-                    Seats = seatAttributes ?? new List<SeatAttribute>()
+                    Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
+                DateFormat = "yyyy-MM-dd",
                 Deserializer = new SingleOrListJsonSerializer<string>()
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
