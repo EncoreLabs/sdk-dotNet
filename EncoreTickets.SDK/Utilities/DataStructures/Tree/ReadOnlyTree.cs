@@ -5,6 +5,13 @@ using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 
 namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
 {
+    /// <summary>
+    /// The implementation of the ITree&lt;TKey, TValue&gt; interface.
+    /// It defines a tree that can be built based on the specified criteria and traversed afterwards.
+    /// The tree nodes can have an arbitrary number of children.
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class ReadOnlyTree<TKey, TValue> : ITree<TKey, TValue>
     {
         private ReadOnlyTree()
@@ -12,23 +19,41 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
             Children = new LinkedList<ReadOnlyTree<TKey, TValue>>();
         }
 
+        /// <inheritdoc />
         public TKey Key { get; private set; }
 
+        /// <inheritdoc />
         public TValue Item { get; private set; }
 
         private LinkedList<ReadOnlyTree<TKey, TValue>> Children { get; }
 
         private ReadOnlyTree<TKey, TValue> Parent { get; set; }
 
-        public static ReadOnlyTree<TKey, TValue> BuildOne(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
+        /// <summary>
+        /// Builds the tree that can be defined by the source collection and the key selectors.
+        /// The first item of the source collection will belong to the resulting tree.
+        /// The items that don't belong to the same tree will be ignored.
+        /// </summary>
+        /// <param name="source">The source collection.</param>
+        /// <param name="keySelector">The function to map an item to its key.</param>
+        /// <param name="parentKeySelector">The function to map an item to the key of its parent.</param>
+        /// <returns>The root node of the tree built based on the specified criteria.</returns>
+        public static ReadOnlyTree<TKey, TValue> BuildSingleTree(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
         {
-            return BuildMany(source, keySelector, parentKeySelector).FirstOrDefault();
+            return BuildAllTrees(source, keySelector, parentKeySelector).FirstOrDefault();
         }
 
-        public static IEnumerable<ReadOnlyTree<TKey, TValue>> BuildMany(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
+        /// <summary>
+        /// Builds the collection of all trees that can be defined by the source collection and the key selectors.
+        /// </summary>
+        /// <param name="source">The source collection.</param>
+        /// <param name="keySelector">The function to map an item to its key.</param>
+        /// <param name="parentKeySelector">The function to map an item to the key of its parent.</param>
+        /// <returns>The collection of the root nodes of the trees built based on the specified criteria.</returns>
+        public static IEnumerable<ReadOnlyTree<TKey, TValue>> BuildAllTrees(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
         {
-            var itemCache = source.DistinctBy(item => keySelector(item)).ToDictionary(keySelector, x => new ReadOnlyTree<TKey, TValue> { Key = keySelector(x), Item = x });
-            var treeItems = itemCache.Values;
+            var treeItems = source.DistinctBy(item => keySelector(item)).Select(x => new ReadOnlyTree<TKey, TValue> { Key = keySelector(x), Item = x }).ToList();
+            var itemCache = treeItems.ToDictionary(x => keySelector(x.Item), x => x);
             foreach (var item in treeItems)
             {
                 var parentKey = parentKeySelector(item.Item);
@@ -41,6 +66,7 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
             return treeItems.Where(x => x.Parent == null);
         }
 
+        /// <inheritdoc />
         public IEnumerable<TValue> Traverse()
         {
             var traversedChildren = Children.SelectMany(n => n.Traverse());

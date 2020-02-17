@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
         {
             var testData = CreateTestData();
 
-            var result = ReadOnlyTree<int?, TreeItem>.BuildMany(testData.SetupList, item => item.Id, item => item.ParentId).ToList();
+            var result = ReadOnlyTree<int?, TreeItem>.BuildAllTrees(testData.SetupList, item => item.Id, item => item.ParentId).ToList();
 
             Assert.AreEqual(testData.ExpectedParents.Count, result.Count);
             for (int i = 0; i < result.Count; i++)
@@ -40,7 +40,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
         {
             var testData = CreateTestData();
 
-            var result = ReadOnlyTree<int?, TreeItem>.BuildOne(testData.SetupList, item => item.Id, item => item.ParentId);
+            var result = ReadOnlyTree<int?, TreeItem>.BuildSingleTree(testData.SetupList, item => item.Id, item => item.ParentId);
 
             AssertExtension.AreObjectsValuesEqual(testData.ExpectedParents[0], result.Item);
         }
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item1 = new TreeItem(1, -1);
             var item2 = new TreeItem(2, 1);
 
-            var result = ReadOnlyTree<int, TreeItem>.BuildMany(new[] {item1, item2}, item => item.Id, item => item.ParentId.Value).Single();
+            var result = ReadOnlyTree<int, TreeItem>.BuildAllTrees(new[] {item1, item2}, item => item.Id, item => item.ParentId.Value).Single();
 
             AssertExtension.AreObjectsValuesEqual(item1, result.Item);
         }
@@ -63,7 +63,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item2 = new TreeItem(2, 1);
             var item3 = new TreeItem(3, null);
 
-            var result = ReadOnlyTree<int?, TreeItem>.BuildMany(new[] { item1, item2, item3 }, item => item.Id, item => item.ParentId)
+            var result = ReadOnlyTree<int?, TreeItem>.BuildAllTrees(new[] { item1, item2, item3 }, item => item.Id, item => item.ParentId)
                 .SelectMany(t => t.Traverse())
                 .ToList();
 
@@ -79,7 +79,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item3 = new TreeItem(2, -1);
 
             var result = ReadOnlyTree<int?, TreeItem>
-                .BuildMany(new[] {item1, item2, item3}, item => item.Id, item => item.ParentId)
+                .BuildAllTrees(new[] {item1, item2, item3}, item => item.Id, item => item.ParentId)
                 .ToList();
 
             Assert.AreEqual(1, result.Count);
@@ -92,7 +92,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item1 = new TreeItem(1, 2);
             var item2 = new TreeItem(2, 1);
 
-            var result = ReadOnlyTree<int, TreeItem>.BuildOne(new[] { item1, item2 }, item => item.Id, item => item.ParentId.Value);
+            var result = ReadOnlyTree<int, TreeItem>.BuildSingleTree(new[] { item1, item2 }, item => item.Id, item => item.ParentId.Value);
 
             Assert.Null(result);
         }
@@ -101,7 +101,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
         public void Traverse_Successful()
         {
             var testData = CreateTestData();
-            var trees = ReadOnlyTree<int?, TreeItem>.BuildMany(testData.SetupList, item => item.Id, item => item.ParentId).ToList();
+            var trees = ReadOnlyTree<int?, TreeItem>.BuildAllTrees(testData.SetupList, item => item.Id, item => item.ParentId).ToList();
 
             var result = trees.SelectMany(tree => tree.Traverse()).ToList();
 
