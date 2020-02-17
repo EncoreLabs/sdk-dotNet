@@ -30,20 +30,6 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
         private ReadOnlyTree<TKey, TValue> Parent { get; set; }
 
         /// <summary>
-        /// Builds the tree that can be defined by the source collection and the key selectors.
-        /// The first item of the source collection will belong to the resulting tree.
-        /// The items that don't belong to the same tree will be ignored.
-        /// </summary>
-        /// <param name="source">The source collection.</param>
-        /// <param name="keySelector">The function to map an item to its key.</param>
-        /// <param name="parentKeySelector">The function to map an item to the key of its parent.</param>
-        /// <returns>The root node of the tree built based on the specified criteria.</returns>
-        public static ReadOnlyTree<TKey, TValue> BuildSingleTree(IEnumerable<TValue> source, Func<TValue, TKey> keySelector, Func<TValue, TKey> parentKeySelector)
-        {
-            return BuildAllTrees(source, keySelector, parentKeySelector).FirstOrDefault();
-        }
-
-        /// <summary>
         /// Builds the collection of all trees that can be defined by the source collection and the key selectors.
         /// </summary>
         /// <param name="source">The source collection.</param>

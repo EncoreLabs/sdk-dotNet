@@ -36,16 +36,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
         }
 
         [Test]
-        public void BuildOne_Successful()
-        {
-            var testData = CreateTestData();
-
-            var result = ReadOnlyTree<int?, TreeItem>.BuildSingleTree(testData.SetupList, item => item.Id, item => item.ParentId);
-
-            AssertExtension.AreObjectsValuesEqual(testData.ExpectedParents[0], result.Item);
-        }
-
-        [Test]
         public void BuildMany_WithoutNullParentKeys_Successful()
         {
             var item1 = new TreeItem(1, -1);
@@ -84,17 +74,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(item1, result[0].Item);
-        }
-
-        [Test]
-        public void BuildOne_WithCycles_Null()
-        {
-            var item1 = new TreeItem(1, 2);
-            var item2 = new TreeItem(2, 1);
-
-            var result = ReadOnlyTree<int, TreeItem>.BuildSingleTree(new[] { item1, item2 }, item => item.Id, item => item.ParentId.Value);
-
-            Assert.Null(result);
         }
 
         [Test]
