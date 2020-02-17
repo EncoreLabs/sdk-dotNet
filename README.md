@@ -32,6 +32,9 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 3.1
+- Added the tree data structure which can contain tree items with arbitrary number of children.
+
 #### 3.0
 - All exceptions related to the API calls are now inheriting from ApiException
 - Removed obsolete classes and functionality (including Entertain API)
