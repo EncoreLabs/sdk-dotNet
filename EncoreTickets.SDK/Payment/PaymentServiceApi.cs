@@ -78,6 +78,20 @@ namespace EncoreTickets.SDK.Payment
         }
 
         /// <inheritdoc />
+        public Models.Payment CreateNewPayment(CreatePaymentRequest paymentRequest)
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = "v1/payments",
+                Method = RequestMethod.Post,
+                Body = paymentRequest
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Payment>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
         public List<CountryTerritorialUnit> GetUsStates()
         {
             var parameters = new ExecuteApiRequestParameters

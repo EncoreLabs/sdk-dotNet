@@ -82,18 +82,6 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 ExternalId = externalId,
                 RedirectUrl = "https://payment-service.qatixuk.io/redirect",
                 Origin = "https://payment-service.qatixuk.io",
-                Amount = new Amount
-                {
-                    Value = 8100,
-                    Currency = "USD",
-                    ExchangeRate = 1.2
-                },
-                AmountOriginal = new Amount
-                {
-                    Value = 7000,
-                    Currency = "USD",
-                    ExchangeRate = 1.2
-                },
                 BillingAddress = new Address
                 {
                     Line1 = "115 Shaftesbury Avenue",

@@ -34,6 +34,13 @@ namespace EncoreTickets.SDK.Payment
         Order UpdateOrder(string orderId, UpdateOrderRequest orderRequest);
 
         /// <summary>
+        /// Create a new payment for an order.
+        /// </summary>
+        /// <param name="paymentRequest"></param>
+        /// <returns>Return the created payment</returns>
+        Models.Payment CreateNewPayment(CreatePaymentRequest paymentRequest);
+
+        /// <summary>
         /// Get the list of all United-States states.
         /// </summary>
         /// <returns> List of United-states states.</returns>

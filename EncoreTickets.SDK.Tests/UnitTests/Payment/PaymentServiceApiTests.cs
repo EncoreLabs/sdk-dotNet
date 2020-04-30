@@ -302,6 +302,50 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         #endregion
 
         #endregion
+
+        #region Payment
+
+        #region CreateNewPayment
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateNewPayment_CallsApiWithRightParameters))]
+        public void CreateNewPayment_CallsApiWithRightParameters(CreatePaymentRequest request, string requestBody)
+        {
+            AutomaticAuthentication = true;
+            mockers.SetupAnyExecution<ApiResponse<SDK.Payment.Models.Payment>>();
+
+            try
+            {
+                CreateNewPayment(request);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyAuthenticateExecution(Times.Once());
+            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(BaseUrl, "v1/payments", Method.POST, bodyInJson: requestBody);
+        }
+
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateNewPayment_IfApiResponseFailed_ThrowsApiException))]
+        public void CreateNewPayment_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
+        {
+            mockers.SetupFailedExecution<ApiResponse<SDK.Payment.Models.Payment>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = CreateNewPayment(It.IsAny<CreatePaymentRequest>());
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        #endregion
+
+        #endregion
     }
 
     internal static class PaymentServiceApiTestsSource
@@ -1232,6 +1276,44 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }
             ),
         };
+
+        #endregion
+
+        #region Payment
+
+        public static IEnumerable<TestCaseData> CreateNewPayment_CallsApiWithRightParameters = new[]
+        {
+            new TestCaseData(
+                new CreatePaymentRequest
+                {
+                    OrderId = "5b148b26-7e48-489e-8156-89534194f8a6",
+                    Amount = new Amount
+                    {
+                        Value = 4200,
+                        Currency = "GBP"
+                    }
+                },
+                "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 400
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\n\\t\\u0022orderId\\u0022: \\u00225b148b26-7e48-489e-8156-89534194f8a6\\u0022,\\n\\t\\u0022amount\\u0022: {\\n\\t\\t\\u0022value\\u0022: 4200,\\n\\t\\t\\u0022currency\\u0022: \\u0022GBP\\u0022\\n\\t},\\n\\t\\u0022amountOriginal\\u0022: null\\n}\"},\"context\":{\"errors\":[{\"message\":\"New payment for order with ID \\u00225b148b26-7e48-489e-8156-89534194f8a6\\u0022 already exists.\"}]}}",
+                HttpStatusCode.BadRequest,
+                "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."
+            ),
+
+            // 404
+            new TestCaseData(
+                "{\"request\":{\"body\":\"{\\n\\t\\u0022orderId\\u0022: \\u0022ff40a916-e609-46a7-a57a-5eaee55940de\\u0022,\\n\\t\\u0022amount\\u0022: {\\n\\t\\t\\u0022value\\u0022: 4200,\\n\\t\\t\\u0022currency\\u0022: \\u0022GBP\\u0022\\n\\t},\\n\\t\\u0022amountOriginal\\u0022: null\\n}\"},\"context\":{\"errors\":[{\"message\":\"Order with id \\u0022ff40a916-e609-46a7-a57a-5eaee55940de\\u0022 does not exist.\"}]}}",
+                HttpStatusCode.NotFound,
+                "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."
+            ),
+        };
+
 
         #endregion
     }
