@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Tests.Helpers.ApiWrappers;
 using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
@@ -126,18 +127,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
-                typeof(JwtWithApiKeyAuthenticationService)
+                typeof(PredefinedJwtAuthenticationService)
             ),
             new TestCaseData(
                 new ApiContext(),
-                typeof(JwtWithApiKeyAuthenticationService)
+                typeof(PredefinedJwtAuthenticationService)
             ),
             new TestCaseData(
                 new ApiContext
                 {
-                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 },
-                typeof(JwtWithApiKeyAuthenticationService)
+                typeof(PredefinedJwtAuthenticationService)
             ),
             new TestCaseData(
                 new ApiContext

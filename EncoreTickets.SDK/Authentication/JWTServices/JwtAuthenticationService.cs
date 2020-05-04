@@ -1,19 +1,18 @@
 ﻿using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Authentication.Models;
 using EncoreTickets.SDK.Utilities.Enums;
 
-namespace EncoreTickets.SDK.Authentication
+namespace EncoreTickets.SDK.Authentication.JWTServices
 {
-    /// <inheritdoc cref="JwtWithApiKeyAuthenticationService" />
+    /// <inheritdoc cref="BaseJwtAuthenticationService" />
     /// <summary>
-    /// The service for JWT authentication.
+    /// The service for JWT authentication based on credentials.
     /// </summary>
-    public class JwtAuthenticationService : JwtWithApiKeyAuthenticationService
+    public class JwtAuthenticationService : BaseJwtAuthenticationService
     {
         /// <summary>
-        /// Initializes an instance for the JWT authentication service.
+        /// Initializes an instance for the JWT authentication service based on credentials.
         /// </summary>
         /// <param name="context">The API context.</param>
         /// <param name="host">The service host.</param>

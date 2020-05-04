@@ -129,7 +129,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 
     public static class ApiRestClientBuilderTestsSource
     {
-        private const string SdkVersion = "3.0.0";
+        private const string SdkVersion = "3.1.0";
 
         public static IEnumerable<TestCaseData> CreateClientWrapper_ReturnsExpectedValue = new[]
         {
@@ -146,7 +146,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.ApiKey
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                     }
                 }
             ),
@@ -156,7 +156,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.ApiKey
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                     }
                 }
             ),
@@ -178,7 +178,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.ApiKey,
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
+                        AccessToken = "dyfuYTI5GLJjkl"
+                    }
+                }
+            ),
+            new TestCaseData(
+                new ApiContext(Environments.QA, "dyfuYTI5GLJjkl", AuthenticationMethod.JWT),
+                new RestClientWrapper
+                {
+                    Credentials = new RestClientCredentials
+                    {
+                        AuthenticationMethod = AuthenticationMethod.JWT,
                         AccessToken = "dyfuYTI5GLJjkl"
                     }
                 }

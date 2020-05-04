@@ -6,18 +6,18 @@
     public enum AuthenticationMethod
     {
         /// <summary>
-        /// Authentication based on access tokens.
+        /// Authentication based on access token obtained based on credentials.
         /// </summary>
         JWT,
+
+        /// <summary>
+        /// Authentication based on predefined access token.
+        /// </summary>
+        PredefinedJWT,
 
         /// <summary>
         /// Authentication based on username and password.
         /// </summary>
         Basic,
-
-        /// <summary>
-        /// Authentication based on API key.
-        /// </summary>
-        ApiKey
     }
 }

@@ -427,7 +427,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = null,
-                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 }
             ),
             new TestCaseData(
@@ -436,7 +436,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "",
-                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 }
             ),
             new TestCaseData(
@@ -445,7 +445,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "   \n",
-                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 }
             ),
             new TestCaseData(
@@ -478,7 +478,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "token",
-                    AuthenticationMethod = AuthenticationMethod.ApiKey
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 },
                 new JwtAuthenticator("token"),
                 "Bearer token"

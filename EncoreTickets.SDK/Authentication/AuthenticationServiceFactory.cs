@@ -1,5 +1,6 @@
 ﻿using System;
 using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Authentication
@@ -22,8 +23,8 @@ namespace EncoreTickets.SDK.Authentication
             {
                 case AuthenticationMethod.JWT:
                     return new JwtAuthenticationService(context, host, loginEndpoint);
-                case AuthenticationMethod.ApiKey:
-                    return new JwtWithApiKeyAuthenticationService(context, host, loginEndpoint);
+                case AuthenticationMethod.PredefinedJWT:
+                    return new PredefinedJwtAuthenticationService(context, host, loginEndpoint);
                 default:
                     throw new NotImplementedException();
             }

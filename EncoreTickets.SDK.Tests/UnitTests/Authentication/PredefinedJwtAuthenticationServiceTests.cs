@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 {
-    internal class JwtWithApiKeyAuthenticationServiceTests
+    internal class PredefinedJwtAuthenticationServiceTests
     {
         [TestCaseSource(typeof(JwtWithApiKeyAuthenticationServiceTestsSource), nameof(JwtWithApiKeyAuthenticationServiceTestsSource.Authenticate_DoesNotChangeContext))]
         public void Authenticate_DoesNotChangeContext(ApiContext context)
         {
             var sourceContext = TestHelper.CopyObject(context);
-            var service = new JwtWithApiKeyAuthenticationService(context, It.IsAny<string>(), It.IsAny<string>());
+            var service = new PredefinedJwtAuthenticationService(context, It.IsAny<string>(), It.IsAny<string>());
 
             var updatedContext = service.Authenticate();
 
@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         [TestCaseSource(typeof(JwtWithApiKeyAuthenticationServiceTestsSource), nameof(JwtWithApiKeyAuthenticationServiceTestsSource.IsThereAuthentication_ReturnsCorrectly))]
         public void IsThereAuthentication_ReturnsCorrectly(ApiContext context, bool expectedResult)
         {
-            var service = new JwtWithApiKeyAuthenticationService(context, It.IsAny<string>(), It.IsAny<string>());
+            var service = new PredefinedJwtAuthenticationService(context, It.IsAny<string>(), It.IsAny<string>());
 
             var actual = service.IsThereAuthentication();
 

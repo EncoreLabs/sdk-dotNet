@@ -29,8 +29,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Models
 
         [TestCase(Environments.Production, "username", "password", AuthenticationMethod.Basic)]
         [TestCase(Environments.Production, "", "", AuthenticationMethod.Basic)]
-        [TestCase(Environments.Production, null, null, AuthenticationMethod.ApiKey)]
-        [TestCase(Environments.QA, "username", "password", AuthenticationMethod.ApiKey)]
+        [TestCase(Environments.Production, null, null, AuthenticationMethod.PredefinedJWT)]
+        [TestCase(Environments.QA, "username", "password", AuthenticationMethod.PredefinedJWT)]
         [TestCase(Environments.Sandbox, "username", "password", AuthenticationMethod.JWT)]
         [TestCase(Environments.Staging, "username", "password", AuthenticationMethod.JWT)]
         public void ConstructorWithEnvironmentAndCredentials_IfAuthenticationMethodIsSet_InitializesCorrectly(
@@ -61,7 +61,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Models
 
             Assert.AreEqual(env, context.Environment);
             Assert.AreEqual(token, context.AccessToken);
-            Assert.AreEqual(AuthenticationMethod.ApiKey, context.AuthenticationMethod);
+            Assert.AreEqual(AuthenticationMethod.PredefinedJWT, context.AuthenticationMethod);
             Assert.Null(context.UserName);
             Assert.Null(context.Password);
             Assert.Null(context.Affiliate);
@@ -73,7 +73,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Models
             var context = new ApiContext();
 
             Assert.AreEqual(Environments.Production, context.Environment);
-            Assert.AreEqual(AuthenticationMethod.ApiKey, context.AuthenticationMethod);
+            Assert.AreEqual(AuthenticationMethod.PredefinedJWT, context.AuthenticationMethod);
             Assert.Null(context.UserName);
             Assert.Null(context.Password);
             Assert.Null(context.AccessToken);
@@ -89,7 +89,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Models
             var context = new ApiContext(env);
 
             Assert.AreEqual(env, context.Environment);
-            Assert.AreEqual(AuthenticationMethod.ApiKey, context.AuthenticationMethod);
+            Assert.AreEqual(AuthenticationMethod.PredefinedJWT, context.AuthenticationMethod);
             Assert.Null(context.UserName);
             Assert.Null(context.Password);
             Assert.Null(context.AccessToken);

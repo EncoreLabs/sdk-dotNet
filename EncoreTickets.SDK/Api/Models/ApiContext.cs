@@ -44,17 +44,19 @@ namespace EncoreTickets.SDK.Api.Models
             Environments environment,
             string userName,
             string password,
-            AuthenticationMethod authMethod = AuthenticationMethod.JWT) : this(environment)
+            AuthenticationMethod authMethod = AuthenticationMethod.JWT) : this(environment, authMethod)
         {
             UserName = userName;
             Password = password;
-            AuthenticationMethod = authMethod;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext(Environments environment, string token) : this(environment)
+        public ApiContext(
+            Environments environment,
+            string token,
+            AuthenticationMethod authMethod = AuthenticationMethod.PredefinedJWT) : this(environment, authMethod)
         {
             AccessToken = token;
         }
@@ -69,10 +71,12 @@ namespace EncoreTickets.SDK.Api.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext(Environments env)
+        public ApiContext(
+            Environments env,
+            AuthenticationMethod authMethod = AuthenticationMethod.PredefinedJWT)
         {
             Environment = env;
-            AuthenticationMethod = AuthenticationMethod.ApiKey;
+            AuthenticationMethod = authMethod;
         }
     }
 }
