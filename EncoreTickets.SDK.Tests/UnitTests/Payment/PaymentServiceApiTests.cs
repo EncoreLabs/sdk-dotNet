@@ -358,7 +358,87 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"urlParams\":{\"channelId\":\"localhost2\",\"externalId\":\"905909\"}},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":\"UK\"},\"items\":[{\"id\":\"605bd323-cf4a-4a50-a785-eb87960517e8\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"},{\"id\":\"c844050a-ec69-4842-9851-2bbfcf0d9610\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",
+                @"{
+  ""request"": {
+    ""urlParams"": {
+      ""channelId"": ""localhost2"",
+      ""externalId"": ""905909""
+    }
+  },
+  ""response"": {
+    ""id"": ""5b148b26-7e48-489e-8156-89534194f8a6"",
+    ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+    ""channelId"": ""localhost2"",
+    ""externalId"": ""905909"",
+    ""redirectUrl"": ""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1"",
+    ""origin"": ""http://localhost:8000"",
+    ""payments"": [
+      {
+        ""id"": ""528f136e-54c3-4cbe-b5c3-585beda0c0a6"",
+        ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+        ""amount"": {
+          ""value"": 6200,
+          ""currency"": ""GBP""
+        },
+        ""status"": ""new"",
+        ""events"": [],
+        ""refunds"": [],
+        ""compensations"": []
+      }
+    ],
+    ""shopper"": {
+      ""email"": ""aburak@encore.co.uk"",
+      ""firstName"": ""Aliaksei"",
+      ""lastName"": ""Burak"",
+      ""title"": ""Mr"",
+      ""externalId"": ""ext-1""
+    },
+    ""billingAddress"": {
+      ""line1"": ""Line1"",
+      ""line2"": ""Line2"",
+      ""postalCode"": ""AB1 2EF"",
+      ""city"": ""Hometown"",
+      ""countryCode"": ""GB"",
+      ""legacyCountryCode"": ""UK""
+    },
+    ""items"": [
+      {
+        ""id"": ""605bd323-cf4a-4a50-a785-eb87960517e8"",
+        ""name"": ""Book Of Mormon"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP""
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""3608""
+      },
+      {
+        ""id"": ""c844050a-ec69-4842-9851-2bbfcf0d9610"",
+        ""name"": ""Book Of Mormon"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP""
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""3608""
+      }
+    ],
+    ""riskData"": {
+      ""daysToEvent"": 2,
+      ""deliveryMethod"": ""collection""
+    }
+  }
+}",
                 new Order
                 {
                     Id = "5b148b26-7e48-489e-8156-89534194f8a6",
@@ -449,7 +529,106 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }
             ),
             new TestCaseData(
-                "{\"request\":{\"urlParams\":{\"channelId\":\"europa-qa\",\"externalId\":\"808842\"}},\"response\":{\"id\":\"2c542ed9-547a-46c1-9001-17666e2cfd9b\",\"createdAt\":\"2020-01-15T14:54:51+00:00\",\"channelId\":\"europa-qa\",\"externalId\":\"808842\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"payments\":[{\"id\":\"6cd73a15-6d88-46ec-8876-653137257042\",\"createdAt\":\"2020-01-15T14:54:51+00:00\",\"amount\":{\"value\":11800,\"currency\":\"GBP\"},\"status\":\"partially_refunded\",\"events\":[{\"type\":\"capture\",\"createdAt\":\"2020-01-15T14:55:17+00:00\",\"pspReference\":\"881579100117023F\",\"pspCreatedAt\":\"2020-01-15T14:55:17+00:00\",\"status\":true},{\"type\":\"authorisation\",\"createdAt\":\"2020-01-15T14:55:15+00:00\",\"pspReference\":\"851579100114678C\",\"pspCreatedAt\":\"2020-01-15T14:55:15+00:00\",\"status\":true}],\"refunds\":[{\"id\":\"15a9ea19-2c1b-4505-8a31-1b3a009eec91\",\"createdAt\":\"2020-01-15T15:13:17+00:00\",\"pspReference\":\"881579101197463E\",\"pspCreatedAt\":\"2020-01-15T15:13:17+00:00\",\"amount\":{\"value\":100,\"currency\":\"GBP\"},\"reason\":\"Test Booking\",\"status\":\"success\"},{\"id\":\"e1bc3e9d-77ca-4cc3-ad29-97faa20f94ba\",\"createdAt\":\"2020-01-16T08:56:00+00:00\",\"pspReference\":\"881579164960934H\",\"pspCreatedAt\":\"2020-01-16T08:56:00+00:00\",\"amount\":{\"value\":100,\"currency\":\"GBP\"},\"reason\":\"Test Booking\",\"status\":\"success\"}],\"compensations\":[],\"paymentMethod\":{\"type\":\"card\",\"holderName\":\"RE\",\"scheme\":\"visa\",\"number\":\"444433******1111\",\"expiryDate\":\"10/2020\"},\"merchantAccount\":\"EncoreTicketsCallCentre\",\"paymentServiceProvider\":\"AdyenTest\"}],\"shopper\":{\"lastName\":\"RE\",\"telephoneNumber\":\"re\"},\"items\":[{\"id\":\"3fe70fd3-600d-4938-926d-053df976ad30\",\"name\":\"WICKED\",\"quantity\":2,\"amount\":{\"value\":5900,\"currency\":\"GBP\"},\"externalId\":\"1587\"}],\"riskData\":{\"daysToEvent\":0,\"deliveryMethod\":\"collection\",\"officeId\":\"1\"}}}",
+                @"{
+  ""request"": {
+    ""urlParams"": {
+      ""channelId"": ""europa-qa"",
+      ""externalId"": ""808842""
+    }
+  },
+  ""response"": {
+    ""id"": ""2c542ed9-547a-46c1-9001-17666e2cfd9b"",
+    ""createdAt"": ""2020-01-15T14:54:51+00:00"",
+    ""channelId"": ""europa-qa"",
+    ""externalId"": ""808842"",
+    ""redirectUrl"": ""https://payment-service.qatixuk.io/redirect"",
+    ""origin"": ""https://payment-service.qatixuk.io"",
+    ""payments"": [
+      {
+        ""id"": ""6cd73a15-6d88-46ec-8876-653137257042"",
+        ""createdAt"": ""2020-01-15T14:54:51+00:00"",
+        ""amount"": {
+          ""value"": 11800,
+          ""currency"": ""GBP""
+        },
+        ""status"": ""partially_refunded"",
+        ""events"": [
+          {
+            ""type"": ""capture"",
+            ""createdAt"": ""2020-01-15T14:55:17+00:00"",
+            ""pspReference"": ""881579100117023F"",
+            ""pspCreatedAt"": ""2020-01-15T14:55:17+00:00"",
+            ""status"": true
+          },
+          {
+            ""type"": ""authorisation"",
+            ""createdAt"": ""2020-01-15T14:55:15+00:00"",
+            ""pspReference"": ""851579100114678C"",
+            ""pspCreatedAt"": ""2020-01-15T14:55:15+00:00"",
+            ""status"": true
+          }
+        ],
+        ""refunds"": [
+          {
+            ""id"": ""15a9ea19-2c1b-4505-8a31-1b3a009eec91"",
+            ""createdAt"": ""2020-01-15T15:13:17+00:00"",
+            ""pspReference"": ""881579101197463E"",
+            ""pspCreatedAt"": ""2020-01-15T15:13:17+00:00"",
+            ""amount"": {
+              ""value"": 100,
+              ""currency"": ""GBP""
+            },
+            ""reason"": ""Test Booking"",
+            ""status"": ""success""
+          },
+          {
+            ""id"": ""e1bc3e9d-77ca-4cc3-ad29-97faa20f94ba"",
+            ""createdAt"": ""2020-01-16T08:56:00+00:00"",
+            ""pspReference"": ""881579164960934H"",
+            ""pspCreatedAt"": ""2020-01-16T08:56:00+00:00"",
+            ""amount"": {
+              ""value"": 100,
+              ""currency"": ""GBP""
+            },
+            ""reason"": ""Test Booking"",
+            ""status"": ""success""
+          }
+        ],
+        ""compensations"": [],
+        ""paymentMethod"": {
+          ""type"": ""card"",
+          ""holderName"": ""RE"",
+          ""scheme"": ""visa"",
+          ""number"": ""444433******1111"",
+          ""expiryDate"": ""10/2020""
+        },
+        ""merchantAccount"": ""EncoreTicketsCallCentre"",
+        ""paymentServiceProvider"": ""AdyenTest""
+      }
+    ],
+    ""shopper"": {
+      ""lastName"": ""RE"",
+      ""telephoneNumber"": ""re""
+    },
+    ""items"": [
+      {
+        ""id"": ""3fe70fd3-600d-4938-926d-053df976ad30"",
+        ""name"": ""WICKED"",
+        ""quantity"": 2,
+        ""amount"": {
+          ""value"": 5900,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""1587""
+      }
+    ],
+    ""riskData"": {
+      ""daysToEvent"": 0,
+      ""deliveryMethod"": ""collection"",
+      ""officeId"": ""1""
+    }
+  }
+}",
                 new Order
                 {
                     Id = "2c542ed9-547a-46c1-9001-17666e2cfd9b",
@@ -562,7 +741,88 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }
             ),
             new TestCaseData(
-                "{\r\n    \"request\": {\r\n        \"urlParams\": {\r\n            \"channelId\": \".net-sdk-integration-test\",\r\n            \"externalId\": \"999999999\"\r\n        }\r\n    },\r\n    \"response\": {\r\n        \"id\": \"d2941460-13e4-43f1-8a13-23a36bc1a714\",\r\n        \"createdAt\": \"2020-02-03T09:00:29+00:00\",\r\n        \"channelId\": \".net-sdk-integration-test\",\r\n        \"externalId\": \"999999999\",\r\n        \"redirectUrl\": \"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\r\n        \"origin\": \"http://localhost:8000\",\r\n        \"payments\": [\r\n            {\r\n                \"id\": \"8495b8df-dcca-4b66-8ae6-96709b155b04\",\r\n                \"createdAt\": \"2020-02-03T09:00:29+00:00\",\r\n                \"amount\": {\r\n                    \"value\": 11000,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"status\": \"new\",\r\n                \"events\": [],\r\n                \"refunds\": [],\r\n                \"compensations\": []\r\n            }\r\n        ],\r\n        \"shopper\": {\r\n            \"email\": \"aburak@encore.co.uk\",\r\n            \"firstName\": \"Tome1918607-70c1-492e-87bb-627122e99fef\",\r\n            \"lastName\": \"Burak\",\r\n            \"title\": \"Mr\",\r\n            \"externalId\": \"ext-1\"\r\n        },\r\n        \"billingAddress\": {\r\n            \"line1\": \"Line1\",\r\n            \"line2\": \"Addresse1918607-70c1-492e-87bb-627122e99fef\",\r\n            \"postalCode\": \"AB1 2EF\",\r\n            \"city\": \"Hometown\",\r\n            \"countryCode\": \"GB\"\r\n        },\r\n        \"items\": [\r\n            {\r\n                \"id\": \"843e8e93-705c-42d1-b6f8-121f953bd47f\",\r\n                \"name\": \"Namee1918607-70c1-492e-87bb-627122e99fef\",\r\n                \"description\": \"Online ticket sale Book Of Mormon\",\r\n                \"quantity\": 1,\r\n                \"amount\": {\r\n                    \"value\": 5400,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"tax\": {\r\n                    \"value\": 100,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"externalId\": \"3608\"\r\n            },\r\n            {\r\n                \"id\": \"cb3d9efc-653b-4938-9c4e-0d840600d865\",\r\n                \"name\": \"Namee1918607-70c1-492e-87bb-627122e99fef\",\r\n                \"description\": \"Online ticket sale Book Of Mormon\",\r\n                \"quantity\": 1,\r\n                \"amount\": {\r\n                    \"value\": 5400,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"tax\": {\r\n                    \"value\": 100,\r\n                    \"currency\": \"GBP\",\r\n                    \"exchangeRate\": 0.0\r\n                },\r\n                \"externalId\": \"3608\"\r\n            }\r\n        ],\r\n        \"riskData\": []\r\n    }\r\n}",
+                @"{
+    ""request"": {
+        ""urlParams"": {
+            ""channelId"": "".net-sdk-integration-test"",
+            ""externalId"": ""999999999""
+        }
+    },
+    ""response"": {
+        ""id"": ""d2941460-13e4-43f1-8a13-23a36bc1a714"",
+        ""createdAt"": ""2020-02-03T09:00:29+00:00"",
+        ""channelId"": "".net-sdk-integration-test"",
+        ""externalId"": ""999999999"",
+        ""redirectUrl"": ""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1"",
+        ""origin"": ""http://localhost:8000"",
+        ""payments"": [
+            {
+                ""id"": ""8495b8df-dcca-4b66-8ae6-96709b155b04"",
+                ""createdAt"": ""2020-02-03T09:00:29+00:00"",
+                ""amount"": {
+                    ""value"": 11000,
+                    ""currency"": ""GBP"",
+                    ""exchangeRate"": 0.0
+                },
+                ""status"": ""new"",
+                ""events"": [],
+                ""refunds"": [],
+                ""compensations"": []
+            }
+        ],
+        ""shopper"": {
+            ""email"": ""aburak@encore.co.uk"",
+            ""firstName"": ""Tome1918607-70c1-492e-87bb-627122e99fef"",
+            ""lastName"": ""Burak"",
+            ""title"": ""Mr"",
+            ""externalId"": ""ext-1""
+        },
+        ""billingAddress"": {
+            ""line1"": ""Line1"",
+            ""line2"": ""Addresse1918607-70c1-492e-87bb-627122e99fef"",
+            ""postalCode"": ""AB1 2EF"",
+            ""city"": ""Hometown"",
+            ""countryCode"": ""GB""
+        },
+        ""items"": [
+            {
+                ""id"": ""843e8e93-705c-42d1-b6f8-121f953bd47f"",
+                ""name"": ""Namee1918607-70c1-492e-87bb-627122e99fef"",
+                ""description"": ""Online ticket sale Book Of Mormon"",
+                ""quantity"": 1,
+                ""amount"": {
+                    ""value"": 5400,
+                    ""currency"": ""GBP"",
+                    ""exchangeRate"": 0.0
+                },
+                ""tax"": {
+                    ""value"": 100,
+                    ""currency"": ""GBP"",
+                    ""exchangeRate"": 0.0
+                },
+                ""externalId"": ""3608""
+            },
+            {
+                ""id"": ""cb3d9efc-653b-4938-9c4e-0d840600d865"",
+                ""name"": ""Namee1918607-70c1-492e-87bb-627122e99fef"",
+                ""description"": ""Online ticket sale Book Of Mormon"",
+                ""quantity"": 1,
+                ""amount"": {
+                    ""value"": 5400,
+                    ""currency"": ""GBP"",
+                    ""exchangeRate"": 0.0
+                },
+                ""tax"": {
+                    ""value"": 100,
+                    ""currency"": ""GBP"",
+                    ""exchangeRate"": 0.0
+                },
+                ""externalId"": ""3608""
+            }
+        ],
+        ""riskData"": []
+    }
+}",
                 new Order
                 {
                     Id = "d2941460-13e4-43f1-8a13-23a36bc1a714",
@@ -654,7 +914,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             // 404
             new TestCaseData(
-                "{\"request\":{\"urlParams\":{\"channelId\":\"localhost2\",\"externalId\":\"6690605\"}},\"context\":{\"errors\":[{\"message\":\"Cannot find Order. Please specify a valid orderId.\"}]}}",
+                @"{
+  ""request"": {
+    ""urlParams"": {
+      ""channelId"": ""localhost2"",
+      ""externalId"": ""6690605""
+    }
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""Cannot find Order. Please specify a valid orderId.""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.NotFound,
                 "Cannot find Order. Please specify a valid orderId."
             ),
@@ -797,7 +1071,84 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\n    \\\"channelId\\\": \\\"localhost2\\\",\\n    \\\"externalId\\\": \\\"905909\\\",\\n    \\\"redirectUrl\\\": \\\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\\\",\\n    \\\"origin\\\": \\\"http://localhost:8000\\\",\\n    \\\"amount\\\": {\\n        \\\"value\\\": 6200,\\n        \\\"currency\\\": \\\"GBP\\\"\\n    },\\n    \\\"shopper\\\": {\\n        \\\"email\\\": \\\"aburak@encore.co.uk\\\",\\n        \\\"title\\\": \\\"Mr\\\",\\n        \\\"firstName\\\": \\\"Aliaksei\\\",\\n        \\\"lastName\\\": \\\"Burak\\\",\\n        \\\"externalId\\\": \\\"ext-1\\\"\\n    },\\n    \\\"billingAddress\\\": {\\n        \\\"line1\\\": \\\"Line1\\\",\\n        \\\"line2\\\": \\\"Line2\\\",\\n        \\\"postalCode\\\": \\\"AB1 2EF\\\",\\n        \\\"city\\\": \\\"Hometown\\\",\\n        \\\"countryCode\\\": \\\"UK\\\"\\n    },\\n    \\\"items\\\": [\\n        {\\n            \\\"name\\\": \\\"Book Of Mormon\\\",\\n            \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\n            \\\"quantity\\\": 1,\\n            \\\"externalId\\\": \\\"3608\\\",\\n            \\\"amount\\\": {\\n                \\\"value\\\": 5400,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            }\\n        },\\n        {\\n            \\\"name\\\": \\\"Book Of Mormon\\\",\\n            \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\n            \\\"quantity\\\": 1,\\n            \\\"externalId\\\": \\\"3608\\\",\\n            \\\"amount\\\": {\\n                \\\"value\\\": 5400,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            }\\n        }\\n    ],\\n    \\\"riskData\\\": {\\n        \\\"daysToEvent\\\": \\\"2\\\",\\n        \\\"deliveryMethod\\\": \\\"collection\\\"\\n    }\\n}\"},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":\"UK\"},\"items\":[{\"id\":\"c844050a-ec69-4842-9851-2bbfcf0d9610\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"},{\"id\":\"605bd323-cf4a-4a50-a785-eb87960517e8\",\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"3608\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\n    \""channelId\"": \""localhost2\"",\n    \""externalId\"": \""905909\"",\n    \""redirectUrl\"": \""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\"",\n    \""origin\"": \""http://localhost:8000\"",\n    \""amount\"": {\n        \""value\"": 6200,\n        \""currency\"": \""GBP\""\n    },\n    \""shopper\"": {\n        \""email\"": \""aburak@encore.co.uk\"",\n        \""title\"": \""Mr\"",\n        \""firstName\"": \""Aliaksei\"",\n        \""lastName\"": \""Burak\"",\n        \""externalId\"": \""ext-1\""\n    },\n    \""billingAddress\"": {\n        \""line1\"": \""Line1\"",\n        \""line2\"": \""Line2\"",\n        \""postalCode\"": \""AB1 2EF\"",\n        \""city\"": \""Hometown\"",\n        \""countryCode\"": \""UK\""\n    },\n    \""items\"": [\n        {\n            \""name\"": \""Book Of Mormon\"",\n            \""description\"": \""Online ticket sale Book Of Mormon\"",\n            \""quantity\"": 1,\n            \""externalId\"": \""3608\"",\n            \""amount\"": {\n                \""value\"": 5400,\n                \""currency\"": \""GBP\""\n            },\n            \""tax\"": {\n                \""value\"": 100,\n                \""currency\"": \""GBP\""\n            }\n        },\n        {\n            \""name\"": \""Book Of Mormon\"",\n            \""description\"": \""Online ticket sale Book Of Mormon\"",\n            \""quantity\"": 1,\n            \""externalId\"": \""3608\"",\n            \""amount\"": {\n                \""value\"": 5400,\n                \""currency\"": \""GBP\""\n            },\n            \""tax\"": {\n                \""value\"": 100,\n                \""currency\"": \""GBP\""\n            }\n        }\n    ],\n    \""riskData\"": {\n        \""daysToEvent\"": \""2\"",\n        \""deliveryMethod\"": \""collection\""\n    }\n}""
+  },
+  ""response"": {
+    ""id"": ""5b148b26-7e48-489e-8156-89534194f8a6"",
+    ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+    ""channelId"": ""localhost2"",
+    ""externalId"": ""905909"",
+    ""redirectUrl"": ""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1"",
+    ""origin"": ""http://localhost:8000"",
+    ""payments"": [
+      {
+        ""id"": ""528f136e-54c3-4cbe-b5c3-585beda0c0a6"",
+        ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+        ""amount"": {
+          ""value"": 6200,
+          ""currency"": ""GBP""
+        },
+        ""status"": ""new"",
+        ""events"": [],
+        ""refunds"": [],
+        ""compensations"": []
+      }
+    ],
+    ""shopper"": {
+      ""email"": ""aburak@encore.co.uk"",
+      ""firstName"": ""Aliaksei"",
+      ""lastName"": ""Burak"",
+      ""title"": ""Mr"",
+      ""externalId"": ""ext-1""
+    },
+    ""billingAddress"": {
+      ""line1"": ""Line1"",
+      ""line2"": ""Line2"",
+      ""postalCode"": ""AB1 2EF"",
+      ""city"": ""Hometown"",
+      ""countryCode"": ""GB"",
+      ""legacyCountryCode"": ""UK""
+    },
+    ""items"": [
+      {
+        ""id"": ""c844050a-ec69-4842-9851-2bbfcf0d9610"",
+        ""name"": ""Book Of Mormon"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP""
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""3608""
+      },
+      {
+        ""id"": ""605bd323-cf4a-4a50-a785-eb87960517e8"",
+        ""name"": ""Book Of Mormon"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP""
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""3608""
+      }
+    ],
+    ""riskData"": {
+      ""daysToEvent"": 2,
+      ""deliveryMethod"": ""collection""
+    }
+  }
+}",
                 new Order
                 {
                     Id = "5b148b26-7e48-489e-8156-89534194f8a6",
@@ -888,7 +1239,65 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }
             ),
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\\"channelId\\\":\\\"europa-qa\\\",\\\"externalId\\\":\\\"889454\\\",\\\"redirectUrl\\\":\\\"https://payment-service.qatixuk.io/redirect\\\",\\\"origin\\\":\\\"https://payment-service.qatixuk.io\\\",\\\"amount\\\":{\\\"value\\\":8100,\\\"currency\\\":\\\"GBP\\\"},\\\"billingAddress\\\":{\\\"line1\\\":\\\"115 Shaftesbury Avenue\\\",\\\"line2\\\":null,\\\"postalCode\\\":\\\"WC2H 8AF\\\",\\\"city\\\":\\\"Cambridge Circus\\\",\\\"countryCode\\\":\\\"UK\\\",\\\"legacyCountryCode\\\":null,\\\"stateOrProvince\\\":\\\"London\\\"},\\\"shopper\\\":{\\\"email\\\":\\\"test@test.com\\\",\\\"telephoneNumber\\\":\\\"02072578183\\\",\\\"title\\\":\\\"MS\\\",\\\"firstName\\\":\\\"INNA\\\",\\\"lastName\\\":\\\"IVANOVA\\\",\\\"externalId\\\":null},\\\"items\\\":[{\\\"name\\\":\\\"WICKED\\\",\\\"description\\\":null,\\\"quantity\\\":1,\\\"externalId\\\":\\\"1587\\\",\\\"amount\\\":{\\\"value\\\":8100,\\\"currency\\\":\\\"GBP\\\"},\\\"tax\\\":null}],\\\"riskData\\\":{\\\"deliveryMethod\\\":\\\"collection\\\",\\\"officeId\\\":1,\\\"daysToEvent\\\":0}}\"},\"response\":{\"id\":\"cffb7c33-5ee6-410d-b975-48fc0546aab0\",\"createdAt\":\"2020-01-31T07:32:38+00:00\",\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"payments\":[{\"id\":\"67d2743e-52e7-4767-af69-a4988f91e4e2\",\"createdAt\":\"2020-01-31T07:32:38+00:00\",\"amount\":{\"value\":8100,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\"},\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"GB\",\"legacyCountryCode\":\"UK\",\"stateOrProvince\":\"London\"},\"items\":[{\"id\":\"12b78a4d-4982-4da9-952f-8a9a6290194d\",\"name\":\"WICKED\",\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\"},\"externalId\":\"1587\"}],\"riskData\":{\"daysToEvent\":0,\"deliveryMethod\":\"collection\",\"officeId\":\"1\"}}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\""channelId\"":\""europa-qa\"",\""externalId\"":\""889454\"",\""redirectUrl\"":\""https://payment-service.qatixuk.io/redirect\"",\""origin\"":\""https://payment-service.qatixuk.io\"",\""amount\"":{\""value\"":8100,\""currency\"":\""GBP\""},\""billingAddress\"":{\""line1\"":\""115 Shaftesbury Avenue\"",\""line2\"":null,\""postalCode\"":\""WC2H 8AF\"",\""city\"":\""Cambridge Circus\"",\""countryCode\"":\""UK\"",\""legacyCountryCode\"":null,\""stateOrProvince\"":\""London\""},\""shopper\"":{\""email\"":\""test@test.com\"",\""telephoneNumber\"":\""02072578183\"",\""title\"":\""MS\"",\""firstName\"":\""INNA\"",\""lastName\"":\""IVANOVA\"",\""externalId\"":null},\""items\"":[{\""name\"":\""WICKED\"",\""description\"":null,\""quantity\"":1,\""externalId\"":\""1587\"",\""amount\"":{\""value\"":8100,\""currency\"":\""GBP\""},\""tax\"":null}],\""riskData\"":{\""deliveryMethod\"":\""collection\"",\""officeId\"":1,\""daysToEvent\"":0}}""
+  },
+  ""response"": {
+    ""id"": ""cffb7c33-5ee6-410d-b975-48fc0546aab0"",
+    ""createdAt"": ""2020-01-31T07:32:38+00:00"",
+    ""channelId"": ""europa-qa"",
+    ""externalId"": ""889454"",
+    ""redirectUrl"": ""https://payment-service.qatixuk.io/redirect"",
+    ""origin"": ""https://payment-service.qatixuk.io"",
+    ""payments"": [
+      {
+        ""id"": ""67d2743e-52e7-4767-af69-a4988f91e4e2"",
+        ""createdAt"": ""2020-01-31T07:32:38+00:00"",
+        ""amount"": {
+          ""value"": 8100,
+          ""currency"": ""GBP""
+        },
+        ""status"": ""new"",
+        ""events"": [],
+        ""refunds"": [],
+        ""compensations"": []
+      }
+    ],
+    ""shopper"": {
+      ""email"": ""test@test.com"",
+      ""firstName"": ""INNA"",
+      ""lastName"": ""IVANOVA"",
+      ""telephoneNumber"": ""02072578183"",
+      ""title"": ""MS""
+    },
+    ""billingAddress"": {
+      ""line1"": ""115 Shaftesbury Avenue"",
+      ""postalCode"": ""WC2H 8AF"",
+      ""city"": ""Cambridge Circus"",
+      ""countryCode"": ""GB"",
+      ""legacyCountryCode"": ""UK"",
+      ""stateOrProvince"": ""London""
+    },
+    ""items"": [
+      {
+        ""id"": ""12b78a4d-4982-4da9-952f-8a9a6290194d"",
+        ""name"": ""WICKED"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 8100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""1587""
+      }
+    ],
+    ""riskData"": {
+      ""daysToEvent"": 0,
+      ""deliveryMethod"": ""collection"",
+      ""officeId"": ""1""
+    }
+  }
+}",
                 new Order
                 {
                     Id = "cffb7c33-5ee6-410d-b975-48fc0546aab0",
@@ -960,12 +1369,34 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             // 400
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\r\\n  \\\"description\\\": null,\\r\\n  \\\"channelId\\\": \\\"localhost2\\\",\\r\\n  \\\"externalId\\\": \\\"905909\\\",\\r\\n  \\\"redirectUrl\\\": \\\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\\\",\\r\\n  \\\"origin\\\": \\\"http://localhost:8000\\\",\\r\\n  \\\"amount\\\": {\\r\\n    \\\"value\\\": 6200,\\r\\n    \\\"currency\\\": \\\"GBP\\\",\\r\\n    \\\"exchangeRate\\\": 0\\r\\n  },\\r\\n  \\\"amountOriginal\\\": null,\\r\\n  \\\"billingAddress\\\": {\\r\\n    \\\"line1\\\": \\\"Line1\\\",\\r\\n    \\\"line2\\\": \\\"Line2\\\",\\r\\n    \\\"postalCode\\\": \\\"AB1 2EF\\\",\\r\\n    \\\"city\\\": \\\"Hometown\\\",\\r\\n    \\\"countryCode\\\": \\\"GB\\\",\\r\\n    \\\"legacyCountryCode\\\": null,\\r\\n    \\\"stateOrProvince\\\": null\\r\\n  },\\r\\n  \\\"shopper\\\": {\\r\\n    \\\"email\\\": \\\"aburak@encore.co.uk\\\",\\r\\n    \\\"firstName\\\": \\\"Aliaksei\\\",\\r\\n    \\\"lastName\\\": \\\"Burak\\\",\\r\\n    \\\"telephoneNumber\\\": null,\\r\\n    \\\"title\\\": \\\"Mr\\\",\\r\\n    \\\"externalId\\\": \\\"ext-1\\\",\\r\\n    \\\"locale\\\": null\\r\\n  },\\r\\n  \\\"items\\\": [\\r\\n    {\\r\\n      \\\"id\\\": null,\\r\\n      \\\"name\\\": \\\"Book Of Mormon\\\",\\r\\n      \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\r\\n      \\\"quantity\\\": 1,\\r\\n      \\\"amount\\\": {\\r\\n        \\\"value\\\": 5400,\\r\\n        \\\"currency\\\": \\\"GBP\\\",\\r\\n        \\\"exchangeRate\\\": 0\\r\\n      },\\r\\n      \\\"amountOriginal\\\": null,\\r\\n      \\\"tax\\\": {\\r\\n        \\\"value\\\": 100,\\r\\n        \\\"currency\\\": \\\"GBP\\\",\\r\\n        \\\"exchangeRate\\\": 0\\r\\n      },\\r\\n      \\\"externalId\\\": \\\"3608\\\"\\r\\n    },\\r\\n    {\\r\\n      \\\"id\\\": null,\\r\\n      \\\"name\\\": \\\"Book Of Mormon\\\",\\r\\n      \\\"description\\\": \\\"Online ticket sale Book Of Mormon\\\",\\r\\n      \\\"quantity\\\": 1,\\r\\n      \\\"amount\\\": {\\r\\n        \\\"value\\\": 5400,\\r\\n        \\\"currency\\\": \\\"GBP\\\",\\r\\n        \\\"exchangeRate\\\": 0\\r\\n      },\\r\\n      \\\"amountOriginal\\\": null,\\r\\n      \\\"tax\\\": {\\r\\n        \\\"value\\\": 100,\\r\\n        \\\"currency\\\": \\\"GBP\\\",\\r\\n        \\\"exchangeRate\\\": 0\\r\\n      },\\r\\n      \\\"externalId\\\": \\\"3608\\\"\\r\\n    }\\r\\n  ],\\r\\n  \\\"riskData\\\": {\\r\\n    \\\"deliveryMethod\\\": \\\"collection\\\",\\r\\n    \\\"officeId\\\": null,\\r\\n    \\\"daysToEvent\\\": 2\\r\\n  }\\r\\n}\"},\"context\":{\"errors\":[{\"message\":\"Order already exist for given channelId (localhost2) and externalId (905909)\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\r\n  \""description\"": null,\r\n  \""channelId\"": \""localhost2\"",\r\n  \""externalId\"": \""905909\"",\r\n  \""redirectUrl\"": \""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\"",\r\n  \""origin\"": \""http://localhost:8000\"",\r\n  \""amount\"": {\r\n    \""value\"": 6200,\r\n    \""currency\"": \""GBP\"",\r\n    \""exchangeRate\"": 0\r\n  },\r\n  \""amountOriginal\"": null,\r\n  \""billingAddress\"": {\r\n    \""line1\"": \""Line1\"",\r\n    \""line2\"": \""Line2\"",\r\n    \""postalCode\"": \""AB1 2EF\"",\r\n    \""city\"": \""Hometown\"",\r\n    \""countryCode\"": \""GB\"",\r\n    \""legacyCountryCode\"": null,\r\n    \""stateOrProvince\"": null\r\n  },\r\n  \""shopper\"": {\r\n    \""email\"": \""aburak@encore.co.uk\"",\r\n    \""firstName\"": \""Aliaksei\"",\r\n    \""lastName\"": \""Burak\"",\r\n    \""telephoneNumber\"": null,\r\n    \""title\"": \""Mr\"",\r\n    \""externalId\"": \""ext-1\"",\r\n    \""locale\"": null\r\n  },\r\n  \""items\"": [\r\n    {\r\n      \""id\"": null,\r\n      \""name\"": \""Book Of Mormon\"",\r\n      \""description\"": \""Online ticket sale Book Of Mormon\"",\r\n      \""quantity\"": 1,\r\n      \""amount\"": {\r\n        \""value\"": 5400,\r\n        \""currency\"": \""GBP\"",\r\n        \""exchangeRate\"": 0\r\n      },\r\n      \""amountOriginal\"": null,\r\n      \""tax\"": {\r\n        \""value\"": 100,\r\n        \""currency\"": \""GBP\"",\r\n        \""exchangeRate\"": 0\r\n      },\r\n      \""externalId\"": \""3608\""\r\n    },\r\n    {\r\n      \""id\"": null,\r\n      \""name\"": \""Book Of Mormon\"",\r\n      \""description\"": \""Online ticket sale Book Of Mormon\"",\r\n      \""quantity\"": 1,\r\n      \""amount\"": {\r\n        \""value\"": 5400,\r\n        \""currency\"": \""GBP\"",\r\n        \""exchangeRate\"": 0\r\n      },\r\n      \""amountOriginal\"": null,\r\n      \""tax\"": {\r\n        \""value\"": 100,\r\n        \""currency\"": \""GBP\"",\r\n        \""exchangeRate\"": 0\r\n      },\r\n      \""externalId\"": \""3608\""\r\n    }\r\n  ],\r\n  \""riskData\"": {\r\n    \""deliveryMethod\"": \""collection\"",\r\n    \""officeId\"": null,\r\n    \""daysToEvent\"": 2\r\n  }\r\n}""
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""Order already exist for given channelId (localhost2) and externalId (905909)""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.BadRequest,
                 "Order already exist for given channelId (localhost2) and externalId (905909)"
             ),
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\u0022description\\u0022:\\u0022test description\\u0022,\\u0022channelId\\u0022:\\u0022.net-sdk-integration-test\\u0022,\\u0022externalId\\u0022:\\u0022987654321\\u0022,\\u0022redirectUrl\\u0022:\\u0022https:\\/\\/payment-service.qatixuk.io\\/redirect\\u0022,\\u0022origin\\u0022:\\u0022https:\\/\\/payment-service.qatixuk.io\\u0022,\\u0022amount\\u0022:{\\u0022value\\u0022:8100,\\u0022currency\\u0022:\\u0022USD\\u0022,\\u0022exchangeRate\\u0022:1.2},\\u0022amountOriginal\\u0022:{\\u0022value\\u0022:100000,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022billingAddress\\u0022:{\\u0022line1\\u0022:\\u0022115 Shaftesbury Avenue\\u0022,\\u0022line2\\u0022:null,\\u0022postalCode\\u0022:\\u0022WC2H 8AF\\u0022,\\u0022city\\u0022:\\u0022Cambridge Circus\\u0022,\\u0022countryCode\\u0022:\\u0022UK\\u0022,\\u0022legacyCountryCode\\u0022:null,\\u0022stateOrProvince\\u0022:\\u0022London\\u0022},\\u0022shopper\\u0022:{\\u0022email\\u0022:\\u0022test@test.com\\u0022,\\u0022firstName\\u0022:\\u0022INNA\\u0022,\\u0022lastName\\u0022:\\u0022IVANOVA\\u0022,\\u0022telephoneNumber\\u0022:\\u002202072578183\\u0022,\\u0022title\\u0022:\\u0022MS\\u0022,\\u0022externalId\\u0022:null,\\u0022locale\\u0022:null},\\u0022items\\u0022:[{\\u0022id\\u0022:null,\\u0022name\\u0022:\\u0022WICKED\\u0022,\\u0022description\\u0022:null,\\u0022quantity\\u0022:1,\\u0022amount\\u0022:{\\u0022value\\u0022:8100,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022amountOriginal\\u0022:null,\\u0022tax\\u0022:null,\\u0022externalId\\u0022:\\u00221587\\u0022}],\\u0022riskData\\u0022:{\\u0022deliveryMethod\\u0022:\\u0022collection\\u0022,\\u0022officeId\\u0022:1,\\u0022daysToEvent\\u0022:0}}\"},\"context\":{\"errors\":[{\"message\":\"Unable to create the order. Please check that all your currencies are identical or create a separate order\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\""description\"":\""test description\"",\""channelId\"":\"".net-sdk-integration-test\"",\""externalId\"":\""987654321\"",\""redirectUrl\"":\""https://payment-service.qatixuk.io/redirect\"",\""origin\"":\""https://payment-service.qatixuk.io\"",\""amount\"":{\""value\"":8100,\""currency\"":\""USD\"",\""exchangeRate\"":1.2},\""amountOriginal\"":{\""value\"":100000,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""billingAddress\"":{\""line1\"":\""115 Shaftesbury Avenue\"",\""line2\"":null,\""postalCode\"":\""WC2H 8AF\"",\""city\"":\""Cambridge Circus\"",\""countryCode\"":\""UK\"",\""legacyCountryCode\"":null,\""stateOrProvince\"":\""London\""},\""shopper\"":{\""email\"":\""test@test.com\"",\""firstName\"":\""INNA\"",\""lastName\"":\""IVANOVA\"",\""telephoneNumber\"":\""02072578183\"",\""title\"":\""MS\"",\""externalId\"":null,\""locale\"":null},\""items\"":[{\""id\"":null,\""name\"":\""WICKED\"",\""description\"":null,\""quantity\"":1,\""amount\"":{\""value\"":8100,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""amountOriginal\"":null,\""tax\"":null,\""externalId\"":\""1587\""}],\""riskData\"":{\""deliveryMethod\"":\""collection\"",\""officeId\"":1,\""daysToEvent\"":0}}""
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""Unable to create the order. Please check that all your currencies are identical or create a separate order""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.BadRequest,
                 "Unable to create the order. Please check that all your currencies are identical or create a separate order"
             ),
@@ -1030,7 +1461,73 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\n    \\\"shopper\\\": {\\n        \\\"email\\\": \\\"newshopper@email.tld\\\",\\n        \\\"firstName\\\": \\\"newJohn\\\",\\n        \\\"lastName\\\": \\\"newDoe\\\",\\n        \\\"title\\\": \\\"newMr\\\",\\n        \\\"externalId\\\": \\\"newext-1\\\",\\n        \\\"telephoneNumber\\\": \\\"new+441234567890\\\",\\n        \\\"locale\\\": \\\"fr_FR\\\"\\n    },\\n    \\\"billingAddress\\\": {\\n        \\\"line1\\\": \\\"newHouse 1\\\",\\n        \\\"line2\\\": \\\"new123 street\\\",\\n        \\\"postalCode\\\": \\\"newAB1 2EF\\\",\\n        \\\"city\\\": \\\"newHometown\\\",\\n        \\\"countryCode\\\": \\\"FR\\\"\\n    },\\n    \\\"items\\\": [\\n        {\\n            \\\"name\\\": \\\"newLion King\\\",\\n            \\\"description\\\": \\\"newOnline ticket sale The lion king\\\",\\n            \\\"quantity\\\": 2,\\n            \\\"amount\\\": {\\n                \\\"value\\\": 3000,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"tax\\\": {\\n                \\\"value\\\": 100,\\n                \\\"currency\\\": \\\"GBP\\\"\\n            },\\n            \\\"externalId\\\": \\\"123\\\"\\n        }   \\n    ]\\n}\",\"urlParams\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\"}},\"response\":{\"id\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"528f136e-54c3-4cbe-b5c3-585beda0c0a6\",\"createdAt\":\"2020-01-30T09:39:40+00:00\",\"amount\":{\"value\":6200,\"currency\":\"GBP\"},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\"},\"items\":[{\"id\":\"bcd00dca-674b-4506-9604-8c6d8bd8421f\",\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\"},\"tax\":{\"value\":100,\"currency\":\"GBP\"},\"externalId\":\"123\"}],\"riskData\":{\"daysToEvent\":2,\"deliveryMethod\":\"collection\"}}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\n    \""shopper\"": {\n        \""email\"": \""newshopper@email.tld\"",\n        \""firstName\"": \""newJohn\"",\n        \""lastName\"": \""newDoe\"",\n        \""title\"": \""newMr\"",\n        \""externalId\"": \""newext-1\"",\n        \""telephoneNumber\"": \""new+441234567890\"",\n        \""locale\"": \""fr_FR\""\n    },\n    \""billingAddress\"": {\n        \""line1\"": \""newHouse 1\"",\n        \""line2\"": \""new123 street\"",\n        \""postalCode\"": \""newAB1 2EF\"",\n        \""city\"": \""newHometown\"",\n        \""countryCode\"": \""FR\""\n    },\n    \""items\"": [\n        {\n            \""name\"": \""newLion King\"",\n            \""description\"": \""newOnline ticket sale The lion king\"",\n            \""quantity\"": 2,\n            \""amount\"": {\n                \""value\"": 3000,\n                \""currency\"": \""GBP\""\n            },\n            \""tax\"": {\n                \""value\"": 100,\n                \""currency\"": \""GBP\""\n            },\n            \""externalId\"": \""123\""\n        }   \n    ]\n}"",
+    ""urlParams"": {
+      ""id"": ""5b148b26-7e48-489e-8156-89534194f8a6""
+    }
+  },
+  ""response"": {
+    ""id"": ""5b148b26-7e48-489e-8156-89534194f8a6"",
+    ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+    ""channelId"": ""localhost2"",
+    ""externalId"": ""905909"",
+    ""redirectUrl"": ""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1"",
+    ""origin"": ""http://localhost:8000"",
+    ""payments"": [
+      {
+        ""id"": ""528f136e-54c3-4cbe-b5c3-585beda0c0a6"",
+        ""createdAt"": ""2020-01-30T09:39:40+00:00"",
+        ""amount"": {
+          ""value"": 6200,
+          ""currency"": ""GBP""
+        },
+        ""status"": ""new"",
+        ""events"": [],
+        ""refunds"": [],
+        ""compensations"": []
+      }
+    ],
+    ""shopper"": {
+      ""email"": ""newshopper@email.tld"",
+      ""firstName"": ""newJohn"",
+      ""lastName"": ""newDoe"",
+      ""telephoneNumber"": ""new+441234567890"",
+      ""title"": ""newMr"",
+      ""externalId"": ""newext-1"",
+      ""locale"": ""fr_FR""
+    },
+    ""billingAddress"": {
+      ""line1"": ""newHouse 1"",
+      ""line2"": ""new123 street"",
+      ""postalCode"": ""newAB1 2EF"",
+      ""city"": ""newHometown"",
+      ""countryCode"": ""FR""
+    },
+    ""items"": [
+      {
+        ""id"": ""bcd00dca-674b-4506-9604-8c6d8bd8421f"",
+        ""name"": ""newLion King"",
+        ""description"": ""newOnline ticket sale The lion king"",
+        ""quantity"": 2,
+        ""amount"": {
+          ""value"": 3000,
+          ""currency"": ""GBP""
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP""
+        },
+        ""externalId"": ""123""
+      }
+    ],
+    ""riskData"": {
+      ""daysToEvent"": 2,
+      ""deliveryMethod"": ""collection""
+    }
+  }
+}",
                 new Order
                 {
                     Id = "5b148b26-7e48-489e-8156-89534194f8a6",
@@ -1104,7 +1601,88 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }
             ),
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\\"billingAddress\\\":{\\\"line1\\\":\\\"Line1\\\",\\\"line2\\\":\\\"Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"postalCode\\\":\\\"AB1 2EF\\\",\\\"city\\\":\\\"Hometown\\\",\\\"countryCode\\\":\\\"GB\\\",\\\"legacyCountryCode\\\":null,\\\"stateOrProvince\\\":null},\\\"shopper\\\":{\\\"email\\\":\\\"aburak@encore.co.uk\\\",\\\"firstName\\\":\\\"Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"lastName\\\":\\\"Burak\\\",\\\"telephoneNumber\\\":null,\\\"title\\\":\\\"Mr\\\",\\\"externalId\\\":\\\"ext-1\\\",\\\"locale\\\":null},\\\"items\\\":[{\\\"id\\\":\\\"422ac918-fc09-466c-b2fe-051537e1d967\\\",\\\"name\\\":\\\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"description\\\":\\\"Online ticket sale Book Of Mormon\\\",\\\"quantity\\\":1,\\\"amount\\\":{\\\"value\\\":5400,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"amountOriginal\\\":null,\\\"tax\\\":{\\\"value\\\":100,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"externalId\\\":\\\"3608\\\"},{\\\"id\\\":\\\"5a230459-457e-4848-ad99-4561e62380a0\\\",\\\"name\\\":\\\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\\\",\\\"description\\\":\\\"Online ticket sale Book Of Mormon\\\",\\\"quantity\\\":1,\\\"amount\\\":{\\\"value\\\":5400,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"amountOriginal\\\":null,\\\"tax\\\":{\\\"value\\\":100,\\\"currency\\\":\\\"GBP\\\",\\\"exchangeRate\\\":0.0},\\\"externalId\\\":\\\"3608\\\"}],\\\"riskData\\\":{\\\"deliveryMethod\\\":null,\\\"officeId\\\":null,\\\"daysToEvent\\\":null}}\",\"urlParams\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\"}},\"response\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\",\"createdAt\":\"2020-02-03T09:00:29+00:00\",\"channelId\":\".net-sdk-integration-test\",\"externalId\":\"999999999\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"payments\":[{\"id\":\"8495b8df-dcca-4b66-8ae6-96709b155b04\",\"createdAt\":\"2020-02-03T09:00:29+00:00\",\"amount\":{\"value\":11000,\"currency\":\"GBP\",\"exchangeRate\":0},\"status\":\"new\",\"events\":[],\"refunds\":[],\"compensations\":[]}],\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"lastName\":\"Burak\",\"title\":\"Mr\",\"externalId\":\"ext-1\"},\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\"},\"items\":[{\"id\":\"7b656d9a-cfb9-4706-b448-06a4213dc215\",\"name\":\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0},\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0},\"externalId\":\"3608\"},{\"id\":\"f6c3faf3-c12a-4082-a396-5040ef8e9e93\",\"name\":\"Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0},\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0},\"externalId\":\"3608\"}],\"riskData\":[]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\""billingAddress\"":{\""line1\"":\""Line1\"",\""line2\"":\""Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\"",\""postalCode\"":\""AB1 2EF\"",\""city\"":\""Hometown\"",\""countryCode\"":\""GB\"",\""legacyCountryCode\"":null,\""stateOrProvince\"":null},\""shopper\"":{\""email\"":\""aburak@encore.co.uk\"",\""firstName\"":\""Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\"",\""lastName\"":\""Burak\"",\""telephoneNumber\"":null,\""title\"":\""Mr\"",\""externalId\"":\""ext-1\"",\""locale\"":null},\""items\"":[{\""id\"":\""422ac918-fc09-466c-b2fe-051537e1d967\"",\""name\"":\""Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\"",\""description\"":\""Online ticket sale Book Of Mormon\"",\""quantity\"":1,\""amount\"":{\""value\"":5400,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""amountOriginal\"":null,\""tax\"":{\""value\"":100,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""externalId\"":\""3608\""},{\""id\"":\""5a230459-457e-4848-ad99-4561e62380a0\"",\""name\"":\""Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a\"",\""description\"":\""Online ticket sale Book Of Mormon\"",\""quantity\"":1,\""amount\"":{\""value\"":5400,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""amountOriginal\"":null,\""tax\"":{\""value\"":100,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""externalId\"":\""3608\""}],\""riskData\"":{\""deliveryMethod\"":null,\""officeId\"":null,\""daysToEvent\"":null}}"",
+    ""urlParams"": {
+      ""id"": ""d2941460-13e4-43f1-8a13-23a36bc1a714""
+    }
+  },
+  ""response"": {
+    ""id"": ""d2941460-13e4-43f1-8a13-23a36bc1a714"",
+    ""createdAt"": ""2020-02-03T09:00:29+00:00"",
+    ""channelId"": "".net-sdk-integration-test"",
+    ""externalId"": ""999999999"",
+    ""redirectUrl"": ""https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1"",
+    ""origin"": ""http://localhost:8000"",
+    ""payments"": [
+      {
+        ""id"": ""8495b8df-dcca-4b66-8ae6-96709b155b04"",
+        ""createdAt"": ""2020-02-03T09:00:29+00:00"",
+        ""amount"": {
+          ""value"": 11000,
+          ""currency"": ""GBP"",
+          ""exchangeRate"": 0
+        },
+        ""status"": ""new"",
+        ""events"": [],
+        ""refunds"": [],
+        ""compensations"": []
+      }
+    ],
+    ""shopper"": {
+      ""email"": ""aburak@encore.co.uk"",
+      ""firstName"": ""Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a"",
+      ""lastName"": ""Burak"",
+      ""title"": ""Mr"",
+      ""externalId"": ""ext-1""
+    },
+    ""billingAddress"": {
+      ""line1"": ""Line1"",
+      ""line2"": ""Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a"",
+      ""postalCode"": ""AB1 2EF"",
+      ""city"": ""Hometown"",
+      ""countryCode"": ""GB""
+    },
+    ""items"": [
+      {
+        ""id"": ""7b656d9a-cfb9-4706-b448-06a4213dc215"",
+        ""name"": ""Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP"",
+          ""exchangeRate"": 0
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP"",
+          ""exchangeRate"": 0
+        },
+        ""externalId"": ""3608""
+      },
+      {
+        ""id"": ""f6c3faf3-c12a-4082-a396-5040ef8e9e93"",
+        ""name"": ""Name7ad4a9f9-0654-43f1-b51b-1f36a24bd62a"",
+        ""description"": ""Online ticket sale Book Of Mormon"",
+        ""quantity"": 1,
+        ""amount"": {
+          ""value"": 5400,
+          ""currency"": ""GBP"",
+          ""exchangeRate"": 0
+        },
+        ""tax"": {
+          ""value"": 100,
+          ""currency"": ""GBP"",
+          ""exchangeRate"": 0
+        },
+        ""externalId"": ""3608""
+      }
+    ],
+    ""riskData"": []
+  }
+}",
                 new Order
                 {
                     Id = "d2941460-13e4-43f1-8a13-23a36bc1a714",
@@ -1196,7 +1774,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             // 400
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\u0022billingAddress\\u0022:{\\u0022line1\\u0022:\\u0022Line1\\u0022,\\u0022line2\\u0022:\\u0022Address9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022postalCode\\u0022:\\u0022AB1 2EF\\u0022,\\u0022city\\u0022:\\u0022Hometown\\u0022,\\u0022countryCode\\u0022:\\u0022GB\\u0022,\\u0022legacyCountryCode\\u0022:null,\\u0022stateOrProvince\\u0022:null},\\u0022shopper\\u0022:{\\u0022email\\u0022:\\u0022aburak@encore.co.uk\\u0022,\\u0022firstName\\u0022:\\u0022Tom9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022lastName\\u0022:\\u0022Burak\\u0022,\\u0022telephoneNumber\\u0022:null,\\u0022title\\u0022:\\u0022Mr\\u0022,\\u0022externalId\\u0022:\\u0022ext-1\\u0022,\\u0022locale\\u0022:null},\\u0022items\\u0022:[{\\u0022id\\u0022:\\u0022422ac918-fc09-466c-b2fe-051537e1d967\\u0022,\\u0022name\\u0022:\\u0022Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022description\\u0022:\\u0022Online ticket sale Book Of Mormon\\u0022,\\u0022quantity\\u0022:1,\\u0022amount\\u0022:{\\u0022value\\u0022:5400,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022amountOriginal\\u0022:null,\\u0022tax\\u0022:{\\u0022value\\u0022:100,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022externalId\\u0022:\\u00223608\\u0022},{\\u0022id\\u0022:\\u00225a230459-457e-4848-ad99-4561e62380a0\\u0022,\\u0022name\\u0022:\\u0022Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022description\\u0022:\\u0022Online ticket sale Book Of Mormon\\u0022,\\u0022quantity\\u0022:1,\\u0022amount\\u0022:{\\u0022value\\u0022:5400,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022amountOriginal\\u0022:null,\\u0022tax\\u0022:{\\u0022value\\u0022:100,\\u0022currency\\u0022:\\u0022GBP\\u0022,\\u0022exchangeRate\\u0022:0.0},\\u0022externalId\\u0022:\\u00223608\\u0022}],\\u0022riskData\\u0022:{\\u0022deliveryMethod\\u0022:\\u0022DeliveryMethod9774e00d-2265-4f5c-9249-4ee9667dbbd2\\u0022,\\u0022officeId\\u0022:null,\\u0022daysToEvent\\u0022:2}}\",\"urlParams\":{\"id\":\"d2941460-13e4-43f1-8a13-23a36bc1a714\"}},\"context\":{\"errors\":[{\"field\":\"deliveryMethod\",\"message\":\"Invalid deliveryMethod. Please specify a valid delivery method.\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\""billingAddress\"":{\""line1\"":\""Line1\"",\""line2\"":\""Address9774e00d-2265-4f5c-9249-4ee9667dbbd2\"",\""postalCode\"":\""AB1 2EF\"",\""city\"":\""Hometown\"",\""countryCode\"":\""GB\"",\""legacyCountryCode\"":null,\""stateOrProvince\"":null},\""shopper\"":{\""email\"":\""aburak@encore.co.uk\"",\""firstName\"":\""Tom9774e00d-2265-4f5c-9249-4ee9667dbbd2\"",\""lastName\"":\""Burak\"",\""telephoneNumber\"":null,\""title\"":\""Mr\"",\""externalId\"":\""ext-1\"",\""locale\"":null},\""items\"":[{\""id\"":\""422ac918-fc09-466c-b2fe-051537e1d967\"",\""name\"":\""Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\"",\""description\"":\""Online ticket sale Book Of Mormon\"",\""quantity\"":1,\""amount\"":{\""value\"":5400,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""amountOriginal\"":null,\""tax\"":{\""value\"":100,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""externalId\"":\""3608\""},{\""id\"":\""5a230459-457e-4848-ad99-4561e62380a0\"",\""name\"":\""Name9774e00d-2265-4f5c-9249-4ee9667dbbd2\"",\""description\"":\""Online ticket sale Book Of Mormon\"",\""quantity\"":1,\""amount\"":{\""value\"":5400,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""amountOriginal\"":null,\""tax\"":{\""value\"":100,\""currency\"":\""GBP\"",\""exchangeRate\"":0.0},\""externalId\"":\""3608\""}],\""riskData\"":{\""deliveryMethod\"":\""DeliveryMethod9774e00d-2265-4f5c-9249-4ee9667dbbd2\"",\""officeId\"":null,\""daysToEvent\"":2}}"",
+    ""urlParams"": {
+      ""id"": ""d2941460-13e4-43f1-8a13-23a36bc1a714""
+    }
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""field"": ""deliveryMethod"",
+        ""message"": ""Invalid deliveryMethod. Please specify a valid delivery method.""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.BadRequest,
                 "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."
             ),
@@ -1210,7 +1803,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
             // 404
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\n    \\u0022shopper\\u0022: {\\n        \\u0022email\\u0022: \\u0022newshopper@email.tld\\u0022,\\n        \\u0022firstName\\u0022: \\u0022newJohn\\u0022,\\n        \\u0022lastName\\u0022: \\u0022newDoe\\u0022,\\n        \\u0022title\\u0022: \\u0022newMr\\u0022,\\n        \\u0022externalId\\u0022: \\u0022newext-1\\u0022,\\n        \\u0022telephoneNumber\\u0022: \\u0022new+441234567890\\u0022,\\n        \\u0022locale\\u0022: \\u0022fr_FR\\u0022\\n    },\\n    \\u0022billingAddress\\u0022: {\\n        \\u0022line1\\u0022: \\u0022newHouse 1\\u0022,\\n        \\u0022line2\\u0022: \\u0022new123 street\\u0022,\\n        \\u0022postalCode\\u0022: \\u0022newAB1 2EF\\u0022,\\n        \\u0022city\\u0022: \\u0022newHometown\\u0022,\\n        \\u0022countryCode\\u0022: \\u0022FR\\u0022\\n    },\\n    \\u0022items\\u0022: [\\n        {\\n            \\u0022name\\u0022: \\u0022newLion King\\u0022,\\n            \\u0022description\\u0022: \\u0022newOnline ticket sale The lion king\\u0022,\\n            \\u0022quantity\\u0022: 2,\\n            \\u0022amount\\u0022: {\\n                \\u0022value\\u0022: 3000,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022tax\\u0022: {\\n                \\u0022value\\u0022: 100,\\n                \\u0022currency\\u0022: \\u0022GBP\\u0022\\n            },\\n            \\u0022externalId\\u0022: \\u0022123\\u0022\\n        }   \\n    ]\\n}\",\"urlParams\":{\"id\":\"20c33214-c217-4398-927e-d089b4db06a6\"}},\"context\":{\"errors\":[{\"message\":\"Cannot find Order. Please specify a valid orderId.\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\n    \""shopper\"": {\n        \""email\"": \""newshopper@email.tld\"",\n        \""firstName\"": \""newJohn\"",\n        \""lastName\"": \""newDoe\"",\n        \""title\"": \""newMr\"",\n        \""externalId\"": \""newext-1\"",\n        \""telephoneNumber\"": \""new+441234567890\"",\n        \""locale\"": \""fr_FR\""\n    },\n    \""billingAddress\"": {\n        \""line1\"": \""newHouse 1\"",\n        \""line2\"": \""new123 street\"",\n        \""postalCode\"": \""newAB1 2EF\"",\n        \""city\"": \""newHometown\"",\n        \""countryCode\"": \""FR\""\n    },\n    \""items\"": [\n        {\n            \""name\"": \""newLion King\"",\n            \""description\"": \""newOnline ticket sale The lion king\"",\n            \""quantity\"": 2,\n            \""amount\"": {\n                \""value\"": 3000,\n                \""currency\"": \""GBP\""\n            },\n            \""tax\"": {\n                \""value\"": 100,\n                \""currency\"": \""GBP\""\n            },\n            \""externalId\"": \""123\""\n        }   \n    ]\n}"",
+    ""urlParams"": {
+      ""id"": ""20c33214-c217-4398-927e-d089b4db06a6""
+    }
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""Cannot find Order. Please specify a valid orderId.""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.NotFound,
                 "Cannot find Order. Please specify a valid orderId."
             ),
@@ -1223,7 +1830,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates = new[]
         {
             new TestCaseData(
-                "{\"request\":[],\"response\":[{\"name\":\"Alabama\",\"abbreviation\":\"AL\"},{\"name\":\"Alaska\",\"abbreviation\":\"AK\"},{\"name\":\"Arizona\",\"abbreviation\":\"AZ\"},{\"name\":\"West Virginia\",\"abbreviation\":\"WV\"}]}",
+                @"{
+  ""request"": [],
+  ""response"": [
+    {
+      ""name"": ""Alabama"",
+      ""abbreviation"": ""AL""
+    },
+    {
+      ""name"": ""Alaska"",
+      ""abbreviation"": ""AK""
+    },
+    {
+      ""name"": ""Arizona"",
+      ""abbreviation"": ""AZ""
+    },
+    {
+      ""name"": ""West Virginia"",
+      ""abbreviation"": ""WV""
+    }
+  ]
+}",
                 new List<CountryTerritorialUnit>
                 {
                     new CountryTerritorialUnit
@@ -1253,7 +1880,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces = new[]
         {
             new TestCaseData(
-                "{\"request\":[],\"response\":[{\"name\":\"Alberta\",\"abbreviation\":\"AB\"},{\"name\":\"British Columbia\",\"abbreviation\":\"BC\"},{\"name\":\"Manitoba\",\"abbreviation\":\"MB\"},{\"name\":\"New Brunswick\",\"abbreviation\":\"NB\"}]}",
+                @"{
+  ""request"": [],
+  ""response"": [
+    {
+      ""name"": ""Alberta"",
+      ""abbreviation"": ""AB""
+    },
+    {
+      ""name"": ""British Columbia"",
+      ""abbreviation"": ""BC""
+    },
+    {
+      ""name"": ""Manitoba"",
+      ""abbreviation"": ""MB""
+    },
+    {
+      ""name"": ""New Brunswick"",
+      ""abbreviation"": ""NB""
+    }
+  ]
+}",
                 new List<CountryTerritorialUnit>
                 {
                     new CountryTerritorialUnit
@@ -1304,14 +1951,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             // 400
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\n\\t\\u0022orderId\\u0022: \\u00225b148b26-7e48-489e-8156-89534194f8a6\\u0022,\\n\\t\\u0022amount\\u0022: {\\n\\t\\t\\u0022value\\u0022: 4200,\\n\\t\\t\\u0022currency\\u0022: \\u0022GBP\\u0022\\n\\t},\\n\\t\\u0022amountOriginal\\u0022: null\\n}\"},\"context\":{\"errors\":[{\"message\":\"New payment for order with ID \\u00225b148b26-7e48-489e-8156-89534194f8a6\\u0022 already exists.\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\n\t\""orderId\"": \""5b148b26-7e48-489e-8156-89534194f8a6\"",\n\t\""amount\"": {\n\t\t\""value\"": 4200,\n\t\t\""currency\"": \""GBP\""\n\t},\n\t\""amountOriginal\"": null\n}""
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""New payment for order with ID \""5b148b26-7e48-489e-8156-89534194f8a6\"" already exists.""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.BadRequest,
                 "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."
             ),
 
             // 404
             new TestCaseData(
-                "{\"request\":{\"body\":\"{\\n\\t\\u0022orderId\\u0022: \\u0022ff40a916-e609-46a7-a57a-5eaee55940de\\u0022,\\n\\t\\u0022amount\\u0022: {\\n\\t\\t\\u0022value\\u0022: 4200,\\n\\t\\t\\u0022currency\\u0022: \\u0022GBP\\u0022\\n\\t},\\n\\t\\u0022amountOriginal\\u0022: null\\n}\"},\"context\":{\"errors\":[{\"message\":\"Order with id \\u0022ff40a916-e609-46a7-a57a-5eaee55940de\\u0022 does not exist.\"}]}}",
+                @"{
+  ""request"": {
+    ""body"": ""{\n\t\""orderId\"": \""ff40a916-e609-46a7-a57a-5eaee55940de\"",\n\t\""amount\"": {\n\t\t\""value\"": 4200,\n\t\t\""currency\"": \""GBP\""\n\t},\n\t\""amountOriginal\"": null\n}""
+  },
+  ""context"": {
+    ""errors"": [
+      {
+        ""message"": ""Order with id \""ff40a916-e609-46a7-a57a-5eaee55940de\"" does not exist.""
+      }
+    ]
+  }
+}",
                 HttpStatusCode.NotFound,
                 "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."
             ),
