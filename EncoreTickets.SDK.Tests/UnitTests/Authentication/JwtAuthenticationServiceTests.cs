@@ -4,7 +4,7 @@ using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
-using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Authentication.Models;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using Moq;
@@ -20,7 +20,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public JwtAuthenticationServiceTests() : base(new ApiContext(Environments.Sandbox), "some-service.{0}tixuk.io/api/", "login")
+        public JwtAuthenticationServiceTests() : base(new ApiContext(Environments.Sandbox),
+            "some-service.{0}tixuk.io/api/", "login")
         {
         }
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using EncoreTickets.SDK.Basket.Models;
+using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.CommonModels;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using EncoreTickets.SDK.Utilities.Exceptions;
@@ -8,10 +10,17 @@ using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
 {
+    [TestFixture]
     internal class PriceWithCurrencyExtensionTests
     {
         private const string DefaultCurrency = "GBP";
         private const int DefaultDecimalPlaces = 2;
+
+        [SetUp]
+        public void Setup()
+        {
+            Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
+        }
 
         [TestCase(4, "USD", null, "0.04USD")]
         [TestCase(null, "USD", 1, "USD")]

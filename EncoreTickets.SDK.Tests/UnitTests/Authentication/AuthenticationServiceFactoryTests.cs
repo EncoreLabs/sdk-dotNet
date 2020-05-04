@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
 using NUnit.Framework;
@@ -41,6 +42,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             new TestCaseData(
                 AuthenticationMethod.JWT,
                 typeof(JwtAuthenticationService)
+            ),
+            new TestCaseData(
+                AuthenticationMethod.PredefinedJWT,
+                typeof(PredefinedJwtAuthenticationService)
             ),
         };
     }

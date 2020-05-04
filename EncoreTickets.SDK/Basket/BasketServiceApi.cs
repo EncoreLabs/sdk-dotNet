@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
@@ -35,7 +36,7 @@ namespace EncoreTickets.SDK.Basket
         {
             if (string.IsNullOrEmpty(basketReference))
             {
-                throw new BadArgumentsException("basket ID must be set");
+                throw new ArgumentException("basket ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters
@@ -89,7 +90,7 @@ namespace EncoreTickets.SDK.Basket
         {
             if (string.IsNullOrEmpty(promotionId))
             {
-                throw new BadArgumentsException("promotion ID must be set");
+                throw new ArgumentException("promotion ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters

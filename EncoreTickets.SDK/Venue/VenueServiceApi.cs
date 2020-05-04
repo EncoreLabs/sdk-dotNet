@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
 using EncoreTickets.SDK.Venue.Models.ResponseModels;
+using Attribute = EncoreTickets.SDK.Venue.Models.Attribute;
 
 namespace EncoreTickets.SDK.Venue
 {
@@ -29,7 +31,6 @@ namespace EncoreTickets.SDK.Venue
         public VenueServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, VenueApiHost, automaticAuthentication)
         {
-            context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
 
         /// <inheritdoc/>
@@ -49,7 +50,7 @@ namespace EncoreTickets.SDK.Venue
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new BadArgumentsException("venue ID must be set");
+                throw new ArgumentException("venue ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters
@@ -66,7 +67,7 @@ namespace EncoreTickets.SDK.Venue
         {
             if (string.IsNullOrEmpty(venue?.InternalId))
             {
-                throw new BadArgumentsException("venue ID must be set");
+                throw new ArgumentException("venue ID must be set");
             }
 
             TriggerAutomaticAuthentication();
@@ -97,7 +98,7 @@ namespace EncoreTickets.SDK.Venue
         {
             if (string.IsNullOrEmpty(attribute?.Title))
             {
-                throw new BadArgumentsException("attribute title must be set");
+                throw new ArgumentException("attribute title must be set");
             }
 
             TriggerAutomaticAuthentication();
@@ -123,7 +124,7 @@ namespace EncoreTickets.SDK.Venue
         {
             if (string.IsNullOrEmpty(venueId))
             {
-                throw new BadArgumentsException("venue ID must be set");
+                throw new ArgumentException("venue ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters
@@ -140,7 +141,7 @@ namespace EncoreTickets.SDK.Venue
         {
             if (string.IsNullOrEmpty(venueId))
             {
-                throw new BadArgumentsException("venue ID must be set");
+                throw new ArgumentException("venue ID must be set");
             }
 
             TriggerAutomaticAuthentication();
@@ -153,7 +154,7 @@ namespace EncoreTickets.SDK.Venue
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new SingleOrListJsonSerializer<string>()
+                Deserializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return GetUpsertSeatAttributesResult(result);

@@ -53,9 +53,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             new TestCaseData(
                 new List<ErrorWrapping>
                 {
-                    ErrorWrapping.Context,
+                    ErrorWrapping.MessageWithCode,
                     ErrorWrapping.Errors,
-                    ErrorWrapping.MessageWithCode
+                    ErrorWrapping.Context,
+                    ErrorWrapping.NotParsedContent
                 }
             ),
         };

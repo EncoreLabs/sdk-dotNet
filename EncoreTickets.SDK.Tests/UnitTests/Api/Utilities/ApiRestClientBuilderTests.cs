@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
@@ -7,6 +8,7 @@ using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using Moq;
 using NUnit.Framework;
 using IDeserializer = RestSharp.Deserializers.IDeserializer;
@@ -14,8 +16,15 @@ using ISerializer = RestSharp.Serializers.ISerializer;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 {
+    [TestFixture]
     internal class ApiRestClientBuilderTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
+        }
+
         [TestCaseSource(typeof(ApiRestClientBuilderTestsSource), nameof(ApiRestClientBuilderTestsSource.CreateClientWrapper_ReturnsExpectedValue))]
         public void CreateClientWrapper_ReturnsExpectedValue(ApiContext context, RestClientWrapper expected)
         {
@@ -94,7 +103,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
         }
 
         [Test]
-        public void CreateClientWrapperParameters_IfDeserializerIsNotSe_ReturnsParametersWithInitializedResponseDataFormatAsJson()
+        public void CreateClientWrapperParameters_IfDeserializerIsNotSet_ReturnsParametersWithInitializedResponseDataFormatAsJson()
         {
             var builder = new ApiRestClientBuilder();
 
@@ -120,7 +129,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 
     public static class ApiRestClientBuilderTestsSource
     {
-        private const string SdkVersion = "3.0.0";
+        private const string SdkVersion = "3.1.0";
 
         public static IEnumerable<TestCaseData> CreateClientWrapper_ReturnsExpectedValue = new[]
         {
@@ -130,27 +139,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     Credentials = null
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextIsNull_ReturnsWrapperWithNullCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.JWT
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingNothing_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
                     {
-                        AuthenticationMethod = AuthenticationMethod.JWT
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingEnvironment_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "username", "password"),
                 new RestClientWrapper
@@ -162,9 +171,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                         Username = "username"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingCredentials_ReturnsWrapperWithCredentials"},
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "dyfuYTI5GLJjkl"),
+                new RestClientWrapper
+                {
+                    Credentials = new RestClientCredentials
+                    {
+                        AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
+                        AccessToken = "dyfuYTI5GLJjkl"
+                    }
+                }
+            ),
+            new TestCaseData(
+                new ApiContext(Environments.QA, "dyfuYTI5GLJjkl", AuthenticationMethod.JWT),
                 new RestClientWrapper
                 {
                     Credentials = new RestClientCredentials
@@ -173,7 +193,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                         AccessToken = "dyfuYTI5GLJjkl"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingToken_ReturnsWrapperWithCredentials"},
+            ),
+            new TestCaseData(
+                new ApiContext(Environments.QA, "username", "password", AuthenticationMethod.Basic)
+                {
+                    AccessToken = "dyfuYTI5GLJjkl"
+                },
+                new RestClientWrapper
+                {
+                    Credentials = new RestClientCredentials
+                    {
+                        AuthenticationMethod = AuthenticationMethod.Basic,
+                        Password = "password",
+                        Username = "username",
+                        AccessToken = "dyfuYTI5GLJjkl"
+                    }
+                }
+            ),
             new TestCaseData(
                 new ApiContext(Environments.QA, "username", "password")
                 {
@@ -190,7 +226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                         AccessToken = "dyfuYTI5GLJjkl"
                     }
                 }
-            ) {TestName = "CreateClientWrapper_IfApiContextCreatedUsingCredentialsAndPropertiesSetup_ReturnsWrapperWithCredentials"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedBaseProperties = new[]
@@ -219,14 +255,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfApiContextIsNull_ReturnsParametersWithOnlySdkVersionHeader"},
+            ),
             new TestCaseData(
                 new ApiContext(),
                 new Dictionary<string, string>
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfApiContextWithoutAffiliate_ReturnsParametersWithOnlySdkVersionHeader"},
+            ),
             new TestCaseData(
                 new ApiContext
                 {
@@ -236,7 +272,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfApiContextWithAffiliateWithWhitespaces_ReturnsParametersWithOnlySdkVersionHeader"},
+            ),
             new TestCaseData(
                 new ApiContext
                 {
@@ -247,7 +283,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
                     {"affiliateId", "boxoffice"},
                 }
-            ) {TestName = "CreateClientWrapperParameters_IfApiContextWithAffiliate_ReturnsParametersWithSdkVersionAndAffiliateHeaders"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedQueryParameters = new[]
@@ -366,7 +402,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 new ExecuteApiRequestParameters(),
                 new DefaultJsonSerializer(),
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfSerializerIsNull_IfDateFormatIsNull_ReturnsParametersWithDefaultSerializer"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
@@ -377,19 +413,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfSerializerIsNull_IfDateFormatIsNotNull_IfReturnsParametersWithDefaultSerializer"},
+            ),
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
-                    Serializer = new SingleOrListJsonSerializer<string>(),
+                    Serializer = new DefaultJsonSerializer(new SingleOrListToListConverter <string>()),
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
-                new SingleOrListJsonSerializer<string>
+                new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 {
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
                 DataFormat.Json
-            ) {TestName = "CreateClientWrapperParameters_IfSerializerIsNotNull_IfReturnsParametersWithInitializedSerializer"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedDeserializer = new[]
@@ -413,10 +449,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
-                    Deserializer = new SingleOrListJsonSerializer<string>(),
+                    Deserializer = new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>()),
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
-                new SingleOrListJsonSerializer<string>
+                new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>())
                 {
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },

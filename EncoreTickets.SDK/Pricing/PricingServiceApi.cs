@@ -26,7 +26,6 @@ namespace EncoreTickets.SDK.Pricing
         public PricingServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, PricingApiHost, automaticAuthentication)
         {
-            context.AuthenticationMethod = AuthenticationMethod.JWT;
         }
 
         /// <inheritdoc />

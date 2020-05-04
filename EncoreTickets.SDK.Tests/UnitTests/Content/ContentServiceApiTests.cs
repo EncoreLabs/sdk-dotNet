@@ -135,9 +135,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
 
         [TestCase(null)]
         [TestCase("")]
-        public void GetProductById_IfIdIsNotSet_ThrowsBadArgumentsException(string id)
+        public void GetProductById_IfIdIsNotSet_ThrowsArgumentException(string id)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetProductById(id);
             });

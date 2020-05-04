@@ -108,13 +108,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 null
-            ) {TestName = "Errors_IfContextErrorsIsNull_ReturnsNull"},
+            ),
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 null
-            ) {TestName = "Errors_IfContextErrorsIsEmpty_ReturnsNull"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -123,7 +123,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 null
-            ) {TestName = "Errors_IfContextErrorsHasNotInitializedInfo_ReturnsNull"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -132,7 +132,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 new List<string> {"Some info"}
-            ) {TestName = "Errors_IfContextErrorsHasInfoWithMessage_ReturnsInfoMessage"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -141,7 +141,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 new List<string> {"validation_error"}
-            ) {TestName = "Errors_IfContextErrorsHasInfoOnlyWithCode_ReturnsInfoCode"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -150,7 +150,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 new List<string> {"Validation error"}
-            ) {TestName = "Errors_IfContextErrorsHasFullyInitializedInfo_ReturnsInfoMessage"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -162,13 +162,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 new List<string> {"Some info", "validation_error", "Validation error"}
-            ) {TestName = "Errors_IfContextErrorsHasInfos_ReturnsInfoMessages"},
+            ),
             new TestCaseData(
                 null,
                 new RestResponse {StatusDescription = "OK"},
                 new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}},
                 null
-            ) {TestName = "Errors_IfContextErrorsIsNull_IfResponseArgumentsWereSet_ReturnsNull"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> Message_IfErrorsDoesNotExist_ReturnsDefaultMessage = new[]
@@ -177,12 +177,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 null,
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>()
-            ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsNull_ReturnsDefaultMessage"},
+            ),
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>()
-            ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsEmpty_ReturnsDefaultMessage"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -190,12 +190,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>()
-            ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsHasNotInitializedInfo_ReturnsDefaultMessage"},
+            ),
             new TestCaseData(
                 null,
                 new RestResponse {StatusDescription = "OK"},
                 new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}}
-            ) {TestName = "Message_IfErrorsDoesNotExist_IfContextErrorsIsNull_IfResponseArgumentsWereSet_ReturnsDefaultMessage"},
+            ),
         };
 
         public static IEnumerable<TestCaseData> Message_IfErrorsExists_ReturnsExpectedValue = new[]
@@ -208,7 +208,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 "Some info"
-            ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfoWithMessage_ReturnsInfoMessage"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -217,7 +217,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 "validation_error"
-            ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfoOnlyWithCode_ReturnsInfoCode"},
+            ),
             new TestCaseData(
                 new List<Info>
                 {
@@ -226,7 +226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
                 "Validation error"
-            ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasFullyInitializedInfo_ReturnsInfoMessage"},
+            ) ,
             new TestCaseData(
                 new List<Info>
                 {
@@ -237,8 +237,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                "Some info; validation_error; Validation error"
-            ) {TestName = "Message_IfErrorsExists__IfContextErrorsHasInfos_ReturnsInfoMessages"},
+                "Some info\r\nvalidation_error\r\nValidation error"
+            ),
         };
     }
 }

@@ -1,10 +1,19 @@
-﻿using EncoreTickets.SDK.Utilities.BusinessHelpers;
+﻿using System.Threading;
+using EncoreTickets.SDK.Tests.Helpers;
+using EncoreTickets.SDK.Utilities.BusinessHelpers;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BusinessHelpers
 {
+    [TestFixture]
     internal class MoneyHelperTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
+        }
+
         [TestCase(1000, 2, 10)]
         [TestCase(1000, 3, 1)]
         [TestCase(1000, 4, 0.1)]

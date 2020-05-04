@@ -112,7 +112,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             return Errors != null && Errors.Any()
-                ? string.Join("; ", Errors)
+                ? string.Join("\r\n", Errors)
                 : DefaultMessage;
         }
 
@@ -134,7 +134,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private static string GetErrorAsStringFromRestResponse(IRestResponse response)
         {
-            return string.IsNullOrEmpty(response.StatusDescription)
+            return response.StatusCode == HttpStatusCode.OK || string.IsNullOrEmpty(response.StatusDescription)
                 ? response.ErrorMessage
                 : response.StatusDescription;
         }
@@ -142,12 +142,13 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         private static string ConvertErrorToString(Error error)
         {
             var message = error.Message;
-            if (!string.IsNullOrEmpty(error.Field))
+            if (string.IsNullOrEmpty(error.Field))
             {
-                message = $"{error.Field} - {message}";
+                return message;
             }
 
-            return message;
+            var extraInfo = string.IsNullOrWhiteSpace(message) ? "this field is invalid" : message;
+            return $"{error.Field}: {extraInfo}";
         }
     }
 }

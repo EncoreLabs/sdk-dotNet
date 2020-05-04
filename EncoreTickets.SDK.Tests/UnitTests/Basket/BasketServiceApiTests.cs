@@ -38,9 +38,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         [TestCase(null)]
         [TestCase("")]
-        public void GetBasketDetails_IfBasketReferenceIsNotSet_ThrowsBadArgumentsException(string reference)
+        public void GetBasketDetails_IfBasketReferenceIsNotSet_ThrowsArgumentException(string reference)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetBasketDetails(reference);
             });
@@ -119,9 +119,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         [TestCase(null)]
         [TestCase("")]
-        public void GetPromotionDetails_IfPromotionIdIsNotSet_ThrowsBadArgumentsException(string id)
+        public void GetPromotionDetails_IfPromotionIdIsNotSet_ThrowsArgumentException(string id)
         {
-            Assert.Catch<BadArgumentsException>(() =>
+            Assert.Catch<ArgumentException>(() =>
             {
                 GetPromotionDetails(id);
             });

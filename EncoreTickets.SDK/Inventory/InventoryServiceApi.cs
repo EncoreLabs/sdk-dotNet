@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrEmpty(text))
             {
-                throw new BadArgumentsException("search text must be set");
+                throw new ArgumentException("search text must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
@@ -44,8 +44,7 @@ namespace EncoreTickets.SDK.Inventory
                 Query = new
                 {
                     query = text
-                },
-                ErrorWrappings = new[] {ErrorWrapping.MessageWithCode}
+                }
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>, ProductSearchResponse, List<Product>>(requestParameters);
             return result.DataOrException;
@@ -62,14 +61,13 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v2/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
-                Method = RequestMethod.Get,
-                ErrorWrappings = new[] {ErrorWrapping.MessageWithCode, ErrorWrapping.Errors}
+                Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<List<Performance>>(requestParameters);
             return result.DataOrException;
@@ -92,7 +90,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
@@ -103,8 +101,7 @@ namespace EncoreTickets.SDK.Inventory
                 {
                     date = date?.ToEncoreDate(),
                     time = time?.ToEncoreTime()
-                },
-                ErrorWrappings = new[] { ErrorWrapping.MessageWithCode, ErrorWrapping.Errors }
+                }
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<Availability>(requestParameters);
             return result.DataOrException;
@@ -121,7 +118,7 @@ namespace EncoreTickets.SDK.Inventory
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
-                throw new BadArgumentsException("Product ID must be set");
+                throw new ArgumentException("Product ID must be set");
             }
 
             var parameters = new ExecuteApiRequestParameters

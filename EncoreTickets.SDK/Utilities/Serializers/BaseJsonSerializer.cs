@@ -9,6 +9,8 @@ namespace EncoreTickets.SDK.Utilities.Serializers
     {
         public DataFormat SerializedDataFormat => DataFormat.Json;
 
+        public JsonSerializerSettings Settings { get; }
+
         public string ContentType { get; set; } // Required by RestSharp
 
         public string DateFormat
@@ -22,8 +24,6 @@ namespace EncoreTickets.SDK.Utilities.Serializers
                 }
             }
         }
-
-        protected JsonSerializerSettings Settings { get; }
 
         protected BaseJsonSerializer(JsonSerializerSettings settings)
         {

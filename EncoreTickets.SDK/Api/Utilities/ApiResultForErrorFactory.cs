@@ -33,6 +33,8 @@ namespace EncoreTickets.SDK.Api.Utilities
                     return CreateApiResultIfUnwrappedError<T>(restResponse, context);
                 case ErrorWrapping.Errors:
                     return CreateApiResultIfWrappedError<T>(restResponse, context);
+                case ErrorWrapping.NotParsedContent:
+                    return CreateApiResultIfNotParsedContent<T>(restResponse, context);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(errorWrapping), errorWrapping, null);
             }
@@ -57,6 +59,12 @@ namespace EncoreTickets.SDK.Api.Utilities
         {
             var apiError = ErrorsDeserializer.Deserialize<WrappedError>(restResponse);
             return new ApiResult<T>(default, restResponse, context, apiError.Errors);
+        }
+
+        private static ApiResult<T> CreateApiResultIfNotParsedContent<T>(IRestResponse restResponse, ApiContext context)
+            where T : class
+        {
+            return new ApiResult<T>(default, restResponse, context);
         }
     }
 }
