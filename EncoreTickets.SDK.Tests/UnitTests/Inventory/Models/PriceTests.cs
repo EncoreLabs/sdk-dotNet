@@ -1,10 +1,19 @@
-﻿using EncoreTickets.SDK.Inventory.Models;
+﻿using System.Threading;
+using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Tests.Helpers;
 using NUnit.Framework;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Models
 {
+    [TestFixture]
     internal class PriceTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
+        }
+
         [TestCase(4, "USD", null, "0.04USD")]
         [TestCase(null, "USD", 1, "USD")]
         [TestCase(4, null, 3, "0.004")]

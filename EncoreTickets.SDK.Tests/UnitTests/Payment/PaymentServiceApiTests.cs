@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
@@ -18,6 +19,7 @@ using Address = EncoreTickets.SDK.Payment.Models.Address;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 {
+    [TestFixture]
     internal class PaymentServiceApiTests : PaymentServiceApi
     {
         private const string TestValidChannelId = "channelId";
@@ -39,6 +41,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public void CreateMockers()
         {
             mockers = new MockersForApiServiceWithAuthentication();
+            Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
         }
 
         #region Order
