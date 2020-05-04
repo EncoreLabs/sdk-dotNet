@@ -40,6 +40,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             Assert.AreEqual(source[2], result[1]);
         }
 
+        [Test]
+        public void Prepend_Successful()
+        {
+            var item = new {Id = 1, Value = "string1"};
+            var originalList = new List<object>
+            {
+                new {Id = 2, Value = "string2"},
+                null,
+                new {Id = 3, Value = "string3"}
+            };
+
+            var result = EnumerableExtension.Prepend(originalList, item).ToList();
+
+            Assert.AreEqual(originalList.Count + 1, result.Count);
+            AssertExtension.AreObjectsValuesEqual(item, result[0]);
+            for (int i = 0; i < originalList.Count; i++)
+            {
+                AssertExtension.AreObjectsValuesEqual(originalList[i], result[i + 1]);
+            }
+        }
+
         [TestCaseSource(typeof(EnumerableExtensionTestsSource), nameof(EnumerableExtensionTestsSource.ExcludeEmptyStrings_ReturnsCorrectly))]
         public void ExcludeEmptyStrings_ReturnsCorrectly(IEnumerable<string> source, IEnumerable<string> expected)
         {

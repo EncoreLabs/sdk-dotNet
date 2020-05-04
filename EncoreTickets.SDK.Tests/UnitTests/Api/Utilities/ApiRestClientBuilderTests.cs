@@ -363,7 +363,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 },
                 new Dictionary<string, string>
                 {
-                    { "date", "12/31/2019 11:59:59 PM" }
+                    { "date", "12/31/2019 23:59:59" }
                 }
             ),
             new TestCaseData(
@@ -380,7 +380,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 {
                     { "id", "4" },
                     { "slug", "9_to_5" },
-                    { "date", "12/31/2019 11:59:59 PM" },
+                    { "date", "12/31/2019 23:59:59" },
                 }
             ),
         };
