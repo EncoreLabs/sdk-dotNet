@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using EncoreTickets.SDK.Api.Results.Response;
-using EncoreTickets.SDK.Utilities.Enums;
+﻿using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
 
 namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
@@ -34,11 +32,6 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// Gets or sets request date format
         /// </summary>
         public string DateFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets expected wrappers for API errors
-        /// </summary>
-        public IEnumerable<ErrorWrapping> ErrorWrappings { get; set; }
 
         /// <summary>
         /// Gets or sets JSON serializer for requests

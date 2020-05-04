@@ -13,9 +13,9 @@ namespace EncoreTickets.SDK.Venue.Models
 
         public bool IsDefault { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public List<Seat> Seats { get; set; }
     }

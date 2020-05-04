@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using EncoreTickets.SDK.Utilities.Serializers;
+using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Deserializers;
 using DataFormat = EncoreTickets.SDK.Utilities.Enums.DataFormat;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
@@ -427,6 +426,33 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 {
                     Username = "username",
                     Password = "password",
+                    AccessToken = null,
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "",
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "   \n",
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                }
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
                     AccessToken = "token",
                     AuthenticationMethod = (AuthenticationMethod)190000000
                 }
@@ -442,6 +468,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "token",
                     AuthenticationMethod = AuthenticationMethod.JWT
+                },
+                new JwtAuthenticator("token"),
+                "Bearer token"
+            ),
+            new TestCaseData(
+                new RestClientCredentials
+                {
+                    Username = "username",
+                    Password = "password",
+                    AccessToken = "token",
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 },
                 new JwtAuthenticator("token"),
                 "Bearer token"
@@ -647,7 +684,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new SingleOrListJsonSerializer<string>()
+                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 }
             ),
         };
@@ -664,7 +701,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml,
-                    RequestDataSerializer = new SingleOrListJsonSerializer<string>()
+                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
                 }
             ),
             new TestCaseData(

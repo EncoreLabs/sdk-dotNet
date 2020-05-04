@@ -4,7 +4,6 @@ using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Utilities.Serializers;
 using RestSharp;
-using RestSharp.Deserializers;
 
 namespace EncoreTickets.SDK.Api.Utilities
 {
@@ -13,7 +12,7 @@ namespace EncoreTickets.SDK.Api.Utilities
     /// </summary>
     internal static class ApiResultForErrorFactory
     {
-        private static readonly IDeserializer ErrorsDeserializer = new DefaultJsonSerializer();
+        private static readonly RestSharp.Deserializers.IDeserializer ErrorsDeserializer = new DefaultJsonSerializer();
 
         /// <summary>
         /// Creates an instance of <see cref="ApiResult{T}"/> for API errors in a certain format
@@ -34,6 +33,8 @@ namespace EncoreTickets.SDK.Api.Utilities
                     return CreateApiResultIfUnwrappedError<T>(restResponse, context);
                 case ErrorWrapping.Errors:
                     return CreateApiResultIfWrappedError<T>(restResponse, context);
+                case ErrorWrapping.NotParsedContent:
+                    return CreateApiResultIfNotParsedContent<T>(restResponse, context);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(errorWrapping), errorWrapping, null);
             }
@@ -58,6 +59,12 @@ namespace EncoreTickets.SDK.Api.Utilities
         {
             var apiError = ErrorsDeserializer.Deserialize<WrappedError>(restResponse);
             return new ApiResult<T>(default, restResponse, context, apiError.Errors);
+        }
+
+        private static ApiResult<T> CreateApiResultIfNotParsedContent<T>(IRestResponse restResponse, ApiContext context)
+            where T : class
+        {
+            return new ApiResult<T>(default, restResponse, context);
         }
     }
 }

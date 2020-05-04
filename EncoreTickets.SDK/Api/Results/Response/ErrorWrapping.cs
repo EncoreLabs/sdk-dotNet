@@ -5,8 +5,9 @@
     /// </summary>
     public enum ErrorWrapping
     {
-        Context,
+        MessageWithCode,
         Errors,
-        MessageWithCode
+        Context,
+        NotParsedContent
     }
 }

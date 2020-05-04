@@ -53,7 +53,6 @@ namespace EncoreTickets.SDK.Api
                     return "staging";
                 case Environments.QA:
                     return "qa";
-                case Environments.Sandbox:
                 default:
                     return "dev";
             }

@@ -49,7 +49,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Gets the context returned in the API response.
         /// </summary>
-        public Response.Context ContextInResponse { get; }
+        public Context ContextInResponse { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
@@ -61,7 +61,8 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
-        public ApiException(string message)
+        public ApiException(string message, IRestResponse response, ApiContext requestContext)
+            : this(response, requestContext, null, null)
         {
             predefinedMessage = message;
         }
@@ -70,17 +71,17 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
         public ApiException(ApiException sourceException) : this(
-            sourceException.Response,
-            sourceException.Context,
-            sourceException.ContextInResponse,
-            sourceException.RequestInResponse)
+            sourceException?.Response,
+            sourceException?.Context,
+            sourceException?.ContextInResponse,
+            sourceException?.RequestInResponse)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiException"/>
         /// </summary>
-        public ApiException(IRestResponse response, ApiContext requestContext, Response.Context contextInResponse,
+        public ApiException(IRestResponse response, ApiContext requestContext, Context contextInResponse,
             Request requestInResponse)
         {
             RequestInResponse = requestInResponse;
@@ -111,11 +112,11 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             return Errors != null && Errors.Any()
-                ? string.Join("; ", Errors)
+                ? string.Join("\r\n", Errors)
                 : DefaultMessage;
         }
 
-        private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Response.Context context)
+        private static IEnumerable<string> GetErrorsAsString(IRestResponse response, Context context)
         {
             if (context?.Errors != null)
             {
@@ -133,7 +134,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         private static string GetErrorAsStringFromRestResponse(IRestResponse response)
         {
-            return string.IsNullOrEmpty(response.StatusDescription)
+            return response.StatusCode == HttpStatusCode.OK || string.IsNullOrEmpty(response.StatusDescription)
                 ? response.ErrorMessage
                 : response.StatusDescription;
         }
@@ -141,12 +142,13 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         private static string ConvertErrorToString(Error error)
         {
             var message = error.Message;
-            if (!string.IsNullOrEmpty(error.Field))
+            if (string.IsNullOrEmpty(error.Field))
             {
-                message = $"{error.Field} - {message}";
+                return message;
             }
 
-            return message;
+            var extraInfo = string.IsNullOrWhiteSpace(message) ? "this field is invalid" : message;
+            return $"{error.Field}: {extraInfo}";
         }
     }
 }

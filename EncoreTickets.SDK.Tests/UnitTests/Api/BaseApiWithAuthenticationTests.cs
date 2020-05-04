@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Authentication;
+using EncoreTickets.SDK.Authentication.JWTServices;
 using EncoreTickets.SDK.Tests.Helpers.ApiWrappers;
 using EncoreTickets.SDK.Utilities.Enums;
 using Moq;
@@ -60,7 +61,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             Assert.AreNotEqual(basicService, jwtService);
         }
 
-        [TestCaseSource(typeof(BaseApiWithAuthenticationTestsSource), nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
+        [TestCaseSource(typeof(BaseApiWithAuthenticationTestsSource),
+            nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
         public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(ApiContext context, Type expectedType)
         {
             var actual = GetAuthenticationService(context);
@@ -70,7 +72,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
         [TestCase(AuthenticationMethod.Basic)]
         [TestCase((AuthenticationMethod)1090)]
-        public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(AuthenticationMethod authenticationMethod)
+        public void GetAuthenticationService_IfCorrespondingAuthServiceDoesNotExist_ReturnsCorrectAuthenticationService(AuthenticationMethod authenticationMethod)
         {
             var context = new ApiContext
             {
@@ -125,7 +127,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
-                typeof(JwtAuthenticationService)
+                typeof(PredefinedJwtAuthenticationService)
+            ),
+            new TestCaseData(
+                new ApiContext(),
+                typeof(PredefinedJwtAuthenticationService)
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                },
+                typeof(PredefinedJwtAuthenticationService)
             ),
             new TestCaseData(
                 new ApiContext

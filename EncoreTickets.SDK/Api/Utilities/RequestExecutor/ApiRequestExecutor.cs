@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             where T : class, new()
         {
             var restResponse = GetRestResponse<T>(requestParameters);
-            return CreateApiResult(restResponse, requestParameters);
+            return CreateApiResult(restResponse);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             where T : class
         {
             var restWrappedResponse = GetRestResponse<ApiResponse<T>>(requestParameters);
-            return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse, requestParameters);
+            return CreateApiResult<T, ApiResponse<T>, T>(restWrappedResponse);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             where TResponse : class
         {
             var restWrappedResponse = GetRestResponse<TApiResponse>(requestParameters);
-            return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse, requestParameters);
+            return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse);
         }
 
         private IRestResponse<T> GetRestResponse<T>(ExecuteApiRequestParameters requestParameters)
@@ -91,8 +91,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         }
 
         private ApiResult<T> CreateApiResult<T>(
-            IRestResponse<T> restResponse,
-            ExecuteApiRequestParameters requestParameters)
+            IRestResponse<T> restResponse)
             where T : class
         {
             if (restResponse.StatusCode == HttpStatusCode.OK)
@@ -100,13 +99,11 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 return new ApiResult<T>(restResponse.Data, restResponse, Context);
             }
 
-            var errorWrappings = requestParameters.ErrorWrappings ?? new[] { ErrorWrapping.MessageWithCode };
-            return TryToCreateApiResultForError<T>(restResponse, errorWrappings);
+            return TryToCreateApiResultForError<T>(restResponse);
         }
 
         private ApiResult<T> CreateApiResult<T, TApiResponse, TResponse>(
-            IRestResponse<TApiResponse> restWrappedResponse,
-            ExecuteApiRequestParameters requestParameters)
+            IRestResponse<TApiResponse> restWrappedResponse)
             where T : class
             where TResponse : class
             where TApiResponse : BaseWrappedApiResponse<TResponse, T>, new()
@@ -117,28 +114,26 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
                 return new ApiResult<T>(data?.Data, restWrappedResponse, Context, data?.Context, data?.Request);
             }
 
-            var errorWrappings = requestParameters.ErrorWrappings ?? new[] {ErrorWrapping.Context};
-            return TryToCreateApiResultForError<T>(restWrappedResponse, errorWrappings);
+            return TryToCreateApiResultForError<T>(restWrappedResponse);
         }
 
-        private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse, IEnumerable<ErrorWrapping> errorWrappings)
+        private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse)
             where T : class
         {
-            Exception innerException = null;
+            var errorWrappings = EnumExtension.GetEnumValues<ErrorWrapping>();
             foreach (var errorWrapping in errorWrappings)
             {
                 try
                 {
                     return ApiResultForErrorFactory.Create<T>(errorWrapping, restResponse, Context);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    innerException = e;
+                    // ignored
                 }
             }
 
-            var errorWrappingsAsStr = string.Join(", ", errorWrappings.Select(x => x.ToString()));
-            throw new Exception($"Cannot convert API error correctly: {errorWrappingsAsStr}", innerException);
+            throw new ApiException($"Cannot convert API error correctly.\r\n\r\n{restResponse.Content}", restResponse, Context);
         }
     }
 }

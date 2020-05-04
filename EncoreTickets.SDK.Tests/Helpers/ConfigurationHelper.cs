@@ -6,13 +6,13 @@ namespace EncoreTickets.SDK.Tests.Helpers
     internal static class ConfigurationHelper
     {
         private static readonly object Lock = new object();
-        private static IConfiguration Configuration;
+        private static IConfiguration configuration;
 
         public static IConfiguration GetConfiguration()
         {
             lock (Lock)
             {
-                return Configuration ?? (Configuration = BuildConfiguration());
+                return configuration ?? (configuration = BuildConfiguration());
             }
         }
 

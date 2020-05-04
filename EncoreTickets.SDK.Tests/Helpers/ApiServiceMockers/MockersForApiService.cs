@@ -99,7 +99,9 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
         private bool AreQueryParametersInRequest(IRestRequest request,
             Dictionary<string, object> expectedQueryParameters)
         {
-            var queryParameters = request.Parameters.Where(p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode);
+            var queryParameters = request.Parameters
+                .Where(p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode)
+                .ToList();
             if (expectedQueryParameters == null)
             {
                 return !queryParameters.Any();
