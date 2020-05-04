@@ -8,17 +8,19 @@ Each service has public methods that wrap a call to a specific API endpoint with
 
 #### The following service classes are available:
 
-- InventoryServiceApi.cs - For calling endpoints of Inventory APP (proxy searches from the Elastic service & Thebs)
+- BasketServiceApi.cs - For calling endpoints of Basket API
+
+- CheckoutServiceApi.cs - For calling endpoints of Checkout API
 
 - ContentServiceApi.cs - For calling endpoints of Content APP (rich content for products)
 
-- VenueServiceApi.cs - For calling endpoints of Venue App (the venue service provides information on product locations)
-
-- BasketServiceApi.cs - For calling endpoints of Basket API service
-
-- CheckoutServiceApi.cs - For calling endpoints of Checkout API (for Encore Tickets Ltd)
+- InventoryServiceApi.cs - For calling endpoints of Inventory APP (proxy searches from the Elastic service & Thebs)
 
 - PricingServiceApi.cs - For calling endpoints of Pricing API (live pricing for products available for sale through Encore Tickets)
+
+- PaymentServiceApi.cs - For calling endpoints of Payment API
+
+- VenueServiceApi.cs - For calling endpoints of Venue APP (the venue service provides information on product locations)
 
 - AwsSqs.cs - For working with AWS Simple Queue Service
 
@@ -32,7 +34,27 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 3.2
+###### Includes:
+- basket v1
+- content v1
+- inventory v1-3
+- payment v1
+- pricing v2
+- venue v2
+###### Changes:
+- Added some methods for calling Payment API endpoints to the previously empty PaymentServiceApi
+- Updated models for the Venue API
+- Added helper for converting money values
+
 #### 3.1
+###### Includes:
+- basket v1
+- content v1
+- inventory v1-3
+- pricing v2
+- venue v2
+###### Changes:
 - Added the tree data structure which can contain tree items with arbitrary number of children.
 
 #### 3.0
