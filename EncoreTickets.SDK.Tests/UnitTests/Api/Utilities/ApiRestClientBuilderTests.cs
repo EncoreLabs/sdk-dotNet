@@ -129,7 +129,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
 
     public static class ApiRestClientBuilderTestsSource
     {
-        private const string SdkVersion = "3.1.0";
+        private const string SdkVersion = "3.2.0";
 
         public static IEnumerable<TestCaseData> CreateClientWrapper_ReturnsExpectedValue = new[]
         {
