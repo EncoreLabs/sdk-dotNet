@@ -169,64 +169,64 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #endregion
 
-        #region GetPerformances
+        #region GetAvailabilities
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
-        public void GetPerformances_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
+        public void GetAvailabilities_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                GetPerformances(productId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+                GetAvailabilities(productId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
             });
         }
 
         [TestCase("1587", 2, "1/10/2020", "11/12/2020")]
         [TestCase("test_id", 1, "1/10/2020", "11/12/2020")]
-        public void GetPerformances_IfProductIdIsSet_CallsApiWithRightParameters(string productId, int quantity, string fromAsStr, string toAsStr)
+        public void GetAvailabilities_IfProductIdIsSet_CallsApiWithRightParameters(string productId, int quantity, string fromAsStr, string toAsStr)
         {
             var from = TestHelper.ConvertTestArgumentToDateTime(fromAsStr);
             var to = TestHelper.ConvertTestArgumentToDateTime(toAsStr);
-            mockers.SetupAnyExecution<List<Performance>>();
+            mockers.SetupAnyExecution<ApiResponse<List<Availability>>>();
 
             try
             {
-                GetPerformances(productId, quantity, from, to);
+                GetAvailabilities(productId, quantity, from, to);
             }
             catch (Exception)
             {
                 // ignored
             }
 
-            mockers.VerifyExecution<List<Performance>>(BaseUrl,
-                $"v2/availability/products/{productId}/quantity/{quantity}/from/{from:yyyyMMdd}/to/{to:yyyyMMdd}",
+            mockers.VerifyExecution<ApiResponse<List<Availability>>>(BaseUrl,
+                $"availability/products/{productId}/quantity/{quantity}/from/{from:yyyyMMdd}/to/{to:yyyyMMdd}",
                 Method.GET);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetPerformances_IfApiResponseSuccessful_ReturnsPerformances))]
-        public void GetPerformances_IfApiResponseSuccessful_ReturnsPerformances(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances))]
+        public void GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances(
             string responseContent,
-            List<Performance> expected)
+            List<Availability> expected)
         {
-            mockers.SetupSuccessfulExecution<List<Performance>>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponse<List<Availability>>>(responseContent);
 
-            var actual = GetPerformances(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            var actual = GetAvailabilities(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetPerformances_IfApiResponseFailed_ThrowsApiException))]
-        public void GetPerformances_IfApiResponseFailed_ThrowsApiException(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseFailed_ThrowsApiException))]
+        public void GetAvailabilities_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
             string message)
         {
-            mockers.SetupFailedExecution<List<Performance>>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponse<List<Availability>>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = GetPerformances(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+                var actual = GetAvailabilities(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -489,62 +489,216 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #endregion
 
-        public static IEnumerable<TestCaseData> GetPerformances_IfApiResponseSuccessful_ReturnsPerformances = new[]
+        #region GetAvailabilities
+
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances = new[]
         {
             new TestCaseData(
-                "[{\"datetime\":\"2020-01-10T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-11T14:30:00+0000\",\"largestLumpOfTickets\":12},{\"datetime\":\"2020-01-11T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-13T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-14T19:30:00+0000\",\"largestLumpOfTickets\":14}]",
-                new List<Performance>
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""6441"",
+            ""quantity"": ""1"",
+            ""fromDate"": ""20201003"",
+            ""toDate"": ""20201005""
+        }
+    },
+    ""response"": [
+        {
+            ""datetime"": ""2020-10-03T19:30:00+0000"",
+            ""largestLumpOfTickets"": 33
+        },
+        {
+            ""datetime"": ""2020-10-04T16:00:00+0000"",
+            ""largestLumpOfTickets"": 33
+        },
+        {
+            ""datetime"": ""2020-10-05T19:30:00+0000"",
+            ""largestLumpOfTickets"": 33
+        }
+    ],
+    ""context"": null
+}",
+                new List<Availability>
                 {
-                    new Performance
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 10, 19, 30, 00),
-                        LargestLumpOfTickets = 14
+                        DateTime = new DateTime(2020, 10, 03, 19, 30, 00),
+                        LargestLumpOfTickets = 33
                     },
-                    new Performance
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 11, 14, 30, 00),
-                        LargestLumpOfTickets = 12
+                        DateTime = new DateTime(2020, 10, 04, 16, 00, 00),
+                        LargestLumpOfTickets = 33
                     },
-                    new Performance
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 11, 19, 30, 00),
-                        LargestLumpOfTickets = 14
-                    },
-                    new Performance
-                    {
-                        Datetime = new DateTime(2020, 01, 13, 19, 30, 00),
-                        LargestLumpOfTickets = 14
-                    },
-                    new Performance
-                    {
-                        Datetime = new DateTime(2020, 01, 14, 19, 30, 00),
-                        LargestLumpOfTickets = 14
+                        DateTime = new DateTime(2020, 10, 05, 19, 30, 00),
+                        LargestLumpOfTickets = 33
                     },
                 }
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetPerformances_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException = new[]
         {
             // 400
             new TestCaseData(
-                "{\"errors\":[{\"field\":\"fromDate\",\"message\":\"end date should not be more than 90 days from start dates\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20210523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""fromDate"",
+                ""message"": ""end date should not be more than 90 days from start dates""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "fromDate: end date should not be more than 90 days from start dates"
             ),
             new TestCaseData(
-                "{\"errors\":[{\"field\":\"productId\",\"message\":\"The product ID can only contain numbers, letters and dashes\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200305"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""fromDate"",
+                ""message"": ""start date should not be in the past""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "fromDate: start date should not be in the past"
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158)"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""productId"",
+                ""message"": ""The product ID can only contain numbers, letters and dashes""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "productId: The product ID can only contain numbers, letters and dashes"
             ),
 
+            // 403
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1001"",
+            ""quantity"": ""1"",
+            ""fromDate"": ""20201003"",
+            ""toDate"": ""20201005""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.Forbidden,
+                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"
+            ),
+
             // 404
             new TestCaseData(
-                "{\"code\":404,\"message\":\"Product not found\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Product not found""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.NotFound,
                 "Product not found"
             ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Sorry, nothing was found"
+            ),
         };
+
+        #endregion
 
         public static IEnumerable<TestCaseData> GetAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
         {

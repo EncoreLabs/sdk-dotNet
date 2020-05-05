@@ -34,24 +34,26 @@ namespace EncoreTickets.SDK.Inventory
         AvailabilityRange GetAvailabilityRange(string productId);
 
         /// <summary>
-        /// Get the performances for a given product.
+        /// Get an array of performance availabilities.
+        /// GET /api/{VERSION}/availability​/products​/{productId}​/quantity​/{quantity}​/from​/{fromDate}​/to​/{toDate}
         /// </summary>
         /// <param name="productId">ID product</param>
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="from">start date</param>
-        /// <param name="to">to date</param>
+        /// <param name="to">end date</param>
         /// <returns>Array of performance availabilities</returns>
-        IList<Performance> GetPerformances(int productId, int quantity, DateTime from, DateTime to);
+        IList<Availability> GetAvailabilities(int productId, int quantity, DateTime from, DateTime to);
 
         /// <summary>
-        /// Get the performances for a given product.
+        /// Get an array of performance availabilities.
+        /// GET /api/{VERSION}/availability​/products​/{productId}​/quantity​/{quantity}​/from​/{fromDate}​/to​/{toDate}
         /// </summary>
         /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="fromDate">start date</param>
-        /// <param name="toDate">to date</param>
+        /// <param name="toDate">end date</param>
         /// <returns>Array of performance availabilities</returns>
-        IList<Performance> GetPerformances(string productId, int quantity, DateTime fromDate, DateTime toDate);
+        IList<Availability> GetAvailabilities(string productId, int quantity, DateTime fromDate, DateTime toDate);
         
         /// <summary>
         /// Get the seats for a performance

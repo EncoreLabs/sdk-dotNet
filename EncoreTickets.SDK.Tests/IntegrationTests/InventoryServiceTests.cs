@@ -82,58 +82,76 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         #endregion
 
+        #region GetAvailabilities
+
         [Test]
-        public void GetPerformances_Successful()
+        public void GetAvailabilities_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 12, 01);
 
-            var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+            var availabilities = service.GetAvailabilities(productId, 2, startDate, startDate.AddMonths(1));
 
-            foreach (var performance in performances)
+            foreach (var availability in availabilities)
             {
-                Assert.NotNull(performance.LargestLumpOfTickets);
-                Assert.AreNotEqual(performance.Datetime, default);
+                Assert.NotNull(availability.LargestLumpOfTickets);
+                Assert.AreNotEqual(availability.DateTime, default);
             }
         }
 
         [Test]
-        public void GetPerformances_IfIntervalTooBig_Exception400()
+        public void GetAvailabilities_IfIntervalTooBig_Exception400()
         {
             var productId = configuration["Inventory:TestProductId"];
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(10));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(10));
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
         }
 
         [Test]
-        public void GetPerformances_IfProductIdInvalid_Exception400()
+        public void GetAvailabilities_IfStartDateInThePast_Exception400()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today.AddDays(-10), DateTime.Today);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetAvailabilities_IfProductIdInvalid_Exception400()
         {
             const string productId = "invalid_id";
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
         }
 
         [Test]
-        public void GetPerformances_IfProductNotFound_Exception404()
+        public void GetAvailabilities_IfProductNotFound_Exception404()
         {
             const string productId = "invalid-id";
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
+
+        #endregion
 
         [Test]
         public void GetAvailability_Successful()

@@ -74,13 +74,13 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        public IList<Performance> GetPerformances(int productId, int quantity, DateTime fromDate, DateTime toDate)
+        public IList<Availability> GetAvailabilities(int productId, int quantity, DateTime fromDate, DateTime toDate)
         {
-            return GetPerformances(productId.ToString(), quantity, fromDate, toDate);
+            return GetAvailabilities(productId.ToString(), quantity, fromDate, toDate);
         }
 
         /// <inheritdoc />
-        public IList<Performance> GetPerformances(string productId, int quantity, DateTime from, DateTime to)
+        public IList<Availability> GetAvailabilities(string productId, int quantity, DateTime from, DateTime to)
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
@@ -89,10 +89,10 @@ namespace EncoreTickets.SDK.Inventory
 
             var requestParameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v2/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
+                Endpoint = $"availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithNotWrappedResponse<List<Performance>>(requestParameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Availability>>(requestParameters);
             return result.DataOrException;
         }
 
