@@ -54,6 +54,34 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         #endregion
 
+        #region GetAvailabilityRange
+
+        [Test]
+        public void GetAvailabilityRange_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+
+            var bookingRange = service.GetAvailabilityRange(productId);
+
+            Assert.NotNull(bookingRange.FirstBookableDate);
+            Assert.NotNull(bookingRange.LastBookableDate);
+        }
+
+        [Test]
+        public void GetAvailabilityRange_Exception404()
+        {
+            const string productId = "not_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var products = service.GetAvailabilityRange(productId);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        #endregion
+
         [Test]
         public void GetPerformances_Successful()
         {
@@ -145,43 +173,6 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var seats = service.GetAvailability(productId, 2, DateTime.Now);
-            });
-
-            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
-        }
-
-        [Test]
-        public void GetBookingRange_Successful()
-        {
-            var productId = configuration["Inventory:TestProductId"];
-
-            var bookingRange = service.GetBookingRange(productId);
-
-            Assert.NotNull(bookingRange.FirstBookableDate);
-            Assert.NotNull(bookingRange.LastBookableDate);
-        }
-
-        [Test]
-        public void GetBookingRange_Exception400()
-        {
-            const string productId = ",,,";
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var products = service.GetBookingRange(productId);
-            });
-
-            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
-        }
-
-        [Test]
-        public void GetBookingRange_Exception404()
-        {
-            const string productId = "not_id";
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var products = service.GetBookingRange(productId);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);

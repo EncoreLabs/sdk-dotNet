@@ -51,6 +51,29 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
+        public AvailabilityRange GetAvailabilityRange(int productId)
+        {
+            return GetAvailabilityRange(productId.ToString());
+        }
+
+        /// <inheritdoc />
+        public AvailabilityRange GetAvailabilityRange(string productId)
+        {
+            if (string.IsNullOrWhiteSpace(productId))
+            {
+                throw new ArgumentException("Product ID must be set");
+            }
+
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"products/{productId}/availability-range",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<AvailabilityRange>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
         public IList<Performance> GetPerformances(int productId, int quantity, DateTime fromDate, DateTime toDate)
         {
             return GetPerformances(productId.ToString(), quantity, fromDate, toDate);
@@ -104,29 +127,6 @@ namespace EncoreTickets.SDK.Inventory
                 }
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<Availability>(requestParameters);
-            return result.DataOrException;
-        }
-
-        /// <inheritdoc />
-        public BookingRange GetBookingRange(int productId)
-        {
-            return GetBookingRange(productId.ToString());
-        }
-
-        /// <inheritdoc />
-        public BookingRange GetBookingRange(string productId)
-        {
-            if (string.IsNullOrWhiteSpace(productId))
-            {
-                throw new ArgumentException("Product ID must be set");
-            }
-
-            var parameters = new ExecuteApiRequestParameters
-            {
-                Endpoint = $"v3/products/{productId}/availability-range",
-                Method = RequestMethod.Get
-            };
-            var result = Executor.ExecuteApiWithWrappedResponse<BookingRange>(parameters);
             return result.DataOrException;
         }
     }

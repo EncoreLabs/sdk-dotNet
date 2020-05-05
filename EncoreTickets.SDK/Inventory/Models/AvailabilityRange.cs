@@ -2,7 +2,7 @@
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class BookingRange
+    public class AvailabilityRange
     {
         public DateTime? FirstBookableDate { get; set; }
 

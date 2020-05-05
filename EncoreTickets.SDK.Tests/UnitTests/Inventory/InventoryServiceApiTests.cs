@@ -106,6 +106,69 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #endregion
 
+        #region GetAvailabilityRange
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void GetAvailabilityRange_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetAvailabilityRange(productId);
+            });
+        }
+
+        [TestCase("1587")]
+        [TestCase("-1587")]
+        [TestCase("some_id")]
+        public void GetAvailabilityRange_IfProductIdIsSet_CallsApiWithRightParameters(string productId)
+        {
+            mockers.SetupAnyExecution<ApiResponse<AvailabilityRange>>();
+
+            try
+            {
+                GetAvailabilityRange(productId);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<AvailabilityRange>>(BaseUrl, $"products/{productId}/availability-range", Method.GET);
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange))]
+        public void GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange(
+            string responseContent,
+            AvailabilityRange expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<AvailabilityRange>>(responseContent);
+
+            var actual = GetAvailabilityRange(TestValidProductId);
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException))]
+        public void GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string message)
+        {
+            mockers.SetupFailedExecution<ApiResponse<AvailabilityRange>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetAvailabilityRange(TestValidProductId);
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(message, exception.Message);
+        }
+
+        #endregion
+
         #region GetPerformances
 
         [TestCase(null)]
@@ -292,73 +355,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         }
 
         #endregion
-
-        #region GetBookingRange
-
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("   ")]
-        public void GetBookingRange_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
-        {
-            Assert.Catch<ArgumentException>(() =>
-            {
-                GetBookingRange(productId);
-            });
-        }
-
-        [TestCase("1587")]
-        [TestCase("-1587")]
-        [TestCase("some_id")]
-        public void GetBookingRange_IfProductIdIsSet_CallsApiWithRightParameters(string productId)
-        {
-            mockers.SetupAnyExecution<ApiResponse<BookingRange>>();
-
-            try
-            {
-                GetBookingRange(productId);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<ApiResponse<BookingRange>>(BaseUrl, $"v3/products/{productId}/availability-range", Method.GET);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange))]
-        public void GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange(
-            string responseContent,
-            BookingRange expected)
-        {
-            mockers.SetupSuccessfulExecution<ApiResponse<BookingRange>>(responseContent);
-
-            var actual = GetBookingRange(TestValidProductId);
-
-            AssertExtension.AreObjectsValuesEqual(expected, actual);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetBookingRange_IfApiResponseFailed_ThrowsApiException))]
-        public void GetBookingRange_IfApiResponseFailed_ThrowsApiException(
-            string responseContent,
-            HttpStatusCode code,
-            string message)
-        {
-            mockers.SetupFailedExecution<ApiResponse<BookingRange>>(responseContent, code);
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var actual = GetBookingRange(TestValidProductId);
-            });
-
-            Assert.AreEqual(code, exception.ResponseCode);
-            Assert.AreEqual(message, exception.Message);
-        }
-
-        #endregion
     }
 
     public static class InventoryServiceApiTestsSource
     {
+        #region Search
+
         public static IEnumerable<TestCaseData> Search_IfApiResponseSuccessful_ReturnsProducts = new[]
         {
             new TestCaseData(
@@ -430,6 +432,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 "Sorry, nothing was found"
             ),
         };
+
+        #endregion
+
+        #region GetAvailabilityRange
+
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587""
+        }
+    },
+    ""response"": {
+        ""firstBookableDate"": ""2020-05-05T00:00:00+00:00"",
+        ""lastBookableDate"": ""2020-05-23T00:00:00+00:00""
+    },
+    ""context"": null
+}",
+                new AvailabilityRange
+                {
+                    FirstBookableDate = new DateTime(2020, 05, 05),
+                    LastBookableDate = new DateTime(2020, 05, 23),
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Sorry, nothing was found"
+            ),
+        };
+
+        #endregion
 
         public static IEnumerable<TestCaseData> GetPerformances_IfApiResponseSuccessful_ReturnsPerformances = new[]
         {
@@ -658,27 +716,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             new TestCaseData(
                 "{\"code\":404,\"message\":\"Sorry, nothing was found\"}",
                 HttpStatusCode.BadRequest,
-                "Sorry, nothing was found"
-            ),
-        };
-
-        public static IEnumerable<TestCaseData> GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange = new[]
-        {
-            new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"1587\"}},\"response\":{\"firstBookableDate\":\"2020-01-10T00:00:00+00:00\",\"lastBookableDate\":\"2020-11-28T00:00:00+00:00\"},\"context\":null}",
-                new BookingRange
-                {
-                    FirstBookableDate = new DateTime(2020, 01, 10),
-                    LastBookableDate = new DateTime(2020, 11, 28),
-                }
-            ),
-        };
-
-        public static IEnumerable<TestCaseData> GetBookingRange_IfApiResponseFailed_ThrowsApiException = new[]
-        {
-            new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"some_id\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Sorry, nothing was found\"}]}}",
-                HttpStatusCode.NotFound,
                 "Sorry, nothing was found"
             ),
         };

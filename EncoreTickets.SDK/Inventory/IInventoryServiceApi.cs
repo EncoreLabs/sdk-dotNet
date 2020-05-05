@@ -18,6 +18,22 @@ namespace EncoreTickets.SDK.Inventory
         IList<Product> Search(string text);
 
         /// <summary>
+        /// Get the first and last bookable dates for a product.
+        /// GET /api​/{VERSION}​/products​/{productId}​/availability-range
+        /// </summary>
+        /// <param name="productId">ID product</param>
+        /// <returns>The first and last bookable dates for a product</returns>
+        AvailabilityRange GetAvailabilityRange(int productId);
+
+        /// <summary>
+        /// Get the first and last bookable dates for a product.
+        /// GET /api​/{VERSION}​/products​/{productId}​/availability-range
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <returns>The first and last bookable dates for a product</returns>
+        AvailabilityRange GetAvailabilityRange(string productId);
+
+        /// <summary>
         /// Get the performances for a given product.
         /// </summary>
         /// <param name="productId">ID product</param>
@@ -64,19 +80,5 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="time">performance time: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
         Availability GetAvailability(string productId, int quantity, DateTime? date, DateTime? time);
-
-        /// <summary>
-        /// Get the first and last bookable dates for a product
-        /// </summary>
-        /// <param name="productId">ID product</param>
-        /// <returns>The first and last bookable dates for a product</returns>
-        BookingRange GetBookingRange(int productId);
-
-        /// <summary>
-        /// Get the first and last bookable dates for a product
-        /// </summary>
-        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
-        /// <returns>The first and last bookable dates for a product</returns>
-        BookingRange GetBookingRange(string productId);
     }
 }
