@@ -9,7 +9,6 @@ using EncoreTickets.SDK.Content;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using NUnit.Framework;
 using RestSharp;
 
@@ -334,12 +333,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                             ThirdLine = null,
                             City = "London",
                             PostCode = "SW1V 1LG",
-                            Region = new Region
+                            Region = new Location
                             {
                                 Name = null,
                                 IsoCode = "LDN"
                             },
-                            Country = new Country
+                            Country = new Location
                             {
                                 Name = "Great Britain",
                                 IsoCode = "GBR"

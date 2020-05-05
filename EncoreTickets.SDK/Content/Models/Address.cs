@@ -4,16 +4,16 @@
     {
         public string FirstLine { get; set; }
 
-        public object SecondLine { get; set; }
+        public string SecondLine { get; set; }
 
-        public object ThirdLine { get; set; }
+        public string ThirdLine { get; set; }
 
         public string City { get; set; }
 
-        public object PostCode { get; set; }
+        public string PostCode { get; set; }
 
-        public Region Region { get; set; }
+        public Location Region { get; set; }
 
-        public Country Country { get; set; }
+        public Location Country { get; set; }
     }
 }
