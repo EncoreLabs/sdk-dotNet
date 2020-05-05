@@ -26,6 +26,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(rates);
             foreach (var rate in rates)
             {
+                Assert.True(rate.Id > 0);
                 Assert.NotNull(rate.BaseCurrency);
                 Assert.NotNull(rate.TargetCurrency);
                 Assert.True(rate.Rate > 0);

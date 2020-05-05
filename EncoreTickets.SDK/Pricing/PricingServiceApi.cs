@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Pricing
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v2/admin/exchange_rates",
+                Endpoint = "v3/admin/exchange_rates",
                 Method = RequestMethod.Get,
                 Query = ratesParameters,
                 DateFormat = DateFormat
