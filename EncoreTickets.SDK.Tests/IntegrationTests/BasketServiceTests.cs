@@ -18,6 +18,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     {
         private IConfiguration configuration;
         private BasketServiceApi service;
+        private bool runPromoCodeTests = false;
 
         [SetUp]
         public void SetupState()
@@ -69,6 +70,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void UpsertBasket_GetBasket_Successful()
         {
+            VerifyPromoCodeTestsEnabled();
             var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
@@ -142,6 +144,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void ApplyPromotion_Successful()
         {
+            VerifyPromoCodeTestsEnabled();
             var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
@@ -160,6 +163,15 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             finally
             {
                 service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        private void VerifyPromoCodeTestsEnabled()
+        {
+            if (!runPromoCodeTests)
+            {
+                Assert.Ignore("The promo code involving tests are disabled by default because they use a paid service. " +
+                              "Set 'runPromoCodeTests' field to true to run the tests.");
             }
         }
 
