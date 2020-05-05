@@ -15,6 +15,8 @@ namespace EncoreTickets.SDK.Pricing
     /// </summary>
     public class PricingServiceApi : BaseApiWithAuthentication, IPricingServiceApi
     {
+        private const int ApiVersion = 3;
+
         private const string PricingApiHost = "pricing-service.{0}tixuk.io/api/";
         private const string DateFormat = "yyyy-MM-ddTHH:mm:sszzz";
 
@@ -34,7 +36,7 @@ namespace EncoreTickets.SDK.Pricing
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v2/admin/exchange_rates",
+                Endpoint = $"v{ApiVersion}/admin/exchange_rates",
                 Method = RequestMethod.Get,
                 Query = ratesParameters,
                 DateFormat = DateFormat
