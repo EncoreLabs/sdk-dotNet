@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Inventory.Models;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Enums;
-using EncoreTickets.SDK.Utilities.Exceptions;
 
 namespace EncoreTickets.SDK.Inventory
 {
@@ -19,7 +17,9 @@ namespace EncoreTickets.SDK.Inventory
     /// </summary>
     public class InventoryServiceApi : BaseApi, IInventoryServiceApi
     {
-        private const string InventoryApiHost = "inventory-service.{0}tixuk.io/api/";
+        public const int Version = 4;
+
+        private static readonly string InventoryApiHost = $"inventory-service.{{0}}tixuk.io/api/v{Version}/";
 
         /// <summary>
         /// Default constructor for the Inventory service
@@ -32,21 +32,21 @@ namespace EncoreTickets.SDK.Inventory
         /// <inheritdoc />
         public IList<Product> Search(string text)
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentException("search text must be set");
             }
 
             var requestParameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v2/search",
+                Endpoint = "search",
                 Method = RequestMethod.Get,
                 Query = new
                 {
                     query = text
                 }
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>, ProductSearchResponse, List<Product>>(requestParameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Product>, ProductSearchResponse, ProductSearchResponseContent>(requestParameters);
             return result.DataOrException;
         }
 

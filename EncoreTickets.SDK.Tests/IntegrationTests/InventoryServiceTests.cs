@@ -27,6 +27,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             service = new InventoryServiceApi(context);
         }
 
+        #region Search
+
         [Test]
         public void SearchProducts_Successful()
         {
@@ -49,6 +51,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
+
+        #endregion
 
         [Test]
         public void GetPerformances_Successful()

@@ -10,7 +10,6 @@ using EncoreTickets.SDK.Inventory.Models;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -37,10 +36,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             mockers = new MockersForApiService();
         }
 
+        [Test]
+        public void Constructor_InitializesServiceCorrectly()
+        {
+            Assert.AreEqual("https://inventory-service.devtixuk.io/api/v4/", BaseUrl);
+        }
+
         #region Search
 
         [TestCase(null)]
         [TestCase("")]
+        [TestCase("  ")]
         public void Search_IfTextIsNotSet_ThrowsArgumentException(string text)
         {
             Assert.Catch<ArgumentException>(() =>
@@ -51,7 +57,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         [TestCase("w")]
         [TestCase("broadway")]
-        [TestCase("  ")]
+        [TestCase("singin in the rain")]
         public void Search_IfTextIsSet_CallsApiWithRightParameters(string text)
         {
             mockers.SetupAnyExecution<ProductSearchResponse>();
@@ -65,7 +71,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ProductSearchResponse>(BaseUrl, "v2/search", Method.GET,
+            mockers.VerifyExecution<ProductSearchResponse>(BaseUrl, "search", Method.GET,
                 expectedQueryParameters: new Dictionary<string, object> { { "query", text } });
         }
 
@@ -356,7 +362,31 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         public static IEnumerable<TestCaseData> Search_IfApiResponseSuccessful_ReturnsProducts = new[]
         {
             new TestCaseData(
-                "{\"product\":[{\"id\":1587,\"name\":\"Wicked\",\"type\":\"show\",\"venue\":{\"id\":\"138\"},\"onSale\":\"yes\",\"bookingStarts\":\"2019-08-13T00:00:00+0000\",\"bookingEnds\":\"2020-05-23T00:00:00+0000\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""query"": ""wicked""
+        },
+        ""urlParams"": {}
+    },
+    ""response"": {
+        ""product"": [
+            {
+                ""id"": 1587,
+                ""name"": ""Wicked"",
+                ""type"": ""show"",
+                ""venue"": {
+                    ""id"": ""138""
+                },
+                ""onSale"": ""yes"",
+                ""bookingStarts"": ""2019-08-13T00:00:00+0000"",
+                ""bookingEnds"": ""2020-05-23T00:00:00+0000""
+            }
+        ]
+    },
+    ""context"": null
+}",
                 new List<Product>
                 {
                     new Product
@@ -379,7 +409,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         public static IEnumerable<TestCaseData> Search_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
-                "{\"code\":404,\"message\":\"Sorry, nothing was found\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""query"": ""rw""
+        },
+        ""urlParams"": {}
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.NotFound,
                 "Sorry, nothing was found"
             ),

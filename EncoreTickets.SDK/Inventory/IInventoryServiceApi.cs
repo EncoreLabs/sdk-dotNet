@@ -10,7 +10,8 @@ namespace EncoreTickets.SDK.Inventory
     public interface IInventoryServiceApi
     {
         /// <summary>
-        /// Search for a product by its keyword.
+        /// Search for products by a keyword.
+        /// GET /api/{VERSION}/search
         /// </summary>
         /// <param name="text">Search query</param>
         /// <returns>Products that contain a search query in their names</returns>
