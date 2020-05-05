@@ -6,7 +6,7 @@
 
         public string SecondLine { get; set; }
 
-        public object ThirdLine { get; set; }
+        public string ThirdLine { get; set; }
 
         public string City { get; set; }
 
