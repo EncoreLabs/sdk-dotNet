@@ -15,7 +15,7 @@ namespace EncoreTickets.SDK.Inventory
         /// </summary>
         /// <param name="text">Search query</param>
         /// <returns>Products that contain a search query in their names</returns>
-        IList<Product> Search(string text);
+        IList<Product> SearchProducts(string text);
 
         /// <summary>
         /// Get the first and last bookable dates for a product.

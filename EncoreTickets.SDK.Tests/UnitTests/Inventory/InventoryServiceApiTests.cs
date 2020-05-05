@@ -42,29 +42,29 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             Assert.AreEqual("https://inventory-service.devtixuk.io/api/v4/", BaseUrl);
         }
 
-        #region Search
+        #region SearchProducts
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
-        public void Search_IfTextIsNotSet_ThrowsArgumentException(string text)
+        public void SearchProducts_IfTextIsNotSet_ThrowsArgumentException(string text)
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                Search(text);
+                SearchProducts(text);
             });
         }
 
         [TestCase("w")]
         [TestCase("broadway")]
         [TestCase("singin in the rain")]
-        public void Search_IfTextIsSet_CallsApiWithRightParameters(string text)
+        public void SearchProducts_IfTextIsSet_CallsApiWithRightParameters(string text)
         {
             mockers.SetupAnyExecution<ProductSearchResponse>();
 
             try
             {
-                Search(text);
+                SearchProducts(text);
             }
             catch (Exception)
             {
@@ -75,20 +75,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: new Dictionary<string, object> { { "query", text } });
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.Search_IfApiResponseSuccessful_ReturnsProducts))]
-        public void Search_IfApiResponseSuccessful_ReturnsProducts(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SearchProducts_IfApiResponseSuccessful_ReturnsProducts))]
+        public void SearchProducts_IfApiResponseSuccessful_ReturnsProducts(
             string responseContent,
             List<Product> expected)
         {
             mockers.SetupSuccessfulExecution<ProductSearchResponse>(responseContent);
 
-            var actual = Search(TestValidSearchText);
+            var actual = SearchProducts(TestValidSearchText);
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.Search_IfApiResponseFailed_ThrowsApiException))]
-        public void Search_IfApiResponseFailed_ThrowsApiException(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SearchProducts_IfApiResponseFailed_ThrowsApiException))]
+        public void SearchProducts_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
             string message)
@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = Search(TestValidSearchText);
+                var actual = SearchProducts(TestValidSearchText);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -359,9 +359,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
     public static class InventoryServiceApiTestsSource
     {
-        #region Search
+        #region SearchProducts
 
-        public static IEnumerable<TestCaseData> Search_IfApiResponseSuccessful_ReturnsProducts = new[]
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
         {
             new TestCaseData(
                 @"{
@@ -408,7 +408,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             ),
         };
 
-        public static IEnumerable<TestCaseData> Search_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
                 @"{

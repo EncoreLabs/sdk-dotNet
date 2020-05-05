@@ -30,7 +30,7 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        public IList<Product> Search(string text)
+        public IList<Product> SearchProducts(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {

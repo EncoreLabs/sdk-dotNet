@@ -27,14 +27,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             service = new InventoryServiceApi(context);
         }
 
-        #region Search
+        #region SearchProducts
 
         [Test]
         public void SearchProducts_Successful()
         {
             const string searchTerm = "w";
 
-            var products = service.Search(searchTerm);
+            var products = service.SearchProducts(searchTerm);
 
             Assert.False(products.Any(p => string.IsNullOrEmpty(p.Name)));
         }
@@ -46,7 +46,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var products = service.Search(searchTerm);
+                var products = service.SearchProducts(searchTerm);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
