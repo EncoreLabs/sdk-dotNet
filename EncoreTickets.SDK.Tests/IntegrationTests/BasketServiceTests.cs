@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
@@ -182,9 +183,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     new Reservation
                     {
-                        Date = new DateTimeOffset(2020, 4, 30, 19, 30, 0, TimeSpan.Zero),
-                        ProductId = "1587",
-                        VenueId = "138",
+                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm", 
+                            CultureInfo.InvariantCulture),
+                        ProductId = configuration["Basket:TestProductId"],
+                        VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
                         Items = references.Select(r => new Seat { AggregateReference = r }).ToList()
                     }
