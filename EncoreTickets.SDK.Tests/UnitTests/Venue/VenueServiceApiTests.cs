@@ -67,7 +67,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Never());
-            mockers.VerifyExecution<VenuesResponse>(BaseUrl, "v1/venues", Method.GET);
+            mockers.VerifyExecution<VenuesResponse>(BaseUrl, $"v{ApiVersion}/venues", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenues_IfApiResponseSuccessful_ReturnsVenues))]
@@ -128,7 +128,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Never());
-            mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v1/venues/{venueId}", Method.GET);
+            mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v{ApiVersion}/venues/{venueId}", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenueById_IfApiResponseSuccessful_ReturnsVenue))]
@@ -188,7 +188,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v1/admin/venues/{venue.InternalId}",
+            mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v{ApiVersion}/admin/venues/{venue.InternalId}",
                 Method.POST, bodyInJson: requestBody);
         }
 
@@ -241,7 +241,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Never());
-            mockers.VerifyExecution<ApiResponse<List<Attribute>>>(BaseUrl, "v1/attributes/standard", Method.GET);
+            mockers.VerifyExecution<ApiResponse<List<Attribute>>>(BaseUrl, $"v{ApiVersion}/attributes/standard", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetStandardAttributes_IfApiResponseSuccessful_ReturnsAttributes))]
@@ -302,7 +302,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Attribute>>(BaseUrl, "v1/admin/attributes",
+            mockers.VerifyExecution<ApiResponse<Attribute>>(BaseUrl, $"v{ApiVersion}/admin/attributes",
                 Method.PATCH, bodyInJson: bodyInRequest);
         }
 
@@ -376,7 +376,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
             mockers.VerifyAuthenticateExecution(Times.Never());
             mockers.VerifyExecution<ApiResponse<List<SeatDetailed>>>(BaseUrl,
-                $"v1/venues/{venueId}/seats/attributes/detailed", Method.GET);
+                $"v{ApiVersion}/venues/{venueId}/seats/attributes/detailed", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes))]
@@ -443,7 +443,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<List<string>>>(BaseUrl, $"v1/admin/venues/{venueId}/seats/attributes",
+            mockers.VerifyExecution<ApiResponse<List<string>>>(BaseUrl, $"v{ApiVersion}/admin/venues/{venueId}/seats/attributes",
                 Method.PATCH, bodyInJson: requestBody);
         }
 
