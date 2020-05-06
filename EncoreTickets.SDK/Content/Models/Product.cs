@@ -24,6 +24,8 @@ namespace EncoreTickets.SDK.Content.Models
 
         public int FitMaximum { get; set; }
 
+        public string RatingCode { get; set; }
+
         public Rating Rating { get; set; }
 
         public string Synopsis { get; set; }

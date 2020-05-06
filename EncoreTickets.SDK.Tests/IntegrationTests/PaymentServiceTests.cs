@@ -74,7 +74,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void CreateOrder_Successful()
         {
             var channelId = configuration["Payment:TestChannelId"];
-            var externalId = configuration["Payment:TestCreateOrderExternalId"];
+            var externalId = Guid.NewGuid().ToString();
+            var amount = new Amount
+            {
+                Value = 8100,
+                Currency = "USD",
+                ExchangeRate = 1.2
+            };
             var orderRequest = new CreateOrderRequest
             {
                 Description = "test description",
@@ -108,16 +114,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         Name = "WICKED",
                         Description = null,
                         Quantity = 1,
-                        Amount = new Amount
-                        {
-                            Value = 8100,
-                            Currency = "USD",
-                            ExchangeRate = 1.2
-                        },
+                        Amount = amount,
                         Tax = null,
                         ExternalId = "1587"
                     }
                 },
+                Amount = amount,
                 RiskData = new RiskData
                 {
                     DaysToEvent = 0,

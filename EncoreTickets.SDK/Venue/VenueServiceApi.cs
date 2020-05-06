@@ -21,6 +21,8 @@ namespace EncoreTickets.SDK.Venue
     /// </summary>
     public class VenueServiceApi : BaseApiWithAuthentication, IVenueServiceApi
     {
+        public const int ApiVersion = 2;
+
         private const string VenueApiHost = "venue-service.{0}tixuk.io/api/";
 
         /// <inheritdoc/>
@@ -41,7 +43,7 @@ namespace EncoreTickets.SDK.Venue
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/venues",
+                Endpoint = $"v{ApiVersion}/venues",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
@@ -58,7 +60,7 @@ namespace EncoreTickets.SDK.Venue
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/venues/{id}",
+                Endpoint = $"v{ApiVersion}/venues/{id}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
@@ -76,7 +78,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/admin/venues/{venue.InternalId}",
+                Endpoint = $"v{ApiVersion}/admin/venues/{venue.InternalId}",
                 Method = RequestMethod.Post,
                 Body = venue
             };
@@ -89,7 +91,7 @@ namespace EncoreTickets.SDK.Venue
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/attributes/standard",
+                Endpoint = $"v{ApiVersion}/attributes/standard",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Attribute>>(parameters);
@@ -107,7 +109,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/admin/attributes",
+                Endpoint = $"v{ApiVersion}/admin/attributes",
                 Method = RequestMethod.Patch,
                 Body = attribute
             };
@@ -132,7 +134,7 @@ namespace EncoreTickets.SDK.Venue
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/venues/{venueId}/seats/attributes/detailed",
+                Endpoint = $"v{ApiVersion}/venues/{venueId}/seats/attributes/detailed",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<SeatDetailed>>(parameters);
@@ -150,7 +152,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/admin/venues/{venueId}/seats/attributes",
+                Endpoint = $"v{ApiVersion}/admin/venues/{venueId}/seats/attributes",
                 Method = RequestMethod.Patch,
                 Body = new SeatAttributesRequest
                 {
