@@ -17,9 +17,9 @@ namespace EncoreTickets.SDK.Inventory
     /// </summary>
     public class InventoryServiceApi : BaseApi, IInventoryServiceApi
     {
-        public const int Version = 4;
+        public const int ApiVersion = 4;
 
-        private static readonly string InventoryApiHost = $"inventory-service.{{0}}tixuk.io/api/v{Version}/";
+        private const string InventoryApiHost = "inventory-service.{0}tixuk.io/api/";
 
         /// <summary>
         /// Default constructor for the Inventory service
@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Inventory
 
             var requestParameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "search",
+                Endpoint = $"v{ApiVersion}/search",
                 Method = RequestMethod.Get,
                 Query = new
                 {
@@ -66,7 +66,7 @@ namespace EncoreTickets.SDK.Inventory
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"products/{productId}/availability-range",
+                Endpoint = $"v{ApiVersion}/products/{productId}/availability-range",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<AvailabilityRange>(parameters);
@@ -89,7 +89,7 @@ namespace EncoreTickets.SDK.Inventory
 
             var requestParameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
+                Endpoint = $"v{ApiVersion}/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Availability>>(requestParameters);
@@ -97,19 +97,19 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        public Availability GetAvailability(int productId, int quantity, DateTime? performance = null)
+        public SeatAvailability GetSeatAvailability(int productId, int quantity, DateTime? performance = null)
         {
-            return GetAvailability(productId.ToString(), quantity, performance);
+            return GetSeatAvailability(productId.ToString(), quantity, performance);
         }
 
         /// <inheritdoc />
-        public Availability GetAvailability(string productId, int quantity, DateTime? performance = null)
+        public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null)
         {
-            return GetAvailability(productId, quantity, performance, performance);
+            return GetSeatAvailability(productId, quantity, performance, performance);
         }
 
         /// <inheritdoc />
-        public Availability GetAvailability(string productId, int quantity, DateTime? date, DateTime? time)
+        public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time)
         {
             if (string.IsNullOrWhiteSpace(productId))
             {
@@ -118,7 +118,7 @@ namespace EncoreTickets.SDK.Inventory
 
             var requestParameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/availability/products/{productId}/quantity/{quantity}/seats",
+                Endpoint = $"v{ApiVersion}/europa/availability/products/{productId}/quantity/{quantity}/seats",
                 Method = RequestMethod.Get,
                 Query = new
                 {
@@ -126,7 +126,7 @@ namespace EncoreTickets.SDK.Inventory
                     time = time?.ToEncoreTime()
                 }
             };
-            var result = Executor.ExecuteApiWithNotWrappedResponse<Availability>(requestParameters);
+            var result = Executor.ExecuteApiWithWrappedResponse<SeatAvailability>(requestParameters);
             return result.DataOrException;
         }
     }

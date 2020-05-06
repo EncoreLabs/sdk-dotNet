@@ -153,13 +153,17 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         #endregion
 
+        #region GetSeatAvailability
+
         [Test]
-        public void GetAvailability_Successful()
+        public void GetSeatAvailability_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
-            var performance = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(2)).First();
+            var startDate = new DateTime(2020, 10, 11);
+            var endDate = new DateTime(2020, 12, 31);
+            var availability = service.GetAvailabilities(productId, 1, startDate, endDate).First();
 
-            var seats = service.GetAvailability(productId, 2, performance.Datetime);
+            var seats = service.GetSeatAvailability(productId, 1, availability.DateTime);
 
             Assert.IsNotEmpty(seats.Areas);
             foreach (var area in seats.Areas)
@@ -174,10 +178,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void GetAvailability_IfProductIdInvalid_Exception400()
         {
             var productId = "invalid_id";
-            
+
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+                var seats = service.GetSeatAvailability(productId, 2, DateTime.Now);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
@@ -190,10 +194,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+                var seats = service.GetSeatAvailability(productId, 2, DateTime.Now);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
+        #endregion
     }
 }

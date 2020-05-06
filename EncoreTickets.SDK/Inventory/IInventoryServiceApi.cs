@@ -54,33 +54,36 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="toDate">end date</param>
         /// <returns>Array of performance availabilities</returns>
         IList<Availability> GetAvailabilities(string productId, int quantity, DateTime fromDate, DateTime toDate);
-        
+
         /// <summary>
-        /// Get the seats for a performance
+        /// Get available seats.
+        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
         /// </summary>
         /// <param name="productId">ID product</param>
         /// <param name="quantity">quantity of seats needed</param>
-        /// <param name="performance">performance time</param>
+        /// <param name="performance">performance: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
-        Availability GetAvailability(int productId, int quantity, DateTime? performance = null);
+        SeatAvailability GetSeatAvailability(int productId, int quantity, DateTime? performance = null);
 
         /// <summary>
-        /// Get the seats for a performance
+        /// Get available seats.
+        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
         /// </summary>
         /// <param name="productId">ID product</param>
         /// <param name="quantity">quantity of seats needed</param>
-        /// <param name="performance">performance time</param>
+        /// <param name="performance">performance: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
-        Availability GetAvailability(string productId, int quantity, DateTime? performance = null);
+        SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null);
 
         /// <summary>
-        /// Get the seats for a performance
+        /// Get available seats.
+        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
         /// </summary>
         /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="date">performance date: if nothing is sent, current date will be used</param>
         /// <param name="time">performance time: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
-        Availability GetAvailability(string productId, int quantity, DateTime? date, DateTime? time);
+        SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time);
     }
 }
