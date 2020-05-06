@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Inventory.Models.RequestModels;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Enums;
@@ -112,6 +114,13 @@ namespace EncoreTickets.SDK.Inventory
         /// <inheritdoc />
         public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time)
         {
+            var optionalParameters = new SeatAvailabilityParameters {Date = date, Time = time};
+            return GetSeatAvailability(productId, quantity, optionalParameters);
+        }
+
+        /// <inheritdoc />
+        public SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters)
+        {
             if (string.IsNullOrWhiteSpace(productId))
             {
                 throw new ArgumentException("Product ID must be set");
@@ -121,14 +130,33 @@ namespace EncoreTickets.SDK.Inventory
             {
                 Endpoint = $"v{ApiVersion}/europa/availability/products/{productId}/quantity/{quantity}/seats",
                 Method = RequestMethod.Get,
-                Query = new
-                {
-                    date = date?.ToEncoreDate(),
-                    time = time?.ToEncoreTime()
-                }
+                Query = GetQueryParametersForGetSeatAvailability(parameters)
             };
             var result = Executor.ExecuteApiWithWrappedResponse<SeatAvailability>(requestParameters);
             return result.DataOrException;
+        }
+
+        private object GetQueryParametersForGetSeatAvailability(SeatAvailabilityParameters parameters)
+        {
+            dynamic query = new ExpandoObject();
+            query.date = parameters.Date?.ToEncoreDate();
+            query.time = parameters.Time?.ToEncoreTime();
+            if (!string.IsNullOrWhiteSpace(parameters.Sort))
+            {
+                query.sort = parameters.Sort;
+            }
+
+            if (parameters.Direction != null)
+            {
+                query.direction = parameters.Direction;
+            }
+
+            if (parameters.GroupingLimit > 0)
+            {
+                query.groupingLimit = parameters.GroupingLimit;
+            }
+
+            return (object) query;
         }
     }
 }

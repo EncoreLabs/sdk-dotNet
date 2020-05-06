@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -110,25 +111,35 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
                 return null;
             }
 
-            var type = queryObject.GetType();
-            var properties = type.GetProperties();
-            var queryParameters = properties
-                .Select(x => GetQueryParameter(queryObject, x))
-                .Where(x => x.Item1 != null)
+            var notFilteredQueryParameters = GetNotFilteredQueryParameters(queryObject);
+            var queryParameters = notFilteredQueryParameters
+                .Where(x => !string.IsNullOrWhiteSpace(x.Item1) && !string.IsNullOrWhiteSpace(x.Item2))
                 .ToDictionary(x => x.Item1, x => x.Item2);
             return queryParameters.Count == 0 ? null : queryParameters;
+        }
+
+        private static IEnumerable<(string, string)> GetNotFilteredQueryParameters(object queryObject)
+        {
+            if (queryObject is ExpandoObject expandoObject)
+            {
+                return expandoObject.Select(x => GetQueryParameter(x.Key, x.Value));
+            }
+
+            var type = queryObject.GetType();
+            var properties = type.GetProperties();
+            return properties.Select(x => GetQueryParameter(queryObject, x));
         }
 
         private static (string, string) GetQueryParameter(object queryObject, PropertyInfo property)
         {
             var propertyValue = property.GetValue(queryObject, null);
-            if (propertyValue == null)
-            {
-                return (null, null);
-            }
+            return propertyValue == null ? (null, null) : GetQueryParameter(property.Name, propertyValue);
+        }
 
-            var parameterName = property.Name.ToLower();
-            var parameterValue = Convert.ToString(propertyValue, CultureInfo.InvariantCulture);
+        private static (string, string) GetQueryParameter(string name, object value)
+        {
+            var parameterName = name.ToLower();
+            var parameterValue = Convert.ToString(value, CultureInfo.InvariantCulture);
             return (parameterName, parameterValue);
         }
 

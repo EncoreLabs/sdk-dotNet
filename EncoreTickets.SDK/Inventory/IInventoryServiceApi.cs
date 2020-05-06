@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Inventory.Models.RequestModels;
 
 namespace EncoreTickets.SDK.Inventory
 {
@@ -86,5 +87,15 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="time">performance time: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
         SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time);
+
+        /// <summary>
+        /// Get available seats.
+        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <param name="quantity">quantity of seats needed</param>
+        /// <param name="parameters">Optional parameters</param>
+        /// <returns>Array of availability seat</returns>
+        SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters);
     }
 }
