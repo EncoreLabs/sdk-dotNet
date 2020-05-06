@@ -125,6 +125,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             AssertExtension.AreObjectsValuesEqual(expectedDeserializer, actual.ResponseDataDeserializer);
             Assert.AreEqual(expectedDataFormat, actual.ResponseDataFormat);
         }
+
+        [TestCaseSource(typeof(ApiRestClientBuilderTestsSource), nameof(ApiRestClientBuilderTestsSource.SaveResponseInfoInApiContext_SetsInfoInApiContext))]
+        public void SaveResponseInfoInApiContext_SetsInfoInApiContext(
+            ApiContext sourceContext,
+            RestResponseInformation information,
+            ApiContext expectedContext)
+        {
+            var builder = new ApiRestClientBuilder();
+
+            builder.SaveResponseInfoInApiContext(information, sourceContext);
+
+            AssertExtension.AreObjectsValuesEqual(expectedContext, sourceContext);
+        }
     }
 
     public static class ApiRestClientBuilderTestsSource
@@ -247,44 +260,80 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 }),
         };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedHeaders = new[]
-        {
-            new TestCaseData(
-                null,
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
-                }
-            ),
-            new TestCaseData(
-                new ApiContext(),
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
-                }
-            ),
-            new TestCaseData(
-                new ApiContext
-                {
-                    Affiliate = " "
-                },
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
-                }
-            ),
-            new TestCaseData(
-                new ApiContext
-                {
-                    Affiliate = "boxoffice"
-                },
-                new Dictionary<string, string>
-                {
-                    {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
-                    {"affiliateId", "boxoffice"},
-                }
-            ),
-        };
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedHeaders =
+            new[]
+            {
+                new TestCaseData(
+                    null,
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext(),
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext
+                    {
+                        Affiliate = " ",
+                        Correlation = "",
+                        Market = null
+                    },
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"}
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext
+                    {
+                        Affiliate = "boxoffice"
+                    },
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
+                        {"affiliateId", "boxoffice"},
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext
+                    {
+                        Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                    },
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
+                        {"X-Correlation-ID", "30435ee1-c0ce-4664-85b9-cf5402f20e83"},
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext
+                    {
+                        Market = Market.Uk
+                    },
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
+                        {"x-market", "Uk"},
+                    }
+                ),
+                new TestCaseData(
+                    new ApiContext
+                    {
+                        Market = Market.Broadway
+                    },
+                    new Dictionary<string, string>
+                    {
+                        {"x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}"},
+                        {"x-market", "Broadway"},
+                    }
+                ),
+            };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedQueryParameters = new[]
         {
@@ -457,6 +506,85 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
                 DataFormat.Json
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> SaveResponseInfoInApiContext_SetsInfoInApiContext = new[]
+        {
+            new TestCaseData(
+                new ApiContext(),
+                null,
+                new ApiContext()
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    ReceivedCorrelation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                null,
+                new ApiContext
+                {
+                    ReceivedCorrelation = null
+                }
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    ReceivedCorrelation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                new RestResponseInformation(),
+                new ApiContext
+                {
+                    ReceivedCorrelation = null
+                }
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    ReceivedCorrelation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                new RestResponseInformation
+                {
+                    ResponseHeaders = new Dictionary<string, object>()
+                },
+                new ApiContext
+                {
+                    ReceivedCorrelation = null
+                }
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    ReceivedCorrelation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                new RestResponseInformation
+                {
+                    ResponseHeaders = new Dictionary<string, object>
+                    {
+                        { "affiliate", "boxoffice" }
+                    }
+                },
+                new ApiContext
+                {
+                    ReceivedCorrelation = null
+                }
+            ),
+            new TestCaseData(
+                new ApiContext
+                {
+                    ReceivedCorrelation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                new RestResponseInformation
+                {
+                    ResponseHeaders = new Dictionary<string, object>
+                    {
+                        { "X-Correlation-Id", "99999ee1-c0ce-4664-85b9-cf5402f20e83" }
+                    }
+                },
+                new ApiContext
+                {
+                    ReceivedCorrelation = "99999ee1-c0ce-4664-85b9-cf5402f20e83"
+                }
             ),
         };
     }

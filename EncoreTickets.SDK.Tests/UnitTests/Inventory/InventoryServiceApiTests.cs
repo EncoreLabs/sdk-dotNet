@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public InventoryServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public InventoryServiceApiTests() : base(ApiContextTestHelper.DefaultApiContext)
         {
         }
 
@@ -34,6 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         public void CreateMockers()
         {
             mockers = new MockersForApiService();
+            ApiContextTestHelper.ResetContextToDefault(Context);
         }
 
         #region SearchProducts
@@ -54,6 +55,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("singin in the rain")]
         public void SearchProducts_IfTextIsSet_CallsApiWithRightParameters(string text)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             mockers.SetupAnyExecution<ProductSearchResponse>();
 
             try
@@ -65,8 +68,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ProductSearchResponse>(BaseUrl, "v4/search", Method.GET,
-                expectedQueryParameters: new Dictionary<string, object> { { "query", text } });
+            mockers.VerifyExecution<ProductSearchResponse>(
+                BaseUrl,
+                "v4/search",
+                Method.GET,
+                expectedQueryParameters: new Dictionary<string, object> { { "query", text } },
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SearchProducts_IfApiResponseSuccessful_ReturnsProducts))]
@@ -118,6 +129,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("some_id")]
         public void GetAvailabilityRange_IfProductIdIsSet_CallsApiWithRightParameters(string productId)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             mockers.SetupAnyExecution<ApiResponse<AvailabilityRange>>();
 
             try
@@ -129,8 +142,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<AvailabilityRange>>(BaseUrl,
-                $"v4/products/{productId}/availability-range", Method.GET);
+            mockers.VerifyExecution<ApiResponse<AvailabilityRange>>(
+                BaseUrl,
+                $"v4/products/{productId}/availability-range",
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange))]
@@ -181,6 +201,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("test_id", 1, "1/10/2020", "11/12/2020")]
         public void GetAvailabilities_IfProductIdIsSet_CallsApiWithRightParameters(string productId, int quantity, string fromAsStr, string toAsStr)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            Context.Market = Market.Broadway;
             var from = TestHelper.ConvertTestArgumentToDateTime(fromAsStr);
             var to = TestHelper.ConvertTestArgumentToDateTime(toAsStr);
             mockers.SetupAnyExecution<ApiResponse<List<Availability>>>();
@@ -194,9 +217,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Availability>>>(BaseUrl,
+            mockers.VerifyExecution<ApiResponse<List<Availability>>>(
+                BaseUrl,
                 $"v4/availability/products/{productId}/quantity/{quantity}/from/{from:yyyyMMdd}/to/{to:yyyyMMdd}",
-                Method.GET);
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                    { "x-market", "Broadway" },
+                });
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances))]
@@ -246,6 +276,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase(1587, 2)]
         public void GetSeatAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(int productId, int quantity)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
 
             try
@@ -257,13 +289,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(BaseUrl,
-                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats", Method.GET);
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
         [TestCase(1587, 2, "1/10/2020 3:56:51 PM")]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(int productId, int quantity, string dateAsStr)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             var performance = TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
             mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
 
@@ -276,12 +317,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(BaseUrl,
-                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats", Method.GET,
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
                 {
                     {"date", performance.ToString("yyyyMMdd")},
                     {"time", performance.ToString("HHmm")},
+                },
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
                 });
         }
 
@@ -294,6 +342,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr, string timeAsStr)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             var date = string.IsNullOrWhiteSpace(dateAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
             var time = string.IsNullOrWhiteSpace(timeAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(timeAsStr);
             var queryParameters = new Dictionary<string, object>();
@@ -316,9 +366,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(BaseUrl,
-                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats", Method.GET,
-                expectedQueryParameters: queryParameters);
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
+                expectedQueryParameters: queryParameters,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]

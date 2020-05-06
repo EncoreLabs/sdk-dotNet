@@ -15,12 +15,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     {
         private IConfiguration configuration;
         private InventoryServiceApi service;
+        private ApiContext context;
 
         [SetUp]
         public void SetupState()
         {
             configuration = ConfigurationHelper.GetConfiguration();
-            var context = new ApiContext(Environments.QA)
+            context = new ApiContext(Environments.QA)
             {
                 Affiliate = configuration["Inventory:TestAffiliateId"]
             };
@@ -37,6 +38,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var products = service.SearchProducts(searchTerm);
 
             Assert.False(products.Any(p => string.IsNullOrEmpty(p.Name)));
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -50,6 +52,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         #endregion
@@ -65,6 +68,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             Assert.NotNull(bookingRange.FirstBookableDate);
             Assert.NotNull(bookingRange.LastBookableDate);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -78,6 +82,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         #endregion
@@ -97,6 +102,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(availability.LargestLumpOfTickets);
                 Assert.AreNotEqual(availability.DateTime, default);
             }
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -110,6 +116,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -123,6 +130,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -136,6 +144,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -149,6 +158,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         #endregion
@@ -172,6 +182,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -185,6 +196,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -198,6 +210,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
         #endregion
     }

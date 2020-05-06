@@ -16,6 +16,11 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
     /// <inheritdoc/>
     internal class ApiRestClientBuilder : IApiRestClientBuilder
     {
+        private const string SdkVersionHeader = "x-SDK";
+        private const string AffiliateHeader = "affiliateId";
+        private const string CorrelationHeader = "X-Correlation-ID";
+        private const string MarketHeader = "x-market";
+
         /// <inheritdoc/>
         public virtual RestClientWrapper CreateClientWrapper(ApiContext context)
         {
@@ -54,17 +59,37 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
             };
         }
 
+        /// <inheritdoc/>
+        public void SaveResponseInfoInApiContext(RestResponseInformation responseInformation, ApiContext context)
+        {
+            var responseHeaderKey = responseInformation?.ResponseHeaders?.Keys.FirstOrDefault(x =>
+                x.Equals(CorrelationHeader, StringComparison.InvariantCultureIgnoreCase));
+            context.ReceivedCorrelation = responseHeaderKey != null
+                ? responseInformation.ResponseHeaders[responseHeaderKey].ToString()
+                : null;
+        }
+
         private static Dictionary<string, string> GetHeaders(ApiContext context)
         {
             var buildNumber = GetBuildNumber();
             var headers = new Dictionary<string, string>
             {
-                {"x-SDK", $"EncoreTickets.SDK.NET {buildNumber}"}
+                {SdkVersionHeader, $"EncoreTickets.SDK.NET {buildNumber}"}
             };
 
             if (!string.IsNullOrWhiteSpace(context?.Affiliate))
             {
-                headers.Add("affiliateId", context.Affiliate);
+                headers.Add(AffiliateHeader, context.Affiliate);
+            }
+
+            if (!string.IsNullOrWhiteSpace(context?.Correlation))
+            {
+                headers.Add(CorrelationHeader, context.Correlation);
+            }
+
+            if (context?.Market != null)
+            {
+                headers.Add(MarketHeader, context.Market.ToString());
             }
 
             return headers;
