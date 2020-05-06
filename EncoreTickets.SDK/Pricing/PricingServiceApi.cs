@@ -18,6 +18,8 @@ namespace EncoreTickets.SDK.Pricing
         private const string PricingApiHost = "pricing-service.{0}tixuk.io/api/";
         private const string DateFormat = "yyyy-MM-ddTHH:mm:sszzz";
 
+        public override int? ApiVersion => 2;
+
         /// <summary>
         /// Default constructor.
         /// </summary>

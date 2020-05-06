@@ -1,9 +1,11 @@
-﻿namespace EncoreTickets.SDK.Checkout
+﻿using EncoreTickets.SDK.Api;
+
+namespace EncoreTickets.SDK.Checkout
 {
     /// <summary>
     /// The interface of a checkout service.
     /// </summary>
-    public interface ICheckoutServiceApi
+    public interface ICheckoutServiceApi : IServiceApi
     {
     }
 }

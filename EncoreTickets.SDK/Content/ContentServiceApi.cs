@@ -5,7 +5,6 @@ using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Content.Models;
 using EncoreTickets.SDK.Utilities.Enums;
-using EncoreTickets.SDK.Utilities.Exceptions;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -17,6 +16,9 @@ namespace EncoreTickets.SDK.Content
     public class ContentServiceApi : BaseApi, IContentServiceApi
     {
         private const string ContentApiHost = "content-service.{0}tixuk.io/api/";
+
+        /// <inheritdoc/>
+        public override int? ApiVersion => 1;
 
         /// <summary>
         /// Default constructor for the content service

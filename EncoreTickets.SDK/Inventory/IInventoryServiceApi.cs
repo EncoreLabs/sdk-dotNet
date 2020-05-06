@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Inventory.Models;
 
 namespace EncoreTickets.SDK.Inventory
@@ -7,7 +8,7 @@ namespace EncoreTickets.SDK.Inventory
     /// <summary>
     /// The interface of an inventory service
     /// </summary>
-    public interface IInventoryServiceApi
+    public interface IInventoryServiceApi : IServiceApi
     {
         /// <summary>
         /// Search for products by a keyword.

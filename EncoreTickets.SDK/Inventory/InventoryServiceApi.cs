@@ -17,9 +17,10 @@ namespace EncoreTickets.SDK.Inventory
     /// </summary>
     public class InventoryServiceApi : BaseApi, IInventoryServiceApi
     {
-        public const int ApiVersion = 4;
-
         private const string InventoryApiHost = "inventory-service.{0}tixuk.io/api/";
+
+        /// <inheritdoc/>
+        public override int? ApiVersion => 4;
 
         /// <summary>
         /// Default constructor for the Inventory service

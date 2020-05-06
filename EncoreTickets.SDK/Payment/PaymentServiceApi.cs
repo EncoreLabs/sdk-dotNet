@@ -14,6 +14,9 @@ namespace EncoreTickets.SDK.Payment
     {
         private const string PaymentApiHost = "payment-service.{0}tixuk.io/api/";
 
+        /// <inheritdoc/>
+        public override int? ApiVersion => 1;
+
         public PaymentServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, PaymentApiHost, automaticAuthentication)
         {

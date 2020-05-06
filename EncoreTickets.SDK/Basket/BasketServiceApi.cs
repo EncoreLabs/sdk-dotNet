@@ -9,7 +9,6 @@ using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Utilities.Enums;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using EncoreTickets.SDK.Utilities.Mapping;
 
 namespace EncoreTickets.SDK.Basket
@@ -22,6 +21,9 @@ namespace EncoreTickets.SDK.Basket
     public class BasketServiceApi : BaseApi, IBasketServiceApi
     {
         private const string BasketApiHost = "basket-service.{0}tixuk.io/api/";
+
+        /// <inheritdoc/>
+        public override int? ApiVersion => 1;
 
         /// <summary>
         /// Default constructor for the Basket service.

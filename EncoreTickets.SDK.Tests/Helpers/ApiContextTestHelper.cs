@@ -8,14 +8,15 @@ namespace EncoreTickets.SDK.Tests.Helpers
 
         public static void ResetContextToDefault(ApiContext context)
         {
-            context.Environment = DefaultApiContext.Environment;
-            context.AuthenticationMethod = DefaultApiContext.AuthenticationMethod;
-            context.AccessToken = DefaultApiContext.AccessToken;
-            context.UserName = DefaultApiContext.UserName;
-            context.Password = DefaultApiContext.Password;
-            context.Affiliate = DefaultApiContext.Affiliate;
-            context.Correlation = DefaultApiContext.Correlation;
-            context.Market = DefaultApiContext.Market;
+            var defaultApiContext = DefaultApiContext;
+            context.Environment = defaultApiContext.Environment;
+            context.AuthenticationMethod = defaultApiContext.AuthenticationMethod;
+            context.AccessToken = defaultApiContext.AccessToken;
+            context.UserName = defaultApiContext.UserName;
+            context.Password = defaultApiContext.Password;
+            context.Affiliate = defaultApiContext.Affiliate;
+            context.Correlation = defaultApiContext.Correlation;
+            context.Market = defaultApiContext.Market;
         }
     }
 }

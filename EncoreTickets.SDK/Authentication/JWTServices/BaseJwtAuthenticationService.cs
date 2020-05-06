@@ -12,6 +12,9 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
     {
         protected readonly string Endpoint;
 
+        /// <inheritdoc/>
+        public override int? ApiVersion => null;
+
         protected BaseJwtAuthenticationService(ApiContext context, string host, string loginEndpoint)
             : base(context, host)
         {

@@ -9,6 +9,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class BaseApiTests : BaseApi
     {
+        public override int? ApiVersion { get; }
+
         public BaseApiTests() : base(new ApiContext(), BaseApiTestsSource.TestHost)
         {
         }

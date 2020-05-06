@@ -1,11 +1,12 @@
-﻿using EncoreTickets.SDK.Api.Models;
+﻿using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Models;
 
 namespace EncoreTickets.SDK.Authentication
 {
     /// <summary>
     /// The interface of an authentication service.
     /// </summary>
-    public interface IAuthenticationService
+    public interface IAuthenticationService : IServiceApi
     {
         /// <summary>
         /// Get an API context with data set for an authenticated user.
