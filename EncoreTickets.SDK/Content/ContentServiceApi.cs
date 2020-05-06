@@ -33,7 +33,7 @@ namespace EncoreTickets.SDK.Content
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/locations",
+                Endpoint = $"v{ApiVersion}/locations",
                 Method = RequestMethod.Get
             };
             var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(parameters);
@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Content
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/products",
+                Endpoint = $"v{ApiVersion}/products",
                 Method = RequestMethod.Get,
                 Query = new PageRequest
                 {
@@ -67,7 +67,7 @@ namespace EncoreTickets.SDK.Content
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/products/{id}",
+                Endpoint = $"v{ApiVersion}/products/{id}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Product>(parameters);

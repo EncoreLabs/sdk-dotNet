@@ -43,7 +43,7 @@ namespace EncoreTickets.SDK.Basket
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/baskets/{basketReference}",
+                Endpoint = $"v{ApiVersion}/baskets/{basketReference}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
@@ -56,7 +56,7 @@ namespace EncoreTickets.SDK.Basket
             var request = source.Map<Models.Basket, UpsertBasketRequest>();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/baskets",
+                Endpoint = $"v{ApiVersion}/baskets",
                 Method = RequestMethod.Patch,
                 Body = request
             };
@@ -68,7 +68,7 @@ namespace EncoreTickets.SDK.Basket
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/baskets/{basketId}/clear",
+                Endpoint = $"v{ApiVersion}/baskets/{basketId}/clear",
                 Method = RequestMethod.Patch
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Basket
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/baskets/{basketId}/reservations/{reservationId}",
+                Endpoint = $"v{ApiVersion}/baskets/{basketId}/reservations/{reservationId}",
                 Method = RequestMethod.Delete
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Basket
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/promotions/{promotionId}",
+                Endpoint = $"v{ApiVersion}/promotions/{promotionId}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
@@ -109,7 +109,7 @@ namespace EncoreTickets.SDK.Basket
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/baskets/{basketId}/applyPromotion",
+                Endpoint = $"v{ApiVersion}/baskets/{basketId}/applyPromotion",
                 Method = RequestMethod.Patch,
                 Body = new ApplyPromotionRequest {Coupon = coupon}
             };

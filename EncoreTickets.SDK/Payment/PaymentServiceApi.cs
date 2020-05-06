@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Payment
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/orders/{channelId}/{externalId}",
+                Endpoint = $"v{ApiVersion}/orders/{channelId}/{externalId}",
                 Method = RequestMethod.Get,
                 Deserializer = new JsonResponseToOrderDeserializer()
             };
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Payment
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/orders",
+                Endpoint = $"v{ApiVersion}/orders",
                 Method = RequestMethod.Post,
                 Body = orderRequest,
                 Deserializer = new JsonResponseToOrderDeserializer()
@@ -71,7 +71,7 @@ namespace EncoreTickets.SDK.Payment
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/orders/{orderId}",
+                Endpoint = $"v{ApiVersion}/orders/{orderId}",
                 Method = RequestMethod.Patch,
                 Body = orderRequest,
                 Deserializer = new JsonResponseToOrderDeserializer()
@@ -86,7 +86,7 @@ namespace EncoreTickets.SDK.Payment
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/payments",
+                Endpoint = $"v{ApiVersion}/payments",
                 Method = RequestMethod.Post,
                 Body = paymentRequest
             };
@@ -99,7 +99,7 @@ namespace EncoreTickets.SDK.Payment
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/countries/usa/states",
+                Endpoint = $"v{ApiVersion}/countries/usa/states",
                 Method = RequestMethod.Get,
                 Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
             };
@@ -112,7 +112,7 @@ namespace EncoreTickets.SDK.Payment
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/countries/canada/provinces",
+                Endpoint = $"v{ApiVersion}/countries/canada/provinces",
                 Method = RequestMethod.Get,
                 Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
             };
