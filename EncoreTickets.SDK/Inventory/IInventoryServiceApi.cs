@@ -83,17 +83,6 @@ namespace EncoreTickets.SDK.Inventory
         /// </summary>
         /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
         /// <param name="quantity">quantity of seats needed</param>
-        /// <param name="date">performance date: if nothing is sent, current date will be used</param>
-        /// <param name="time">performance time: if nothing is sent, current time will be used</param>
-        /// <returns>Array of availability seat</returns>
-        SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time);
-
-        /// <summary>
-        /// Get available seats.
-        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
-        /// </summary>
-        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
-        /// <param name="quantity">quantity of seats needed</param>
         /// <param name="parameters">Optional parameters</param>
         /// <returns>Array of availability seat</returns>
         SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters);

@@ -108,13 +108,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <inheritdoc />
         public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null)
         {
-            return GetSeatAvailability(productId, quantity, performance, performance);
-        }
-
-        /// <inheritdoc />
-        public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? date, DateTime? time)
-        {
-            var optionalParameters = new SeatAvailabilityParameters {Date = date, Time = time};
+            var optionalParameters = new SeatAvailabilityParameters { PerformanceTime = performance };
             return GetSeatAvailability(productId, quantity, optionalParameters);
         }
 
@@ -139,8 +133,8 @@ namespace EncoreTickets.SDK.Inventory
         private object GetQueryParametersForGetSeatAvailability(SeatAvailabilityParameters parameters)
         {
             dynamic query = new ExpandoObject();
-            query.date = parameters.Date?.ToEncoreDate();
-            query.time = parameters.Time?.ToEncoreTime();
+            query.date = parameters.PerformanceTime?.ToEncoreDate();
+            query.time = parameters.PerformanceTime?.ToEncoreTime();
             if (!string.IsNullOrWhiteSpace(parameters.Sort))
             {
                 query.sort = parameters.Sort;

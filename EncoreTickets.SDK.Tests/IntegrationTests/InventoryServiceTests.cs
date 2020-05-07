@@ -166,7 +166,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         #region GetSeatAvailability
 
         [Test]
-        public void GetSeatAvailability_Successful()
+        public void GetSeatAvailability_IfOnlyDateTimeIsSet_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
             var startDate = new DateTime(2020, 10, 11);
@@ -186,7 +186,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetAvailability_IfProductIdInvalid_Exception400()
+        public void GetSeatAvailability_IfProductIdInvalid_Exception400()
         {
             var productId = "invalid_id";
 
@@ -200,7 +200,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetAvailability_IfProductNotFound_Exception404()
+        public void GetSeatAvailability_IfProductNotFound_Exception404()
         {
             const string productId = "invalidid";
 
@@ -212,6 +212,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
+
         #endregion
     }
 }

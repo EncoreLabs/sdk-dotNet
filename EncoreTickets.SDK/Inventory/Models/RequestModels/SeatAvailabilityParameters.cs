@@ -9,14 +9,9 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
     public class SeatAvailabilityParameters
     {
         /// <summary>
-        /// Gets or sets performance date: if nothing is sent, current date will be used.
+        /// Gets or sets performance date and time: if nothing is sent, current time will be used.
         /// </summary>
-        public DateTime? Date { get; set; }
-
-        /// <summary>
-        /// Gets or sets performance time: if nothing is sent, current time will be used.
-        /// </summary>
-        public DateTime? Time { get; set; }
+        public DateTime? PerformanceTime { get; set; }
 
         /// <summary>
         /// Gets or sets seat grouping limit.

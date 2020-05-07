@@ -336,86 +336,37 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 });
         }
 
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "")]
-        [TestCase("1587", 2, "", "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", null)]
-        [TestCase("1587", 2, null, "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, null, null)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null, null, 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, null, 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Desc, null, 0)]
+        [TestCase("1587", 2, "", null, "id", 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null, null, -1)]
+        [TestCase("1587", 2, null, null, null, 10)]
+        [TestCase("1587", 2, null,Direction.Asc, "id", 1)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, "id", 1)]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
-            string productId, int quantity, string dateAsStr, string timeAsStr)
-        {
-            Context.Affiliate = "boxoffice";
-            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
-            var date = string.IsNullOrWhiteSpace(dateAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
-            var time = string.IsNullOrWhiteSpace(timeAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(timeAsStr);
-            var queryParameters = new Dictionary<string, object>();
-            if (date != null)
-            {
-                queryParameters.Add("date", date.Value.ToString("yyyyMMdd"));
-            }
-            if (time != null)
-            {
-                queryParameters.Add("time", time.Value.ToString("HHmm"));
-            }
-            mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
-
-            try
-            {
-                GetSeatAvailability(productId, quantity, date, time);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
-                BaseUrl,
-                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
-                Method.GET,
-                expectedQueryParameters: queryParameters,
-                expectedHeaders: new Dictionary<string, object>
-                {
-                    { "affiliateId", Context.Affiliate },
-                    { "X-Correlation-ID", Context.Correlation },
-                });
-        }
-
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "1/10/2020 3:56:51 PM", null, null, 0)]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "", Direction.Asc, null, 0)]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "", Direction.Desc, null, 0)]
-        [TestCase("1587", 2, "", "1/10/2020 3:56:51 PM", null, "id", 0)]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", null, null, null, -1)]
-        [TestCase("1587", 2, null, "1/10/2020 3:56:51 PM", null, null, 10)]
-        [TestCase("1587", 2, null, null, Direction.Asc, "id", 1)]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "1/10/2020 3:56:51 PM", Direction.Asc, "id", 1)]
-        public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
-            string productId, int quantity, string dateAsStr, string timeAsStr, Direction? direction, string sort,
-            int groupingLimit)
+            string productId, int quantity, string dateAsStr, Direction? direction, string sort, int groupingLimit)
         {
             Context.Affiliate = "boxoffice";
             Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             var parameters = new SeatAvailabilityParameters
             {
-                Date = string.IsNullOrWhiteSpace(dateAsStr)
+                PerformanceTime = string.IsNullOrWhiteSpace(dateAsStr)
                     ? null
                     : (DateTime?) TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
-                Time = string.IsNullOrWhiteSpace(timeAsStr)
-                    ? null
-                    : (DateTime?) TestHelper.ConvertTestArgumentToDateTime(timeAsStr),
                 Direction = direction,
                 Sort = sort,
                 GroupingLimit = groupingLimit
             };
             var queryParameters = new Dictionary<string, object>();
-            if (parameters.Date != null)
+            if (parameters.PerformanceTime != null)
             {
-                queryParameters.Add("date", parameters.Date.Value.ToString("yyyyMMdd"));
+                queryParameters.Add("date", parameters.PerformanceTime.Value.ToString("yyyyMMdd"));
             }
 
-            if (parameters.Time != null)
+            if (parameters.PerformanceTime != null)
             {
-                queryParameters.Add("time", parameters.Time.Value.ToString("HHmm"));
+                queryParameters.Add("time", parameters.PerformanceTime.Value.ToString("HHmm"));
             }
 
             if (!string.IsNullOrWhiteSpace(parameters.Sort))
