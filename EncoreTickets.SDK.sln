@@ -7,6 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK", "Encore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Artifacts", "Artifacts", "{6803631D-45EC-4C4A-841F-82C7CC57B91A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTesting", "UnitTesting", "{CC71DFC0-33E8-41BA-A390-F9CBBD15F656}"
+	ProjectSection(SolutionItems) = preProject
+		GenerateCoverageReport.bat = GenerateCoverageReport.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +31,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC71DFC0-33E8-41BA-A390-F9CBBD15F656} = {6803631D-45EC-4C4A-841F-82C7CC57B91A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFE37AEB-C45E-4C10-AE2D-89657C23BAF9}
