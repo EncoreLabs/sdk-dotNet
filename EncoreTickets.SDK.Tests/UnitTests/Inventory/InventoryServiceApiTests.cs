@@ -274,8 +274,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             });
         }
 
-        [TestCase(1587, 2)]
-        public void GetSeatAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(int productId, int quantity)
+        [TestCase("1587", 2)]
+        public void GetSeatAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(string productId, int quantity)
         {
             Context.Affiliate = "boxoffice";
             Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
@@ -302,9 +302,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 });
         }
 
-        [TestCase(1587, 2, "1/10/2020 3:56:51 PM")]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM")]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
-            int productId, int quantity, string dateAsStr)
+            string productId, int quantity, string dateAsStr)
         {
             Context.Affiliate = "boxoffice";
             Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
@@ -1063,6 +1063,217 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                 "CHILD_3-15-16103"
                                             }
                                         },
+                                    }
+                                }
+                            },
+                        }
+                    },
+                }
+            ),
+            new TestCaseData(
+                @"{
+  ""request"": {
+    ""body"": """",
+    ""query"": {
+      ""affiliateId"": ""boxoffice"",
+      ""date"": ""20200711"",
+      ""direction"": ""desc"",
+      ""time"": ""1400""
+    },
+    ""urlParams"": {
+      ""productId"": ""7021"",
+      ""quantity"": ""1""
+    }
+  },
+  ""response"": {
+    ""availableCount"": null,
+    ""isAvailable"": true,
+    ""areas"": [
+      {
+        ""aggregateReference"": ""Mw=="",
+        ""itemReference"": ""Mw=="",
+        ""isAvailable"": true,
+        ""availableCount"": null,
+        ""date"": ""2020-07-11T14:00:00-0400"",
+        ""name"": ""(Part 2 same day 7:30PM) Premium"",
+        ""mode"": ""freesell"",
+        ""groupings"": [
+          {
+            ""groupIdentifier"": ""(Part2sameday7:30PM)Premium"",
+            ""aggregateReference"": ""Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW1+Mzk5MDB+Mzk5MDB+Mzk5MDB+NDkxMDB+MC44MTEzODl+MjAyMC0wNS0wN1QwOTowMTowNiswMDAw"",
+            ""itemReference"": ""Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW0="",
+            ""row"": null,
+            ""seatNumberStart"": null,
+            ""seatNumberEnd"": null,
+            ""availableCount"": null,
+            ""isAvailable"": true,
+            ""attributes"": {
+              ""restrictedView"": false,
+              ""sideView"": false
+            },
+            ""pricing"": {
+              ""priceReference"": ""Mzk5MDA6VVNEfjM5OTAwOlVTRH4zOTkwMDpHQlB+NDkxMDA6VVNEfjAuODExMzg5fjIwMjAtMDUtMDdUMDk6MDE6MDYrMDAwMA=="",
+              ""salePrice"": {
+                ""value"": 39900,
+                ""currency"": ""GBP"",
+                ""decimalPlaces"": 2
+              },
+              ""faceValue"": {
+                ""value"": 39900,
+                ""currency"": ""USD"",
+                ""decimalPlaces"": 2
+              },
+              ""percentage"": 0,
+              ""offer"": false,
+              ""noBookingFee"": false,
+              ""timestamp"": ""2020-05-07T09:01:06+0000""
+            },
+            ""seats"": [],
+            ""seatLumps"": [],
+            ""aggregateReferenceObject"": {
+              ""itemReference"": {
+                ""supplierPrefix"": ""BI"",
+                ""venueId"": ""704"",
+                ""nativeProductId"": ""7021"",
+                ""internalItemId"": ""1318798"",
+                ""date"": ""2020-07-11"",
+                ""time"": ""14:00"",
+                ""quantity"": 1,
+                ""seatLocationDescription"": ""(Part 2 same day 7:30PM) Premium""
+              },
+              ""priceReference"": {
+                ""faceValue"": {
+                  ""value"": 39900,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""costPrice"": {
+                  ""value"": 39900,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""salePrice"": {
+                  ""value"": 39900,
+                  ""currency"": ""GBP"",
+                  ""decimalPlaces"": 2
+                },
+                ""originalSalePrice"": {
+                  ""value"": 49100,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""fxRate"": {
+                  ""rate"": 0.811389
+                },
+                ""timestamp"": ""2020-05-07T09:01:06+0000""
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  ""context"": null
+}",
+                new SeatAvailability
+                {
+                    AvailableCount = null,
+                    IsAvailable = true,
+                    Areas = new List<Area>
+                    {
+                        new Area
+                        {
+                            AggregateReference = "Mw==",
+                            ItemReference = "Mw==",
+                            IsAvailable = true,
+                            AvailableCount = null,
+                            Date = new DateTime(2020, 07, 11, 18, 00, 00),
+                            Name = "(Part 2 same day 7:30PM) Premium",
+                            Mode = "freesell",
+                            Groupings = new List<Grouping>
+                            {
+                                new Grouping
+                                {
+                                    GroupIdentifier = "(Part2sameday7:30PM)Premium",
+                                    AggregateReference = "Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW1+Mzk5MDB+Mzk5MDB+Mzk5MDB+NDkxMDB+MC44MTEzODl+MjAyMC0wNS0wN1QwOTowMTowNiswMDAw",
+                                    ItemReference = "Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW0=",
+                                    Row = null,
+                                    SeatNumberStart = null,
+                                    SeatNumberEnd = null,
+                                    AvailableCount = null,
+                                    IsAvailable = true,
+                                    Attributes = new Attributes
+                                    {
+                                        RestrictedView = false,
+                                        SideView = false
+                                    },
+                                    Pricing = new SDK.Inventory.Models.Pricing
+                                    {
+                                        PriceReference = "Mzk5MDA6VVNEfjM5OTAwOlVTRH4zOTkwMDpHQlB+NDkxMDA6VVNEfjAuODExMzg5fjIwMjAtMDUtMDdUMDk6MDE6MDYrMDAwMA==",
+                                        SalePrice = new Price
+                                        {
+                                            Value = 39900,
+                                            Currency = "GBP",
+                                            DecimalPlaces = 2
+                                        },
+                                        FaceValue = new Price
+                                        {
+                                            Value = 39900,
+                                            Currency = "USD",
+                                            DecimalPlaces = 2
+                                        },
+                                        Percentage = 0,
+                                        Offer = false,
+                                        NoBookingFee = false,
+                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
+                                    },
+                                    Seats = new List<Seat>(),
+                                    SeatLumps = new List<SeatLump>(),
+                                    AggregateReferenceObject = new AggregateReference
+                                    {
+                                        ItemReference = new ItemReference
+                                        {
+                                            SupplierPrefix = "BI",
+                                            VenueId = "704",
+                                            NativeProductId = "7021",
+                                            InternalItemId = "1318798",
+                                            Date = new DateTime(2020, 07, 11),
+                                            Time = new TimeSpan(14, 00, 00),
+                                            Quantity = 1,
+                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium"
+                                        },
+                                        PriceReference = new PriceReference
+                                        {
+                                            FaceValue = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            CostPrice = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            SalePrice = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "GBP",
+                                                DecimalPlaces = 2
+                                            },
+                                            OriginalSalePrice = new Price
+                                            {
+                                                Value = 49100,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            FxRate = new FxRate
+                                            {
+                                                Rate = 0.811389M
+                                            },
+                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
+                                        }
                                     }
                                 }
                             },

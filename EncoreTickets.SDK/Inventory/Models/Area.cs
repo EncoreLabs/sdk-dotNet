@@ -20,5 +20,7 @@ namespace EncoreTickets.SDK.Inventory.Models
         public string Mode { get; set; }
 
         public List<Grouping> Groupings { get; set; }
+
+        public AggregateReference AggregateReferenceObject { get; set; }
     }
 }

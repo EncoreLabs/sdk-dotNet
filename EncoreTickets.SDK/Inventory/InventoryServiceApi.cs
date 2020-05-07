@@ -100,12 +100,6 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        public SeatAvailability GetSeatAvailability(int productId, int quantity, DateTime? performance = null)
-        {
-            return GetSeatAvailability(productId.ToString(), quantity, performance);
-        }
-
-        /// <inheritdoc />
         public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null)
         {
             var optionalParameters = new SeatAvailabilityParameters { PerformanceTime = performance };

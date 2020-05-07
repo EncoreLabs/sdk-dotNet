@@ -65,16 +65,6 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="performance">performance: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
-        SeatAvailability GetSeatAvailability(int productId, int quantity, DateTime? performance = null);
-
-        /// <summary>
-        /// Get available seats.
-        /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
-        /// </summary>
-        /// <param name="productId">ID product</param>
-        /// <param name="quantity">quantity of seats needed</param>
-        /// <param name="performance">performance: if nothing is sent, current time will be used</param>
-        /// <returns>Array of availability seat</returns>
         SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null);
 
         /// <summary>
