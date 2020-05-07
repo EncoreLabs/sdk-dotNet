@@ -7,9 +7,14 @@ namespace EncoreTickets.SDK.Api
     /// <summary>
     /// The base api class to be extended by concrete implementations.
     /// </summary>
-    public abstract class BaseApi
+    public abstract class BaseApi : IServiceApi
     {
         private readonly IApiRestClientBuilder restClientBuilder;
+
+        public abstract int? ApiVersion { get; }
+
+        /// <inheritdoc />
+        public ApiContext Context { get; set; }
 
         /// <summary>
         /// Gets base API URL.
@@ -25,11 +30,6 @@ namespace EncoreTickets.SDK.Api
         /// Gets API host.
         /// </summary>
         protected string Host { get; }
-
-        /// <summary>
-        /// Gets or sets API context.
-        /// </summary>
-        protected ApiContext Context { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseApi"/> class.

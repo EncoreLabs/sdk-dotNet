@@ -10,6 +10,8 @@ namespace EncoreTickets.SDK.Checkout
     /// </summary>
     public class CheckoutServiceApi : BaseApi, ICheckoutServiceApi
     {
+        public override int? ApiVersion => null;
+
         /// <summary>
         /// Default constructor for the checkout service
         /// </summary>

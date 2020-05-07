@@ -1,4 +1,4 @@
-﻿namespace EncoreTickets.SDK.Pricing.Models.RequestModels
+﻿namespace EncoreTickets.SDK.Api.Models
 {
     /// <summary>
     /// The enum for a sort direction.

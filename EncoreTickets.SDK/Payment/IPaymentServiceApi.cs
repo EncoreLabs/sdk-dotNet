@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Payment.Models;
 using EncoreTickets.SDK.Payment.Models.RequestModels;
 
 namespace EncoreTickets.SDK.Payment
 {
-    public interface IPaymentServiceApi
+    public interface IPaymentServiceApi : IServiceApi
     {
         /// <summary>
         /// Get details of an order by its channelId and externalId.

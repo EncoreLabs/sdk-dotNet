@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Api.Results.Exceptions;
+﻿using EncoreTickets.SDK.Api;
+using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 
@@ -7,7 +8,7 @@ namespace EncoreTickets.SDK.Basket
     /// <summary>
     /// The interface of a basket service.
     /// </summary>
-    public interface IBasketServiceApi
+    public interface IBasketServiceApi : IServiceApi
     {
         /// <summary>
         /// Get details of a promotion by its ID. 

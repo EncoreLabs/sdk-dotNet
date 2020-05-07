@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Api
     /// <summary>
     /// The interface of a service which allows an authentication.
     /// </summary>
-    public interface IServiceApiWithAuthentication
+    public interface IServiceApiWithAuthentication : IServiceApi
     {
         /// <summary>
         /// Gets the authentication service.

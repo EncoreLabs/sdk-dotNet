@@ -34,8 +34,27 @@ namespace EncoreTickets.SDK.Api.Models
 
         /// <summary>
         /// Gets or sets the affiliate.
+        /// Used as a header in requests.
         /// </summary>
         public string Affiliate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the correlation ID.
+        /// Used as a header in requests.
+        /// </summary>
+        public string Correlation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the received correlation ID.
+        /// Received as a header in responses.
+        /// </summary>
+        public string ReceivedCorrelation { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the market.
+        /// Used as a header in requests.
+        /// </summary>
+        public Market? Market { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.

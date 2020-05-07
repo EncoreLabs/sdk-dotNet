@@ -27,5 +27,7 @@ namespace EncoreTickets.SDK.Inventory.Models
         public List<Seat> Seats { get; set; }
 
         public List<SeatLump> SeatLumps { get; set; }
+
+        public AggregateReference AggregateReferenceObject { get; set; }
     }
 }

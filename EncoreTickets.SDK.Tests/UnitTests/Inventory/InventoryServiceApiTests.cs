@@ -7,10 +7,10 @@ using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Inventory;
 using EncoreTickets.SDK.Inventory.Models;
+using EncoreTickets.SDK.Inventory.Models.RequestModels;
 using EncoreTickets.SDK.Inventory.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public InventoryServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public InventoryServiceApiTests() : base(ApiContextTestHelper.DefaultApiContext)
         {
         }
 
@@ -35,54 +35,66 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         public void CreateMockers()
         {
             mockers = new MockersForApiService();
+            ApiContextTestHelper.ResetContextToDefault(Context);
         }
 
-        #region Search
+        #region SearchProducts
 
         [TestCase(null)]
         [TestCase("")]
-        public void Search_IfTextIsNotSet_ThrowsArgumentException(string text)
+        [TestCase("  ")]
+        public void SearchProducts_IfTextIsNotSet_ThrowsArgumentException(string text)
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                Search(text);
+                SearchProducts(text);
             });
         }
 
         [TestCase("w")]
         [TestCase("broadway")]
-        [TestCase("  ")]
-        public void Search_IfTextIsSet_CallsApiWithRightParameters(string text)
+        [TestCase("singin in the rain")]
+        public void SearchProducts_IfTextIsSet_CallsApiWithRightParameters(string text)
         {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
             mockers.SetupAnyExecution<ProductSearchResponse>();
 
             try
             {
-                Search(text);
+                SearchProducts(text);
             }
             catch (Exception)
             {
                 // ignored
             }
 
-            mockers.VerifyExecution<ProductSearchResponse>(BaseUrl, "v2/search", Method.GET,
-                expectedQueryParameters: new Dictionary<string, object> { { "query", text } });
+            mockers.VerifyExecution<ProductSearchResponse>(
+                BaseUrl,
+                "v4/search",
+                Method.GET,
+                expectedQueryParameters: new Dictionary<string, object> { { "query", text } },
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.Search_IfApiResponseSuccessful_ReturnsProducts))]
-        public void Search_IfApiResponseSuccessful_ReturnsProducts(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SearchProducts_IfApiResponseSuccessful_ReturnsProducts))]
+        public void SearchProducts_IfApiResponseSuccessful_ReturnsProducts(
             string responseContent,
             List<Product> expected)
         {
             mockers.SetupSuccessfulExecution<ProductSearchResponse>(responseContent);
 
-            var actual = Search(TestValidSearchText);
+            var actual = SearchProducts(TestValidSearchText);
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.Search_IfApiResponseFailed_ThrowsApiException))]
-        public void Search_IfApiResponseFailed_ThrowsApiException(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SearchProducts_IfApiResponseFailed_ThrowsApiException))]
+        public void SearchProducts_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
             string message)
@@ -91,7 +103,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = Search(TestValidSearchText);
+                var actual = SearchProducts(TestValidSearchText);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -100,248 +112,324 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #endregion
 
-        #region GetPerformances
-
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("  ")]
-        public void GetPerformances_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
-        {
-            Assert.Catch<ArgumentException>(() =>
-            {
-                GetPerformances(productId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
-            });
-        }
-
-        [TestCase("1587", 2, "1/10/2020", "11/12/2020")]
-        [TestCase("test_id", 1, "1/10/2020", "11/12/2020")]
-        public void GetPerformances_IfProductIdIsSet_CallsApiWithRightParameters(string productId, int quantity, string fromAsStr, string toAsStr)
-        {
-            var from = TestHelper.ConvertTestArgumentToDateTime(fromAsStr);
-            var to = TestHelper.ConvertTestArgumentToDateTime(toAsStr);
-            mockers.SetupAnyExecution<List<Performance>>();
-
-            try
-            {
-                GetPerformances(productId, quantity, from, to);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<List<Performance>>(BaseUrl,
-                $"v2/availability/products/{productId}/quantity/{quantity}/from/{from:yyyyMMdd}/to/{to:yyyyMMdd}",
-                Method.GET);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetPerformances_IfApiResponseSuccessful_ReturnsPerformances))]
-        public void GetPerformances_IfApiResponseSuccessful_ReturnsPerformances(
-            string responseContent,
-            List<Performance> expected)
-        {
-            mockers.SetupSuccessfulExecution<List<Performance>>(responseContent);
-
-            var actual = GetPerformances(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
-
-            AssertExtension.AreObjectsValuesEqual(expected, actual);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetPerformances_IfApiResponseFailed_ThrowsApiException))]
-        public void GetPerformances_IfApiResponseFailed_ThrowsApiException(
-            string responseContent,
-            HttpStatusCode code,
-            string message)
-        {
-            mockers.SetupFailedExecution<List<Performance>>(responseContent, code);
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var actual = GetPerformances(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
-            });
-
-            Assert.AreEqual(code, exception.ResponseCode);
-            Assert.AreEqual(message, exception.Message);
-        }
-
-        #endregion
-
-        #region GetAvailability
-
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("  ")]
-        public void GetAvailability_IfTextIsNotSet_ThrowsArgumentException(string productId)
-        {
-            Assert.Catch<ArgumentException>(() =>
-            {
-                GetAvailability(productId, It.IsAny<int>());
-            });
-        }
-
-        [TestCase(1587, 2)]
-        public void GetAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(int productId, int quantity)
-        {
-            mockers.SetupAnyExecution<Availability>();
-
-            try
-            {
-                GetAvailability(productId, quantity);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<Availability>(BaseUrl, $"v1/availability/products/{productId}/quantity/{quantity}/seats", Method.GET);
-        }
-
-        [TestCase(1587, 2, "1/10/2020 3:56:51 PM")]
-        public void GetAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(int productId, int quantity, string dateAsStr)
-        {
-            var performance = TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
-            mockers.SetupAnyExecution<Availability>();
-
-            try
-            {
-                GetAvailability(productId, quantity, performance);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<Availability>(BaseUrl,
-                $"v1/availability/products/{productId}/quantity/{quantity}/seats", Method.GET,
-                expectedQueryParameters: new Dictionary<string, object>
-                {
-                    {"date", performance.ToString("yyyyMMdd")},
-                    {"time", performance.ToString("HHmm")},
-                });
-        }
-
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", "")]
-        [TestCase("1587", 2, "", "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, "1/10/2020 0:0:0 PM", null)]
-        [TestCase("1587", 2, null, "1/10/2020 3:56:51 PM")]
-        [TestCase("1587", 2, null, null)]
-        public void GetAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
-            string productId, int quantity, string dateAsStr, string timeAsStr)
-        {
-            var date = string.IsNullOrWhiteSpace(dateAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
-            var time = string.IsNullOrWhiteSpace(timeAsStr) ? null : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(timeAsStr);
-            var queryParameters = new Dictionary<string, object>();
-            if (date != null)
-            {
-                queryParameters.Add("date", date.Value.ToString("yyyyMMdd"));
-            }
-            if (time != null)
-            {
-                queryParameters.Add("time", time.Value.ToString("HHmm"));
-            }
-            mockers.SetupAnyExecution<Availability>();
-
-            try
-            {
-                GetAvailability(productId, quantity, date, time);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            mockers.VerifyExecution<Availability>(BaseUrl,
-                $"v1/availability/products/{productId}/quantity/{quantity}/seats", Method.GET,
-                expectedQueryParameters: queryParameters);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
-        public void GetAvailability_IfApiResponseSuccessful_ReturnsAvailability(
-            string responseContent,
-            Availability expected)
-        {
-            mockers.SetupSuccessfulExecution<Availability>(responseContent);
-
-            var actual = GetAvailability(TestValidProductId, It.IsAny<int>());
-
-            AssertExtension.AreObjectsValuesEqual(expected, actual);
-        }
-
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailability_IfApiResponseFailed_ThrowsApiException))]
-        public void GetAvailability_IfApiResponseFailed_ThrowsApiException(
-            string responseContent,
-            HttpStatusCode code,
-            string message)
-        {
-            mockers.SetupFailedExecution<Availability>(responseContent, code);
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var actual = GetAvailability(TestValidProductId, It.IsAny<int>());
-            });
-
-            Assert.AreEqual(code, exception.ResponseCode);
-            Assert.AreEqual(message, exception.Message);
-        }
-
-        #endregion
-
-        #region GetBookingRange
+        #region GetAvailabilityRange
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("   ")]
-        public void GetBookingRange_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
+        public void GetAvailabilityRange_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                GetBookingRange(productId);
+                GetAvailabilityRange(productId);
             });
         }
 
         [TestCase("1587")]
         [TestCase("-1587")]
         [TestCase("some_id")]
-        public void GetBookingRange_IfProductIdIsSet_CallsApiWithRightParameters(string productId)
+        public void GetAvailabilityRange_IfProductIdIsSet_CallsApiWithRightParameters(string productId)
         {
-            mockers.SetupAnyExecution<ApiResponse<BookingRange>>();
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            mockers.SetupAnyExecution<ApiResponse<AvailabilityRange>>();
 
             try
             {
-                GetBookingRange(productId);
+                GetAvailabilityRange(productId);
             }
             catch (Exception)
             {
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<BookingRange>>(BaseUrl, $"v3/products/{productId}/availability-range", Method.GET);
+            mockers.VerifyExecution<ApiResponse<AvailabilityRange>>(
+                BaseUrl,
+                $"v4/products/{productId}/availability-range",
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange))]
-        public void GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange))]
+        public void GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange(
             string responseContent,
-            BookingRange expected)
+            AvailabilityRange expected)
         {
-            mockers.SetupSuccessfulExecution<ApiResponse<BookingRange>>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponse<AvailabilityRange>>(responseContent);
 
-            var actual = GetBookingRange(TestValidProductId);
+            var actual = GetAvailabilityRange(TestValidProductId);
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetBookingRange_IfApiResponseFailed_ThrowsApiException))]
-        public void GetBookingRange_IfApiResponseFailed_ThrowsApiException(
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException))]
+        public void GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
             string message)
         {
-            mockers.SetupFailedExecution<ApiResponse<BookingRange>>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponse<AvailabilityRange>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = GetBookingRange(TestValidProductId);
+                var actual = GetAvailabilityRange(TestValidProductId);
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(message, exception.Message);
+        }
+
+        #endregion
+
+        #region GetAvailabilities
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void GetAvailabilities_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetAvailabilities(productId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            });
+        }
+
+        [TestCase("1587", 2, "1/10/2020", "11/12/2020")]
+        [TestCase("test_id", 1, "1/10/2020", "11/12/2020")]
+        public void GetAvailabilities_IfProductIdIsSet_CallsApiWithRightParameters(string productId, int quantity, string fromAsStr, string toAsStr)
+        {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            Context.Market = Market.Broadway;
+            var from = TestHelper.ConvertTestArgumentToDateTime(fromAsStr);
+            var to = TestHelper.ConvertTestArgumentToDateTime(toAsStr);
+            mockers.SetupAnyExecution<ApiResponse<List<Availability>>>();
+
+            try
+            {
+                GetAvailabilities(productId, quantity, from, to);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<List<Availability>>>(
+                BaseUrl,
+                $"v4/availability/products/{productId}/quantity/{quantity}/from/{from:yyyyMMdd}/to/{to:yyyyMMdd}",
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                    { "x-market", "Broadway" },
+                });
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances))]
+        public void GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances(
+            string responseContent,
+            List<Availability> expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<List<Availability>>>(responseContent);
+
+            var actual = GetAvailabilities(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseFailed_ThrowsApiException))]
+        public void GetAvailabilities_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string message)
+        {
+            mockers.SetupFailedExecution<ApiResponse<List<Availability>>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetAvailabilities(TestValidProductId, It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(message, exception.Message);
+        }
+
+        #endregion
+
+        #region GetSeatAvailability
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void GetSeatAvailability_IfTextIsNotSet_ThrowsArgumentException(string productId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetSeatAvailability(productId, It.IsAny<int>());
+            });
+        }
+
+        [TestCase("1587", 2)]
+        public void GetSeatAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(string productId, int quantity)
+        {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
+
+            try
+            {
+                GetSeatAvailability(productId, quantity);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
+                expectedQueryParameters: new Dictionary<string, object>(),
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    { "affiliateId", Context.Affiliate },
+                    { "X-Correlation-ID", Context.Correlation },
+                });
+        }
+
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM")]
+        public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
+            string productId, int quantity, string dateAsStr)
+        {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            var performance = TestHelper.ConvertTestArgumentToDateTime(dateAsStr);
+            mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
+
+            try
+            {
+                GetSeatAvailability(productId, quantity, performance);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
+                expectedQueryParameters: new Dictionary<string, object>
+                {
+                    {"date", performance.ToString("yyyyMMdd")},
+                    {"time", performance.ToString("HHmm")},
+                },
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    {"affiliateId", Context.Affiliate},
+                    {"X-Correlation-ID", Context.Correlation},
+                });
+        }
+
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null, null, 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, null, 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Desc, null, 0)]
+        [TestCase("1587", 2, "", null, "id", 0)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null, null, -1)]
+        [TestCase("1587", 2, null, null, null, 10)]
+        [TestCase("1587", 2, null,Direction.Asc, "id", 1)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, "id", 1)]
+        public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
+            string productId, int quantity, string dateAsStr, Direction? direction, string sort, int groupingLimit)
+        {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            var parameters = new SeatAvailabilityParameters
+            {
+                PerformanceTime = string.IsNullOrWhiteSpace(dateAsStr)
+                    ? null
+                    : (DateTime?) TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
+                Direction = direction,
+                Sort = sort,
+                GroupingLimit = groupingLimit
+            };
+            var queryParameters = new Dictionary<string, object>();
+            if (parameters.PerformanceTime != null)
+            {
+                queryParameters.Add("date", parameters.PerformanceTime.Value.ToString("yyyyMMdd"));
+            }
+
+            if (parameters.PerformanceTime != null)
+            {
+                queryParameters.Add("time", parameters.PerformanceTime.Value.ToString("HHmm"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(parameters.Sort))
+            {
+                queryParameters.Add("sort", parameters.Sort);
+            }
+
+            if (parameters.Direction != null)
+            {
+                queryParameters.Add("direction", parameters.Direction.ToString());
+            }
+
+            if (parameters.GroupingLimit > 0)
+            {
+                queryParameters.Add("groupingLimit", parameters.GroupingLimit);
+            }
+
+            mockers.SetupAnyExecution<ApiResponse<SeatAvailability>>();
+
+            try
+            {
+                GetSeatAvailability(productId, quantity, parameters);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<SeatAvailability>>(
+                BaseUrl,
+                $"v4/europa/availability/products/{productId}/quantity/{quantity}/seats",
+                Method.GET,
+                expectedQueryParameters: queryParameters,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    {"affiliateId", Context.Affiliate},
+                    {"X-Correlation-ID", Context.Correlation},
+                });
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
+        public void GetSeatAvailabilityy_IfApiResponseSuccessful_ReturnsAvailability(
+            string responseContent,
+            SeatAvailability expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<SeatAvailability>>(responseContent);
+
+            var actual = GetSeatAvailability(TestValidProductId, It.IsAny<int>());
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
+        public void GetSeatAvailability_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string message)
+        {
+            mockers.SetupFailedExecution<ApiResponse<SeatAvailability>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetSeatAvailability(TestValidProductId, It.IsAny<int>());
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -353,10 +441,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
     public static class InventoryServiceApiTestsSource
     {
-        public static IEnumerable<TestCaseData> Search_IfApiResponseSuccessful_ReturnsProducts = new[]
+        #region SearchProducts
+
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
         {
             new TestCaseData(
-                "{\"product\":[{\"id\":1587,\"name\":\"Wicked\",\"type\":\"show\",\"venue\":{\"id\":\"138\"},\"onSale\":\"yes\",\"bookingStarts\":\"2019-08-13T00:00:00+0000\",\"bookingEnds\":\"2020-05-23T00:00:00+0000\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""query"": ""wicked""
+        },
+        ""urlParams"": {}
+    },
+    ""response"": {
+        ""product"": [
+            {
+                ""id"": 1587,
+                ""name"": ""Wicked"",
+                ""type"": ""show"",
+                ""venue"": {
+                    ""id"": ""138""
+                },
+                ""onSale"": ""yes"",
+                ""bookingStarts"": ""2019-08-13T00:00:00+0000"",
+                ""bookingEnds"": ""2020-05-23T00:00:00+0000""
+            }
+        ]
+    },
+    ""context"": null
+}",
                 new List<Product>
                 {
                     new Product
@@ -376,102 +490,464 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             ),
         };
 
-        public static IEnumerable<TestCaseData> Search_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
-                "{\"code\":404,\"message\":\"Sorry, nothing was found\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""query"": ""rw""
+        },
+        ""urlParams"": {}
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.NotFound,
                 "Sorry, nothing was found"
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetPerformances_IfApiResponseSuccessful_ReturnsPerformances = new[]
+        #endregion
+
+        #region GetAvailabilityRange
+
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange = new[]
         {
             new TestCaseData(
-                "[{\"datetime\":\"2020-01-10T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-11T14:30:00+0000\",\"largestLumpOfTickets\":12},{\"datetime\":\"2020-01-11T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-13T19:30:00+0000\",\"largestLumpOfTickets\":14},{\"datetime\":\"2020-01-14T19:30:00+0000\",\"largestLumpOfTickets\":14}]",
-                new List<Performance>
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587""
+        }
+    },
+    ""response"": {
+        ""firstBookableDate"": ""2020-05-05T00:00:00+00:00"",
+        ""lastBookableDate"": ""2020-05-23T00:00:00+00:00""
+    },
+    ""context"": null
+}",
+                new AvailabilityRange
                 {
-                    new Performance
+                    FirstBookableDate = new DateTime(2020, 05, 05),
+                    LastBookableDate = new DateTime(2020, 05, 23),
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Sorry, nothing was found"
+            ),
+        };
+
+        #endregion
+
+        #region GetAvailabilities
+
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""6441"",
+            ""quantity"": ""1"",
+            ""fromDate"": ""20201003"",
+            ""toDate"": ""20201005""
+        }
+    },
+    ""response"": [
+        {
+            ""datetime"": ""2020-10-03T19:30:00+0000"",
+            ""largestLumpOfTickets"": 33
+        },
+        {
+            ""datetime"": ""2020-10-04T16:00:00+0000"",
+            ""largestLumpOfTickets"": 33
+        },
+        {
+            ""datetime"": ""2020-10-05T19:30:00+0000"",
+            ""largestLumpOfTickets"": 33
+        }
+    ],
+    ""context"": null
+}",
+                new List<Availability>
+                {
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 10, 19, 30, 00),
-                        LargestLumpOfTickets = 14
+                        DateTime = new DateTime(2020, 10, 03, 19, 30, 00),
+                        LargestLumpOfTickets = 33
                     },
-                    new Performance
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 11, 14, 30, 00),
-                        LargestLumpOfTickets = 12
+                        DateTime = new DateTime(2020, 10, 04, 16, 00, 00),
+                        LargestLumpOfTickets = 33
                     },
-                    new Performance
+                    new Availability
                     {
-                        Datetime = new DateTime(2020, 01, 11, 19, 30, 00),
-                        LargestLumpOfTickets = 14
-                    },
-                    new Performance
-                    {
-                        Datetime = new DateTime(2020, 01, 13, 19, 30, 00),
-                        LargestLumpOfTickets = 14
-                    },
-                    new Performance
-                    {
-                        Datetime = new DateTime(2020, 01, 14, 19, 30, 00),
-                        LargestLumpOfTickets = 14
+                        DateTime = new DateTime(2020, 10, 05, 19, 30, 00),
+                        LargestLumpOfTickets = 33
                     },
                 }
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetPerformances_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException = new[]
         {
             // 400
             new TestCaseData(
-                "{\"errors\":[{\"field\":\"fromDate\",\"message\":\"end date should not be more than 90 days from start dates\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20210523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""fromDate"",
+                ""message"": ""end date should not be more than 90 days from start dates""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "fromDate: end date should not be more than 90 days from start dates"
             ),
             new TestCaseData(
-                "{\"errors\":[{\"field\":\"productId\",\"message\":\"The product ID can only contain numbers, letters and dashes\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200305"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""fromDate"",
+                ""message"": ""start date should not be in the past""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "fromDate: start date should not be in the past"
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158)"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""productId"",
+                ""message"": ""The product ID can only contain numbers, letters and dashes""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "productId: The product ID can only contain numbers, letters and dashes"
             ),
 
+            // 403
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1001"",
+            ""quantity"": ""1"",
+            ""fromDate"": ""20201003"",
+            ""toDate"": ""20201005""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.Forbidden,
+                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"
+            ),
+
             // 404
             new TestCaseData(
-                "{\"code\":404,\"message\":\"Product not found\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""158"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Product not found""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.NotFound,
                 "Product not found"
             ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""productId"": ""1587"",
+            ""quantity"": ""2"",
+            ""fromDate"": ""20200505"",
+            ""toDate"": ""20200523""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Sorry, nothing was found"
+            ),
         };
 
-        public static IEnumerable<TestCaseData> GetAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
+        #endregion
+
+        #region GetSeatAvailability
+
+        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
         {
             new TestCaseData(
-                "{\"availableCount\":168,\"isAvailable\":true,\"areas\":[{\"aggregateReference\":\"Mg==\",\"itemReference\":\"Mg==\",\"isAvailable\":true,\"availableCount\":79,\"date\":\"2020-01-13T19:30:00+0000\",\"name\":\"Circle\",\"mode\":\"allocated\",\"groupings\":[{\"groupIdentifier\":\"Circle~P8;9\",\"aggregateReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzI=\",\"itemReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzI=\",\"row\":\"P\",\"seatNumberStart\":8,\"seatNumberEnd\":9,\"availableCount\":2,\"isAvailable\":true,\"attributes\":{\"restrictedView\":false,\"sideView\":false},\"pricing\":{\"priceReference\":\"MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw\",\"salePrice\":{\"value\":2700,\"currency\":\"GBP\",\"decimalPlaces\":2},\"faceValue\":{\"value\":2500,\"currency\":\"GBP\",\"decimalPlaces\":2},\"percentage\":0,\"offer\":false,\"noBookingFee\":false,\"timestamp\":\"2020-01-13T08:16:35+0000\"},\"seats\":[{\"aggregateReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDg=\",\"itemReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDg=\",\"row\":\"P\",\"number\":8,\"isAvailable\":true,\"attributes\":{\"restrictedView\":false,\"sideView\":false},\"seatIdentifier\":\"CIRCLE-P8\",\"pricing\":{\"priceReference\":\"MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw\",\"salePrice\":{\"value\":2700,\"currency\":\"GBP\",\"decimalPlaces\":2},\"faceValue\":{\"value\":2500,\"currency\":\"GBP\",\"decimalPlaces\":2},\"percentage\":0,\"offer\":false,\"noBookingFee\":false,\"timestamp\":\"2020-01-13T08:16:35+0000\"}},{\"aggregateReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDk=\",\"itemReference\":\"ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDk=\",\"row\":\"P\",\"number\":9,\"isAvailable\":true,\"attributes\":{\"restrictedView\":false,\"sideView\":false},\"seatIdentifier\":\"CIRCLE-P9\",\"pricing\":{\"priceReference\":\"MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw\",\"salePrice\":{\"value\":2700,\"currency\":\"GBP\",\"decimalPlaces\":2},\"faceValue\":{\"value\":2500,\"currency\":\"GBP\",\"decimalPlaces\":2},\"percentage\":0,\"offer\":false,\"noBookingFee\":false,\"timestamp\":\"2020-01-13T08:16:35+0000\"}}],\"seatLumps\":[{\"seats\":[\"CIRCLE-P8\",\"CIRCLE-P9\"]}]}]}]}",
-                new Availability
+                @"{
+  ""request"": {
+    ""body"": """",
+    ""query"": {
+      ""affiliateId"": ""boxoffice"",
+      ""date"": ""20201011"",
+      ""time"": ""1610""
+    },
+    ""urlParams"": {
+      ""productId"": ""7312"",
+      ""quantity"": ""1""
+    }
+  },
+  ""response"": {
+    ""availableCount"": 200,
+    ""isAvailable"": true,
+    ""areas"": [
+      {
+        ""aggregateReference"": ""OA=="",
+        ""itemReference"": ""OA=="",
+        ""isAvailable"": true,
+        ""availableCount"": 50,
+        ""date"": ""2020-10-11T16:10:00+0000"",
+        ""name"": ""Child 3-15"",
+        ""mode"": ""allocated"",
+        ""groupings"": [
+          {
+            ""groupIdentifier"": ""Child3-15~16101;50"",
+            ""aggregateReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzI="",
+            ""itemReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzI="",
+            ""row"": ""1610"",
+            ""seatNumberStart"": 1,
+            ""seatNumberEnd"": 50,
+            ""availableCount"": 50,
+            ""isAvailable"": true,
+            ""attributes"": {
+              ""restrictedView"": false,
+              ""sideView"": false
+            },
+            ""pricing"": {
+              ""priceReference"": ""MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw"",
+              ""salePrice"": {
+                ""value"": 1600,
+                ""currency"": ""GBP"",
+                ""decimalPlaces"": 2
+              },
+              ""faceValue"": {
+                ""value"": 1600,
+                ""currency"": ""GBP"",
+                ""decimalPlaces"": 2
+              },
+              ""percentage"": 0,
+              ""offer"": false,
+              ""noBookingFee"": true,
+              ""timestamp"": ""2020-05-05T18:44:26+0000""
+            },
+            ""seats"": [
+              {
+                ""aggregateReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE="",
+                ""itemReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE="",
+                ""row"": ""1610"",
+                ""number"": 1,
+                ""isAvailable"": true,
+                ""attributes"": {
+                  ""restrictedView"": false,
+                  ""sideView"": false
+                },
+                ""seatIdentifier"": ""CHILD_3-15-16101"",
+                ""pricing"": {
+                  ""priceReference"": ""MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw"",
+                  ""salePrice"": {
+                    ""value"": 1600,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                  },
+                  ""faceValue"": {
+                    ""value"": 1600,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                  },
+                  ""percentage"": 0,
+                  ""offer"": false,
+                  ""noBookingFee"": true,
+                  ""timestamp"": ""2020-05-05T18:44:26+0000""
+                }
+              },
+              {
+                ""aggregateReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI="",
+                ""itemReference"": ""MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI="",
+                ""row"": ""1610"",
+                ""number"": 2,
+                ""isAvailable"": true,
+                ""attributes"": {
+                  ""restrictedView"": false,
+                  ""sideView"": false
+                },
+                ""seatIdentifier"": ""CHILD_3-15-16102"",
+                ""pricing"": {
+                  ""priceReference"": ""MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw"",
+                  ""salePrice"": {
+                    ""value"": 1600,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                  },
+                  ""faceValue"": {
+                    ""value"": 1600,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                  },
+                  ""percentage"": 0,
+                  ""offer"": false,
+                  ""noBookingFee"": true,
+                  ""timestamp"": ""2020-05-05T18:44:26+0000""
+                }
+              }
+            ],
+            ""seatLumps"": [
+              {
+                ""seats"": [
+                  ""CHILD_3-15-16101""
+                ]
+              },
+              {
+                ""seats"": [
+                  ""CHILD_3-15-16103""
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  ""context"": null
+}",
+                new SeatAvailability
                 {
-                    AvailableCount = 168,
+                    AvailableCount = 200,
                     IsAvailable = true,
                     Areas = new List<Area>
                     {
                         new Area
                         {
-                            AggregateReference = "Mg==",
-                            ItemReference = "Mg==",
+                            AggregateReference = "OA==",
+                            ItemReference = "OA==",
                             IsAvailable = true,
-                            AvailableCount = 79,
-                            Date = new DateTime(2020, 01, 13, 19, 30, 00),
-                            Name = "Circle",
+                            AvailableCount = 50,
+                            Date = new DateTime(2020, 10, 11, 16, 10, 00),
+                            Name = "Child 3-15",
                             Mode = "allocated",
                             Groupings = new List<Grouping>
                             {
                                 new Grouping
                                 {
-                                    GroupIdentifier = "Circle~P8;9",
-                                    AggregateReference = "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzI=",
-                                    ItemReference = "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzI=",
-                                    Row = "P",
-                                    SeatNumberStart = 8,
-                                    SeatNumberEnd = 9,
-                                    AvailableCount = 2,
+                                    GroupIdentifier = "Child3-15~16101;50",
+                                    AggregateReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzI=",
+                                    ItemReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzI=",
+                                    Row = "1610",
+                                    SeatNumberStart = 1,
+                                    SeatNumberEnd = 50,
+                                    AvailableCount = 50,
                                     IsAvailable = true,
                                     Attributes = new Attributes
                                     {
@@ -480,97 +956,95 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     },
                                     Pricing = new SDK.Inventory.Models.Pricing
                                     {
-                                        PriceReference = "MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw",
+                                        PriceReference = "MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw",
                                         SalePrice = new Price
                                         {
-                                            Value = 2700,
+                                            Value = 1600,
                                             Currency = "GBP",
                                             DecimalPlaces = 2
                                         },
                                         FaceValue = new Price
                                         {
-                                            Value = 2500,
+                                            Value = 1600,
                                             Currency = "GBP",
                                             DecimalPlaces = 2
                                         },
                                         Percentage = 0,
                                         Offer = false,
-                                        NoBookingFee = false,
-                                        Timestamp = new DateTime(2020, 01, 13, 08, 16, 35)
+                                        NoBookingFee = true,
+                                        Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
                                     },
                                     Seats = new List<Seat>
                                     {
                                         new Seat
                                         {
                                             AggregateReference =
-                                                "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDg=",
-                                            ItemReference = "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDg=",
-                                            Row = "P",
-                                            Number = 8,
+                                                "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE=",
+                                            ItemReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE=",
+                                            Row = "1610",
+                                            Number = 1,
                                             IsAvailable = true,
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
                                                 SideView = false
                                             },
-                                            SeatIdentifier = "CIRCLE-P8",
+                                            SeatIdentifier = "CHILD_3-15-16101",
                                             Pricing = new SDK.Inventory.Models.Pricing
                                             {
-                                                PriceReference =
-                                                    "MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw",
+                                                PriceReference = "MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw",
                                                 SalePrice = new Price
                                                 {
-                                                    Value = 2700,
+                                                    Value = 1600,
                                                     Currency = "GBP",
                                                     DecimalPlaces = 2
                                                 },
                                                 FaceValue = new Price
                                                 {
-                                                    Value = 2500,
+                                                    Value = 1600,
                                                     Currency = "GBP",
                                                     DecimalPlaces = 2
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
-                                                NoBookingFee = false,
-                                                Timestamp = new DateTime(2020, 01, 13, 08, 16, 35)
-                                            }
+                                                NoBookingFee = true,
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                            },
                                         },
                                         new Seat
                                         {
                                             AggregateReference =
-                                                "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDk=",
-                                            ItemReference = "ODJLMTU2NTQzNUsyUzE2SzIyODI5NDlLMlMxN0syMjgyOTQ5SzItUDk=",
-                                            Row = "P",
-                                            Number = 9,
+                                                "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI=",
+                                            ItemReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI=",
+                                            Row = "1610",
+                                            Number = 2,
                                             IsAvailable = true,
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
                                                 SideView = false
                                             },
-                                            SeatIdentifier = "CIRCLE-P9",
+                                            SeatIdentifier = "CHILD_3-15-16102",
                                             Pricing = new SDK.Inventory.Models.Pricing
                                             {
-                                                PriceReference =
-                                                    "MjcwMDpHQlB+MjUwMDpHQlB+MjAyMC0wMS0xM1QwODoxNjozNSswMDAw",
+                                                PriceReference = "MTYwMDpHQlB+MTYwMDpHQlB+MjAyMC0wNS0wNVQxODo0NDoyNiswMDAw",
                                                 SalePrice = new Price
                                                 {
-                                                    Value = 2700,
+                                                    Value = 1600,
                                                     Currency = "GBP",
                                                     DecimalPlaces = 2
                                                 },
                                                 FaceValue = new Price
                                                 {
-                                                    Value = 2500,
+                                                    Value = 1600,
                                                     Currency = "GBP",
                                                     DecimalPlaces = 2
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
-                                                NoBookingFee = false,
-                                                Timestamp = new DateTime(2020, 01, 13, 08, 16, 35)
-                                            }
+                                                NoBookingFee = true,
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                            },
                                         }
                                     },
                                     SeatLumps = new List<SeatLump>
@@ -579,9 +1053,226 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Seats = new List<string>
                                             {
-                                                "CIRCLE-P8",
-                                                "CIRCLE-P9"
+                                                "CHILD_3-15-16101"
                                             }
+                                        },
+                                        new SeatLump
+                                        {
+                                            Seats = new List<string>
+                                            {
+                                                "CHILD_3-15-16103"
+                                            }
+                                        },
+                                    }
+                                }
+                            },
+                        }
+                    },
+                }
+            ),
+            new TestCaseData(
+                @"{
+  ""request"": {
+    ""body"": """",
+    ""query"": {
+      ""affiliateId"": ""boxoffice"",
+      ""date"": ""20200711"",
+      ""direction"": ""desc"",
+      ""time"": ""1400""
+    },
+    ""urlParams"": {
+      ""productId"": ""7021"",
+      ""quantity"": ""1""
+    }
+  },
+  ""response"": {
+    ""availableCount"": null,
+    ""isAvailable"": true,
+    ""areas"": [
+      {
+        ""aggregateReference"": ""Mw=="",
+        ""itemReference"": ""Mw=="",
+        ""isAvailable"": true,
+        ""availableCount"": null,
+        ""date"": ""2020-07-11T14:00:00-0400"",
+        ""name"": ""(Part 2 same day 7:30PM) Premium"",
+        ""mode"": ""freesell"",
+        ""groupings"": [
+          {
+            ""groupIdentifier"": ""(Part2sameday7:30PM)Premium"",
+            ""aggregateReference"": ""Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW1+Mzk5MDB+Mzk5MDB+Mzk5MDB+NDkxMDB+MC44MTEzODl+MjAyMC0wNS0wN1QwOTowMTowNiswMDAw"",
+            ""itemReference"": ""Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW0="",
+            ""row"": null,
+            ""seatNumberStart"": null,
+            ""seatNumberEnd"": null,
+            ""availableCount"": null,
+            ""isAvailable"": true,
+            ""attributes"": {
+              ""restrictedView"": false,
+              ""sideView"": false
+            },
+            ""pricing"": {
+              ""priceReference"": ""Mzk5MDA6VVNEfjM5OTAwOlVTRH4zOTkwMDpHQlB+NDkxMDA6VVNEfjAuODExMzg5fjIwMjAtMDUtMDdUMDk6MDE6MDYrMDAwMA=="",
+              ""salePrice"": {
+                ""value"": 39900,
+                ""currency"": ""GBP"",
+                ""decimalPlaces"": 2
+              },
+              ""faceValue"": {
+                ""value"": 39900,
+                ""currency"": ""USD"",
+                ""decimalPlaces"": 2
+              },
+              ""percentage"": 0,
+              ""offer"": false,
+              ""noBookingFee"": false,
+              ""timestamp"": ""2020-05-07T09:01:06+0000""
+            },
+            ""seats"": [],
+            ""seatLumps"": [],
+            ""aggregateReferenceObject"": {
+              ""itemReference"": {
+                ""supplierPrefix"": ""BI"",
+                ""venueId"": ""704"",
+                ""nativeProductId"": ""7021"",
+                ""internalItemId"": ""1318798"",
+                ""date"": ""2020-07-11"",
+                ""time"": ""14:00"",
+                ""quantity"": 1,
+                ""seatLocationDescription"": ""(Part 2 same day 7:30PM) Premium""
+              },
+              ""priceReference"": {
+                ""faceValue"": {
+                  ""value"": 39900,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""costPrice"": {
+                  ""value"": 39900,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""salePrice"": {
+                  ""value"": 39900,
+                  ""currency"": ""GBP"",
+                  ""decimalPlaces"": 2
+                },
+                ""originalSalePrice"": {
+                  ""value"": 49100,
+                  ""currency"": ""USD"",
+                  ""decimalPlaces"": 2
+                },
+                ""fxRate"": {
+                  ""rate"": 0.811389
+                },
+                ""timestamp"": ""2020-05-07T09:01:06+0000""
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  ""context"": null
+}",
+                new SeatAvailability
+                {
+                    AvailableCount = null,
+                    IsAvailable = true,
+                    Areas = new List<Area>
+                    {
+                        new Area
+                        {
+                            AggregateReference = "Mw==",
+                            ItemReference = "Mw==",
+                            IsAvailable = true,
+                            AvailableCount = null,
+                            Date = new DateTime(2020, 07, 11, 18, 00, 00),
+                            Name = "(Part 2 same day 7:30PM) Premium",
+                            Mode = "freesell",
+                            Groupings = new List<Grouping>
+                            {
+                                new Grouping
+                                {
+                                    GroupIdentifier = "(Part2sameday7:30PM)Premium",
+                                    AggregateReference = "Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW1+Mzk5MDB+Mzk5MDB+Mzk5MDB+NDkxMDB+MC44MTEzODl+MjAyMC0wNS0wN1QwOTowMTowNiswMDAw",
+                                    ItemReference = "Qkl+NzA0fjcwMjF+MTMxODc5OH4yMDIwLTA3LTExfjE0OjAwfjF+KFBhcnQgMiBzYW1lIGRheSA3OjMwUE0pIFByZW1pdW0=",
+                                    Row = null,
+                                    SeatNumberStart = null,
+                                    SeatNumberEnd = null,
+                                    AvailableCount = null,
+                                    IsAvailable = true,
+                                    Attributes = new Attributes
+                                    {
+                                        RestrictedView = false,
+                                        SideView = false
+                                    },
+                                    Pricing = new SDK.Inventory.Models.Pricing
+                                    {
+                                        PriceReference = "Mzk5MDA6VVNEfjM5OTAwOlVTRH4zOTkwMDpHQlB+NDkxMDA6VVNEfjAuODExMzg5fjIwMjAtMDUtMDdUMDk6MDE6MDYrMDAwMA==",
+                                        SalePrice = new Price
+                                        {
+                                            Value = 39900,
+                                            Currency = "GBP",
+                                            DecimalPlaces = 2
+                                        },
+                                        FaceValue = new Price
+                                        {
+                                            Value = 39900,
+                                            Currency = "USD",
+                                            DecimalPlaces = 2
+                                        },
+                                        Percentage = 0,
+                                        Offer = false,
+                                        NoBookingFee = false,
+                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
+                                    },
+                                    Seats = new List<Seat>(),
+                                    SeatLumps = new List<SeatLump>(),
+                                    AggregateReferenceObject = new AggregateReference
+                                    {
+                                        ItemReference = new ItemReference
+                                        {
+                                            SupplierPrefix = "BI",
+                                            VenueId = "704",
+                                            NativeProductId = "7021",
+                                            InternalItemId = "1318798",
+                                            Date = new DateTime(2020, 07, 11),
+                                            Time = new TimeSpan(14, 00, 00),
+                                            Quantity = 1,
+                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium"
+                                        },
+                                        PriceReference = new PriceReference
+                                        {
+                                            FaceValue = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            CostPrice = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            SalePrice = new Price
+                                            {
+                                                Value = 39900,
+                                                Currency = "GBP",
+                                                DecimalPlaces = 2
+                                            },
+                                            OriginalSalePrice = new Price
+                                            {
+                                                Value = 49100,
+                                                Currency = "USD",
+                                                DecimalPlaces = 2
+                                            },
+                                            FxRate = new FxRate
+                                            {
+                                                Rate = 0.811389M
+                                            },
+                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
                                         }
                                     }
                                 }
@@ -592,49 +1283,175 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetAvailability_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
         {
             // 400
             new TestCaseData(
-                "{\"errors\":[{\"field\":\"productId\",\"message\":\"The product ID can only contain numbers, letters and dashes\"}]}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffice"",
+            ""date"": ""20201011"",
+            ""time"": ""1610""
+        },
+        ""urlParams"": {
+            ""productId"": ""731_2"",
+            ""quantity"": ""1""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""productId"",
+                ""message"": ""The product ID can only contain numbers, letters and dashes""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "productId: The product ID can only contain numbers, letters and dashes"
+            ),
+            // 400
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffice"",
+            ""date"": ""20201011"",
+            ""time"": ""1610""
+        },
+        ""urlParams"": {
+            ""productId"": ""7312"",
+            ""quantity"": ""0""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""quantity"",
+                ""message"": ""quantity should be at least 1""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "quantity: quantity should be at least 1"
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffice"",
+            ""date"": ""2020-10-11"",
+            ""time"": ""1610""
+        },
+        ""urlParams"": {
+            ""productId"": ""7312"",
+            ""quantity"": ""1""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""dateString"",
+                ""message"": ""invalid date, should be of 'Ymd' format""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "dateString: invalid date, should be of 'Ymd' format"
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffice"",
+            ""date"": ""20201011"",
+            ""time"": ""1610)""
+        },
+        ""urlParams"": {
+            ""productId"": ""7312"",
+            ""quantity"": ""1""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""timeString"",
+                ""message"": ""invalid time, should be of 'Hi' format""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "timeString: invalid time, should be of 'Hi' format"
             ),
 
             // 401
             new TestCaseData(
-                "{\"code\":401,\"message\":\"an invalid affiliateId has been specified, or the specified affiliate does not have access to this request\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffic"",
+            ""date"": ""20201011"",
+            ""time"": ""1610""
+        },
+        ""urlParams"": {
+            ""productId"": ""7312"",
+            ""quantity"": ""1""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""an invalid affiliateId has been specified, or the specified affiliate does not have access to this request""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.Unauthorized,
                 "an invalid affiliateId has been specified, or the specified affiliate does not have access to this request"
             ),
             
             // 404
             new TestCaseData(
-                "{\"code\":404,\"message\":\"Sorry, nothing was found\"}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""boxoffice"",
+            ""time"": ""1610""
+        },
+        ""urlParams"": {
+            ""productId"": ""7312"",
+            ""quantity"": ""1""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Sorry, nothing was found""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "Sorry, nothing was found"
             ),
         };
 
-        public static IEnumerable<TestCaseData> GetBookingRange_IfApiResponseSuccessful_ReturnsBookingRange = new[]
-        {
-            new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"1587\"}},\"response\":{\"firstBookableDate\":\"2020-01-10T00:00:00+00:00\",\"lastBookableDate\":\"2020-11-28T00:00:00+00:00\"},\"context\":null}",
-                new BookingRange
-                {
-                    FirstBookableDate = new DateTime(2020, 01, 10),
-                    LastBookableDate = new DateTime(2020, 11, 28),
-                }
-            ),
-        };
-
-        public static IEnumerable<TestCaseData> GetBookingRange_IfApiResponseFailed_ThrowsApiException = new[]
-        {
-            new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"some_id\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Sorry, nothing was found\"}]}}",
-                HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
-        };
+        #endregion
     }
 }

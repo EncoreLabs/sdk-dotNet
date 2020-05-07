@@ -5,6 +5,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiWrappers
 {
     internal class BaseApiWrapper : BaseApi, IApiWrapper
     {
+        public override int? ApiVersion { get; }
+
         public ApiContext SourceContext => Context;
 
         public string SourceHost => Host;

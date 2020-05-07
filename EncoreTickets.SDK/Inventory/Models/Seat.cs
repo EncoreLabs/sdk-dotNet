@@ -17,5 +17,7 @@
         public Attributes Attributes { get; set; }
 
         public Pricing Pricing { get; set; }
+
+        public AggregateReference AggregateReferenceObject { get; set; }
     }
 }

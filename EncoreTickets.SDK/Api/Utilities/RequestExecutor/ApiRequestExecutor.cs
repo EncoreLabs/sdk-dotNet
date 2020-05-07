@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
@@ -6,6 +7,7 @@ using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RestClientBuilder;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
+using EncoreTickets.SDK.Utilities.RestClientWrapper;
 using RestSharp;
 
 namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
@@ -87,7 +89,17 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             var client = clientWrapper.GetRestClient(clientParameters);
             var request = clientWrapper.GetRestRequest(clientParameters);
             var response = clientWrapper.Execute<T>(client, request);
+            SaveResponseInfoInContext(response);
             return response;
+        }
+
+        private void SaveResponseInfoInContext(IRestResponse response)
+        {
+            var responseInfo = new RestResponseInformation
+            {
+                ResponseHeaders = response.Headers.ToDictionary(x => x.Name, x => x.Value)
+            };
+            restClientBuilder.SaveResponseInfoInApiContext(responseInfo, Context);
         }
 
         private ApiResult<T> CreateApiResult<T>(

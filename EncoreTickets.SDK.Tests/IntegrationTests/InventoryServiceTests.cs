@@ -15,26 +15,30 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     {
         private IConfiguration configuration;
         private InventoryServiceApi service;
+        private ApiContext context;
 
         [SetUp]
         public void SetupState()
         {
             configuration = ConfigurationHelper.GetConfiguration();
-            var context = new ApiContext(Environments.QA)
+            context = new ApiContext(Environments.QA)
             {
                 Affiliate = configuration["Inventory:TestAffiliateId"]
             };
             service = new InventoryServiceApi(context);
         }
 
+        #region SearchProducts
+
         [Test]
         public void SearchProducts_Successful()
         {
             const string searchTerm = "w";
 
-            var products = service.Search(searchTerm);
+            var products = service.SearchProducts(searchTerm);
 
             Assert.False(products.Any(p => string.IsNullOrEmpty(p.Name)));
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
@@ -44,72 +48,132 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var products = service.Search(searchTerm);
+                var products = service.SearchProducts(searchTerm);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
+        #endregion
+
+        #region GetAvailabilityRange
+
         [Test]
-        public void GetPerformances_Successful()
+        public void GetAvailabilityRange_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
 
-            var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+            var bookingRange = service.GetAvailabilityRange(productId);
 
-            foreach (var performance in performances)
-            {
-                Assert.NotNull(performance.LargestLumpOfTickets);
-                Assert.AreNotEqual(performance.Datetime, default);
-            }
+            Assert.NotNull(bookingRange.FirstBookableDate);
+            Assert.NotNull(bookingRange.LastBookableDate);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
-        public void GetPerformances_IfIntervalTooBig_Exception400()
+        public void GetAvailabilityRange_Exception404()
+        {
+            const string productId = "not_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var products = service.GetAvailabilityRange(productId);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        #endregion
+
+        #region GetAvailabilities
+
+        [Test]
+        public void GetAvailabilities_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 12, 01);
+
+            var availabilities = service.GetAvailabilities(productId, 2, startDate, startDate.AddMonths(1));
+
+            foreach (var availability in availabilities)
+            {
+                Assert.NotNull(availability.LargestLumpOfTickets);
+                Assert.AreNotEqual(availability.DateTime, default);
+            }
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAvailabilities_IfIntervalTooBig_Exception400()
         {
             var productId = configuration["Inventory:TestProductId"];
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(10));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(10));
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
-        public void GetPerformances_IfProductIdInvalid_Exception400()
+        public void GetAvailabilities_IfStartDateInThePast_Exception400()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today.AddDays(-10), DateTime.Today);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAvailabilities_IfProductIdInvalid_Exception400()
         {
             const string productId = "invalid_id";
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
-        public void GetPerformances_IfProductNotFound_Exception404()
+        public void GetAvailabilities_IfProductNotFound_Exception404()
         {
             const string productId = "invalid-id";
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var performances = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
+                var availabilities = service.GetAvailabilities(productId, 2, DateTime.Today, DateTime.Today.AddMonths(1));
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
+        #endregion
+
+        #region GetSeatAvailability
+
         [Test]
-        public void GetAvailability_Successful()
+        public void GetSeatAvailability_IfOnlyDateTimeIsSet_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
-            var performance = service.GetPerformances(productId, 2, DateTime.Today, DateTime.Today.AddMonths(2)).First();
+            var startDate = new DateTime(2020, 10, 11);
+            var endDate = new DateTime(2020, 12, 31);
+            var availability = service.GetAvailabilities(productId, 1, startDate, endDate).First();
 
-            var seats = service.GetAvailability(productId, 2, performance.Datetime);
+            var seats = service.GetSeatAvailability(productId, 1, availability.DateTime);
 
             Assert.IsNotEmpty(seats.Areas);
             foreach (var area in seats.Areas)
@@ -118,69 +182,37 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
-        public void GetAvailability_IfProductIdInvalid_Exception400()
+        public void GetSeatAvailability_IfProductIdInvalid_Exception400()
         {
             var productId = "invalid_id";
-            
+
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+                var seats = service.GetSeatAvailability(productId, 2, DateTime.Now);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
         [Test]
-        public void GetAvailability_IfProductNotFound_Exception404()
+        public void GetSeatAvailability_IfProductNotFound_Exception404()
         {
             const string productId = "invalidid";
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var seats = service.GetAvailability(productId, 2, DateTime.Now);
+                var seats = service.GetSeatAvailability(productId, 2, DateTime.Now);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
-        [Test]
-        public void GetBookingRange_Successful()
-        {
-            var productId = configuration["Inventory:TestProductId"];
-
-            var bookingRange = service.GetBookingRange(productId);
-
-            Assert.NotNull(bookingRange.FirstBookableDate);
-            Assert.NotNull(bookingRange.LastBookableDate);
-        }
-
-        [Test]
-        public void GetBookingRange_Exception400()
-        {
-            const string productId = ",,,";
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var products = service.GetBookingRange(productId);
-            });
-
-            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
-        }
-
-        [Test]
-        public void GetBookingRange_Exception404()
-        {
-            const string productId = "not_id";
-
-            var exception = Assert.Catch<ApiException>(() =>
-            {
-                var products = service.GetBookingRange(productId);
-            });
-
-            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
-        }
+        #endregion
     }
 }

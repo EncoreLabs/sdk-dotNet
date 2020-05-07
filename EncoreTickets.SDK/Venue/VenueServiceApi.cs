@@ -21,9 +21,10 @@ namespace EncoreTickets.SDK.Venue
     /// </summary>
     public class VenueServiceApi : BaseApiWithAuthentication, IVenueServiceApi
     {
-        public const int ApiVersion = 2;
-
         private const string VenueApiHost = "venue-service.{0}tixuk.io/api/";
+
+        /// <inheritdoc/>
+        public override int? ApiVersion => 2;
 
         /// <summary>
         /// Default constructor for the Venue service
