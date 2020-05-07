@@ -129,22 +129,10 @@ namespace EncoreTickets.SDK.Inventory
             dynamic query = new ExpandoObject();
             query.date = parameters.PerformanceTime?.ToEncoreDate();
             query.time = parameters.PerformanceTime?.ToEncoreTime();
-            if (!string.IsNullOrWhiteSpace(parameters.Sort))
-            {
-                query.sort = parameters.Sort;
-            }
-
-            if (parameters.Direction != null)
-            {
-                query.direction = parameters.Direction;
-            }
-
-            if (parameters.GroupingLimit > 0)
-            {
-                query.groupingLimit = parameters.GroupingLimit;
-            }
-
-            return (object) query;
+            query.sort = parameters.Sort;
+            query.direction = parameters.Direction;
+            query.groupingLimit = parameters.GroupingLimit > 0 ? parameters.GroupingLimit : (int?)null;
+            return query;
         }
     }
 }

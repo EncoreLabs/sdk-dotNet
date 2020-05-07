@@ -111,14 +111,14 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
                 return null;
             }
 
-            var notFilteredQueryParameters = GetNotFilteredQueryParameters(queryObject);
+            var notFilteredQueryParameters = GetAllQueryParameters(queryObject);
             var queryParameters = notFilteredQueryParameters
                 .Where(x => !string.IsNullOrWhiteSpace(x.Item1) && !string.IsNullOrWhiteSpace(x.Item2))
                 .ToDictionary(x => x.Item1, x => x.Item2);
             return queryParameters.Count == 0 ? null : queryParameters;
         }
 
-        private static IEnumerable<(string, string)> GetNotFilteredQueryParameters(object queryObject)
+        private static IEnumerable<(string, string)> GetAllQueryParameters(object queryObject)
         {
             if (queryObject is ExpandoObject expandoObject)
             {
