@@ -46,9 +46,14 @@
         public int DeliveryCharge { get; set; }
 
         /// <summary>
+        /// Gets or sets name of the person who will receive this (in case of gift voucher).
+        /// </summary>
+        public string RecipientName { get; set; }
+
+        /// <summary>
         /// Gets or sets message that will be added in the gift voucher when delivered to some one else.
         /// </summary>
-        public int GiftVoucherMessage { get; set; }
+        public string GiftVoucherMessage { get; set; }
 
         /// <summary>
         /// Gets or sets delivery address.
