@@ -72,6 +72,18 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        public void GetAvailabilityRange_WithIntegerParameter_Successful()
+        {
+            var productId = int.Parse(configuration["Inventory:TestProductId"]);
+
+            var bookingRange = service.GetAvailabilityRange(productId);
+
+            Assert.NotNull(bookingRange.FirstBookableDate);
+            Assert.NotNull(bookingRange.LastBookableDate);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
         public void GetAvailabilityRange_Exception404()
         {
             const string productId = "not_id";
@@ -93,6 +105,22 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void GetAvailabilities_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 12, 01);
+
+            var availabilities = service.GetAvailabilities(productId, 2, startDate, startDate.AddMonths(1));
+
+            foreach (var availability in availabilities)
+            {
+                Assert.NotNull(availability.LargestLumpOfTickets);
+                Assert.AreNotEqual(availability.DateTime, default);
+            }
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAvailabilities_WithIntegerParameter_Successful()
+        {
+            var productId = int.Parse(configuration["Inventory:TestProductId"]);
             var startDate = new DateTime(2020, 12, 01);
 
             var availabilities = service.GetAvailabilities(productId, 2, startDate, startDate.AddMonths(1));

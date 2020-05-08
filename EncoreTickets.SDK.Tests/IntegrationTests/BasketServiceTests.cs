@@ -6,6 +6,7 @@ using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
+using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
@@ -146,13 +147,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             VerifyPromoCodeTestsEnabled();
             var upsertBasketResult = (Basket.Models.Basket)null;
+            Coupon coupon;
             try
             {
-                var reference = configuration["Basket:TestReferences:0"];
-                var request = CreateDefaultBasket(reference);
-                request.Coupon = null;
-                upsertBasketResult = service.UpsertBasket(request);
-                var coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] };
+                (upsertBasketResult, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                    configuration["Basket:ValidPromoCode"]);
 
                 var basketDetails = service.UpsertPromotion(upsertBasketResult.Reference, coupon);
 
@@ -164,6 +163,45 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 service.ClearBasket(upsertBasketResult?.Reference);
             }
+        }
+
+        [Test]
+        public void ApplyPromotion_InvalidPromoCode()
+        {
+            Basket.Models.Basket basket = null;
+            Coupon coupon;
+            try
+            {
+                (basket, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                    "invalid promo code");
+
+                Assert.Throws<InvalidPromoCodeException>(() =>
+                {
+                    service.UpsertPromotion(basket.Reference, coupon);
+                });
+            }
+            finally
+            {
+                service.ClearBasket(basket?.Reference);
+            }
+        }
+
+        [Test]
+        public void ApplyPromotion_BasketNotFound()
+        {
+            Assert.Throws<BasketNotFoundException>(() =>
+            {
+                service.UpsertPromotion(configuration["Basket:TestBasketReferenceNotFound"], new Coupon { Code = "test" });
+            });
+        }
+
+        [Test]
+        public void ApplyPromotion_BasketCannotBeModified()
+        {
+            Assert.Throws<BasketCannotBeModifiedException>(() =>
+            {
+                service.UpsertPromotion("invalid basket reference", new Coupon { Code = "test" });
+            });
         }
 
         private void VerifyPromoCodeTestsEnabled()
@@ -204,6 +242,16 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     }
                 }
             };
+        }
+
+        private (Basket.Models.Basket Basket, Coupon Coupon) PrepareUpsertPromotionRequest(
+            string aggregateReference, string couponCode)
+        {
+            var request = CreateDefaultBasket(aggregateReference);
+            request.Coupon = null;
+            var upsertBasketResult = service.UpsertBasket(request);
+            var coupon = new Coupon { Code = couponCode };
+            return (upsertBasketResult, coupon);
         }
 
         private void AssertApiException(ApiException exception, HttpStatusCode code)
