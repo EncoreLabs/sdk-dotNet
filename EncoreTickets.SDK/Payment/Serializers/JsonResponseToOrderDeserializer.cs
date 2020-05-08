@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Payment.Serializers
 {
     internal class JsonResponseToOrderDeserializer : DefaultJsonSerializer
     {
-        public JsonResponseToOrderDeserializer() : base(new SingleOrListToSingleConverter<RiskData>())
+        public JsonResponseToOrderDeserializer() : base(new[] {new SingleOrListToSingleConverter<RiskData>()})
         {
         }
     }

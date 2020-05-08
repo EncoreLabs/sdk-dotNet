@@ -157,7 +157,7 @@ namespace EncoreTickets.SDK.Venue
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
+                Deserializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return GetUpsertSeatAttributesResult(result);
