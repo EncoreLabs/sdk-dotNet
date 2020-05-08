@@ -56,6 +56,42 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
         }
 
         [Test]
+        public void ConstructorWithMultipleErrors_IfSuccessfulResponse_InitializesCommonProperties()
+        {
+            var data = new[] { new object(), new object(), };
+            var response = RestResponseFactory.GetSuccessResponse();
+            var context = It.IsAny<ApiContext>();
+            var errors = (IEnumerable<Error>)null;
+
+            var result = new ApiResult<object>(data, response, context, errors);
+
+            Assert.AreEqual(context, result.Context);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(default, result.ApiException);
+            Assert.AreEqual(data, result.DataOrException);
+            Assert.AreEqual(data, result.DataOrDefault);
+        }
+
+        [Test]
+        public void ConstructorWithMultipleErrors_IfUnsuccessfulResponse_InitializesCommonProperties()
+        {
+            var data = new[] { new object(), new object(), };
+            var response = RestResponseFactory.GetSuccessResponse();
+            var context = It.IsAny<ApiContext>();
+            var errors = new[] { new Error(), new Error() };
+
+            var result = new ApiResult<object>(data, response, context, errors);
+
+            Assert.AreEqual(context, result.Context);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(default, result.ApiException);
+            Assert.AreEqual(data, result.DataOrException);
+            Assert.AreEqual(data, result.DataOrDefault);
+        }
+
+        [Test]
         public void ConstructorWith4Args_IfSuccessfulResponse_InitializesCommonProperties()
         {
             var data = new[] { new object(), new object(), };
