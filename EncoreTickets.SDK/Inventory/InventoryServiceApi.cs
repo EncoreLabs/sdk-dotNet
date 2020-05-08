@@ -118,21 +118,10 @@ namespace EncoreTickets.SDK.Inventory
             {
                 Endpoint = $"v{ApiVersion}/europa/availability/products/{productId}/quantity/{quantity}/seats",
                 Method = RequestMethod.Get,
-                Query = GetQueryParametersForGetSeatAvailability(parameters)
+                Query = new SeatAvailabilityQueryParameters(parameters)
             };
             var result = Executor.ExecuteApiWithWrappedResponse<SeatAvailability>(requestParameters);
             return result.DataOrException;
-        }
-
-        private object GetQueryParametersForGetSeatAvailability(SeatAvailabilityParameters parameters)
-        {
-            dynamic query = new ExpandoObject();
-            query.date = parameters.PerformanceTime?.ToEncoreDate();
-            query.time = parameters.PerformanceTime?.ToEncoreTime();
-            query.sort = parameters.Sort;
-            query.direction = parameters.Direction;
-            query.groupingLimit = parameters.GroupingLimit > 0 ? parameters.GroupingLimit : (int?)null;
-            return query;
         }
     }
 }
