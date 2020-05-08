@@ -21,6 +21,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     {
         private const string TestValidSearchText = "wicked";
         private const string TestValidProductId = "1587";
+        private const string CorrelationIdHeader = "X-Correlation-Id";
+        private const string AffiliateIdHeader = "affiliateId";
+        private const string MarketHeader = "x-market";
 
         private MockersForApiService mockers;
 
@@ -76,8 +79,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: new Dictionary<string, object> { { "query", text } },
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    { "affiliateId", Context.Affiliate },
-                    { "X-Correlation-ID", Context.Correlation },
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -149,8 +152,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 Method.GET,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    { "affiliateId", Context.Affiliate },
-                    { "X-Correlation-ID", Context.Correlation },
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -224,9 +227,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 Method.GET,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    { "affiliateId", Context.Affiliate },
-                    { "X-Correlation-ID", Context.Correlation },
-                    { "x-market", "Broadway" },
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
+                    { MarketHeader, "Broadway" },
                 });
         }
 
@@ -297,8 +300,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: new Dictionary<string, object>(),
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    { "affiliateId", Context.Affiliate },
-                    { "X-Correlation-ID", Context.Correlation },
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -331,8 +334,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 },
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {"affiliateId", Context.Affiliate},
-                    {"X-Correlation-ID", Context.Correlation},
+                    {AffiliateIdHeader, Context.Affiliate},
+                    {CorrelationIdHeader, Context.Correlation},
                 });
         }
 
@@ -342,7 +345,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("1587", 2, "", null, "id", 0)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null, null, -1)]
         [TestCase("1587", 2, null, null, null, 10)]
-        [TestCase("1587", 2, null,Direction.Asc, "id", 1)]
+        [TestCase("1587", 2, null, Direction.Asc, "id", 1)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, "id", 1)]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr, Direction? direction, string sort, int groupingLimit)
@@ -353,7 +356,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             {
                 PerformanceTime = string.IsNullOrWhiteSpace(dateAsStr)
                     ? null
-                    : (DateTime?) TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
+                    : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
                 Direction = direction,
                 Sort = sort,
                 GroupingLimit = groupingLimit
@@ -402,8 +405,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: queryParameters,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {"affiliateId", Context.Affiliate},
-                    {"X-Correlation-ID", Context.Correlation},
+                    {AffiliateIdHeader, Context.Affiliate},
+                    {CorrelationIdHeader, Context.Correlation},
                 });
         }
 

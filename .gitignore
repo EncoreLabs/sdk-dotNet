@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 /EncoreTickets.ConsoleTester/appsettings.real.json
 /EncoreTickets.SDK.Tests/appsettings.test.real.json
+
+GeneratedReports/

@@ -30,7 +30,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             username = configuration["Payment:Username"];
             password = configuration["Payment:Password"];
             apiKey = configuration["Payment:ApiKey"];
-            context = new ApiContext(environment, apiKey);
+            context = new ApiContext(environment, apiKey)
+            {
+                Correlation = Guid.NewGuid().ToString()
+            };
             service = new PaymentServiceApi(context, true);
         }
 
@@ -54,6 +57,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var order = service.GetOrder(channelId, externalId);
 
             AssertThatOrderIsCorrect(order, channelId, externalId);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -64,10 +68,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var order = service.GetOrder(channelId, externalId);
+                service.GetOrder(channelId, externalId);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -131,6 +136,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var order = service.CreateOrder(orderRequest);
 
             AssertThatOrderIsCorrect(order, channelId, externalId);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -155,10 +161,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var order = service.CreateOrder(orderRequest);
+                service.CreateOrder(orderRequest);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -184,6 +191,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             AssertThatOrderIsCorrect(updatedOrder, channelId, externalId);
             updatedOrder.ShouldBeEquivalentToObjectWithMoreProperties(order);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -207,10 +215,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var updatedOrder = service.UpdateOrder(order.Id, updateOrderRequest);
+                service.UpdateOrder(order.Id, updateOrderRequest);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -221,10 +230,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var updatedOrder = service.UpdateOrder(orderId, updateOrderRequest);
+                service.UpdateOrder(orderId, updateOrderRequest);
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         [Test]
@@ -251,6 +261,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(x.Name);
                 Assert.NotNull(x.Abbreviation);
             });
+            Assert.AreEqual(context.Correlation, context.ReceivedCorrelation);
         }
 
         private void AssertThatOrderIsCorrect(Order order, string channelId, string externalId)
