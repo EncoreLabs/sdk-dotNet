@@ -3,9 +3,11 @@ using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Constants;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
+using EncoreTickets.SDK.Authentication.Models;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
 using EncoreTickets.SDK.Checkout.Models.ResponseModels;
+using EncoreTickets.SDK.Utilities.Encoders;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
 using Newtonsoft.Json.Serialization;
@@ -49,6 +51,20 @@ namespace EncoreTickets.SDK.Checkout
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PaymentInfo>(requestParameters);
             return result.DataOrException;
+        }
+
+
+        /// <inheritdoc />
+        public bool ConfirmBooking(string agentId, string agentPassword, string bookingReference,
+            ConfirmBookingParameters bookingParameters)
+        {
+            var encoder = new Base64Encoder();
+            Context.AgentCredentials = new Credentials
+            {
+                Username = encoder.Encode(agentId),
+                Password = encoder.Encode(agentPassword)
+            };
+            return ConfirmBooking(bookingReference, bookingParameters);
         }
 
         /// <inheritdoc />

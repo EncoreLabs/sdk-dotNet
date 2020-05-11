@@ -23,5 +23,15 @@ namespace EncoreTickets.SDK.Checkout
         /// <param name="bookingParameters">Parameters for confirmation</param>
         /// <returns>True if the confirmation is successful.</returns>
         bool ConfirmBooking(string bookingReference, ConfirmBookingParameters bookingParameters);
+
+        /// <summary>
+        /// Confirms by agent whether an agent booking is successful.
+        /// </summary>
+        /// <param name="agentId">Id of an agent who confirms the booking.</param>
+        /// <param name="agentPassword">Password of an agent who confirms the booking.</param>
+        /// <param name="bookingReference">Basket reference ID/no.</param>
+        /// <param name="bookingParameters">Parameters for confirmation</param>
+        /// <returns>True if the confirmation is successful.</returns>
+        bool ConfirmBooking(string agentId, string agentPassword, string bookingReference, ConfirmBookingParameters bookingParameters);
     }
 }
