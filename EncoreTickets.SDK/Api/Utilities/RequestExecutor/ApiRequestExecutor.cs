@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         {
             var responseInfo = new RestResponseInformation
             {
-                ResponseHeaders = response.Headers.ToDictionary(x => x.Name, x => x.Value)
+                ResponseHeaders = response.Headers?.ToDictionary(x => x.Name, x => x.Value)
             };
             restClientBuilder.SaveResponseInfoInApiContext(responseInfo, Context);
         }

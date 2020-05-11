@@ -1,9 +1,11 @@
 ﻿using System;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Api.Results.Constants;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
+using EncoreTickets.SDK.Checkout.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
 using Newtonsoft.Json.Serialization;
@@ -47,6 +49,30 @@ namespace EncoreTickets.SDK.Checkout
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PaymentInfo>(requestParameters);
             return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public bool ConfirmBooking(string bookingReference, ConfirmBookingParameters bookingParameters)
+        {
+            if (string.IsNullOrWhiteSpace(bookingReference))
+            {
+                throw new ArgumentException("booking reference must not be empty");
+            }
+
+            if (bookingParameters == null)
+            {
+                throw new ArgumentException("parameters must be set");
+            }
+
+            var requestParameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/bookings/{bookingReference}/confirm",
+                Method = RequestMethod.Post,
+                Body = bookingParameters
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<string, ConfirmBookingResponse, ConfirmBookingResponseContent>(
+                    requestParameters);
+            return result.DataOrException.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
