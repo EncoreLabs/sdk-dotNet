@@ -4,6 +4,7 @@ using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Content.Models.RequestModels;
 using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Content
@@ -41,17 +42,14 @@ namespace EncoreTickets.SDK.Content
         }
 
         /// <inheritdoc />
-        public IList<Product> GetProducts()
+        public IList<Product> GetProducts(GetProductsParameters requestParameters = null)
         {
+            requestParameters ??= new GetProductsParameters();
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/products",
                 Method = RequestMethod.Get,
-                Query = new PageRequest
-                {
-                    Page = 1,
-                    Limit = 1000
-                }
+                Query = requestParameters
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(parameters);
             return result.DataOrException;
