@@ -7,8 +7,10 @@ using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Checkout;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
+using EncoreTickets.SDK.Checkout.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
+using EncoreTickets.SDK.Utilities.Encoders;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -18,6 +20,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     internal class CheckoutServiceApiTests : CheckoutServiceApi
     {
         private static readonly BookingParameters TestValidBookingParameters = new BookingParameters();
+
+        private static readonly VerifyPaymentParameters TestValidVerifyParameters = new VerifyPaymentParameters();
+
+        private static readonly string TestValidBookingReference = "some_id";
+
+        private static readonly ConfirmBookingParameters TestValidConfirmParameters = new ConfirmBookingParameters();
 
         private MockersForApiService mockers;
 
@@ -63,7 +71,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 BaseUrl,
                 $"v{ApiVersion}/checkout",
                 Method.POST,
-                bodyInJson: requestBody);
+                bodyInJson: requestBody,
+                expectedHeaders: null,
+                expectedQueryParameters: null);
         }
 
         [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.Checkout_IfApiResponseSuccessful_ReturnsPaymentInfo))]
@@ -89,6 +99,112 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var actual = Checkout(TestValidBookingParameters);
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        #endregion
+
+        #region ConfirmBooking
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("     ")]
+        public void ConfirmBooking_IfBookingReferenceIsNotSet_ThrowsArgumentException(string reference)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                ConfirmBooking(reference, It.IsAny<ConfirmBookingParameters>());
+            });
+        }
+
+        [Test]
+        public void ConfirmBooking_IfParametersAreNotSet_ThrowsArgumentException()
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                ConfirmBooking(TestValidBookingReference, It.IsAny<ConfirmBookingParameters>());
+            });
+        }
+
+        [TestCaseSource(typeof(CheckoutServiceApiTestsSource),
+            nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters))]
+        public void ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters(string reference,
+            ConfirmBookingParameters parameters, string requestBody)
+        {
+            mockers.SetupAnyExecution<ConfirmBookingResponse>();
+
+            try
+            {
+                ConfirmBooking(reference, parameters);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ConfirmBookingResponse>(
+                BaseUrl,
+                $"v{ApiVersion}/bookings/{reference}/confirm",
+                Method.POST,
+                bodyInJson: requestBody,
+                expectedHeaders: null,
+                expectedQueryParameters: null);
+        }
+
+        [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters))]
+        public void ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters(string agentId, string agentPassword, 
+            string reference, ConfirmBookingParameters parameters, string requestBody)
+        {
+            var encoder = new Base64Encoder();
+            mockers.SetupAnyExecution<ConfirmBookingResponse>();
+
+            try
+            {
+                ConfirmBooking(agentId, agentPassword, reference, parameters);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ConfirmBookingResponse>(
+                BaseUrl,
+                $"v{ApiVersion}/bookings/{reference}/confirm",
+                Method.POST,
+                bodyInJson: requestBody,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    {"X-AGENT-ID", encoder.Encode(agentId)},
+                    {"X-AGENT-PASSWORD", encoder.Encode(agentPassword)}
+                },
+                expectedQueryParameters: null);
+        }
+
+        [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult))]
+        public void ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult(string responseContent)
+        {
+            mockers.SetupSuccessfulExecution<ConfirmBookingResponse>(responseContent);
+
+            var actual = ConfirmBooking(TestValidBookingReference, TestValidConfirmParameters);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfApiResponseFailed_ThrowsApiException))]
+        public void ConfirmBooking_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
+        {
+            mockers.SetupFailedExecution<ConfirmBookingResponse>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = ConfirmBooking(TestValidBookingReference, TestValidConfirmParameters);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -183,6 +299,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     PaymentId = "c72b2b7c-69ef-489c-83ee-1c731af93324",
                     PaymentType = PaymentType.Card
+                }
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": ""{\n\t\""paymentId\"": \""111\"",\n\t\""paymentType\"": \""account\"",\n\t\""billingAddress\"": {\n\t\t\""city\"": \""London\"",\n\t\t\""countryCode\"": \""UK\"",\n\t\t\""line1\"": \""47-51 Great Suffolk St\"",\n\t\t\""line2\"": \""\"",\n\t\t\""postalCode\"": \""SE1 0BS\""\n\t},\n\t\""channelId\"": \""resiaapi\"",\n\t\""redirectUrl\"": \""http://localhost:8000/\"",\n\t\""deliveryMethod\"": \""C\"",\n\t\""reference\"": \""8527512\"",\n\t\""shopper\"": {\n\t\t\""email\"": \""agentEmail@mail.com\"",\n\t\t\""firstName\"": \""clientFName\"",\n\t\t\""lastName\"": \""clientLName\"",\n\t\t\""telephoneNumber\"": \""123321321321\"",\n\t\t\""title\"": \""Mrs\""\n\t}\n}""
+    },
+    ""response"": {
+        ""paymentId"": null,
+        ""paymentType"": ""account""
+    }
+}",
+                new PaymentInfo
+                {
+                    PaymentId = null,
+                    PaymentType = PaymentType.Account
                 }
             ),
         };
@@ -294,6 +426,136 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
 }",
                 HttpStatusCode.BadRequest,
                 "reference: Please provide a booking reference number.\r\nchannelId: Please provide a Channel ID."
+            ),
+        };
+
+        #endregion
+
+        #region ConfirmBooking
+
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters = new[]
+        {
+            new TestCaseData(
+                "8527512",
+                new ConfirmBookingParameters
+                {
+                    ChannelId = "resiaapi",
+                    PaymentId = "your-payment-reference",
+                    AgentPaymentReference = "your-reference"
+                },
+                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters = new[]
+        {
+            new TestCaseData(
+                "some_agent",
+                "some_password",
+                "8527512",
+                new ConfirmBookingParameters
+                {
+                    ChannelId = "resiaapi",
+                    PaymentId = "your-payment-reference",
+                    AgentPaymentReference = "your-reference"
+                },
+                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": ""{\""channelId\"":\""resiaapi\"",\""paymentId\"":\""your-payment-reference\"",\""agentPaymentReference\"":\""your-reference\""}"",
+        ""urlParams"": {
+            ""referenceNo"": ""8527512""
+        }
+    },
+    ""response"": {
+        ""result"": ""success""
+    }
+}"
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 400
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": ""{\""channelId\"":\""KyFiRKwzcp\"",\""paymentId\"":\""b88d1a1d-ea00-4142-8692-a46110d09dc5\"",\""agentPaymentReference\"":\""test-reference\""}"",
+        ""urlParams"": {
+            ""referenceNo"": ""8231754""
+        }
+    },
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Order for booking 8231754 and channel KyFiRKwzcp doesn't exists.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "Order for booking 8231754 and channel KyFiRKwzcp doesn't exists."
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": ""{\""channelId\"":\""europa-test\"",\""paymentId\"":\""90984ea1-add6-4320-8e2b-dcd362fe4eb9\"",\""agentPaymentReference\"":\""test-reference\""}"",
+        ""urlParams"": {
+            ""referenceNo"": ""8527491""
+        }
+    },
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Payment with id [90984ea1-add6-4320-8e2b-dcd362fe4eb9] is not authorised.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "Payment with id [90984ea1-add6-4320-8e2b-dcd362fe4eb9] is not authorised."
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": ""{\""channelId\"":\""resiaapi\"",\""paymentId\"":\""your-payment-reference\"",\""agentPaymentReference\"":\""your-reference\""}"",
+        ""urlParams"": {
+            ""referenceNo"": ""8527512""
+        }
+    },
+    ""context"": {
+        ""errors"": [
+            {
+                ""code"": ""booking_already_paid"",
+                ""message"": ""Cannot confirm booking with reference [8527512] that is already paid.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "Cannot confirm booking with reference [8527512] that is already paid."
+            ),
+
+            // 403
+            new TestCaseData(
+                @"{
+    ""request"": {},
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Agent [resiaapi] is not authorized.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.Forbidden,
+                "Agent [resiaapi] is not authorized."
             ),
         };
 
