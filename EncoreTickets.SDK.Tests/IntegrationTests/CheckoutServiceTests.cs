@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Checkout;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
-using EncoreTickets.SDK.Inventory;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -90,7 +85,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var products = service.Checkout(invalidParameters);
+                var result = service.Checkout(invalidParameters);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
@@ -144,10 +139,89 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var products = service.Checkout(parameters);
+                var result = service.Checkout(parameters);
             });
 
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        #endregion
+
+        #region ConfirmBooking
+
+        [Test]
+        public void ConfirmBooking_IfAgentBooking_Successful()
+        {
+            var (agentId, agentPassword, agentChannel) = GetAgentInfoFromConfig();
+            var reference = configuration["Checkout:TestBookingReferenceForAgentConfirmation"];
+            var parameters = new ConfirmBookingParameters
+            {
+                ChannelId = agentChannel,
+                PaymentId = "agent_payment"
+            };
+
+            var result = service.ConfirmBooking(agentId, agentPassword, reference, parameters);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void ConfirmBooking_IfPaymentIsNotSet_Exception400()
+        {
+            var (agentId, agentPassword, agentChannel) = GetAgentInfoFromConfig();
+            var reference = configuration["Checkout:TestBookingReferenceForAgentConfirmation"];
+            var parameters = new ConfirmBookingParameters
+            {
+                ChannelId = agentChannel,
+            };
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.ConfirmBooking(agentId, agentPassword, reference, parameters);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void ConfirmBooking_IfChannelIsNotSet_Exception400()
+        {
+            var (agentId, agentPassword, agentChannel) = GetAgentInfoFromConfig();
+            var reference = configuration["Checkout:TestBookingReferenceForAgentConfirmation"];
+            var parameters = new ConfirmBookingParameters { };
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.ConfirmBooking(agentId, agentPassword, reference, parameters);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        [Test]
+        public void ConfirmBooking_IfBookingIsExpired_Exception400()
+        {
+            var (agentId, agentPassword, agentChannel) = GetAgentInfoFromConfig();
+            var reference = configuration["Checkout:TestExpiredBookingReference"];
+            var parameters = new ConfirmBookingParameters
+            {
+                ChannelId = agentChannel,
+            };
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.ConfirmBooking(agentId, agentPassword, reference, parameters);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+        }
+
+        private (string agentId, string agentPassword, string agentChannel) GetAgentInfoFromConfig()
+        {
+            var agentId = configuration ["Checkout:TestAgentId"];
+            var agentPassword = configuration ["Checkout:TestAgentPassword"];
+            var channelId = configuration["Checkout:TestAgentChannelId"];
+            return (agentId, agentPassword, channelId);
         }
 
         #endregion
