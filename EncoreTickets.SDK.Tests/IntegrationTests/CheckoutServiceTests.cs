@@ -166,6 +166,21 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        public void ConfirmBooking_IfUsualBooking_Successful()
+        {
+            var reference = configuration["Checkout:TestBookingReference"];
+            var parameters = new ConfirmBookingParameters
+            {
+                ChannelId = configuration["Checkout:TestChannelId"],
+                PaymentId = configuration["Checkout:TestPaymentId"]
+            };
+
+            var result = service.ConfirmBooking(reference, parameters);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
         public void ConfirmBooking_IfPaymentIsNotSet_Exception400()
         {
             var (agentId, agentPassword, agentChannel) = GetAgentInfoFromConfig();
