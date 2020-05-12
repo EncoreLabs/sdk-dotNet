@@ -40,6 +40,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         public void CreateMockers()
         {
             mockers = new MockersForApiService();
+            ApiContextTestHelper.ResetContextToDefault(Context);
         }
 
         #region Checkout
@@ -246,7 +247,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     },
                     Origin = "https://example.com",
                     RedirectUrl = "https://example.com",
-                    DeliveryMethod = DeliveryMethod.C,
+                    DeliveryMethod = DeliveryMethod.Collection,
                     DeliveryCharge = 245,
                     RecipientName = "Mr. Someone Else",
                     GiftVoucherMessage = "Happy Birthday to you.",
@@ -263,7 +264,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     HasFlexiTickets = true,
                     PaymentType = PaymentType.Card
                 },
-                "{\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryMethod\":\"C\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentType\":\"Card\"}"
+                "{\"deliveryMethod\":\"C\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentType\":\"Card\"}"
             ),
         };
         

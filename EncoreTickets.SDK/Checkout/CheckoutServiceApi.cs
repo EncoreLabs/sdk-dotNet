@@ -46,7 +46,7 @@ namespace EncoreTickets.SDK.Checkout
             {
                 Endpoint = $"v{ApiVersion}/checkout",
                 Method = RequestMethod.Post,
-                Body = bookingParameters,
+                Body = new BookingQueryParameters(bookingParameters),
                 Serializer = new DefaultJsonSerializer(new DefaultNamingStrategy())
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PaymentInfo>(requestParameters);

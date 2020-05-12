@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Constants;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;

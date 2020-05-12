@@ -3,21 +3,21 @@
     /// <summary>
     /// Delivery method used in the booking.
     /// </summary>
-    public enum DeliveryMethod
+    internal enum DeliveryMethodForQuery
     {
         /// <summary>
         /// for print at home
         /// </summary>
-        PrintAtHome,
+        E,
 
         /// <summary>
         /// for postal delivery
         /// </summary>
-        PostalDelivery,
+        M,
 
         /// <summary>
         /// for Collection
         /// </summary>
-        Collection
+        C
     }
 }
