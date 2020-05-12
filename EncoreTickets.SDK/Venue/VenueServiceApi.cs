@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Constants;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
@@ -157,16 +158,11 @@ namespace EncoreTickets.SDK.Venue
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
+                Deserializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
-            return GetUpsertSeatAttributesResult(result);
-        }
-
-        private bool GetUpsertSeatAttributesResult(ApiResult<List<string>> apiResult)
-        {
-            const string successStatus = "Success";
-            return apiResult.DataOrException?.Contains(successStatus) ?? false;
+            return result.DataOrException?.Any(x =>
+                x.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase)) ?? false;
         }
     }
 }

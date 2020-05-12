@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Utilities.Enums;
+﻿using EncoreTickets.SDK.Authentication.Models;
+using EncoreTickets.SDK.Utilities.Enums;
 
 namespace EncoreTickets.SDK.Api.Models
 {
@@ -55,6 +56,8 @@ namespace EncoreTickets.SDK.Api.Models
         /// Used as a header in requests.
         /// </summary>
         public Market? Market { get; set; }
+
+        internal Credentials AgentCredentials { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiContext"/> class.

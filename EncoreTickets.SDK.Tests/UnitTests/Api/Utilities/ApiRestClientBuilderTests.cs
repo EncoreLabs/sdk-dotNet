@@ -446,36 +446,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
         };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedSerializer = new[]
-        {
-            new TestCaseData(
-                new ExecuteApiRequestParameters(),
-                new DefaultJsonSerializer(),
-                DataFormat.Json
-            ),
-            new TestCaseData(
-                new ExecuteApiRequestParameters
-                {
-                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                },
-                new DefaultJsonSerializer
-                {
-                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                },
-                DataFormat.Json
-            ),
-            new TestCaseData(
-                new ExecuteApiRequestParameters
-                {
-                    Serializer = new DefaultJsonSerializer(new SingleOrListToListConverter <string>()),
-                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                },
-                new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
-                {
-                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                },
-                DataFormat.Json
-            ),
-        };
+            {
+                new TestCaseData(
+                    new ExecuteApiRequestParameters(),
+                    new DefaultJsonSerializer(),
+                    DataFormat.Json
+                ),
+                new TestCaseData(
+                    new ExecuteApiRequestParameters
+                    {
+                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                    },
+                    new DefaultJsonSerializer
+                    {
+                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                    },
+                    DataFormat.Json
+                ),
+                new TestCaseData(
+                    new ExecuteApiRequestParameters
+                    {
+                        Serializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()}),
+                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                    },
+                    new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
+                    {
+                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                    },
+                    DataFormat.Json
+                ),
+            };
 
         public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedDeserializer = new[]
         {
@@ -498,10 +498,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
             new TestCaseData(
                 new ExecuteApiRequestParameters
                 {
-                    Deserializer = new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>()),
+                    Deserializer = new DefaultJsonSerializer(new []{new SingleOrListToSingleConverter<string>()}),
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },
-                new DefaultJsonSerializer(new SingleOrListToSingleConverter<string>())
+                new DefaultJsonSerializer(new []{new SingleOrListToSingleConverter<string>()})
                 {
                     DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
                 },

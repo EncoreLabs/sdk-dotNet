@@ -1,5 +1,4 @@
-﻿using System;
-using EncoreTickets.SDK.Api.Models;
+﻿using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 
 namespace EncoreTickets.SDK.Inventory.Models.RequestModels
