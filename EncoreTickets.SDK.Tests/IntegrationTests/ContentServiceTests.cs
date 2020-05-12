@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
@@ -20,7 +21,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void SetupState()
         {
             configuration = ConfigurationHelper.GetConfiguration();
-            var context = new ApiContext(Environments.QA);
+            var context = new ApiContext(Environments.QA)
+            {
+                Correlation = Guid.NewGuid().ToString()
+            };
             service = new ContentServiceApi(context);
         }
 
@@ -35,6 +39,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(location.IsoCode));
                 Assert.False(location.SubLocations.Any(loc => string.IsNullOrEmpty(loc.Name)));
             }
+            Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
         [Test]
@@ -46,6 +51,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 AssertProductPropertiesAreSet(product);
             }
+            Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
         [Test]
@@ -56,6 +62,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var product = service.GetProductById(productId);
 
             AssertProductPropertiesAreSet(product);
+            Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
         [Test]
@@ -69,6 +76,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
         private void AssertProductPropertiesAreSet(Product product)

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Content.Models.RequestModels;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -19,7 +20,7 @@ namespace EncoreTickets.SDK.Content
         /// Get the available products
         /// </summary>
         /// <returns></returns>
-        IList<Product> GetProducts();
+        IList<Product> GetProducts(GetProductsParameters parameters = null);
 
         /// <summary>
         /// Get the product by id
