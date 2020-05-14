@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -100,6 +99,41 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
+        public AggregateSeatAvailability GetAggregateSeatAvailability(string productId, int quantity, DateTime performance)
+        {
+            var parameters = new AggregateSeatAvailabilityParameters
+            {
+                PerformanceTime = performance,
+                Quantity = quantity
+            };
+            return GetAggregateSeatAvailability(productId, parameters);
+        }
+
+        /// <inheritdoc />
+        public AggregateSeatAvailability GetAggregateSeatAvailability(string productId, AggregateSeatAvailabilityParameters parameters)
+        {
+            if (string.IsNullOrWhiteSpace(productId))
+            {
+                throw new ArgumentException("Product ID must be set");
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentException("Parameters must be set");
+            }
+
+            var requestParameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/products/{productId}/areas",
+                Method = RequestMethod.Get,
+                Query = new AggregateSeatAvailabilityQueryParameters(parameters)
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<AggregateSeatAvailability>(requestParameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        [Obsolete]
         public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null)
         {
             var optionalParameters = new SeatAvailabilityParameters { PerformanceTime = performance };
@@ -107,6 +141,7 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
+        [Obsolete]
         public SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters)
         {
             if (string.IsNullOrWhiteSpace(productId))

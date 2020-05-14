@@ -58,6 +58,27 @@ namespace EncoreTickets.SDK.Inventory
         IList<Availability> GetAvailabilities(string productId, int quantity, DateTime fromDate, DateTime toDate);
 
         /// <summary>
+        /// Get aggregated inventory and pricing information of requested product.
+        /// Requires affiliate ID in APIContext to filter relevant results, if nothing is sent, masterdataelastic will be used.
+        /// GET /api/{VERSION}/products/{productId}/areas
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <param name="quantity">Quantity of seats needed</param>
+        /// <param name="performance">Performance date and time</param>
+        /// <returns>Aggregated inventory and pricing information of requested product</returns>
+        AggregateSeatAvailability GetAggregateSeatAvailability(string productId, int quantity, DateTime performance);
+
+        /// <summary>
+        /// Get aggregated inventory and pricing information of requested product.
+        /// Requires affiliate ID in APIContext to filter relevant results, if nothing is sent, masterdataelastic will be used.
+        /// GET /api/{VERSION}/products/{productId}/areas
+        /// </summary>
+        /// <param name="productId">ID product, no longer than 50 chars might contain numbers, letters and dashes</param>
+        /// <param name="parameters">Parameters to filter requested products</param>
+        /// <returns>Aggregated inventory and pricing information of requested product</returns>
+        AggregateSeatAvailability GetAggregateSeatAvailability(string productId, AggregateSeatAvailabilityParameters parameters);
+
+        /// <summary>
         /// Get available seats.
         /// GET /api​/{VERSION}​/europa​/availability​/products​/{productId}​/quantity​/{quantity}​/seats
         /// </summary>
@@ -65,6 +86,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="performance">performance: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
+        [Obsolete]
         SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null);
 
         /// <summary>
@@ -75,6 +97,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="parameters">Optional parameters</param>
         /// <returns>Array of availability seat</returns>
+        [Obsolete]
         SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters);
     }
 }
