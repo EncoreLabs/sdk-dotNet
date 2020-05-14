@@ -24,10 +24,9 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
         public int? GroupingLimit { get; }
 
         /// <summary>
-        /// Gets ASC or DESC.
-        /// Default value : ASC
+        /// Gets or sets direction.
         /// </summary>
-        public Direction? Direction { get; }
+        public string? Direction { get; }
 
         /// <summary>
         /// Gets the field you'd like to sort by (limited to price)
@@ -39,8 +38,11 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
             Date = parameters.PerformanceTime?.ToEncoreDate();
             Time = parameters.PerformanceTime?.ToEncoreTime();
             Sort = parameters.Sort;
-            Direction = parameters.Direction;
             GroupingLimit = parameters.GroupingLimit > 0 ? parameters.GroupingLimit : (int?)null;
+            var allPossibleDirections = EnumExtension.GetEnumValues<Direction>();
+            Direction = parameters.Direction.HasValue && allPossibleDirections.Contains(parameters.Direction.Value)
+                ? parameters.Direction.ToString().ToLower()
+                : null;
         }
     }
 }
