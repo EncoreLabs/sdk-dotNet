@@ -264,11 +264,115 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #endregion
 
+        #region GetAggregateSeatAvailability
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("  ")]
+        public void GetAggregateSeatAvailability_IfProductIdIsNotSet_ThrowsArgumentException(string productId)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetAggregateSeatAvailability(productId, It.IsAny<AggregateSeatAvailabilityParameters>());
+            });
+        }
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfParametersAreNotSet_ThrowsArgumentException()
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetAggregateSeatAvailability(TestValidProductId, It.IsAny<AggregateSeatAvailabilityParameters>());
+            });
+        }
+
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Desc)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", (Direction) 100)]
+        public void GetAggregateSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
+            string productId, int quantity, string dateAsStr, Direction? direction)
+        {
+            Context.Affiliate = "boxoffice";
+            Context.Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83";
+            var parameters = new AggregateSeatAvailabilityParameters
+            {
+                PerformanceTime = TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
+                Direction = direction,
+                Quantity = quantity
+            };
+            var queryParameters = new Dictionary<string, object>
+            {
+                {"quantity", quantity},
+                {"date", parameters.PerformanceTime.ToString("yyyyMMdd")},
+                {"time", parameters.PerformanceTime.ToString("HHmm")},
+            };
+
+            if (parameters.Direction != null && (parameters.Direction == Direction.Asc || parameters.Direction == Direction.Desc))
+            {
+                queryParameters.Add("direction", parameters.Direction == Direction.Asc ? "asc" : "desc");
+            }
+
+            mockers.SetupAnyExecution<ApiResponse<AggregateSeatAvailability>>();
+
+            try
+            {
+                GetAggregateSeatAvailability(productId, parameters);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<AggregateSeatAvailability>>(
+                BaseUrl,
+                $"v{ApiVersion}/products/{productId}/areas",
+                Method.GET,
+                expectedQueryParameters: queryParameters,
+                expectedHeaders: new Dictionary<string, object>
+                {
+                    {AffiliateIdHeader, Context.Affiliate},
+                    {CorrelationIdHeader, Context.Correlation},
+                });
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
+        public void GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability(
+            string responseContent,
+            AggregateSeatAvailability expected)
+        {
+            mockers.SetupSuccessfulExecution<ApiResponse<AggregateSeatAvailability>>(responseContent);
+
+            var actual = GetAggregateSeatAvailability(TestValidProductId, new AggregateSeatAvailabilityParameters());
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
+        public void GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string message)
+        {
+            mockers.SetupFailedExecution<ApiResponse<AggregateSeatAvailability>>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetAggregateSeatAvailability(TestValidProductId, new AggregateSeatAvailabilityParameters());
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(message, exception.Message);
+        }
+
+        #endregion
+
         #region GetSeatAvailability
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
+        [Obsolete]
         public void GetSeatAvailability_IfTextIsNotSet_ThrowsArgumentException(string productId)
         {
             Assert.Catch<ArgumentException>(() =>
@@ -278,6 +382,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         }
 
         [TestCase("1587", 2)]
+        [Obsolete]
         public void GetSeatAvailability_IfProductIdAndQuantityAreSet_CallsApiWithRightParameters(string productId, int quantity)
         {
             Context.Affiliate = "boxoffice";
@@ -306,6 +411,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         }
 
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM")]
+        [Obsolete]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr)
         {
@@ -347,6 +453,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("1587", 2, null, null, null, 10)]
         [TestCase("1587", 2, null, Direction.Asc, "id", 1)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc, "id", 1)]
+        [Obsolete]
         public void GetSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr, Direction? direction, string sort, int groupingLimit)
         {
@@ -379,7 +486,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
             if (parameters.Direction != null)
             {
-                queryParameters.Add("direction", parameters.Direction.ToString());
+                queryParameters.Add("direction", parameters.Direction.ToString().ToLower());
             }
 
             if (parameters.GroupingLimit > 0)
@@ -411,6 +518,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
+        [Obsolete]
         public void GetSeatAvailabilityy_IfApiResponseSuccessful_ReturnsAvailability(
             string responseContent,
             SeatAvailability expected)
@@ -423,6 +531,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         }
 
         [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
+        [Obsolete]
         public void GetSeatAvailability_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -780,6 +889,381 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 }",
                 HttpStatusCode.NotFound,
                 "Sorry, nothing was found"
+            ),
+        };
+
+        #endregion
+
+        #region GetAggregateSeatAvailability
+
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
+        {
+            new TestCaseData(
+                @"{
+  ""request"": {
+    ""body"": """",
+    ""query"": {
+      ""affiliateId"": ""resiaapi"",
+      ""date"": ""20201023"",
+      ""quantity"": ""2"",
+      ""time"": ""1930""
+    },
+    ""urlParams"": {
+      ""productId"": ""1587""
+    }
+  },
+  ""response"": {
+    ""displayCurrency"": ""GBP"",
+    ""areas"": [
+      {
+        ""availableCount"": 1,
+        ""date"": ""2020-10-23T19:30:00+0000"",
+        ""name"": ""Circle"",
+        ""mode"": ""allocated"",
+        ""groupings"": [
+          {
+            ""groupIdentifier"": ""CIRCLE~X44;50"",
+            ""aggregateReference"": null,
+            ""row"": ""X"",
+            ""seatNumberStart"": 44,
+            ""seatNumberEnd"": 45,
+            ""availableCount"": 2,
+            ""pricing"": {
+              ""salePrice"": [
+                {
+                  ""value"": 3200,
+                  ""currency"": ""GBP"",
+                  ""decimalPlaces"": 2
+                }
+              ],
+              ""faceValue"": [
+                {
+                  ""value"": 2500,
+                  ""currency"": ""GBP"",
+                  ""decimalPlaces"": 2
+                }
+              ],
+              ""percentageDiscount"": 0,
+              ""includesBookingFee"": true,
+              ""createdAt"": ""2020-05-13T11:09:02+0000""
+            },
+            ""seats"": [
+              {
+                ""seatIdentifier"": ""CIRCLE-X44"",
+                ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDQiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.L-E7HTETVnPRzkr6ghsFVTL4X62rSycnF-S_PtIH8KM"",
+                ""row"": ""X"",
+                ""number"": 44,
+                ""pricing"": {
+                  ""salePrice"": [
+                    {
+                      ""value"": 3200,
+                      ""currency"": ""GBP"",
+                      ""decimalPlaces"": 2
+                    }
+                  ],
+                  ""faceValue"": [
+                    {
+                      ""value"": 2500,
+                      ""currency"": ""GBP"",
+                      ""decimalPlaces"": 2
+                    }
+                  ],
+                  ""percentageDiscount"": 0,
+                  ""includesBookingFee"": true,
+                  ""createdAt"": ""2020-05-13T11:09:02+0000""
+                }
+              },
+              {
+                ""seatIdentifier"": ""CIRCLE-X45"",
+                ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.AyrGkcbn5WhSfjA-himFaF9ivbhA1CFBFI5hSd-OKGw"",
+                ""row"": ""X"",
+                ""number"": 45,
+                ""pricing"": {
+                  ""salePrice"": [
+                    {
+                      ""value"": 3200,
+                      ""currency"": ""GBP"",
+                      ""decimalPlaces"": 2
+                    }
+                  ],
+                  ""faceValue"": [
+                    {
+                      ""value"": 2500,
+                      ""currency"": ""GBP"",
+                      ""decimalPlaces"": 2
+                    }
+                  ],
+                  ""percentageDiscount"": 0,
+                  ""includesBookingFee"": true,
+                  ""createdAt"": ""2020-05-13T11:09:02+0000""
+                }
+              }
+            ],
+            ""seatLumps"": [
+              {
+                ""seats"": [
+                  ""CIRCLE-X44"",
+                  ""CIRCLE-X45""
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    ""availableCount"": 1
+  },
+  ""context"": null
+}",
+                new AggregateSeatAvailability
+                {
+                    DisplayCurrency = "GBP",
+                    Areas = new List<AggregateArea>
+                    {
+                        new AggregateArea
+                        {
+                            AvailableCount = 1,
+                            Date = new DateTime(2020, 10, 23, 19, 30, 00),
+                            Name = "Circle",
+                            Mode = "allocated",
+                            Groupings = new List<AggregateGrouping>
+                            {
+                                new AggregateGrouping
+                                {
+                                    GroupIdentifier = "CIRCLE~X44;50",
+                                    AggregateReference = null,
+                                    Row = "X",
+                                    SeatNumberStart = 44,
+                                    SeatNumberEnd = 45,
+                                    AvailableCount = 2,
+                                    Pricing = new AggregatePricing
+                                    {
+                                        SalePrice =new List<Price>
+                                        {
+                                            new Price
+                                            {
+                                                Value = 3200,
+                                                Currency = "GBP",
+                                                DecimalPlaces = 2
+                                            }
+                                        },
+                                        FaceValue = new List<Price>
+                                        {
+                                            new Price
+                                            {
+                                                Value = 2500,
+                                                Currency = "GBP",
+                                                DecimalPlaces = 2
+                                            }
+                                        },
+                                        PercentageDiscount = 0,
+                                        IncludesBookingFee = true,
+                                        CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                    },
+                                    Seats = new List<AggregateSeat>
+                                    {
+                                        new AggregateSeat
+                                        {
+                                            SeatIdentifier = "CIRCLE-X44",
+                                            AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDQiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.L-E7HTETVnPRzkr6ghsFVTL4X62rSycnF-S_PtIH8KM",
+                                            Row = "X",
+                                            Number = 44,
+                                            Pricing = new AggregatePricing
+                                            {
+                                                SalePrice =new List<Price>
+                                                {
+                                                    new Price
+                                                    {
+                                                        Value = 3200,
+                                                        Currency = "GBP",
+                                                        DecimalPlaces = 2
+                                                    }
+                                                },
+                                                FaceValue = new List<Price>
+                                                {
+                                                    new Price
+                                                    {
+                                                        Value = 2500,
+                                                        Currency = "GBP",
+                                                        DecimalPlaces = 2
+                                                    }
+                                                },
+                                                PercentageDiscount = 0,
+                                                IncludesBookingFee = true,
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                            },
+                                        },
+                                        new AggregateSeat
+                                        {
+                                            SeatIdentifier = "CIRCLE-X45",
+                                            AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.AyrGkcbn5WhSfjA-himFaF9ivbhA1CFBFI5hSd-OKGw",
+                                            Row = "X",
+                                            Number = 45,
+                                            Pricing = new AggregatePricing
+                                            {
+                                                SalePrice =new List<Price>
+                                                {
+                                                    new Price
+                                                    {
+                                                        Value = 3200,
+                                                        Currency = "GBP",
+                                                        DecimalPlaces = 2
+                                                    }
+                                                },
+                                                FaceValue = new List<Price>
+                                                {
+                                                    new Price
+                                                    {
+                                                        Value = 2500,
+                                                        Currency = "GBP",
+                                                        DecimalPlaces = 2
+                                                    }
+                                                },
+                                                PercentageDiscount = 0,
+                                                IncludesBookingFee = true,
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                            },
+                                        },
+                                    },
+                                    SeatLumps = new List<SeatLump>
+                                    {
+                                        new SeatLump
+                                        {
+                                            Seats = new List<string>
+                                            {
+                                                "CIRCLE-X44",
+                                                "CIRCLE-X45"
+                                            }
+                                        },
+                                    }
+                                }
+                            },
+                        }
+                    },
+                    AvailableCount = 1,
+                }
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""resiaapi"",
+            ""direction"": ""desc"",
+            ""quantity"": ""2"",
+            ""time"": ""1930""
+        },
+        ""urlParams"": {
+            ""productId"": ""1587""
+        }
+    },
+    ""response"": {
+        ""displayCurrency"": null,
+        ""areas"": [],
+        ""availableCount"": 0
+    },
+    ""context"": null
+}",
+                new AggregateSeatAvailability
+                {
+                    DisplayCurrency = null,
+                    Areas = new List<AggregateArea>(),
+                    AvailableCount = 0,
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 400
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""resiaapi"",
+            ""date"": ""20201023"",
+            ""direction"": ""Desc"",
+            ""quantity"": ""2"",
+            ""time"": ""1930""
+        },
+        ""urlParams"": {
+            ""productId"": ""1587""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""direction"",
+                ""message"": ""The value you selected is not a valid choice.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "direction: The value you selected is not a valid choice."
+            ),
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""resiaapi"",
+            ""direction"": ""desc"",
+            ""quantity"": ""2""
+        },
+        ""urlParams"": {
+            ""productId"": ""158""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""field"": ""time"",
+                ""message"": ""This value should not be null.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "time: This value should not be null."
+            ),
+            
+            // 404
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {
+            ""affiliateId"": ""resiaapi"",
+            ""date"": ""20201023"",
+            ""quantity"": ""2"",
+            ""time"": ""1930""
+        },
+        ""urlParams"": {
+            ""productId"": ""158""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Not found""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Not found"
+            ),
+
+            // 503
+            new TestCaseData(
+                @"<!DOCTYPE html><html>The request has failed. Fastly</html>",
+                HttpStatusCode.ServiceUnavailable,
+                "Cannot convert API error correctly.\r\n\r\n<!DOCTYPE html><html>The request has failed. Fastly</html>"
             ),
         };
 

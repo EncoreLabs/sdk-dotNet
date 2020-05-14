@@ -21,8 +21,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     {
         private static readonly BookingParameters TestValidBookingParameters = new BookingParameters();
 
-        private static readonly VerifyPaymentParameters TestValidVerifyParameters = new VerifyPaymentParameters();
-
         private static readonly string TestValidBookingReference = "some_id";
 
         private static readonly ConfirmBookingParameters TestValidConfirmParameters = new ConfirmBookingParameters();
