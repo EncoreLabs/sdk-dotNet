@@ -4,6 +4,7 @@ using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Inventory;
+using EncoreTickets.SDK.Inventory.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -191,9 +192,100 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         #endregion
 
+        #region GetAggregateSeatAvailability
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfQuantityAndDateTimeAreSet_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 10, 11);
+            var endDate = new DateTime(2020, 12, 31);
+            var availability = service.GetAvailabilities(productId, 1, startDate, endDate).First();
+
+            var seats = service.GetAggregateSeatAvailability(productId, 1, availability.DateTime);
+
+            Assert.IsNotEmpty(seats.Areas);
+            foreach (var area in seats.Areas)
+            {
+                Assert.NotNull(area.AvailableCount);
+                Assert.False(string.IsNullOrEmpty(area.Name));
+            }
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfAllParamsAreSet_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 10, 11);
+            var endDate = new DateTime(2020, 12, 31);
+            var availability = service.GetAvailabilities(productId, 1, startDate, endDate).First();
+            var parameters = new AggregateSeatAvailabilityParameters
+            {
+                Quantity = 1,
+                PerformanceTime = availability.DateTime,
+                Direction = Direction.Desc
+            };
+
+            var seats = service.GetAggregateSeatAvailability(productId, parameters);
+
+            Assert.IsNotEmpty(seats.Areas);
+            foreach (var area in seats.Areas)
+            {
+                Assert.NotNull(area.AvailableCount);
+                Assert.False(string.IsNullOrEmpty(area.Name));
+            }
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfQuantityLessThan1_Exception400()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var seats = service.GetAggregateSeatAvailability(productId, 0, DateTime.Now);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfProductIdInvalid_Exception400()
+        {
+            var productId = "invalid_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var seats = service.GetAggregateSeatAvailability(productId, 2, DateTime.Now);
+            });
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        public void GetAggregateSeatAvailability_IfProductNotFound_Exception404()
+        {
+            const string productId = "invalidid";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var seats = service.GetAggregateSeatAvailability(productId, 2, DateTime.Now);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        #endregion
+
         #region GetSeatAvailability
 
         [Test]
+        [Obsolete]
         public void GetSeatAvailability_IfOnlyDateTimeIsSet_Successful()
         {
             var productId = configuration["Inventory:TestProductId"];
@@ -214,6 +306,35 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        [Obsolete]
+        public void GetSeatAvailability_IfAllParamsAreSet_Successful()
+        {
+            var productId = configuration["Inventory:TestProductId"];
+            var startDate = new DateTime(2020, 10, 11);
+            var endDate = new DateTime(2020, 12, 31);
+            var availability = service.GetAvailabilities(productId, 1, startDate, endDate).First();
+            var parameters = new SeatAvailabilityParameters
+            {
+                PerformanceTime = availability.DateTime,
+                Direction = Direction.Desc,
+                GroupingLimit = 1,
+                Sort = ""
+            };
+
+            var seats = service.GetSeatAvailability(productId, 1, parameters);
+
+            Assert.IsNotEmpty(seats.Areas);
+            foreach (var area in seats.Areas)
+            {
+                Assert.NotNull(area.AvailableCount);
+                Assert.False(string.IsNullOrEmpty(area.Name));
+                Assert.False(string.IsNullOrEmpty(area.ItemReference));
+            }
+            Assert.IsNotNull(context.ReceivedCorrelation);
+        }
+
+        [Test]
+        [Obsolete]
         public void GetSeatAvailability_IfProductIdInvalid_Exception400()
         {
             var productId = "invalid_id";
@@ -228,6 +349,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        [Obsolete]
         public void GetSeatAvailability_IfProductNotFound_Exception404()
         {
             const string productId = "invalidid";

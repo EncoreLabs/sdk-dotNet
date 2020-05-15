@@ -1,9 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Utilities.Encoders
 {
-    internal interface IEncoder
+    internal interface IEncoder<in TSource, out TEncoded>
     {
-        string Encode(string text);
-
-        string Decode(string encodedText);
+        TEncoded Encode(TSource sourceData);
     }
 }

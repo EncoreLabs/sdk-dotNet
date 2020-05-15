@@ -136,8 +136,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             }
 
             var expectedParameter = parameter.Value.ToString();
-            return expectedParameter.Equals(expectedParameterValue.ToString(),
-                StringComparison.InvariantCultureIgnoreCase);
+            return expectedParameter.Equals(expectedParameterValue.ToString());
         }
 
         private bool IsJsonBodyInRequest(IRestRequest request, string expectedBodyInJson)

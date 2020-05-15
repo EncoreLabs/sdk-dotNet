@@ -4,9 +4,9 @@ using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 namespace EncoreTickets.SDK.Inventory.Models.RequestModels
 {
     /// <summary>
-    /// The helper entity for collecting query parameters for obtaining seat availability.
+    /// The helper entity for collecting query parameters for obtaining aggregated seat availability.
     /// </summary>
-    internal class SeatAvailabilityQueryParameters
+    internal class AggregateSeatAvailabilityQueryParameters
     {
         /// <summary>
         /// Gets performance date.
@@ -19,26 +19,20 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
         public string Time { get; }
 
         /// <summary>
-        /// Gets seat grouping limit.
+        /// Gets or sets quantity of seats needed.
         /// </summary>
-        public int? GroupingLimit { get; }
+        public int Quantity { get; set; }
 
         /// <summary>
         /// Gets or sets direction.
         /// </summary>
-        public string? Direction { get; }
+        public string Direction { get; }
 
-        /// <summary>
-        /// Gets the field you'd like to sort by (limited to price)
-        /// </summary>
-        public string Sort { get; }
-
-        public SeatAvailabilityQueryParameters(SeatAvailabilityParameters parameters)
+        public AggregateSeatAvailabilityQueryParameters(AggregateSeatAvailabilityParameters parameters)
         {
-            Date = parameters.PerformanceTime?.ToEncoreDate();
-            Time = parameters.PerformanceTime?.ToEncoreTime();
-            Sort = parameters.Sort;
-            GroupingLimit = parameters.GroupingLimit > 0 ? parameters.GroupingLimit : (int?)null;
+            Date = parameters.PerformanceTime.ToEncoreDate();
+            Time = parameters.PerformanceTime.ToEncoreTime();
+            Quantity = parameters.Quantity;
             var allPossibleDirections = EnumExtension.GetEnumValues<Direction>();
             Direction = parameters.Direction.HasValue && allPossibleDirections.Contains(parameters.Direction.Value)
                 ? parameters.Direction.ToString().ToLower()
