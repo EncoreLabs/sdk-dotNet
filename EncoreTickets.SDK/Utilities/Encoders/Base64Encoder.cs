@@ -3,7 +3,7 @@ using System.Text;
 
 namespace EncoreTickets.SDK.Utilities.Encoders
 {
-    internal class Base64Encoder : IEncoder
+    internal class Base64Encoder : IEncoder<string, string>, IDecoder<string, string>
     {
         public string Encode(string text)
         {
