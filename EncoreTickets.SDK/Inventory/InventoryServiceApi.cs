@@ -133,7 +133,7 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        [Obsolete("The data returned by this method is not compatible with the latest basket service.")]
+        [Obsolete("Please use the GetAggregateSeatAvailability method. The data returned by this method is not compatible with the latest basket service.")]
         public SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null)
         {
             var optionalParameters = new SeatAvailabilityParameters { PerformanceTime = performance };
@@ -141,7 +141,7 @@ namespace EncoreTickets.SDK.Inventory
         }
 
         /// <inheritdoc />
-        [Obsolete("The data returned by this method is not compatible with the latest basket service.")]
+        [Obsolete("Please use the GetAggregateSeatAvailability method. The data returned by this method is not compatible with the latest basket service.")]
         public SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters)
         {
             if (string.IsNullOrWhiteSpace(productId))
