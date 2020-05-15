@@ -86,7 +86,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="performance">performance: if nothing is sent, current time will be used</param>
         /// <returns>Array of availability seat</returns>
-        [Obsolete]
+        [Obsolete("The data returned by this method is not compatible with the latest basket service.")]
         SeatAvailability GetSeatAvailability(string productId, int quantity, DateTime? performance = null);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Inventory
         /// <param name="quantity">quantity of seats needed</param>
         /// <param name="parameters">Optional parameters</param>
         /// <returns>Array of availability seat</returns>
-        [Obsolete]
+        [Obsolete("The data returned by this method is not compatible with the latest basket service.")]
         SeatAvailability GetSeatAvailability(string productId, int quantity, SeatAvailabilityParameters parameters);
     }
 }
