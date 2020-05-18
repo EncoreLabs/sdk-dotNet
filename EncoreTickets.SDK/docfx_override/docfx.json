@@ -4,13 +4,13 @@
       "src": [
         {
           "files": [
-            "bin/Debug/net461/EncoreTickets.SDK.dll"
+              "bin/Debug/net461/EncoreTickets.SDK.dll"
           ],
-		  "src": "../"
+          "src": "../"
         }
       ],
       "dest": "api",
-	  "disableGitFeatures": false,
+      "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
   ],
