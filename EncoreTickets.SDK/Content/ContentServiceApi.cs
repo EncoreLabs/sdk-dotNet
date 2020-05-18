@@ -4,8 +4,8 @@ using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Content.Models.RequestModels;
 using EncoreTickets.SDK.Utilities.Enums;
-using EncoreTickets.SDK.Utilities.Exceptions;
 
 namespace EncoreTickets.SDK.Content
 {
@@ -17,6 +17,9 @@ namespace EncoreTickets.SDK.Content
     public class ContentServiceApi : BaseApi, IContentServiceApi
     {
         private const string ContentApiHost = "content-service.{0}tixuk.io/api/";
+
+        /// <inheritdoc/>
+        public override int? ApiVersion => 1;
 
         /// <summary>
         /// Default constructor for the content service
@@ -31,7 +34,7 @@ namespace EncoreTickets.SDK.Content
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/locations",
+                Endpoint = $"v{ApiVersion}/locations",
                 Method = RequestMethod.Get
             };
             var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(parameters);
@@ -39,17 +42,14 @@ namespace EncoreTickets.SDK.Content
         }
 
         /// <inheritdoc />
-        public IList<Product> GetProducts()
+        public IList<Product> GetProducts(GetProductsParameters requestParameters = null)
         {
+            requestParameters ??= new GetProductsParameters();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/products",
+                Endpoint = $"v{ApiVersion}/products",
                 Method = RequestMethod.Get,
-                Query = new PageRequest
-                {
-                    Page = 1,
-                    Limit = 1000
-                }
+                Query = requestParameters
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(parameters);
             return result.DataOrException;
@@ -65,7 +65,7 @@ namespace EncoreTickets.SDK.Content
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/products/{id}",
+                Endpoint = $"v{ApiVersion}/products/{id}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Product>(parameters);

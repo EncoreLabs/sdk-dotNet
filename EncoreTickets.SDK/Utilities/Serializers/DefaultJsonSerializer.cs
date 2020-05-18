@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -7,13 +8,13 @@ namespace EncoreTickets.SDK.Utilities.Serializers
 {
     public class DefaultJsonSerializer : BaseJsonSerializer
     {
-        public DefaultJsonSerializer()
-            : base(CreateSettings(null))
+        public DefaultJsonSerializer(NamingStrategy enumNamingStrategy = null)
+            : base(CreateSettings(null, enumNamingStrategy))
         {
         }
 
-        public DefaultJsonSerializer(params JsonConverter[] extraConverters)
-            : base(CreateSettings(extraConverters))
+        public DefaultJsonSerializer(IEnumerable<JsonConverter> extraConverters, NamingStrategy enumNamingStrategy = null)
+            : base(CreateSettings(extraConverters, enumNamingStrategy))
         {
         }
 
@@ -21,31 +22,40 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         {
         }
 
-        protected static JsonSerializerSettings CreateSettings(IList<JsonConverter> extraConverters)
+        protected static JsonSerializerSettings CreateSettings(
+            IEnumerable<JsonConverter> extraConverters,
+            NamingStrategy enumNamingStrategy)
         {
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
             };
-            AddConvertersToSettings(settings, extraConverters);
+            AddConvertersToSettings(settings, extraConverters, enumNamingStrategy);
             return settings;
         }
 
-        private static void AddConvertersToSettings(JsonSerializerSettings settings,
-            IList<JsonConverter> extraConverters)
+        private static void AddConvertersToSettings(
+            JsonSerializerSettings settings,
+            IEnumerable<JsonConverter> extraConverters,
+            NamingStrategy enumNamingStrategy)
         {
-            var enumConverter = new StringEnumConverter(new CamelCaseNamingStrategy());
-            settings.Converters.Add(enumConverter);
-            if (extraConverters == null)
+            var defaultConverters = GetDefaultConverters(enumNamingStrategy);
+            var allConverters = extraConverters == null
+                ? defaultConverters
+                : defaultConverters.Concat(extraConverters);
+            foreach (var converter in allConverters)
             {
-                return;
+                settings.Converters.Add(converter);
             }
+        }
 
-            foreach (var extraConverter in extraConverters)
+        private static IEnumerable<JsonConverter> GetDefaultConverters(NamingStrategy enumNamingStrategy)
+        {
+            return new List<JsonConverter>
             {
-                settings.Converters.Add(extraConverter);
-            }
+                new StringEnumConverter(enumNamingStrategy ?? new CamelCaseNamingStrategy())
+            };
         }
     }
 }

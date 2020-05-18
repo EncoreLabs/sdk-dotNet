@@ -25,6 +25,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         private const string TestValidChannelId = "channelId";
         private const string TestValidOrderExternalId = "externalId";
         private const string TestValidOrderId = "orderId";
+        private const string CorrelationIdHeader = "X-Correlation-Id";
 
         private MockersForApiServiceWithAuthentication mockers;
 
@@ -41,6 +42,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public void CreateMockers()
         {
             mockers = new MockersForApiServiceWithAuthentication();
+            ApiContextTestHelper.ResetContextToDefault(Context);
             Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
         }
 
@@ -55,7 +57,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                var actual = GetOrder(channelId, TestValidOrderExternalId);
+                GetOrder(channelId, TestValidOrderExternalId);
             });
         }
 
@@ -66,7 +68,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             Assert.Catch<ArgumentException>(() =>
             {
-                var actual = GetOrder(TestValidChannelId, externalId);
+                GetOrder(TestValidChannelId, externalId);
             });
         }
 
@@ -75,6 +77,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public void GetOrder_CallsApiWithRightParameters(string channelId, string externalId)
         {
             mockers.SetupAnyExecution<ApiResponse<Order>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -85,7 +88,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{channelId}/{externalId}", Method.GET);
+            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{channelId}/{externalId}", Method.GET,
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseSuccessful_ReturnsOrder))]
@@ -110,7 +114,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = GetOrder(TestValidChannelId, TestValidOrderExternalId);
+                GetOrder(TestValidChannelId, TestValidOrderExternalId);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -126,6 +130,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             AutomaticAuthentication = true;
             mockers.SetupAnyExecution<ApiResponse<Order>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -137,7 +142,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, "v1/orders", Method.POST, bodyInJson: requestBody);
+            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, "v1/orders", Method.POST,
+                bodyInJson: requestBody,
+                expectedHeaders: new Dictionary<string, object>{ [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder))]
@@ -189,6 +196,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             AutomaticAuthentication = true;
             mockers.SetupAnyExecution<ApiResponse<Order>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -200,7 +208,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{orderId}", Method.PATCH, bodyInJson: requestBody);
+            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{orderId}", Method.PATCH,
+                bodyInJson: requestBody,
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder))]
@@ -244,6 +254,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public void GetUsStates_CallsApiWithRightParameters()
         {
             mockers.SetupAnyExecution<ApiResponse<List<CountryTerritorialUnit>>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -254,7 +265,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/usa/states", Method.GET);
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/usa/states", Method.GET,
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetUsStates_IfApiResponseSuccessful_ReturnsUsStates))]
@@ -277,6 +289,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         public void GetCanadaProvinces_CallsApiWithRightParameters()
         {
             mockers.SetupAnyExecution<ApiResponse<List<CountryTerritorialUnit>>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -287,7 +300,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/canada/provinces", Method.GET);
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, 
+                "v1/countries/canada/provinces", Method.GET,
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces))]
@@ -315,6 +330,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         {
             AutomaticAuthentication = true;
             mockers.SetupAnyExecution<ApiResponse<SDK.Payment.Models.Payment>>();
+            Context.Correlation = Guid.NewGuid().ToString();
 
             try
             {
@@ -326,7 +342,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(BaseUrl, "v1/payments", Method.POST, bodyInJson: requestBody);
+            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(BaseUrl, "v1/payments", Method.POST,
+                bodyInJson: requestBody,
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateNewPayment_IfApiResponseFailed_ThrowsApiException))]

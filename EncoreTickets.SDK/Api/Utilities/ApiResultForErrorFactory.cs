@@ -33,10 +33,8 @@ namespace EncoreTickets.SDK.Api.Utilities
                     return CreateApiResultIfUnwrappedError<T>(restResponse, context);
                 case ErrorWrapping.Errors:
                     return CreateApiResultIfWrappedError<T>(restResponse, context);
-                case ErrorWrapping.NotParsedContent:
-                    return CreateApiResultIfNotParsedContent<T>(restResponse, context);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(errorWrapping), errorWrapping, null);
+                    return CreateApiResultIfNotParsedContent<T>(restResponse, context);
             }
         }
 
@@ -64,7 +62,8 @@ namespace EncoreTickets.SDK.Api.Utilities
         private static ApiResult<T> CreateApiResultIfNotParsedContent<T>(IRestResponse restResponse, ApiContext context)
             where T : class
         {
-            return new ApiResult<T>(default, restResponse, context);
+            var errorMessage = $"Cannot convert API error correctly.\r\n\r\n{restResponse.Content}";
+            return new ApiResult<T>(default, restResponse, context, errorMessage);
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
     public class Availability
     {
-        public int? AvailableCount { get; set; }
+        public DateTime DateTime { get; set; }
 
-        public List<Area> Areas { get; set; }
-
-        public bool IsAvailable { get; set; }
+        public int LargestLumpOfTickets { get; set; }
     }
 }

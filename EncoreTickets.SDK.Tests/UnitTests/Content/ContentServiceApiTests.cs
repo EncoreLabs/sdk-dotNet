@@ -7,9 +7,9 @@ using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Content;
 using EncoreTickets.SDK.Content.Models;
+using EncoreTickets.SDK.Content.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using NUnit.Framework;
 using RestSharp;
 
@@ -18,6 +18,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
     internal class ContentServiceApiTests : ContentServiceApi
     {
         private const string TestProductValidId = "1";
+        private const string CorrelationIdHeader = "X-Correlation-Id";
 
         private MockersForApiService mockers;
 
@@ -32,6 +33,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public void CreateMockers()
         {
             mockers = new MockersForApiService();
+            Context.Correlation = Guid.NewGuid().ToString();
         }
 
         #region GetLocations
@@ -50,7 +52,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Location>>>(BaseUrl, "v1/locations", Method.GET);
+            mockers.VerifyExecution<ApiResponse<List<Location>>>(BaseUrl, "v1/locations", Method.GET,
+                expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetLocations_IfApiResponseSuccessful_ReturnsLocations))]
@@ -88,6 +91,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public void GetProducts_CallsApiWithRightParameters()
         {
             mockers.SetupAnyExecution<ApiResponse<List<Product>>>();
+            var parameters = new GetProductsParameters
+            {
+                Page = 1,
+                Limit = 1000,
+                Sort = "id"
+            };
+
+            try
+            {
+                GetProducts(parameters);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
+                expectedQueryParameters: new Dictionary<string, object>
+                {
+                    { "page", parameters.Page },
+                    { "limit", parameters.Limit },
+                    { "sort", parameters.Sort }
+                },
+                expectedHeaders: new Dictionary<string, object> {{ CorrelationIdHeader, Context.Correlation }});
+        }
+
+        [Test]
+        public void GetProducts_CallsApiWithNoQueryParameters()
+        {
+            mockers.SetupAnyExecution<ApiResponse<List<Product>>>();
 
             try
             {
@@ -99,7 +132,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             }
 
             mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
-                expectedQueryParameters: new Dictionary<string, object> {{"page", 1}, {"limit", 1000}});
+                expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProducts_IfApiResponseSuccessful_ReturnsProducts))]
@@ -158,7 +191,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Product>>(BaseUrl, $"v1/products/{id}", Method.GET);
+            mockers.VerifyExecution<ApiResponse<Product>>(BaseUrl, $"v1/products/{id}", Method.GET,
+                expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProductById_IfApiResponseSuccessful_ReturnsProduct))]
@@ -197,7 +231,52 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public static IEnumerable<TestCaseData> GetLocations_IfApiResponseSuccessful_ReturnsLocations = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{}},\"response\":[{\"name\":\"United States\",\"isoCode\":\"US\",\"subLocations\":[{\"name\":\"Illinois\",\"isoCode\":\"US_IL\",\"subLocations\":[{\"name\":\"Chicago\",\"isoCode\":null}]},{\"name\":\"Nevada\",\"isoCode\":\"US_NV\",\"subLocations\":[{\"name\":\"Las Vegas\",\"isoCode\":null}]},{\"name\":\"New York\",\"isoCode\":\"US_NY\",\"subLocations\":[{\"name\":\"New York\",\"isoCode\":null}]}]}],\"context\":null}",
+                @"{
+	""request"": {
+		""body"": """",
+		""query"": {},
+		""urlParams"": {}
+	},
+	""response"": [
+		{
+			""name"": ""United States"",
+			""isoCode"": ""US"",
+			""subLocations"": [
+				{
+					""name"": ""Illinois"",
+					""isoCode"": ""US_IL"",
+					""subLocations"": [
+						{
+							""name"": ""Chicago"",
+							""isoCode"": null
+						}
+					]
+				},
+				{
+					""name"": ""Nevada"",
+					""isoCode"": ""US_NV"",
+					""subLocations"": [
+						{
+							""name"": ""Las Vegas"",
+							""isoCode"": null
+						}
+					]
+				},
+				{
+					""name"": ""New York"",
+					""isoCode"": ""US_NY"",
+					""subLocations"": [
+						{
+							""name"": ""New York"",
+							""isoCode"": null
+						}
+					]
+				}
+			]
+		}
+	],
+	""context"": null
+}",
                 new List<Location>
                 {
                     new Location
@@ -262,7 +341,40 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public static IEnumerable<TestCaseData> GetProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{\"limit\":\"1000\",\"page\":\"1\"},\"urlParams\":{}},\"response\":[{\"id\":\"V010\",\"name\":\"\\u00a310.00 Gift Voucher\",\"areaCode\":null,\"showType\":null,\"venue\":null},{\"id\":\"V020\",\"name\":\"\\u00a320.00 Gift Voucher\",\"areaCode\":null,\"showType\":null,\"venue\":null},{\"id\":\"V050\",\"name\":\"\\u00a350.00 Gift Voucher\",\"areaCode\":null,\"showType\":null,\"venue\":null}],\"context\":null}",
+                @"{
+	""request"": {
+		""body"": """",
+		""query"": {
+			""limit"": ""1000"",
+			""page"": ""1""
+		},
+		""urlParams"": {}
+	},
+	""response"": [
+		{
+			""id"": ""V010"",
+			""name"": ""£10.00 Gift Voucher"",
+			""areaCode"": null,
+			""showType"": null,
+			""venue"": null
+		},
+		{
+			""id"": ""V020"",
+			""name"": ""£20.00 Gift Voucher"",
+			""areaCode"": null,
+			""showType"": null,
+			""venue"": null
+		},
+		{
+			""id"": ""V050"",
+			""name"": ""£50.00 Gift Voucher"",
+			""areaCode"": null,
+			""showType"": null,
+			""venue"": null
+		}
+	],
+	""context"": null
+}",
                 new List<Product>
                 {
                     new Product
@@ -304,7 +416,54 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public static IEnumerable<TestCaseData> GetProductById_IfApiResponseSuccessful_ReturnsProduct = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"1587\"}},\"response\":{\"id\":\"1587\",\"name\":\"Wicked\",\"areaCode\":null,\"showType\":{\"id\":null,\"type\":\"show\"},\"firstPreviewDate\":null,\"openingDate\":null,\"boOpensDate\":\"2019-12-11T00:00:00+0000\",\"boClosesDate\":\"2020-11-28T00:00:00+0000\",\"runTime\":null,\"fitMaximum\":10,\"rating\":null,\"synopsis\":\"<p>WICKED, the West End and Broadway musical sensation, is already the 9<sup>th</sup> longest running musical in London theatre history. Winner of over 100 major awards, including three Tony Awards, two Olivier Awards and ten theatregoer-voted WhatsOnStage Awards (winning &lsquo;Best West End Show&rsquo; on three separate occasions), the classic musical has now been seen by 10 million people in London alone.</p>\\n<p>&lsquo;Packed with wit, storming songs and beautiful costumes&rsquo; (The Guardian), WICKED imagines an ingenious backstory and future possibilities to the lives of L. Frank Baum&rsquo;s beloved characters from &lsquo;The Wonderful Wizard of Oz&rsquo; and reveals the decisions and events that shape the destinies of two unlikely University friends on their journey to becoming <em>Glinda The Good</em> and the <em>Wicked Witch of the West</em>.&nbsp;</p>\\n\",\"venue\":{\"id\":\"138\",\"name\":\"Apollo Victoria Theatre\",\"address\":{\"firstLine\":\"17 Wilton Road\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postCode\":\"SW1V 1LG\",\"region\":{\"name\":null,\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"}}},\"onSale\":\"yes\",\"showFaceValue\":false},\"context\":null}",
+                @"{
+	""request"": {
+		""body"": """",
+		""query"": {},
+		""urlParams"": {
+			""productId"": ""1587""
+		}
+	},
+	""response"": {
+		""id"": ""1587"",
+		""name"": ""Wicked"",
+		""areaCode"": null,
+		""showType"": {
+			""id"": null,
+			""type"": ""show""
+		},
+		""firstPreviewDate"": null,
+		""openingDate"": null,
+		""boOpensDate"": ""2019-12-11T00:00:00+0000"",
+		""boClosesDate"": ""2020-11-28T00:00:00+0000"",
+		""runTime"": null,
+		""fitMaximum"": 10,
+		""rating"": null,
+		""synopsis"": ""<p>WICKED, the West End and Broadway musical sensation, ...</p>"",
+		""venue"": {
+			""id"": ""138"",
+			""name"": ""Apollo Victoria Theatre"",
+			""address"": {
+				""firstLine"": ""17 Wilton Road"",
+				""secondLine"": null,
+				""thirdLine"": null,
+				""city"": ""London"",
+				""postCode"": ""SW1V 1LG"",
+				""region"": {
+					""name"": null,
+					""isoCode"": ""LDN""
+				},
+				""country"": {
+					""name"": ""Great Britain"",
+					""isoCode"": ""GBR""
+				}
+			}
+		},
+		""onSale"": ""yes"",
+		""showFaceValue"": false
+	},
+	""context"": null
+}",
                 new Product
                 {
                     Id = "1587",
@@ -322,7 +481,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                     RunTime = null,
                     FitMaximum = 10,
                     Rating = null,
-                    Synopsis = "<p>WICKED, the West End and Broadway musical sensation, is already the 9<sup>th</sup> longest running musical in London theatre history. Winner of over 100 major awards, including three Tony Awards, two Olivier Awards and ten theatregoer-voted WhatsOnStage Awards (winning &lsquo;Best West End Show&rsquo; on three separate occasions), the classic musical has now been seen by 10 million people in London alone.</p>\n<p>&lsquo;Packed with wit, storming songs and beautiful costumes&rsquo; (The Guardian), WICKED imagines an ingenious backstory and future possibilities to the lives of L. Frank Baum&rsquo;s beloved characters from &lsquo;The Wonderful Wizard of Oz&rsquo; and reveals the decisions and events that shape the destinies of two unlikely University friends on their journey to becoming <em>Glinda The Good</em> and the <em>Wicked Witch of the West</em>.&nbsp;</p>\n",
+                    Synopsis = "<p>WICKED, the West End and Broadway musical sensation, ...</p>",
                     Venue = new SDK.Content.Models.Venue
                     {
                         Id = "138",
@@ -334,12 +493,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                             ThirdLine = null,
                             City = "London",
                             PostCode = "SW1V 1LG",
-                            Region = new Region
+                            Region = new Location
                             {
                                 Name = null,
                                 IsoCode = "LDN"
                             },
-                            Country = new Country
+                            Country = new Location
                             {
                                 Name = "Great Britain",
                                 IsoCode = "GBR"
@@ -355,7 +514,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         public static IEnumerable<TestCaseData> GetProductById_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"productId\":\"invalid\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Sorry, nothing was found\"}]}}",
+                @"{
+	""request"": {
+		""body"": """",
+		""query"": {},
+		""urlParams"": {
+			""productId"": ""invalid""
+		}
+	},
+	""response"": """",
+	""context"": {
+		""errors"": [
+			{
+				""message"": ""Sorry, nothing was found""
+			}
+		]
+	}
+}",
                 HttpStatusCode.NotFound,
                 "Sorry, nothing was found"
             ),

@@ -34,6 +34,23 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 4.0
+###### Includes:
+- basket v1
+- checkout v1
+- content v1
+- inventory v4
+- payment v1
+- pricing v3
+- venue v2
+###### Changes:
+- Implemented a service for calling the Checkout API, in particular methods to call POST /checkout and POST /confirm also with agents support
+- Increased version of Inventory API to 4 in implemented InventoryServiceApi methods, renamed some existing models, added method for calling GET /api/v4/products/{productId}/areas
+- Increased version of Pricing API to 3 in implemented PricingServiceApi methods
+- Increased version of Venue API to 2 in implemented VenueServiceApi methods
+- Updated models used when working with the Content API to better match received data
+- Added a set of necessary headers for all existing methods
+
 #### 3.2
 ###### Includes:
 - basket v1
@@ -41,7 +58,7 @@ Install-Package EncoreTickets.SDK
 - inventory v1-3
 - payment v1
 - pricing v2
-- venue v2
+- venue v1
 ###### Changes:
 - Added some methods for calling Payment API endpoints to the previously empty PaymentServiceApi
 - Updated models for the Venue API
@@ -53,7 +70,7 @@ Install-Package EncoreTickets.SDK
 - content v1
 - inventory v1-3
 - pricing v2
-- venue v2
+- venue v1
 ###### Changes:
 - Added the tree data structure which can contain tree items with arbitrary number of children.
 

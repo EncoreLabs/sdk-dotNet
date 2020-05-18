@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
@@ -53,6 +55,46 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
                 var data = result.DataOrException;
             });
             Assert.AreEqual(thrownException, result.ApiException);
+        }
+
+        [Test]
+        public void ConstructorWithMultipleErrors_IfSuccessfulResponse_InitializesCommonProperties()
+        {
+            var data = new[] { new object(), new object(), };
+            var response = RestResponseFactory.GetSuccessResponse();
+            var context = It.IsAny<ApiContext>();
+            var errors = (IEnumerable<Error>)null;
+
+            var result = new ApiResult<object>(data, response, context, errors);
+
+            Assert.AreEqual(context, result.Context);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.AreEqual(true, result.IsSuccessful);
+            Assert.AreEqual(default, result.ApiException);
+            Assert.AreEqual(data, result.DataOrException);
+            Assert.AreEqual(data, result.DataOrDefault);
+        }
+
+        [Test]
+        public void ConstructorWithMultipleErrors_IfUnsuccessfulResponse_InitializesCommonProperties()
+        {
+            var data = new[] { new object(), new object(), };
+            var response = RestResponseFactory.GetFailedResponse();
+            var context = It.IsAny<ApiContext>();
+            var errors = new[] { new Error { Message = "Error1" }, new Error { Message = "Error2" } };
+
+            var result = new ApiResult<object>(data, response, context, errors);
+
+            Assert.AreEqual(context, result.Context);
+            Assert.AreEqual(response, result.RestResponse);
+            Assert.False(result.IsSuccessful);
+            Assert.AreEqual(default, result.DataOrDefault);
+            var thrownException = Assert.Throws<ApiException>(() =>
+            {
+                var resultData = result.DataOrException;
+            });
+            Assert.AreEqual(thrownException, result.ApiException);
+            Assert.AreEqual(string.Join(Environment.NewLine, errors.Select(e => e.Message)), result.ApiException.Message);
         }
 
         [Test]

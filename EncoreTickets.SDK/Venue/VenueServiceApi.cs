@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
-using EncoreTickets.SDK.Api.Results;
+using EncoreTickets.SDK.Api.Results.Constants;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
@@ -23,6 +24,9 @@ namespace EncoreTickets.SDK.Venue
     {
         private const string VenueApiHost = "venue-service.{0}tixuk.io/api/";
 
+        /// <inheritdoc/>
+        public override int? ApiVersion => 2;
+
         /// <summary>
         /// Default constructor for the Venue service
         /// </summary>
@@ -38,7 +42,7 @@ namespace EncoreTickets.SDK.Venue
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/venues",
+                Endpoint = $"v{ApiVersion}/venues",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
@@ -55,7 +59,7 @@ namespace EncoreTickets.SDK.Venue
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/venues/{id}",
+                Endpoint = $"v{ApiVersion}/venues/{id}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
@@ -73,7 +77,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/admin/venues/{venue.InternalId}",
+                Endpoint = $"v{ApiVersion}/admin/venues/{venue.InternalId}",
                 Method = RequestMethod.Post,
                 Body = venue
             };
@@ -86,7 +90,7 @@ namespace EncoreTickets.SDK.Venue
         {
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/attributes/standard",
+                Endpoint = $"v{ApiVersion}/attributes/standard",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Attribute>>(parameters);
@@ -104,7 +108,7 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = "v1/admin/attributes",
+                Endpoint = $"v{ApiVersion}/admin/attributes",
                 Method = RequestMethod.Patch,
                 Body = attribute
             };
@@ -129,7 +133,7 @@ namespace EncoreTickets.SDK.Venue
 
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/venues/{venueId}/seats/attributes/detailed",
+                Endpoint = $"v{ApiVersion}/venues/{venueId}/seats/attributes/detailed",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<SeatDetailed>>(parameters);
@@ -147,23 +151,18 @@ namespace EncoreTickets.SDK.Venue
             TriggerAutomaticAuthentication();
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v1/admin/venues/{venueId}/seats/attributes",
+                Endpoint = $"v{ApiVersion}/admin/venues/{venueId}/seats/attributes",
                 Method = RequestMethod.Patch,
                 Body = new SeatAttributesRequest
                 {
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
+                Deserializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
-            return GetUpsertSeatAttributesResult(result);
-        }
-
-        private bool GetUpsertSeatAttributesResult(ApiResult<List<string>> apiResult)
-        {
-            const string successStatus = "Success";
-            return apiResult.DataOrException?.Contains(successStatus) ?? false;
+            return result.DataOrException?.Any(x =>
+                x.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase)) ?? false;
         }
     }
 }

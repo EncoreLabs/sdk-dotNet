@@ -13,6 +13,48 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestCase("authorised", true)]
+        [TestCase("AuThOrIsEd", true)]
+        [TestCase("new", false)]
+        [TestCase("NeW", false)]
+        [TestCase("captured", false)]
+        [TestCase("failed", false)]
+        [TestCase(null, false)]
+        public void IsAuthorizedPayment_ReturnsCorrectly(string paymentStatus, bool expected)
+        {
+            var payment = paymentStatus != null
+                ? new SDK.Payment.Models.Payment
+                {
+                    Status = paymentStatus
+                }
+                : null;
+
+            var actual = payment.IsAuthorizedPayment();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase("authorised", false)]
+        [TestCase("AuThOrIsEd", false)]
+        [TestCase("new", true)]
+        [TestCase("NeW", true)]
+        [TestCase("captured", false)]
+        [TestCase("failed", false)]
+        [TestCase(null, false)]
+        public void IsNewPayment_ReturnsCorrectly(string paymentStatus, bool expected)
+        {
+            var payment = paymentStatus != null 
+                ? new SDK.Payment.Models.Payment
+                {
+                    Status = paymentStatus
+                }
+                : null;
+
+            var actual = payment.IsNewPayment();
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     internal static class PaymentExtensionTestsSource

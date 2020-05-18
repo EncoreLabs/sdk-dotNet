@@ -4,6 +4,7 @@ using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Utilities.Serializers;
 using EncoreTickets.SDK.Venue.Models;
+using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using RestSharp;
 
@@ -12,9 +13,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
     internal class DefaultJsonSerializerTests
     {
         [TestCaseSource(typeof(DefaultJsonSerializerTestsSource), nameof(DefaultJsonSerializerTestsSource.Serialize_ReturnsCorrectJson))]
-        public void Serialize_ReturnsCorrectJson<T>(string dateFormat, T item, string expected)
+        public void Serialize_ReturnsCorrectJson<T>(string dateFormat, NamingStrategy enumNamingStrategy, T item, string expected)
         {
-            var serializer = new DefaultJsonSerializer {DateFormat = dateFormat};
+            var serializer = new DefaultJsonSerializer(enumNamingStrategy) {DateFormat = dateFormat};
 
             var actual = serializer.Serialize(item);
 
@@ -72,55 +73,66 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
         {
             new TestCaseData(
                 null,
+                null,
                 1,
                 "1"
             ),
             new TestCaseData(
+                null,
                 null,
                 -18901,
                 "-18901"
             ),
             new TestCaseData(
                 null,
+                null,
                 4.1234567890,
                 "4.123456789"
             ),
             new TestCaseData(
+                null,
                 null,
                 4M,
                 "4.0"
             ),
             new TestCaseData(
                 null,
+                null,
                 "test string",
                 "\"test string\""
             ),
             new TestCaseData(
+                null,
                 null,
                 true,
                 "true"
             ),
             new TestCaseData(
                 null,
+                null,
                 new object(),
                 "{}"
             ),
             new TestCaseData(
+                null,
                 null,
                 new List<object>(),
                 "[]"
             ),
             new TestCaseData(
                 null,
+                null,
                 new List<string>(),
                 "[]"
             ),
             new TestCaseData(
                 null,
+                null,
                 new List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9},
                 "[1,2,3,4,5,6,7,8,9]"
             ),
             new TestCaseData(
+                null,
                 null,
                 new
                 {
@@ -131,6 +143,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 "{\"number\":100,\"double\":9.087,\"str\":\"test string\"}"
             ),
             new TestCaseData(
+                null,
                 null,
                 new
                 {
@@ -151,6 +164,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
             ),
             new TestCaseData(
                 null,
+                null,
                 new
                 {
                     DOUBLE = true
@@ -158,6 +172,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 "{\"double\":true}"
             ),
             new TestCaseData(
+                null,
                 null,
                 new
                 {
@@ -167,40 +182,60 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
             ),
             new TestCaseData(
                 null,
+                null,
                 new DateTime(2020, 12, 31, 23, 59, 59),
                 "\"2020-12-31T23:59:59Z\""
             ),
             new TestCaseData(
+                null,
                 null,
                 new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Utc),
                 "\"2020-12-31T23:59:59Z\""
             ),
             new TestCaseData(
                 null,
+                null,
                 new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Unspecified),
                 "\"2020-12-31T23:59:59Z\""
             ),
             new TestCaseData(
                 "yyyy-MM-ddTHH:mm:sszzz",
+                null,
                 new DateTime(2020, 10, 31, 16, 55, 20, DateTimeKind.Utc),
                 "\"2020-10-31T16:55:20+00:00\""
             ),
             new TestCaseData(
                 "yyyy-MM-dd",
+                null,
                 new DateTime(2020, 10, 31, 23, 59, 59, DateTimeKind.Utc),
                 "\"2020-10-31\""
             ),
             new TestCaseData(
+                null,
                 null,
                 Environments.Production,
                 "\"production\""
             ),
             new TestCaseData(
                 null,
+                new DefaultNamingStrategy(),
+                Environments.Production,
+                "\"Production\""
+            ),
+            new TestCaseData(
+                null,
+                null,
                 (Environments) 250,
                 "250"
             ),
             new TestCaseData(
+                null,
+                new DefaultNamingStrategy(),
+                (Environments) 250,
+                "250"
+            ),
+            new TestCaseData(
+                null,
                 null,
                 new
                 {
@@ -209,6 +244,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 "{\"enum\":\"qa\"}"
             ),
             new TestCaseData(
+                null,
+                new DefaultNamingStrategy(),
+                new
+                {
+                    Enum = Environments.QA
+                },
+                "{\"enum\":\"QA\"}"
+            ),
+            new TestCaseData(
+                null,
                 null,
                 new
                 {

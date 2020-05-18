@@ -25,5 +25,12 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
         /// <returns>Initialized client wrapper parameters.</returns>
         RestClientParameters CreateClientWrapperParameters(ApiContext context, string baseUrl,
             ExecuteApiRequestParameters requestParameters);
+
+        /// <summary>
+        /// Saves response information in the context.
+        /// </summary>
+        /// <param name="responseInformation">Response information.</param>
+        /// <param name="context">Api context.</param>
+        void SaveResponseInfoInApiContext(RestResponseInformation responseInformation, ApiContext context);
     }
 }

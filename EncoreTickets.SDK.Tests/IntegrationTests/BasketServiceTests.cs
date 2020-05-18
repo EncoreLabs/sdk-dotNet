@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
+using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     {
         private IConfiguration configuration;
         private BasketServiceApi service;
+        private bool runPromoCodeTests = false;
 
         [SetUp]
         public void SetupState()
@@ -68,6 +71,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void UpsertBasket_GetBasket_Successful()
         {
+            VerifyPromoCodeTestsEnabled();
             var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
@@ -141,14 +145,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void ApplyPromotion_Successful()
         {
+            VerifyPromoCodeTestsEnabled();
             var upsertBasketResult = (Basket.Models.Basket)null;
+            Coupon coupon;
             try
             {
-                var reference = configuration["Basket:TestReferences:0"];
-                var request = CreateDefaultBasket(reference);
-                request.Coupon = null;
-                upsertBasketResult = service.UpsertBasket(request);
-                var coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] };
+                (upsertBasketResult, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                    configuration["Basket:ValidPromoCode"]);
 
                 var basketDetails = service.UpsertPromotion(upsertBasketResult.Reference, coupon);
 
@@ -159,6 +162,54 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             finally
             {
                 service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void ApplyPromotion_InvalidPromoCode()
+        {
+            Basket.Models.Basket basket = null;
+            Coupon coupon;
+            try
+            {
+                (basket, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                    "invalid promo code");
+
+                Assert.Throws<InvalidPromoCodeException>(() =>
+                {
+                    service.UpsertPromotion(basket.Reference, coupon);
+                });
+            }
+            finally
+            {
+                service.ClearBasket(basket?.Reference);
+            }
+        }
+
+        [Test]
+        public void ApplyPromotion_BasketNotFound()
+        {
+            Assert.Throws<BasketNotFoundException>(() =>
+            {
+                service.UpsertPromotion(configuration["Basket:TestBasketReferenceNotFound"], new Coupon { Code = "test" });
+            });
+        }
+
+        [Test]
+        public void ApplyPromotion_BasketCannotBeModified()
+        {
+            Assert.Throws<BasketCannotBeModifiedException>(() =>
+            {
+                service.UpsertPromotion("invalid basket reference", new Coupon { Code = "test" });
+            });
+        }
+
+        private void VerifyPromoCodeTestsEnabled()
+        {
+            if (!runPromoCodeTests)
+            {
+                Assert.Ignore("The promo code involving tests are disabled by default because they use a paid service. " +
+                              "Set 'runPromoCodeTests' field to true to run the tests.");
             }
         }
 
@@ -182,14 +233,25 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     new Reservation
                     {
-                        Date = new DateTimeOffset(2020, 4, 30, 19, 30, 0, TimeSpan.Zero),
-                        ProductId = "1587",
-                        VenueId = "138",
+                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm", 
+                            CultureInfo.InvariantCulture),
+                        ProductId = configuration["Basket:TestProductId"],
+                        VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
                         Items = references.Select(r => new Seat { AggregateReference = r }).ToList()
                     }
                 }
             };
+        }
+
+        private (Basket.Models.Basket Basket, Coupon Coupon) PrepareUpsertPromotionRequest(
+            string aggregateReference, string couponCode)
+        {
+            var request = CreateDefaultBasket(aggregateReference);
+            request.Coupon = null;
+            var upsertBasketResult = service.UpsertBasket(request);
+            var coupon = new Coupon { Code = couponCode };
+            return (upsertBasketResult, coupon);
         }
 
         private void AssertApiException(ApiException exception, HttpStatusCode code)

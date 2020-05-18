@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Payment.Serializers
 {
     internal class JsonResponseToTerritorialUnitsDeserializer : DefaultJsonSerializer
     {
-        public JsonResponseToTerritorialUnitsDeserializer() : base(new SingleOrListToSingleConverter<Request>())
+        public JsonResponseToTerritorialUnitsDeserializer() : base(new[] {new SingleOrListToSingleConverter<Request>()})
         {
         }
     }

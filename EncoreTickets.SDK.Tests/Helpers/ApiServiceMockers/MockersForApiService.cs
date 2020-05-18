@@ -53,10 +53,11 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             string resource,
             Method method,
             string bodyInJson = null,
-            Dictionary<string, object> expectedQueryParameters = null)
+            Dictionary<string, object> expectedQueryParameters = null,
+            Dictionary<string, object> expectedHeaders = null)
             where T : class, new()
         {
-            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, bodyInJson, expectedQueryParameters);
+            VerifyExecution<T>(Times.Once(), baseUrl, resource, method, bodyInJson, expectedQueryParameters, expectedHeaders);
         }
 
         public void VerifyExecution<T>(
@@ -65,7 +66,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             string resource,
             Method method,
             string bodyInJson = null,
-            Dictionary<string, object> expectedQueryParameters = null)
+            Dictionary<string, object> expectedQueryParameters = null,
+            Dictionary<string, object> expectedHeaders = null)
             where T : class, new()
         {
             RestClientWrapperMock.Verify(
@@ -78,6 +80,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
                         request.Method == method &&
                         request.RequestFormat == DataFormat.Json &&
                         AreQueryParametersInRequest(request, expectedQueryParameters) &&
+                        AreHeadersInRequest(request, expectedHeaders) &&
                         IsJsonBodyInRequest(request, bodyInJson))
                 ), times);
         }
@@ -99,21 +102,33 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
         private bool AreQueryParametersInRequest(IRestRequest request,
             Dictionary<string, object> expectedQueryParameters)
         {
-            var queryParameters = request.Parameters
-                .Where(p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode)
-                .ToList();
-            if (expectedQueryParameters == null)
-            {
-                return !queryParameters.Any();
-            }
-
-            return expectedQueryParameters.Count == queryParameters.Count() &&
-                   expectedQueryParameters.All(x => IsQueryParameterInRequest(queryParameters, x.Key, x.Value));
+            return AreParametersInRequest(request, expectedQueryParameters,
+                p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode);
         }
 
-        private bool IsQueryParameterInRequest(IEnumerable<Parameter> queryParameters, string expectedParameterName, object expectedParameterValue)
+        private bool AreHeadersInRequest(IRestRequest request, Dictionary<string, object> expectedHeaders)
         {
-            var parameter = queryParameters.FirstOrDefault(x =>
+            return AreParametersInRequest(request, expectedHeaders,
+                p => p.Type == ParameterType.HttpHeader &&
+                     !p.Name.Equals("x-sdk", StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private bool AreParametersInRequest(IRestRequest request, Dictionary<string, object> expectedParameters,
+            Func<Parameter, bool> getCertainParamsFromRequestFunc)
+        {
+            var parameters = request.Parameters.Where(getCertainParamsFromRequestFunc).ToList();
+            if (expectedParameters == null)
+            {
+                return !parameters.Any();
+            }
+
+            return expectedParameters.Count == parameters.Count &&
+                   expectedParameters.All(x => IsParameterInRequest(parameters, x.Key, x.Value));
+        }
+
+        private bool IsParameterInRequest(IEnumerable<Parameter> parameters, string expectedParameterName, object expectedParameterValue)
+        {
+            var parameter = parameters.FirstOrDefault(x =>
                 x.Name.Equals(expectedParameterName, StringComparison.InvariantCultureIgnoreCase));
             if (parameter == null)
             {
@@ -121,8 +136,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             }
 
             var expectedParameter = parameter.Value.ToString();
-            return expectedParameter.Equals(expectedParameterValue.ToString(),
-                StringComparison.InvariantCultureIgnoreCase);
+            return expectedParameter.Equals(expectedParameterValue.ToString());
         }
 
         private bool IsJsonBodyInRequest(IRestRequest request, string expectedBodyInJson)

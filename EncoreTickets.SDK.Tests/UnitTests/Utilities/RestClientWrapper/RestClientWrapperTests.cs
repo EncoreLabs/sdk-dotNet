@@ -684,7 +684,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
                 }
             ),
         };
@@ -701,7 +701,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml,
-                    RequestDataSerializer = new DefaultJsonSerializer(new SingleOrListToListConverter<string>())
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
                 }
             ),
             new TestCaseData(
