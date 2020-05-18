@@ -19,7 +19,7 @@
     <PackageReference Include="AWSSDK.SQS" Version="3.3.102.33" />
     <PackageReference Include="docfx.console" Version="2.53.1">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>none</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

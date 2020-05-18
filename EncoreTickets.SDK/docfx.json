@@ -4,13 +4,13 @@
       "src": [
         {
           "files": [
-            "**.csproj"
+            "bin/Debug/net461/EncoreTickets.SDK.dll"
           ],
-          "src": "C:\\Users\\yuriy\\source\\repos\\DotNetSDK\\EncoreTickets.SDK"
+		  "src": "../"
         }
       ],
-      "dest": "_docs",
-      "disableGitFeatures": false,
+      "dest": "api",
+	  "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
   ],
@@ -18,8 +18,8 @@
     "content": [
       {
         "files": [
-          "_docs/**.yml",
-          "_docs/index.md"
+          "api/**.yml",
+          "api/index.md"
         ]
       },
       {

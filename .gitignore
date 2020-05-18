@@ -263,6 +263,5 @@ __pycache__/
 /EncoreTickets.SDK.Tests/appsettings.test.real.json
 
 GeneratedReports/
-EncoreTickets.SDK/_docs/
-EncoreTickets.SDK/_site/
-EncoreTickets.SDK/log.txt
+EncoreTickets.SDK/docfx_project/
+
