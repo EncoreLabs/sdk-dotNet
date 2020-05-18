@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Company>EncoreTickets</Company>
     <Authors>EncoreTickets</Authors>
     <PackageTags />
@@ -16,6 +17,10 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.100.1" />
     <PackageReference Include="AWSSDK.SQS" Version="3.3.102.33" />
+    <PackageReference Include="docfx.console" Version="2.53.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>none</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly" Version="7.2.1" />
