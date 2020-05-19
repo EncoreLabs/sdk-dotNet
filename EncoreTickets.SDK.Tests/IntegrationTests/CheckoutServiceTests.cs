@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         #region Checkout
 
         [Test]
-        public void Checkout_Successful()
+        public void Checkout_IfPaymentTypeIsCard_Successful()
         {
             var parameters = new BookingParameters
             {
@@ -76,6 +76,41 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var paymentInfo = service.Checkout(parameters);
 
             Assert.IsNotNull(paymentInfo.PaymentId);
+        }
+
+        [Test]
+        public void Checkout_IfPaymentTypeIsAccount_Successful()
+        {
+            var (_, _, agentChannel) = GetAgentInfoFromConfig();
+            var parameters = new BookingParameters
+            {
+                Reference = configuration["Checkout:TestBookingReferenceForAgentConfirmation"],
+                ChannelId = agentChannel,
+                Shopper = new Shopper
+                {
+                    Email = "agentEmail@mail.com",
+                    Title = "Mrs",
+                    FirstName = "clientFName",
+                    LastName = "clientLName",
+                    TelephoneNumber = "123321321321"
+                },
+                BillingAddress = new Address
+                {
+                    Line1 = "47-51 Great Suffolk St",
+                    Line2 = "",
+                    PostalCode = "SE1 0BS",
+                    City = "London",
+                    CountryCode = "UK"
+                },
+                RedirectUrl = "http://localhost:8000/",
+                DeliveryMethod = DeliveryMethod.Collection,
+                PaymentType = PaymentType.Account,
+                PaymentId = "111"
+            };
+
+            var paymentInfo = service.Checkout(parameters);
+
+            Assert.IsNotNull(paymentInfo.PaymentType);
         }
 
         [Test]

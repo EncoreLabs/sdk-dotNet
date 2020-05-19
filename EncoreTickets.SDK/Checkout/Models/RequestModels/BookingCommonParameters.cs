@@ -58,8 +58,8 @@
         public bool HasFlexiTickets { get; set; }
 
         /// <summary>
-        /// Gets or sets payment type.
+        /// Gets or sets payment ID.
         /// </summary>
-        public PaymentType PaymentType { get; set; }
+        public string PaymentId { get; set; }
     }
 }
