@@ -7,9 +7,16 @@
         /// </summary>
         public DeliveryMethodForQuery? DeliveryMethod { get; set; }
 
+        /// <summary>
+        /// Gets or sets payment type.
+        /// </summary>
+        public string PaymentType { get; set; }
+        
         public BookingQueryParameters(BookingParameters parameters)
         {
             DeliveryMethod = GetDeliveryMethod(parameters.DeliveryMethod);
+            PaymentType = parameters.PaymentType.ToString().ToLowerInvariant();
+            PaymentId = parameters.PaymentId;
             Reference = parameters.Reference;
             ChannelId = parameters.ChannelId;
             Shopper = parameters.Shopper;
@@ -21,7 +28,6 @@
             GiftVoucherMessage = parameters.GiftVoucherMessage;
             DeliveryAddress = parameters.DeliveryAddress;
             HasFlexiTickets = parameters.HasFlexiTickets;
-            PaymentType = parameters.PaymentType;
         }
 
         private DeliveryMethodForQuery? GetDeliveryMethod(DeliveryMethod method)
