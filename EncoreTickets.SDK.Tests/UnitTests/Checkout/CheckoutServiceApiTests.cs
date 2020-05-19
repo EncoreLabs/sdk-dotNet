@@ -262,7 +262,35 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     HasFlexiTickets = true,
                     PaymentType = PaymentType.Card
                 },
-                "{\"deliveryMethod\":\"C\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentType\":\"Card\"}"
+                "{\"deliveryMethod\":\"C\",\"paymentType\":\"card\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentId\":null}"
+            ),
+            new TestCaseData(
+                new BookingParameters
+                {
+                    Reference = "8602898",
+                    ChannelId = "resia",
+                    Shopper = new Shopper
+                    {
+                        Email = "agentEmail@mail.com",
+                        Title = "Mrs",
+                        FirstName = "clientFName",
+                        LastName = "clientLName",
+                        TelephoneNumber = "123321321321"
+                    },
+                    BillingAddress = new Address
+                    {
+                        Line1 = "47-51 Great Suffolk St",
+                        Line2 = "",
+                        PostalCode = "SE1 0BS",
+                        City = "London",
+                        CountryCode = "UK"
+                    },
+                    RedirectUrl = "http://localhost:8000/",
+                    DeliveryMethod = DeliveryMethod.Collection,
+                    PaymentType = PaymentType.Account,
+                    PaymentId = "111"
+                },
+                "{\"deliveryMethod\":\"C\",\"paymentType\":\"account\",\"reference\":\"8602898\",\"channelId\":\"resia\",\"shopper\":{\"email\":\"agentEmail@mail.com\",\"title\":\"Mrs\",\"firstName\":\"clientFName\",\"lastName\":\"clientLName\",\"telephoneNumber\":\"123321321321\",\"externalId\":null},\"billingAddress\":{\"line1\":\"47-51 Great Suffolk St\",\"line2\":\"\",\"postalCode\":\"SE1 0BS\",\"city\":\"London\",\"countryCode\":\"UK\",\"countryName\":null,\"stateOrProvince\":null},\"origin\":null,\"redirectUrl\":\"http://localhost:8000/\",\"deliveryCharge\":0,\"recipientName\":null,\"giftVoucherMessage\":null,\"deliveryAddress\":null,\"hasFlexiTickets\":false,\"paymentId\":\"111\"}"
             ),
         };
         
