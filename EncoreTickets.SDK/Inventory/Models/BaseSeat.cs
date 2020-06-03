@@ -1,6 +1,8 @@
-﻿namespace EncoreTickets.SDK.Inventory.Models
+﻿using EncoreTickets.SDK.Utilities.CommonModels;
+
+namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class BaseSeat
+    public class BaseSeat : IEntityWithAggregateReference
     {
         public string SeatIdentifier { get; set; }
 

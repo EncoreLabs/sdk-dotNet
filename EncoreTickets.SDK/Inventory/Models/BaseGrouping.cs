@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.CommonModels;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class BaseGrouping
+    public class BaseGrouping : IEntityWithAggregateReference
     {
         public string GroupIdentifier { get; set; }
 

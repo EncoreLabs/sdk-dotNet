@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Utilities.CommonModels;
 
 namespace EncoreTickets.SDK.Inventory.Models
 {
-    public class Area : BaseArea
+    public class Area : BaseArea, IEntityWithAggregateReference
     {
         public string AggregateReference { get; set; }
 
