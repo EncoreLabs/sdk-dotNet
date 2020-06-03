@@ -1,6 +1,8 @@
-﻿namespace EncoreTickets.SDK.Basket.Models
+﻿using EncoreTickets.SDK.Utilities.CommonModels;
+
+namespace EncoreTickets.SDK.Basket.Models
 {
-    public class Seat
+    public class Seat : IEntityWithAggregateReference
     {
         public string AggregateReference { get; set; }
 

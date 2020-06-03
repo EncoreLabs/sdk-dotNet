@@ -1465,8 +1465,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     {
                                         new Seat
                                         {
-                                            AggregateReference =
-                                                "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE=",
+                                            AggregateReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE=",
                                             ItemReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDE=",
                                             Row = "1610",
                                             Number = 1,
@@ -1500,8 +1499,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         },
                                         new Seat
                                         {
-                                            AggregateReference =
-                                                "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI=",
+                                            AggregateReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI=",
                                             ItemReference = "MTdLMjMwMjY2OEsyUzY3SzIzMDM2MDJLMlM0OUsyMzAzNjAzSzItMTYxMDI=",
                                             Row = "1610",
                                             Number = 2,
