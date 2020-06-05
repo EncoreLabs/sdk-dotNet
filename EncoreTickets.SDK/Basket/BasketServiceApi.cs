@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
@@ -8,6 +9,7 @@ using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Basket.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Mapping;
 
@@ -36,17 +38,27 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket GetBasketDetails(string basketReference)
         {
-            if (string.IsNullOrWhiteSpace(basketReference))
-            {
-                throw new ArgumentException("basket ID must be set");
-            }
-
+            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}",
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public IList<Delivery> GetBasketDeliveryOptions(string basketReference)
+        {
+            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/baskets/{basketReference}/deliveryOptions",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<List<Delivery>, GettingDeliveryOptionsResponse,
+                GettingDeliveryOptionsResponseContent>(parameters);
             return result.DataOrException;
         }
 
@@ -115,6 +127,14 @@ namespace EncoreTickets.SDK.Basket
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return GetUpsertPromotionResult(result, coupon, basketId);
+        }
+
+        private void ThrowArgumentExceptionIfBasketReferenceIsIncorrect(string basketReference)
+        {
+            if (string.IsNullOrWhiteSpace(basketReference))
+            {
+                throw new ArgumentException("basket ID must be set");
+            }
         }
 
         private Models.Basket GetUpsertPromotionResult(ApiResult<Models.Basket> apiResult, Coupon coupon, string basketId)

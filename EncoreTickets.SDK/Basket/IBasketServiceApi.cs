@@ -1,4 +1,5 @@
-﻿using EncoreTickets.SDK.Api;
+﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
@@ -17,6 +18,14 @@ namespace EncoreTickets.SDK.Basket
         /// <param name="basketReference">Basket ID</param>
         /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
         Models.Basket GetBasketDetails(string basketReference);
+
+        /// <summary>
+        /// Get basket delivery options by reference.
+        /// GET /api/v1/baskets/{reference}/deliveryOptions
+        /// </summary>
+        /// <param name="basketReference">Basket ID</param>
+        /// <returns>If the reference is correct, the method returns the basket delivery options; otherwise, an exception.</returns>
+        IList<Delivery> GetBasketDeliveryOptions(string basketReference);
 
         /// <summary>
         /// Get details of a promotion by its ID. 
