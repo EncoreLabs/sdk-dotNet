@@ -11,18 +11,19 @@ namespace EncoreTickets.SDK.Basket
     public interface IBasketServiceApi : IServiceApi
     {
         /// <summary>
+        /// Get details of a basket by its reference.
+        /// GET /api/v1/baskets/{reference}
+        /// </summary>
+        /// <param name="basketReference">Basket ID</param>
+        /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
+        Models.Basket GetBasketDetails(string basketReference);
+
+        /// <summary>
         /// Get details of a promotion by its ID. 
         /// </summary>
         /// <param name="promotionId"></param>
         /// <returns>Details of a promotion with the specified ID or an exception if not found.</returns>
         Promotion GetPromotionDetails(string promotionId);
-
-        /// <summary>
-        /// Get details of a basket by its reference. 
-        /// </summary>
-        /// <param name="basketReference">Basket ID</param>
-        /// <returns>Details of a basket with the specified reference or an exception if not found.</returns>
-        Models.Basket GetBasketDetails(string basketReference);
 
         /// <summary>
         /// Applies promotion to a basket when this is possible.

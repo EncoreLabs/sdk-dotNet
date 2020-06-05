@@ -29,8 +29,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             service = new BasketServiceApi(context);
         }
 
+        #region GetBasketDetails
+
         [Test]
-        public void GetBasket_Successful()
+        public void GetBasketDetails_Successful()
         {
             var reference = configuration["Basket:TestBasketReference"];
 
@@ -43,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetBasket_Exception400()
+        public void GetBasketDetails_Exception400()
         {
             var reference = "test";
 
@@ -56,10 +58,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetBasket_Exception404()
+        public void GetBasketDetails_Exception404()
         {
             var reference = configuration["Basket:TestBasketReferenceNotFound"];
-            
+
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var result = service.GetBasketDetails(reference);
@@ -67,6 +69,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             AssertApiException(exception, HttpStatusCode.NotFound);
         }
+
+        #endregion
 
         [Test]
         public void UpsertBasket_GetBasket_Successful()

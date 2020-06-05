@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket GetBasketDetails(string basketReference)
         {
-            if (string.IsNullOrEmpty(basketReference))
+            if (string.IsNullOrWhiteSpace(basketReference))
             {
                 throw new ArgumentException("basket ID must be set");
             }

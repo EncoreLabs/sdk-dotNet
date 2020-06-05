@@ -9,7 +9,6 @@ using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
-using EncoreTickets.SDK.Utilities.Exceptions;
 using NUnit.Framework;
 using RestSharp;
 
@@ -38,6 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         [TestCase(null)]
         [TestCase("")]
+        [TestCase(" ")]
         public void GetBasketDetails_IfBasketReferenceIsNotSet_ThrowsArgumentException(string reference)
         {
             Assert.Catch<ArgumentException>(() =>
@@ -61,7 +61,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(BaseUrl, $"v1/baskets/{reference}", Method.GET);
+            mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
+                BaseUrl,
+                $"v1/baskets/{reference}",
+                Method.GET,
+                expectedHeaders: null,
+                expectedQueryParameters: null);
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket))]
@@ -132,10 +137,109 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
     public static class BasketServiceApiTestsSource
     {
+        #region GetBasketDetails
+
         public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket = new[]
         {
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"reference\":\"791631\"}},\"response\":{\"reference\":\"791631\",\"checksum\":\"2001040924\",\"channelId\":\"integrator-qa-boxoffice\",\"mixed\":false,\"exchangeRate\":1,\"delivery\":null,\"allowFlexiTickets\":false,\"status\":\"active\",\"officeCurrency\":\"GBP\",\"shopperCurrency\":\"GBP\",\"expiredAt\":\"2020-01-04T09:39:28+0000\",\"createdAt\":\"2020-01-04T09:24:28+0000\",\"reservations\":[{\"id\":1,\"linkedReservationId\":0,\"venueId\":\"139\",\"venueName\":\"Dominion Theatre\",\"productId\":\"2017\",\"productType\":\"SHW\",\"productName\":\"White Christmas\",\"date\":\"2020-01-04T19:30:00+0000\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\",\"areaId\":\"DC\",\"areaName\":\"CIRCLE\",\"row\":\"P\",\"number\":\"31\",\"locationDescription\":\"\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\",\"areaId\":\"DC\",\"areaName\":\"CIRCLE\",\"row\":\"P\",\"number\":\"32\",\"locationDescription\":\"\"}],\"faceValueInOfficeCurrency\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2},\"faceValueInShopperCurrency\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2},\"salePriceInOfficeCurrency\":{\"value\":5100,\"currency\":\"GBP\",\"decimalPlaces\":2},\"salePriceInShopperCurrency\":{\"value\":5100,\"currency\":\"GBP\",\"decimalPlaces\":2},\"adjustedSalePriceInOfficeCurrency\":{\"value\":5100,\"currency\":\"GBP\",\"decimalPlaces\":2},\"adjustedSalePriceInShopperCurrency\":{\"value\":5100,\"currency\":\"GBP\",\"decimalPlaces\":2},\"adjustmentAmountInOfficeCurrency\":{\"value\":0,\"currency\":\"GBP\",\"decimalPlaces\":2},\"adjustmentAmountInShopperCurrency\":{\"value\":0,\"currency\":\"GBP\",\"decimalPlaces\":2}}],\"coupon\":null,\"appliedPromotion\":null,\"missedPromotions\":null},\"context\":null}",
+                @"{
+  ""request"": {
+    ""body"": """",
+    ""query"": {},
+    ""urlParams"": {
+      ""reference"": ""791631""
+    }
+  },
+  ""response"": {
+    ""reference"": ""791631"",
+    ""checksum"": ""2001040924"",
+    ""channelId"": ""integrator-qa-boxoffice"",
+    ""mixed"": false,
+    ""exchangeRate"": 1,
+    ""delivery"": null,
+    ""allowFlexiTickets"": false,
+    ""status"": ""active"",
+    ""officeCurrency"": ""GBP"",
+    ""shopperCurrency"": ""GBP"",
+    ""expiredAt"": ""2020-01-04T09:39:28+0000"",
+    ""createdAt"": ""2020-01-04T09:24:28+0000"",
+    ""reservations"": [
+      {
+        ""id"": 1,
+        ""linkedReservationId"": 0,
+        ""venueId"": ""139"",
+        ""venueName"": ""Dominion Theatre"",
+        ""productId"": ""2017"",
+        ""productType"": ""SHW"",
+        ""productName"": ""White Christmas"",
+        ""date"": ""2020-01-04T19:30:00+0000"",
+        ""quantity"": 2,
+        ""items"": [
+          {
+            ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co"",
+            ""areaId"": ""DC"",
+            ""areaName"": ""CIRCLE"",
+            ""row"": ""P"",
+            ""number"": ""31"",
+            ""locationDescription"": """"
+          },
+          {
+            ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do"",
+            ""areaId"": ""DC"",
+            ""areaName"": ""CIRCLE"",
+            ""row"": ""P"",
+            ""number"": ""32"",
+            ""locationDescription"": """"
+          }
+        ],
+        ""faceValueInOfficeCurrency"": {
+          ""value"": 3950,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""faceValueInShopperCurrency"": {
+          ""value"": 3950,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""salePriceInOfficeCurrency"": {
+          ""value"": 5100,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""salePriceInShopperCurrency"": {
+          ""value"": 5100,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""adjustedSalePriceInOfficeCurrency"": {
+          ""value"": 5100,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""adjustedSalePriceInShopperCurrency"": {
+          ""value"": 5100,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""adjustmentAmountInOfficeCurrency"": {
+          ""value"": 0,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        },
+        ""adjustmentAmountInShopperCurrency"": {
+          ""value"": 0,
+          ""currency"": ""GBP"",
+          ""decimalPlaces"": 2
+        }
+      }
+    ],
+    ""coupon"": null,
+    ""appliedPromotion"": null,
+    ""missedPromotions"": null
+  },
+  ""context"": null
+}",
                 new SDK.Basket.Models.Basket
                 {
                     Reference = "791631",
@@ -245,18 +349,52 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         {
             // 400
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"reference\":\"test\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Insufficient data has been supplied for \\\"test\\\" basket to complete this request.\"}]}}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""reference"": ""test""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Insufficient data has been supplied for \""test\"" basket to complete this request.""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.BadRequest,
                 "Insufficient data has been supplied for \"test\" basket to complete this request."
             ),
 
             // 404
             new TestCaseData(
-                "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"reference\":\"5926058\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Basket with reference \\\"5926058\\\" was not found.\"}]}}",
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""reference"": ""5926058""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Basket with reference \""5926058\"" was not found.""
+            }
+        ]
+    }
+}",
                 HttpStatusCode.NotFound,
                 "Basket with reference \"5926058\" was not found."
             ),
         };
+
+        #endregion
 
         public static IEnumerable<TestCaseData> UpsertBasket_CallsApiWithRightParameters = new[]
         {
