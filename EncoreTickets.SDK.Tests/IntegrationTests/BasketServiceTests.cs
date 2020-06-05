@@ -72,6 +72,51 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         #endregion
 
+        #region GetBasketDeliveryOptions
+
+        [Test]
+        public void GetBasketDeliveryOptions_Successful()
+        {
+            var reference = configuration["Basket:TestBasketReference"];
+
+            var result = service.GetBasketDeliveryOptions(reference);
+
+            Assert.NotNull(result);
+            foreach (var deliveryOption in result)
+            {
+                Assert.NotNull(deliveryOption.Charge);
+                Assert.NotNull(deliveryOption.Method);
+            }
+        }
+
+        [Test]
+        public void GetBasketDeliveryOptions_Exception400()
+        {
+            var reference = "test";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void GetBasketDeliveryOptions_Exception404()
+        {
+            var reference = configuration["Basket:TestBasketReferenceNotFound"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        #endregion
+
         [Test]
         public void UpsertBasket_GetBasket_Successful()
         {
@@ -231,7 +276,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         DecimalPlaces = 2,
                         Value = 145
                     },
-                    Method = "postage"
+                    Method = DeliveryMethod.Postage
                 },
                 Reservations = new List<Reservation>
                 {

@@ -176,7 +176,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                 r => r.AdjustedSalePriceInOfficeCurrency);
             basketDetails.Delivery = new Delivery
             {
-                Method = "postage",
+                Method = DeliveryMethod.Postage,
                 Charge = new Price
                 {
                     Currency = DefaultCurrency,

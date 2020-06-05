@@ -7,6 +7,7 @@ using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
+using EncoreTickets.SDK.Basket.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using NUnit.Framework;
@@ -91,6 +92,72 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var actual = GetBasketDetails(TestBasketValidReference);
+            });
+
+            Assert.AreEqual(code, exception.ResponseCode);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        #endregion
+
+        #region GetBasketDeliveryOptions
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void GetBasketDeliveryOptions_IfBasketReferenceIsNotSet_ThrowsArgumentException(string reference)
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                GetBasketDeliveryOptions(reference);
+            });
+        }
+
+        [TestCase("791631")]
+        [TestCase("not_id")]
+        public void GetBasketDeliveryOptions_IfBasketReferenceIsSet_CallsApiWithRightParameters(string reference)
+        {
+            mockers.SetupAnyExecution<GettingDeliveryOptionsResponse>();
+
+            try
+            {
+                GetBasketDeliveryOptions(reference);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            mockers.VerifyExecution<GettingDeliveryOptionsResponse>(
+                BaseUrl,
+                $"v1/baskets/{reference}/deliveryOptions",
+                Method.GET,
+                expectedHeaders: null,
+                expectedQueryParameters: null);
+        }
+
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket))]
+        public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+            List<Delivery> expected)
+        {
+            mockers.SetupSuccessfulExecution<GettingDeliveryOptionsResponse>(responseContent);
+
+            var actual = GetBasketDeliveryOptions(TestBasketValidReference);
+
+            AssertExtension.AreObjectsValuesEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException))]
+        public void GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException(
+            string responseContent,
+            HttpStatusCode code,
+            string expectedMessage)
+        {
+            mockers.SetupFailedExecution<GettingDeliveryOptionsResponse>(responseContent, code);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var actual = GetBasketDeliveryOptions(TestBasketValidReference);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -396,6 +463,154 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         #endregion
 
+        #region GetBasketDeliveryOptions
+
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket = new[]
+        {
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""reference"": ""8604612""
+        }
+    },
+    ""response"": {
+        ""results"": [
+            {
+                ""method"": ""postage"",
+                ""charge"": {
+                    ""value"": 145,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                }
+            },
+            {
+                ""method"": ""eticket"",
+                ""charge"": {
+                    ""value"": 0,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                }
+            },
+            {
+                ""method"": ""collection"",
+                ""charge"": {
+                    ""value"": 0,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                }
+            },
+            {
+                ""method"": ""evoucher"",
+                ""charge"": {
+                    ""value"": 0,
+                    ""currency"": ""GBP"",
+                    ""decimalPlaces"": 2
+                }
+            }
+        ]
+    },
+    ""context"": null
+}",
+                new List<Delivery>
+                {
+                    new Delivery
+                    {
+                        Method = DeliveryMethod.Postage,
+                        Charge = new Price
+                        {
+                            Value = 145,
+                            Currency = "GBP",
+                            DecimalPlaces = 2
+                        }
+                    },
+                    new Delivery
+                    {
+                        Method = DeliveryMethod.Eticket,
+                        Charge = new Price
+                        {
+                            Value = 0,
+                            Currency = "GBP",
+                            DecimalPlaces = 2
+                        }
+                    },
+                    new Delivery
+                    {
+                        Method = DeliveryMethod.Collection,
+                        Charge = new Price
+                        {
+                            Value = 0,
+                            Currency = "GBP",
+                            DecimalPlaces = 2
+                        }
+                    },
+                    new Delivery
+                    {
+                        Method = DeliveryMethod.Evoucher,
+                        Charge = new Price
+                        {
+                            Value = 0,
+                            Currency = "GBP",
+                            DecimalPlaces = 2
+                        }
+                    },
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException = new[]
+        {
+            // 400
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""reference"": ""test""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Insufficient data has been supplied for \""test\"" basket to complete this request.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.BadRequest,
+                "Insufficient data has been supplied for \"test\" basket to complete this request."
+            ),
+
+            // 404
+            new TestCaseData(
+                @"{
+    ""request"": {
+        ""body"": """",
+        ""query"": {},
+        ""urlParams"": {
+            ""reference"": ""86046""
+        }
+    },
+    ""response"": """",
+    ""context"": {
+        ""errors"": [
+            {
+                ""message"": ""Basket with reference \""86046\"" was not found.""
+            }
+        ]
+    }
+}",
+                HttpStatusCode.NotFound,
+                "Basket with reference \"86046\" was not found."
+            ),
+        };
+
+        #endregion
+
         public static IEnumerable<TestCaseData> UpsertBasket_CallsApiWithRightParameters = new[]
         {
             new TestCaseData(
@@ -414,7 +629,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             Currency = "GBP",
                             DecimalPlaces = 2
                         },
-                        Method = "test"
+                        Method = DeliveryMethod.Eticket
                     },
                     AllowFlexiTickets = false,
                     Status = "active",
@@ -511,7 +726,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     AppliedPromotion = null,
                     MissedPromotions = null
                 },
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"test\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
             ),
         };
     }

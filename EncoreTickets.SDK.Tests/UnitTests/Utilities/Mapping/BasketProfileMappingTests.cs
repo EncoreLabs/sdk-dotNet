@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 ChannelId = "test-channel",
                 Delivery = new Delivery
                 {
-                    Method = "postage",
+                    Method = DeliveryMethod.Postage,
                     Charge = new Price
                     {
                         Currency = DefaultCurrency,
