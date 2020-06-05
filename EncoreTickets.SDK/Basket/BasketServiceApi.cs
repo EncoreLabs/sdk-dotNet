@@ -65,17 +65,26 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertBasket(Models.Basket source)
         {
-            var request = source.Map<Models.Basket, UpsertBasketRequest>();
+            ThrowArgumentExceptionIfBasketDetailsAreIncorrect(source);
+            var request = source.Map<Models.Basket, UpsertBasketParameters>();
+            return UpsertBasket(request);
+        }
+
+        /// <inheritdoc />
+        public Models.Basket UpsertBasket(UpsertBasketParameters basketParameters)
+        {
+            ThrowArgumentExceptionIfBasketDetailsAreIncorrect(basketParameters);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets",
                 Method = RequestMethod.Patch,
-                Body = request
+                Body = basketParameters
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
         }
 
+        /// <inheritdoc />
         public Models.Basket ClearBasket(string basketId)
         {
             var parameters = new ExecuteApiRequestParameters
@@ -134,6 +143,14 @@ namespace EncoreTickets.SDK.Basket
             if (string.IsNullOrWhiteSpace(basketReference))
             {
                 throw new ArgumentException("basket ID must be set");
+            }
+        }
+
+        private void ThrowArgumentExceptionIfBasketDetailsAreIncorrect(object basketDetails)
+        {
+            if (basketDetails == null)
+            {
+                throw new ArgumentException("details for basket must be set");
             }
         }
 

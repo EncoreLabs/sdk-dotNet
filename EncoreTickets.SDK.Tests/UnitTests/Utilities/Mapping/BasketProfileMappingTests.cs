@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 AreaName = "E"
             };
 
-            var result = seat.Map<Seat, ItemRequest>();
+            var result = seat.Map<Seat, ReservationItemParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(seat);
         }
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 ShopperCurrency = "USD"
             };
 
-            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketRequest>();
+            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(sourceBasket);
             Assert.AreEqual(sourceBasket.AllowFlexiTickets, result.HasFlexiTickets);
@@ -77,7 +77,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 Quantity = 2
             };
 
-            var result = reservation.Map<Reservation, ReservationRequest>();
+            var result = reservation.Map<Reservation, ReservationParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(reservation);
             for (var i = 0; i < result.Items.Count; i++)
