@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Utilities.Mapping.Profiles
         {
             AllowNullCollections = true;
             AllowNullDestinationValues = true;
-            CreateMap<Seat, ReservationItemParameters>();
+            CreateMap<ReservationItem, ReservationItemParameters>();
             CreateMap<Reservation, ReservationParameters>();
             CreateMap<Basket.Models.Basket, UpsertBasketParameters>()
                 .ForMember(b => b.HasFlexiTickets, src => src.MapFrom(b => b.AllowFlexiTickets));

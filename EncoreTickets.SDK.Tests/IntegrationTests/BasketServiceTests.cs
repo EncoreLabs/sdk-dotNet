@@ -287,7 +287,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new Seat { AggregateReference = r }).ToList()
+                        Items = references.Select(r => new ReservationItem { AggregateReference = r }).ToList()
                     }
                 }
             };
