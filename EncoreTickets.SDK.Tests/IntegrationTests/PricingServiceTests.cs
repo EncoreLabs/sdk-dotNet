@@ -111,6 +111,43 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
         }
 
+        [Test]
+        public void GetDailyPriceRanges_Successful()
+        {
+            var dateFrom = DateTime.Now.AddMonths(3);
+            var dateTo = DateTime.Now.AddMonths(4);
+
+            var priceRanges = service.GetDailyPriceRanges("1018", 2, dateFrom, dateTo);
+
+            Assert.NotNull(priceRanges);
+            foreach (var priceRange in priceRanges)
+            {
+                Assert.NotNull(priceRange.MinPrice.FirstOrDefault());
+                Assert.NotNull(priceRange.MaxPrice.FirstOrDefault());
+                Assert.GreaterOrEqual(dateTo.Date, priceRange.Date?.Date);
+                Assert.LessOrEqual(dateFrom.Date, priceRange.Date?.Date);
+            }
+        }
+
+        [Test]
+        public void GetMonthlyPriceRanges_Successful()
+        {
+            var dateFrom = DateTime.Now.AddMonths(3);
+            var dateTo = DateTime.Now.AddMonths(4);
+
+            var priceRanges = service.GetMonthlyPriceRanges("1018", 2, dateFrom, dateTo);
+
+            Assert.NotNull(priceRanges);
+            foreach (var priceRange in priceRanges)
+            {
+                Assert.NotNull(priceRange.MinPrice.FirstOrDefault());
+                Assert.NotNull(priceRange.MaxPrice.FirstOrDefault());
+                var resultDate = new DateTime(priceRange.Date.Year, priceRange.Date.Month, 1);
+                Assert.GreaterOrEqual(dateTo.Date, resultDate);
+                Assert.Less(dateFrom.Date, resultDate.AddMonths(1));
+            }
+        }
+
         private void AssertRatesAreValid(IEnumerable<ExchangeRate> rates)
         {
             var rateList = rates.ToList();

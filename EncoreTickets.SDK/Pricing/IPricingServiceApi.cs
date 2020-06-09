@@ -25,5 +25,17 @@ namespace EncoreTickets.SDK.Pricing
         /// </summary>
         /// <returns>Price bands.</returns>
         IList<PriceBand> GetPriceBands(string productId, int quantity, DateTime? performanceDateTime = null);
+
+        /// <summary>
+        /// Returns price ranges broken down by day.
+        /// </summary>
+        /// <returns>Daily price ranges.</returns>
+        IList<DailyPriceRange> GetDailyPriceRanges(string productId, int quantity, DateTime fromDate, DateTime toDate);
+
+        /// <summary>
+        /// Returns price ranges broken down by month.
+        /// </summary>
+        /// <returns>Monthly price ranges.</returns>
+        IList<MonthlyPriceRange> GetMonthlyPriceRanges(string productId, int quantity, DateTime fromDate, DateTime toDate);
     }
 }
