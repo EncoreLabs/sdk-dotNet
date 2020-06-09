@@ -37,5 +37,19 @@ namespace EncoreTickets.SDK.Pricing
         /// </summary>
         /// <returns>Monthly price ranges.</returns>
         IList<MonthlyPriceRange> GetMonthlyPriceRanges(string productId, int quantity, DateTime fromDate, DateTime toDate);
+
+        /// <summary>
+        /// Returns the list of all price rule summaries.
+        /// Authorization required.
+        /// </summary>
+        /// <returns>Price rule summaries.</returns>
+        IList<PriceRuleSummary> GetPriceRuleSummaries();
+
+        /// <summary>
+        /// Returns the details of a price rule with the specified ID.
+        /// Authorization required.
+        /// </summary>
+        /// <returns>Price rule details.</returns>
+        PriceRule GetPriceRule(int id);
     }
 }

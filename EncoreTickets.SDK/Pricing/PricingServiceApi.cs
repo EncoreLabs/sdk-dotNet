@@ -75,6 +75,7 @@ namespace EncoreTickets.SDK.Pricing
             {
                 throw new ArgumentException("Product ID must be set");
             }
+
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/pricing/days/products/{productId}/quantity/{quantity}" +
@@ -92,6 +93,7 @@ namespace EncoreTickets.SDK.Pricing
             {
                 throw new ArgumentException("Product ID must be set");
             }
+
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/pricing/months/products/{productId}/quantity/{quantity}" +
@@ -99,6 +101,32 @@ namespace EncoreTickets.SDK.Pricing
                 Method = RequestMethod.Get
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<MonthlyPriceRange>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public IList<PriceRuleSummary> GetPriceRuleSummaries()
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/admin/pricing/rules",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<IList<PriceRuleSummary>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public PriceRule GetPriceRule(int id)
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/admin/pricing/rules/{id}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<PriceRule>(parameters);
             return result.DataOrException;
         }
     }

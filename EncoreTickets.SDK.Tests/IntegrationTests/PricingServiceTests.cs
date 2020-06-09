@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var priceBands = service.GetPriceBands("1018", 2, date.Date);
 
-            Assert.NotNull(priceBands);
+            Assert.IsNotEmpty(priceBands);
             foreach (var priceBand in priceBands)
             {
                 Assert.NotNull(priceBand.SalePrice.FirstOrDefault());
@@ -119,7 +119,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var priceRanges = service.GetDailyPriceRanges("1018", 2, dateFrom, dateTo);
 
-            Assert.NotNull(priceRanges);
+            Assert.IsNotEmpty(priceRanges);
             foreach (var priceRange in priceRanges)
             {
                 Assert.NotNull(priceRange.MinPrice.FirstOrDefault());
@@ -137,7 +137,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
             var priceRanges = service.GetMonthlyPriceRanges("1018", 2, dateFrom, dateTo);
 
-            Assert.NotNull(priceRanges);
+            Assert.IsNotEmpty(priceRanges);
             foreach (var priceRange in priceRanges)
             {
                 Assert.NotNull(priceRange.MinPrice.FirstOrDefault());
@@ -146,6 +146,43 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.GreaterOrEqual(dateTo.Date, resultDate);
                 Assert.Less(dateFrom.Date, resultDate.AddMonths(1));
             }
+        }
+
+        [Test]
+        public void GetPriceRuleSummaries_Successful()
+        {
+            var priceRules = service.GetPriceRuleSummaries();
+
+            Assert.IsNotEmpty(priceRules);
+            foreach (var priceRule in priceRules)
+            {
+                Assert.Greater(priceRule.Id, 0);
+                Assert.NotNull(priceRule.Name);
+            }
+        }
+
+        [Test]
+        public void GetPriceRule_Successful()
+        {
+            var id = 1;
+
+            var priceRule = service.GetPriceRule(id);
+
+            Assert.AreEqual(id, priceRule.Id);
+            Assert.NotNull(priceRule.Name);
+            Assert.IsNotEmpty(priceRule.Modifiers);
+            Assert.IsNotEmpty(priceRule.Qualifiers);
+        }
+
+        [Test]
+        public void GetPriceRule_InvalidRuleId_Exception404()
+        {
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.GetPriceRule(0);
+            });
+            
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 
         private void AssertRatesAreValid(IEnumerable<ExchangeRate> rates)
