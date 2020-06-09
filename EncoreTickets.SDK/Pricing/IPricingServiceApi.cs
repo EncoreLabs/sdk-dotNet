@@ -51,5 +51,26 @@ namespace EncoreTickets.SDK.Pricing
         /// </summary>
         /// <returns>Price rule details.</returns>
         PriceRule GetPriceRule(int id);
+
+        /// <summary>
+        /// Returns the summaries of all partner groups.
+        /// Authorization required.
+        /// </summary>
+        /// <returns>Partner group summaries.</returns>
+        IList<PartnerGroup> GetPartnerGroups();
+
+        /// <summary>
+        /// Returns the details of all partners in the specified partner group.
+        /// Authorization required.
+        /// </summary>
+        /// <returns>Partner details.</returns>
+        IList<Partner> GetPartnersInGroup(int partnerGroupId);
+
+        /// <summary>
+        /// Returns the details of the specified partner.
+        /// Authorization required.
+        /// </summary>
+        /// <returns>Partner details.</returns>
+        Partner GetPartner(int id);
     }
 }

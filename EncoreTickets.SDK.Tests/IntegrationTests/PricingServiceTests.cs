@@ -156,7 +156,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(priceRules);
             foreach (var priceRule in priceRules)
             {
-                Assert.Greater(priceRule.Id, 0);
+                Assert.Less(0, priceRule.Id);
                 Assert.NotNull(priceRule.Name);
             }
         }
@@ -164,7 +164,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void GetPriceRule_Successful()
         {
-            var id = 1;
+            const int id = 1;
 
             var priceRule = service.GetPriceRule(id);
 
@@ -185,6 +185,67 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 
+        [Test]
+        public void GetPartnerGroups_Successful()
+        {
+            var partnerGroups = service.GetPartnerGroups();
+
+            Assert.IsNotEmpty(partnerGroups);
+            foreach (var partnerGroup in partnerGroups)
+            {
+                Assert.Less(0, partnerGroup.Id);
+                Assert.NotNull(partnerGroup.Name);
+            }
+        }
+
+        [Test]
+        public void GetPartnersInGroup_Successful()
+        {
+            const int id = 3;
+
+            var partners = service.GetPartnersInGroup(id);
+
+            Assert.IsNotEmpty(partners);
+            foreach (var partner in partners)
+            {
+                AssertPartnerIsValid(partner);
+            }
+        }
+
+        [Test]
+        public void GetPartnersInGroup_InvalidGroupId_Exception404()
+        {
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.GetPartnersInGroup(0);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetPartner_Successful()
+        {
+            const int id = 35;
+
+            var partner = service.GetPartner(id);
+
+            AssertPartnerIsValid(partner);
+            Assert.AreEqual(id, partner.Id);
+            Assert.IsNotEmpty(partner.PartnerGroup.Partners);
+        }
+
+        [Test]
+        public void GetPartner_InvalidPartnerId_Exception404()
+        {
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.GetPartner(0);
+            });
+
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
         private void AssertRatesAreValid(IEnumerable<ExchangeRate> rates)
         {
             var rateList = rates.ToList();
@@ -198,6 +259,16 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.True(rate.EncoreRate > 0);
                 Assert.True(rate.ProtectionMargin >= 0);
             }
+        }
+
+        private void AssertPartnerIsValid(Partner partner)
+        {
+            Assert.Less(0, partner.Id);
+            Assert.NotNull(partner.Name);
+            Assert.NotNull(partner.OfficeId);
+            Assert.NotNull(partner.CurrencyCode);
+            Assert.NotNull(partner.DefaultDisplayCurrencyCode);
+            Assert.NotNull(partner.Description);
         }
     }
 }

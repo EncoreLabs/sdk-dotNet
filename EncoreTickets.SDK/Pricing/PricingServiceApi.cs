@@ -129,5 +129,44 @@ namespace EncoreTickets.SDK.Pricing
             var result = Executor.ExecuteApiWithWrappedResponse<PriceRule>(parameters);
             return result.DataOrException;
         }
+
+        /// <inheritdoc />
+        public IList<PartnerGroup> GetPartnerGroups()
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/admin/groups",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<IList<PartnerGroup>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public IList<Partner> GetPartnersInGroup(int partnerGroupId)
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/admin/groups/{partnerGroupId}/partners",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<IList<Partner>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public Partner GetPartner(int id)
+        {
+            TriggerAutomaticAuthentication();
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/admin/partners/{id}",
+                Method = RequestMethod.Get
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Partner>(parameters);
+            return result.DataOrException;
+        }
     }
 }
