@@ -7,7 +7,6 @@ using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Checkout;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
-using EncoreTickets.SDK.Checkout.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using EncoreTickets.SDK.Utilities.Encoders;
@@ -134,7 +133,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         public void ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters(string reference,
             ConfirmBookingParameters parameters, string requestBody)
         {
-            mockers.SetupAnyExecution<ConfirmBookingResponse>();
+            mockers.SetupAnyExecution<ApiResponseWithResultsBlock<string>>();
 
             try
             {
@@ -145,7 +144,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 // ignored
             }
 
-            mockers.VerifyExecution<ConfirmBookingResponse>(
+            mockers.VerifyExecution<ApiResponseWithResultsBlock<string>>(
                 BaseUrl,
                 $"v{ApiVersion}/bookings/{reference}/confirm",
                 Method.POST,
@@ -159,7 +158,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
             string reference, ConfirmBookingParameters parameters, string requestBody)
         {
             var encoder = new Base64Encoder();
-            mockers.SetupAnyExecution<ConfirmBookingResponse>();
+            mockers.SetupAnyExecution<ApiResponseWithResultsBlock<string>>();
 
             try
             {
@@ -170,7 +169,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 // ignored
             }
 
-            mockers.VerifyExecution<ConfirmBookingResponse>(
+            mockers.VerifyExecution<ApiResponseWithResultsBlock<string>>(
                 BaseUrl,
                 $"v{ApiVersion}/bookings/{reference}/confirm",
                 Method.POST,
@@ -186,7 +185,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult))]
         public void ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult(string responseContent)
         {
-            mockers.SetupSuccessfulExecution<ConfirmBookingResponse>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<string>>(responseContent);
 
             var actual = ConfirmBooking(TestValidBookingReference, TestValidConfirmParameters);
 
@@ -199,7 +198,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
             HttpStatusCode code,
             string expectedMessage)
         {
-            mockers.SetupFailedExecution<ConfirmBookingResponse>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponseWithResultsBlock<string>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {

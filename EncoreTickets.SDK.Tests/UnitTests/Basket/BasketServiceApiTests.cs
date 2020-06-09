@@ -7,7 +7,6 @@ using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Models;
-using EncoreTickets.SDK.Basket.Models.ResponseModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using NUnit.Framework;
@@ -117,7 +116,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [TestCase("not_id")]
         public void GetBasketDeliveryOptions_IfBasketReferenceIsSet_CallsApiWithRightParameters(string reference)
         {
-            mockers.SetupAnyExecution<GettingDeliveryOptionsResponse>();
+            mockers.SetupAnyExecution<ApiResponseWithResultsBlock<List<Delivery>>>();
 
             try
             {
@@ -128,7 +127,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 // ignored
             }
 
-            mockers.VerifyExecution<GettingDeliveryOptionsResponse>(
+            mockers.VerifyExecution<ApiResponseWithResultsBlock<List<Delivery>>>(
                 BaseUrl,
                 $"v1/baskets/{reference}/deliveryOptions",
                 Method.GET,
@@ -140,7 +139,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
             List<Delivery> expected)
         {
-            mockers.SetupSuccessfulExecution<GettingDeliveryOptionsResponse>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<Delivery>>>(responseContent);
 
             var actual = GetBasketDeliveryOptions(TestBasketValidReference);
 
@@ -153,7 +152,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             HttpStatusCode code,
             string expectedMessage)
         {
-            mockers.SetupFailedExecution<GettingDeliveryOptionsResponse>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponseWithResultsBlock<List<Delivery>>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {

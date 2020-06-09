@@ -6,7 +6,6 @@ using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Authentication.Models;
 using EncoreTickets.SDK.Checkout.Models;
 using EncoreTickets.SDK.Checkout.Models.RequestModels;
-using EncoreTickets.SDK.Checkout.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.Encoders;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Serializers;
@@ -86,8 +85,7 @@ namespace EncoreTickets.SDK.Checkout
                 Method = RequestMethod.Post,
                 Body = bookingParameters
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<string, ConfirmBookingResponse, ConfirmBookingResponseContent>(
-                    requestParameters);
+            var result = Executor.ExecuteApiWithWrappedResultsInResponse<string>(requestParameters);
             return result.DataOrException.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase);
         }
     }

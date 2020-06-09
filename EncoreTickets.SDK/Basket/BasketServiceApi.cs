@@ -9,7 +9,6 @@ using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
-using EncoreTickets.SDK.Basket.Models.ResponseModels;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Mapping;
 
@@ -57,8 +56,7 @@ namespace EncoreTickets.SDK.Basket
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/deliveryOptions",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Delivery>, GettingDeliveryOptionsResponse,
-                GettingDeliveryOptionsResponseContent>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Delivery>>(parameters);
             return result.DataOrException;
         }
 

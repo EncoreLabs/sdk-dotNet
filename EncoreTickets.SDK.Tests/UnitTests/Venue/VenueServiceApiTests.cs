@@ -10,7 +10,6 @@ using EncoreTickets.SDK.Tests.Helpers;
 using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using EncoreTickets.SDK.Venue;
 using EncoreTickets.SDK.Venue.Models;
-using EncoreTickets.SDK.Venue.Models.ResponseModels;
 using Moq;
 using NUnit.Framework;
 using RestSharp;
@@ -55,7 +54,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         public void GetVenues_CallsApiWithRightParameters()
         {
             AutomaticAuthentication = true;
-            mockers.SetupAnyExecution<VenuesResponse>();
+            mockers.SetupAnyExecution<ApiResponseWithResultsBlock<List<SDK.Venue.Models.Venue>>>();
 
             try
             {
@@ -67,7 +66,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             }
 
             mockers.VerifyAuthenticateExecution(Times.Never());
-            mockers.VerifyExecution<VenuesResponse>(BaseUrl, $"v{ApiVersion}/venues", Method.GET);
+            mockers.VerifyExecution<ApiResponseWithResultsBlock<List<SDK.Venue.Models.Venue>>>(BaseUrl, $"v{ApiVersion}/venues", Method.GET);
         }
 
         [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenues_IfApiResponseSuccessful_ReturnsVenues))]
@@ -75,7 +74,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             string responseContent,
             List<SDK.Venue.Models.Venue> expected)
         {
-            mockers.SetupSuccessfulExecution<VenuesResponse>(responseContent);
+            mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<SDK.Venue.Models.Venue>>>(responseContent);
 
             var actual = GetVenues();
 
@@ -87,7 +86,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             string responseContent,
             HttpStatusCode code)
         {
-            mockers.SetupFailedExecution<VenuesResponse>(responseContent, code);
+            mockers.SetupFailedExecution<ApiResponseWithResultsBlock<List<SDK.Venue.Models.Venue>>>(responseContent, code);
 
             var exception = Assert.Catch<ApiException>(() =>
             {
