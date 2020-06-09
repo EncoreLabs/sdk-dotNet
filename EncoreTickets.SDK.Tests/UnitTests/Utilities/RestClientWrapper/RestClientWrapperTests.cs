@@ -271,8 +271,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Null(result.XmlSerializer);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxExecutionsCountIsNotSet_IfResponseSuccess_TriesToExecuteOnce))]
-        public void Execute_IfResponseSuccess_TriesToExecuteOnce(RestResponse response)
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxExecutionsCountIsNotSet_IfResponseNotWithServerError_TriesToExecuteOnce))]
+        public void Execute_IfResponseNotWithServerError_TriesToExecuteOnce(RestResponse response)
         {
             var request = It.IsAny<IRestRequest>();
             var clientMock = new Mock<RestClient>();
@@ -284,8 +284,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             clientMock.Verify(mock => mock.Execute(request), Times.Once);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice))]
-        public void Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice(RestResponse response)
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice))]
+        public void Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice(RestResponse response)
         {
             var request = It.IsAny<IRestRequest>();
             var clientMock = new Mock<RestClient>();
@@ -297,8 +297,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             clientMock.Verify(mock => mock.Execute(request), Times.AtLeast(2));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes))]
-        public void Execute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes(RestResponse response, int maxCount, int expectedCount)
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.Execute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes))]
+        public void Execute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes(RestResponse response, int maxCount, int expectedCount)
         {
             var request = It.IsAny<IRestRequest>();
             var clientMock = new Mock<RestClient>();
@@ -310,8 +310,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             clientMock.Verify(mock => mock.Execute(request), Times.Exactly(expectedCount));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfResponseSuccess_TriesToExecuteOnce))]
-        public void GenericExecute_IfResponseSuccess_TriesToExecuteOnce<T>(RestResponse<T> response)
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfResponseNotWithServerError_TriesToExecuteOnce))]
+        public void GenericExecute_IfResponseNotWithServerError_TriesToExecuteOnce<T>(RestResponse<T> response)
             where T : class, new()
         {
             var request = It.IsAny<IRestRequest>();
@@ -324,8 +324,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             clientMock.Verify(mock => mock.Execute<T>(request), Times.Once);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice))]
-        public void GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice<T>(RestResponse<T> response)
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice))]
+        public void GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice<T>(RestResponse<T> response)
             where T : class, new()
         {
             var request = It.IsAny<IRestRequest>();
@@ -338,8 +338,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             clientMock.Verify(mock => mock.Execute<T>(request), Times.AtLeast(2));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes))]
-        public void GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes<T>(
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes))]
+        public void GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes<T>(
             RestResponse<T> response,
             int maxCount,
             int expectedCount)
@@ -709,12 +709,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             ),
         };
 
-        public static IEnumerable<TestCaseData> Execute_IfMaxExecutionsCountIsNotSet_IfResponseSuccess_TriesToExecuteOnce = new[]
+        public static IEnumerable<TestCaseData> Execute_IfMaxExecutionsCountIsNotSet_IfResponseNotWithServerError_TriesToExecuteOnce = new[]
         {
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.OK
+                }
+            ),
+            new TestCaseData(
+                new RestResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound
                 }
             ),
             new TestCaseData(
@@ -755,21 +761,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             ),
         };
 
-        public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice = new[]
+        public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice = new[]
         {
-            new TestCaseData(
-                new RestResponse { }
-            ),
-            new TestCaseData(
-                new RestResponse {ErrorException = new Exception()}
-            ),
-            new TestCaseData(
-                new RestResponse {ErrorMessage = "error"}
-            ),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = (HttpStatusCode) 555
                 }
             ),
             new TestCaseData(
@@ -780,27 +777,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             ),
         };
 
-        public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes = new[]
+        public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes = new[]
         {
             new TestCaseData(
-                new RestResponse { },
-                4,
-                4
-            ),
-            new TestCaseData(
-                new RestResponse {ErrorException = new Exception()},
-                1,
-                1
-            ),
-            new TestCaseData(
-                new RestResponse {ErrorMessage = "error"},
+                new RestResponse
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable
+                },
                 0,
                 1
             ),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = (HttpStatusCode) 555
                 },
                 100,
                 100
@@ -815,7 +805,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             ),
         };
 
-        public static IEnumerable<TestCaseData> GenericExecute_IfResponseSuccess_TriesToExecuteOnce = new[]
+        public static IEnumerable<TestCaseData> GenericExecute_IfResponseNotWithServerError_TriesToExecuteOnce = new[]
         {
             new TestCaseData(
                 new RestResponse<object>
@@ -859,23 +849,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     StatusCode = HttpStatusCode.TemporaryRedirect
                 }
             ),
-        };
-
-        public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailed_TriesToExecuteAtLeastTwice = new[]
-        {
-            new TestCaseData(
-                new RestResponse<object> { }
-            ),
-            new TestCaseData(
-                new RestResponse<object> {ErrorException = new Exception()}
-            ),
-            new TestCaseData(
-                new RestResponse<object> {ErrorMessage = "error"}
-            ),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.NotFound
+                }
+            ),
+        };
+
+        public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice = new[]
+        {
+            new TestCaseData(
+                new RestResponse<object>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable
                 }
             ),
             new TestCaseData(
@@ -886,30 +873,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             ),
         };
 
-        public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailed_TriesToExecuteMaxCountTimes = new[]
+        public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes = new[]
         {
-            new TestCaseData(
-                new RestResponse<object> { },
-                4,
-                4
-            ),
-            new TestCaseData(
-                new RestResponse<object> {ErrorException = new Exception()},
-                1,
-                1
-            ),
-            new TestCaseData(
-                new RestResponse<object> {ErrorMessage = "error"},
-                0,
-                1
-            ),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.ServiceUnavailable
                 },
-                100,
-                100
+                0,
+                1
             ),
             new TestCaseData(
                 new RestResponse<object>

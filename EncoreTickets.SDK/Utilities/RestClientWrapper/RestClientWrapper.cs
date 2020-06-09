@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Mapping;
 using Polly;
@@ -16,17 +17,6 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
     public class RestClientWrapper
     {
         private const int DefaultMaxExecutionsCount = 2;
-
-        private static readonly List<HttpStatusCode> SuccessfulStatusCodes = new List<HttpStatusCode>
-        {
-            HttpStatusCode.OK,
-            HttpStatusCode.Moved,
-            HttpStatusCode.NoContent,
-            HttpStatusCode.PaymentRequired,
-            HttpStatusCode.Redirect,
-            HttpStatusCode.RedirectMethod,
-            HttpStatusCode.TemporaryRedirect,
-        };
 
         public int MaxExtraAttemptsCount { get; }
 
@@ -104,7 +94,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         {
             var response = Policy
                 .Handle<Exception>()
-                .OrResult<IRestResponse>(resp => !IsGoodResponse(resp))
+                .OrResult<IRestResponse>(ShouldRequestBeRepeated)
                 .Retry(MaxExtraAttemptsCount)
                 .Execute(() => client.Execute(request));
             return response;
@@ -122,7 +112,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         {
             var response = Policy
                 .Handle<Exception>()
-                .OrResult<IRestResponse<T>>(resp => !IsGoodResponse(resp))
+                .OrResult<IRestResponse<T>>(ShouldRequestBeRepeated)
                 .Retry(MaxExtraAttemptsCount)
                 .Execute(() => client.Execute<T>(request));
             return response;
@@ -188,14 +178,9 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             }
         }
 
-        private bool IsGoodResponse(IRestResponse response)
+        private bool ShouldRequestBeRepeated(IRestResponse response)
         {
-            if (response.ErrorException != null || !string.IsNullOrEmpty(response.ErrorMessage))
-            {
-                return false;
-            }
-
-            return response.IsSuccessful || SuccessfulStatusCodes.Contains(response.StatusCode);
+            return response.StatusCode.IsServerError();
         }
     }
 }
