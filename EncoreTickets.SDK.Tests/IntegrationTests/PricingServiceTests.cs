@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api.Models;
@@ -20,7 +21,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void SetupState()
         {
             var configuration = ConfigurationHelper.GetConfiguration();
-            var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"]);
+            var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"])
+            {
+                Affiliate = "boxoffice"
+            };
             service = new PricingServiceApi(context, true);
         }
 
@@ -67,6 +71,44 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
 
             Assert.AreEqual(HttpStatusCode.Unauthorized, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetPriceBands_Successful()
+        {
+            var date = DateTime.Now.AddMonths(3);
+
+            var priceBands = service.GetPriceBands("1018", 2, date.Date);
+
+            Assert.NotNull(priceBands);
+            foreach (var priceBand in priceBands)
+            {
+                Assert.NotNull(priceBand.SalePrice.FirstOrDefault());
+                Assert.NotNull(priceBand.FaceValue.FirstOrDefault());
+                Assert.AreEqual(date.Date, priceBand.Date?.Date);
+            }
+        }
+
+        [Test]
+        public void GetPriceBands_IncorrectTimeSpecified_Exception404()
+        {
+            var date = DateTime.Now.AddMonths(3).Date + new TimeSpan(13, 37, 0);
+
+            var exception = Assert.Catch<ApiException>(() =>
+            { 
+                service.GetPriceBands("1018", 2, date);
+            });
+            
+            Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
+        }
+
+        [Test]
+        public void GetPriceBands_NullProductId_ArgumentException()
+        {
+            Assert.Catch<ArgumentException>(() =>
+            {
+                service.GetPriceBands(null, 2, DateTime.Now);
+            });
         }
 
         private void AssertRatesAreValid(IEnumerable<ExchangeRate> rates)

@@ -1,4 +1,6 @@
-﻿using EncoreTickets.SDK.Api;
+﻿using System;
+using System.Collections.Generic;
+using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
 using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
@@ -43,6 +45,25 @@ namespace EncoreTickets.SDK.Pricing
                 DateFormat = DateFormat
             };
             var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
+        public IList<PriceBand> GetPriceBands(string productId, int quantity, DateTime? performanceDateTime = null)
+        {
+            if (string.IsNullOrWhiteSpace(productId))
+            {
+                throw new ArgumentException("Product ID must be set");
+            }
+
+            var queryParameters = new PriceBandsQueryParameters(performanceDateTime);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/pricing/products/{productId}/quantity/{quantity}/bands",
+                Method = RequestMethod.Get,
+                Query = queryParameters
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<IList<PriceBand>>(parameters);
             return result.DataOrException;
         }
     }
