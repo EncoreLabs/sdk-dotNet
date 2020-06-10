@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"])
             {
-                Affiliate = "boxoffice"
+                Affiliate = configuration["Pricing:AffiliateId"]
             };
             service = new PricingServiceApi(context, true);
         }
@@ -100,15 +100,6 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
             
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
-        }
-
-        [Test]
-        public void GetPriceBands_NullProductId_ArgumentException()
-        {
-            Assert.Catch<ArgumentException>(() =>
-            {
-                service.GetPriceBands(null, 2, DateTime.Now);
-            });
         }
 
         [Test]
