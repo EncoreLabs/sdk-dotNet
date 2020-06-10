@@ -1,6 +1,8 @@
-﻿using EncoreTickets.SDK.Basket.Extensions;
+﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Tests.Helpers;
+using EncoreTickets.SDK.Utilities.CommonModels.Constants;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using NUnit.Framework;
 
@@ -16,6 +18,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         };
 
         private static readonly int DefaultQuantity = 2;
+
+        [TestCaseSource(typeof(ReservationExtensionTestsSource), nameof(ReservationExtensionTestsSource.IsForFlexiTickets_Correct))]
+        public void IsForFlexiTickets_Correct(Reservation reservation, bool expected)
+        {
+            var actual = reservation.IsForFlexiTickets();
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void TotalAdjustedAmountInOfficeCurrency_Correct()
@@ -96,5 +106,46 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
             AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
+    }
+
+    public static class ReservationExtensionTestsSource
+    {
+        public static IEnumerable<TestCaseData> IsForFlexiTickets_Correct = new[]
+        {
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId,
+                    ProductType = ProductConstants.FlexiProductType
+                },
+                true
+            ),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId,
+                    ProductType = ProductConstants.FlexiProductType.ToLower()
+                },
+                true
+            ),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId
+                },
+                false
+            ),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductType = ProductConstants.FlexiProductType
+                },
+                false
+            ),
+            new TestCaseData(
+                new Reservation(),
+                false
+            ),
+        };
     }
 }

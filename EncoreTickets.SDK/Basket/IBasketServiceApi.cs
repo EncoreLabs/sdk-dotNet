@@ -35,9 +35,11 @@ namespace EncoreTickets.SDK.Basket
         /// PATCH /api/v1/baskets
         /// </summary>
         /// <param name="source">Object containing the details of the upserted basket</param>
+        /// <param name="hasFlexiTickets">Flag indicating whether the basket needs Flexi tickets.
+        /// If the value is null, it will be added based on the permission of Flexi tickets from the basket.</param>
         /// <returns>Details of the upserted basket.</returns>
         /// <exception cref="ApiException">The API request failed.</exception>
-        Models.Basket UpsertBasket(Models.Basket source);
+        Models.Basket UpsertBasket(Models.Basket source, bool? hasFlexiTickets = null);
 
         /// <summary>
         /// Creates or updates a basket when it is possible.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using EncoreTickets.SDK.Api;
 using EncoreTickets.SDK.Api.Models;
@@ -7,6 +8,7 @@ using EncoreTickets.SDK.Api.Results;
 using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Basket.Exceptions;
+using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Utilities.Enums;
@@ -61,10 +63,16 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public Models.Basket UpsertBasket(Models.Basket source)
+        public Models.Basket UpsertBasket(Models.Basket source, bool? hasFlexiTickets = null)
         {
             ThrowArgumentExceptionIfBasketDetailsAreIncorrect(source);
+            source.Reservations = source.Reservations?.Where(x => !x.IsForFlexiTickets() && x.Items != null).ToList();
             var request = source.Map<Models.Basket, UpsertBasketParameters>();
+            if (hasFlexiTickets.HasValue)
+            {
+                request.HasFlexiTickets = hasFlexiTickets.Value;
+            }
+
             return UpsertBasket(request);
         }
 
