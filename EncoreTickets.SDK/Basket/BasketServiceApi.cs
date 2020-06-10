@@ -91,11 +91,33 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public Models.Basket ClearBasket(string basketId)
+        public Models.Basket UpsertPromotion(string basketReference, string couponName)
         {
+            var coupon = new Coupon {Code = couponName};
+            return UpsertPromotion(basketReference, coupon);
+        }
+
+        /// <inheritdoc />
+        public Models.Basket UpsertPromotion(string basketReference, Coupon coupon)
+        {
+            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v{ApiVersion}/baskets/{basketId}/clear",
+                Endpoint = $"v{ApiVersion}/baskets/{basketReference}/applyPromotion",
+                Method = RequestMethod.Patch,
+                Body = new ApplyPromotionRequest { Coupon = coupon }
+            };
+            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
+            return GetUpsertPromotionResult(result, coupon, basketReference);
+        }
+
+        /// <inheritdoc />
+        public Models.Basket ClearBasket(string basketReference)
+        {
+            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/baskets/{basketReference}/clear",
                 Method = RequestMethod.Patch
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
@@ -103,11 +125,19 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public Models.Basket RemoveReservation(string basketId, int reservationId)
+        public Models.Basket RemoveReservation(string basketReference, int reservationId)
         {
+            return RemoveReservation(basketReference, reservationId.ToString());
+        }
+
+        /// <inheritdoc />
+        public Models.Basket RemoveReservation(string basketReference, string reservationId)
+        {
+            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            ThrowArgumentExceptionIfIdIsIncorrect(reservationId, "reservation ID");
             var parameters = new ExecuteApiRequestParameters
             {
-                Endpoint = $"v{ApiVersion}/baskets/{basketId}/reservations/{reservationId}",
+                Endpoint = $"v{ApiVersion}/baskets/{basketReference}/reservations/{reservationId}",
                 Method = RequestMethod.Delete
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
@@ -115,13 +145,22 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
+        public IList<Promotion> GetPromotions(PageRequest pageParameters = null)
+        {
+            var parameters = new ExecuteApiRequestParameters
+            {
+                Endpoint = $"v{ApiVersion}/promotions",
+                Method = RequestMethod.Get,
+                Query = pageParameters
+            };
+            var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Promotion>>(parameters);
+            return result.DataOrException;
+        }
+
+        /// <inheritdoc />
         public Promotion GetPromotionDetails(string promotionId)
         {
-            if (string.IsNullOrEmpty(promotionId))
-            {
-                throw new ArgumentException("promotion ID must be set");
-            }
-
+            ThrowArgumentExceptionIfIdIsIncorrect(promotionId, "promotion ID");
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/promotions/{promotionId}",
@@ -129,35 +168,6 @@ namespace EncoreTickets.SDK.Basket
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
             return result.DataOrException;
-        }
-
-        /// <inheritdoc />
-        public Models.Basket UpsertPromotion(string basketId, Coupon coupon)
-        {
-            var parameters = new ExecuteApiRequestParameters
-            {
-                Endpoint = $"v{ApiVersion}/baskets/{basketId}/applyPromotion",
-                Method = RequestMethod.Patch,
-                Body = new ApplyPromotionRequest {Coupon = coupon}
-            };
-            var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
-            return GetUpsertPromotionResult(result, coupon, basketId);
-        }
-
-        private void ThrowArgumentExceptionIfBasketReferenceIsIncorrect(string basketReference)
-        {
-            if (string.IsNullOrWhiteSpace(basketReference))
-            {
-                throw new ArgumentException("basket ID must be set");
-            }
-        }
-
-        private void ThrowArgumentExceptionIfBasketDetailsAreIncorrect(object basketDetails)
-        {
-            if (basketDetails == null)
-            {
-                throw new ArgumentException("details for basket must be set");
-            }
         }
 
         private Models.Basket GetUpsertPromotionResult(ApiResult<Models.Basket> apiResult, Coupon coupon, string basketId)
@@ -182,6 +192,37 @@ namespace EncoreTickets.SDK.Basket
                         throw;
                 }
             }
+        }
+
+        private void ThrowArgumentExceptionIfBasketReferenceIsIncorrect(string basketReference)
+        {
+            ThrowArgumentExceptionIfIdIsIncorrect(basketReference, "basket ID");
+        }
+
+        private void ThrowArgumentExceptionIfBasketDetailsAreIncorrect(object basketDetails)
+        {
+            ThrowArgumentExceptionIfObjectIsNotSet(basketDetails, "details for basket");
+        }
+
+        private void ThrowArgumentExceptionIfIdIsIncorrect(string id, string idName)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                ThrowArgumentExceptionIfSomethingIsNotSet(idName);
+            }
+        }
+
+        private void ThrowArgumentExceptionIfObjectIsNotSet(object specificObject, string name)
+        {
+            if (specificObject == null)
+            {
+                ThrowArgumentExceptionIfSomethingIsNotSet(name);
+            }
+        }
+
+        private void ThrowArgumentExceptionIfSomethingIsNotSet(string name)
+        {
+            throw new ArgumentException($"{name} must be set");
         }
     }
 }
