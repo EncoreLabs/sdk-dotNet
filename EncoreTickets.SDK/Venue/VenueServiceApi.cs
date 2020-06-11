@@ -10,7 +10,6 @@ using EncoreTickets.SDK.Utilities.Serializers;
 using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
-using EncoreTickets.SDK.Venue.Models.ResponseModels;
 using Attribute = EncoreTickets.SDK.Venue.Models.Attribute;
 
 namespace EncoreTickets.SDK.Venue
@@ -45,7 +44,7 @@ namespace EncoreTickets.SDK.Venue
                 Endpoint = $"v{ApiVersion}/venues",
                 Method = RequestMethod.Get
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Models.Venue>>(parameters);
             return result.DataOrException;
         }
 

@@ -81,6 +81,20 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
             return CreateApiResult<T, TApiResponse, TResponse>(restWrappedResponse);
         }
 
+        /// <summary>
+        /// Get an object of <typeparamref name="T"/> from API when expected data should be wrapped with extra data and in "Results" block on API side.
+        /// </summary>
+        /// <typeparam name="T">Type of expected object.</typeparam>
+        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <returns>Result of request execution.</returns>
+        public ApiResult<T> ExecuteApiWithWrappedResultsInResponse<T>(
+            ExecuteApiRequestParameters requestParameters)
+            where T : class
+        {
+            return ExecuteApiWithWrappedResponse<T, ApiResponseWithResultsBlock<T>,
+                ApiResponseWithResultsBlockContent<T>>(requestParameters);
+        }
+
         private IRestResponse<T> GetRestResponse<T>(ExecuteApiRequestParameters requestParameters)
             where T : class, new()
         {

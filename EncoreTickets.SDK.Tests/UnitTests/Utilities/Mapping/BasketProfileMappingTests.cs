@@ -18,13 +18,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
         [Test]
         public void FromSeatToItemRequest_CorrectlyMapped()
         {
-            var seat = new Seat
+            var seat = new ReservationItem
             {
                 AggregateReference = "reference",
                 AreaName = "E"
             };
 
-            var result = seat.Map<Seat, ItemRequest>();
+            var result = seat.Map<ReservationItem, ReservationItemParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(seat);
         }
@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 ChannelId = "test-channel",
                 Delivery = new Delivery
                 {
-                    Method = "postage",
+                    Method = DeliveryMethod.Postage,
                     Charge = new Price
                     {
                         Currency = DefaultCurrency,
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 ShopperCurrency = "USD"
             };
 
-            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketRequest>();
+            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(sourceBasket);
             Assert.AreEqual(sourceBasket.AllowFlexiTickets, result.HasFlexiTickets);
@@ -73,11 +73,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 Date = DateTimeOffset.Now,
                 ProductId = "1234",
                 VenueId = "123",
-                Items = new List<Seat> { new Seat { AggregateReference = "reference1" }, new Seat { AggregateReference = "reference2" } },
+                Items = new List<ReservationItem> { new ReservationItem { AggregateReference = "reference1" }, new ReservationItem { AggregateReference = "reference2" } },
                 Quantity = 2
             };
 
-            var result = reservation.Map<Reservation, ReservationRequest>();
+            var result = reservation.Map<Reservation, ReservationParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(reservation);
             for (var i = 0; i < result.Items.Count; i++)

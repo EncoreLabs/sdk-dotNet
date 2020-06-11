@@ -8,6 +8,7 @@ using EncoreTickets.SDK.Api.Results.Exceptions;
 using EncoreTickets.SDK.Basket;
 using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Models;
+using EncoreTickets.SDK.Basket.Models.RequestModels;
 using EncoreTickets.SDK.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -19,7 +20,6 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
     {
         private IConfiguration configuration;
         private BasketServiceApi service;
-        private bool runPromoCodeTests = false;
 
         [SetUp]
         public void SetupState()
@@ -29,8 +29,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             service = new BasketServiceApi(context);
         }
 
+        #region GetBasketDetails
+
         [Test]
-        public void GetBasket_Successful()
+        public void GetBasketDetails_Successful()
         {
             var reference = configuration["Basket:TestBasketReference"];
 
@@ -43,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetBasket_Exception400()
+        public void GetBasketDetails_Exception400()
         {
             var reference = "test";
 
@@ -56,10 +58,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetBasket_Exception404()
+        public void GetBasketDetails_Exception404()
         {
             var reference = configuration["Basket:TestBasketReferenceNotFound"];
-            
+
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var result = service.GetBasketDetails(reference);
@@ -68,20 +70,69 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
+        #endregion
+
+        #region GetBasketDeliveryOptions
+
         [Test]
-        public void UpsertBasket_GetBasket_Successful()
+        public void GetBasketDeliveryOptions_Successful()
         {
-            VerifyPromoCodeTestsEnabled();
+            var reference = configuration["Basket:TestBasketReference"];
+
+            var result = service.GetBasketDeliveryOptions(reference);
+
+            Assert.NotNull(result);
+            foreach (var deliveryOption in result)
+            {
+                Assert.NotNull(deliveryOption.Charge);
+                Assert.NotNull(deliveryOption.Method);
+            }
+        }
+
+        [Test]
+        public void GetBasketDeliveryOptions_Exception400()
+        {
+            var reference = "test";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void GetBasketDeliveryOptions_Exception404()
+        {
+            var reference = configuration["Basket:TestBasketReferenceNotFound"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        #endregion
+
+        #region UpsertBasket
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketIsUsedAndWithoutFlexi_Successful()
+        {
             var upsertBasketResult = (Basket.Models.Basket)null;
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasket(reference);
                 upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 2;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
@@ -92,60 +143,246 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void UpsertBasket_Failed()
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketIsUsedAndWithFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                request.AllowFlexiTickets = true;
+                upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 3;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketParametersAreUsedAndWithoutFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasketParameters(reference);
+                upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 2;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketParametersAreUsedAndWithFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasketParameters(reference);
+                request.HasFlexiTickets = true;
+                upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 3;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+                
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfExistingBasketAndBasketIsUsedAndWithoutFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                upsertBasketResult = service.UpsertBasket(request);
+                var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult);
+                const int expectedReservationsCount = 3;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfExistingBasketAndBasketIsUsedAndWithFlexiWhenCreating_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                request.AllowFlexiTickets = true;
+                upsertBasketResult = service.UpsertBasket(request);
+                var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult);
+                const int expectedReservationsCount = 3;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfExistingBasketAndBasketIsUsedAndWithFlexiWhenUpdating_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                upsertBasketResult = service.UpsertBasket(request);
+                var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult, true);
+                const int expectedReservationsCount = 3;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfExistingBasketAndBasketIsUsedAndWithFlexiWhenCreatingButWithoutWhenUpdating_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                request.AllowFlexiTickets = true;
+                upsertBasketResult = service.UpsertBasket(request);
+                var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult, false);
+                const int expectedReservationsCount = 2;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
+                Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_IfReservationItemHasInvalidReference_Exception400()
         {
             var reference = configuration["Basket:TestReferences:0"];
             var request = CreateDefaultBasket(reference);
             request.Reservations[0].Items[0].AggregateReference = "invalid";
 
-            Assert.Throws<ApiException>(() => service.UpsertBasket(request));
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.UpsertBasket(request);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
-        public void ClearBasket_Successful()
+        public void UpsertBasket_IfBasketChannelIsMissed_Exception400()
         {
             var reference = configuration["Basket:TestReferences:0"];
             var request = CreateDefaultBasket(reference);
-            var upsertBasketResult = service.UpsertBasket(request);
+            request.ChannelId = null;
 
-            var clearBasketResult = service.ClearBasket(upsertBasketResult.Reference);
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.UpsertBasket(request);
+            });
 
-            Assert.IsEmpty(clearBasketResult.Reservations);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
-        public void RemoveReservation_Successful()
+        public void UpsertBasket_IfReservationsAreMissed_Exception400()
         {
             var reference = configuration["Basket:TestReferences:0"];
             var request = CreateDefaultBasket(reference);
-            var upsertBasketResult = service.UpsertBasket(request);
+            request.Reservations = null;
 
-            var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, 1);
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.UpsertBasket(request);
+            });
 
-            Assert.IsEmpty(removeReservationResult.Reservations);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
         [Test]
-        public void GetPromotion_Successful()
+        public void UpsertBasket_IfCountOfReservationsItemsIsNotEqualToQuantity_Exception400()
         {
-            const string promoId = "206000034";
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            request.Reservations[0].Quantity = request.Reservations[0].Items.Count + 1;
 
-            var promoDetails = service.GetPromotionDetails(promoId);
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                service.UpsertBasket(request);
+            });
 
-            Assert.AreEqual(promoId, promoDetails.Id);
-            Assert.NotNull(promoDetails.Reference);
-            Assert.NotNull(promoDetails.Description);
-            Assert.NotNull(promoDetails.DisplayText);
-            Assert.NotNull(promoDetails.Name);
-            Assert.NotNull(promoDetails.ReportingCode);
-            Assert.AreNotEqual(promoDetails.ValidFrom, default);
-            Assert.AreNotEqual(promoDetails.ValidTo, default);
+            AssertApiException(exception, HttpStatusCode.BadRequest);
         }
 
+        #endregion
+
+        #region UpsertPromotion
+
         [Test]
-        public void ApplyPromotion_Successful()
+        public void UpsertPromotion_Successful()
         {
-            VerifyPromoCodeTestsEnabled();
+            if (!VerifyPromoCodeTestsEnabled())
+            {
+                Assert.Ignore();
+            }
+
             var upsertBasketResult = (Basket.Models.Basket)null;
             Coupon coupon;
             try
@@ -166,7 +403,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void ApplyPromotion_InvalidPromoCode()
+        public void UpsertPromotion_InvalidPromoCodeException()
         {
             Basket.Models.Basket basket = null;
             Coupon coupon;
@@ -187,7 +424,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void ApplyPromotion_BasketNotFound()
+        public void UpsertPromotion_BasketNotFoundException()
         {
             Assert.Throws<BasketNotFoundException>(() =>
             {
@@ -196,7 +433,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void ApplyPromotion_BasketCannotBeModified()
+        public void UpsertPromotion_BasketCannotBeModifiedException()
         {
             Assert.Throws<BasketCannotBeModifiedException>(() =>
             {
@@ -204,43 +441,263 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             });
         }
 
-        private void VerifyPromoCodeTestsEnabled()
+        #endregion
+
+        #region ClearBasket
+
+        [Test]
+        public void ClearBasket_Successful()
         {
-            if (!runPromoCodeTests)
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+
+            var clearBasketResult = service.ClearBasket(upsertBasketResult.Reference);
+
+            Assert.IsEmpty(clearBasketResult.Reservations);
+        }
+
+        [Test]
+        public void ClearBasket_Exception400()
+        {
+            var reference = "test";
+
+            var exception = Assert.Catch<ApiException>(() =>
             {
-                Assert.Ignore("The promo code involving tests are disabled by default because they use a paid service. " +
-                              "Set 'runPromoCodeTests' field to true to run the tests.");
+                var result = service.ClearBasket(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void ClearBasket_Exception404()
+        {
+            var reference = configuration["Basket:TestBasketReferenceNotFound"];
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.ClearBasket(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        #endregion
+
+        #region RemoveReservation
+        
+        [Test]
+        public void RemoveReservation_Successful()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+
+            var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, 1);
+
+            Assert.IsEmpty(removeReservationResult.Reservations);
+        }
+
+        [Test]
+        public void RemoveReservation_IfBasketIdIsIncorrect_Exception400()
+        {
+            var basketReference = "test";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var removeReservationResult = service.RemoveReservation(basketReference, 1);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void RemoveReservation_IfBasketIdNotFound_Exception404()
+        {
+            var basketReference = "1";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var removeReservationResult = service.RemoveReservation(basketReference, 1);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void RemoveReservation_IReservationNotFound_Exception404()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+            var reservationId = upsertBasketResult.Reservations.Count + 1;
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var removeReservationResult = service.RemoveReservation(upsertBasketResult.Reference, reservationId);
+            });
+
+            try
+            {
+                service.ClearBasket(upsertBasketResult.Reference);
+            }
+            catch (Exception e)
+            {
+            }
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        #endregion
+
+        #region GetPromotions
+
+        [Test]
+        public void GetPromotions_Successful()
+        {
+            var pageParameters = new PageRequest
+            {
+                Limit = 10
+            };
+
+            var promotions = service.GetPromotions(pageParameters);
+
+            foreach (var promoDetails in promotions)
+            {
+                Assert.NotNull(promoDetails.Id);
+                Assert.NotNull(promoDetails.Name);
+                Assert.NotNull(promoDetails.Reference);
+                Assert.NotNull(promoDetails.ReportingCode);
+                Assert.AreNotEqual(promoDetails.ValidFrom, default);
+                Assert.AreNotEqual(promoDetails.ValidTo, default);
             }
         }
 
-        private Basket.Models.Basket CreateDefaultBasket(params string[] references)
+        [Test]
+        public void GetPromotions_IfParametersAreIncorrect_Exception400()
         {
-            return new Basket.Models.Basket
+            var pageParameters = new PageRequest
+            {
+                Limit = -10
+            };
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var promotions = service.GetPromotions(pageParameters);
+            });
+
+            AssertApiException(exception, HttpStatusCode.BadRequest);
+        }
+
+        #endregion
+
+        #region GetPromotionDetails
+
+        [Test]
+        public void GetPromotionDetails_Successful()
+        {
+            const string promoId = "206000034";
+
+            var promoDetails = service.GetPromotionDetails(promoId);
+
+            Assert.AreEqual(promoId, promoDetails.Id);
+            Assert.NotNull(promoDetails.Reference);
+            Assert.NotNull(promoDetails.Description);
+            Assert.NotNull(promoDetails.DisplayText);
+            Assert.NotNull(promoDetails.Name);
+            Assert.NotNull(promoDetails.ReportingCode);
+            Assert.AreNotEqual(promoDetails.ValidFrom, default);
+            Assert.AreNotEqual(promoDetails.ValidTo, default);
+        }
+
+        [Test]
+        public void GetPromotionDetails_IfIdIsIncorrect_Exception404()
+        {
+            var id = "not_id";
+
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var promotions = service.GetPromotionDetails(id);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        #endregion
+
+        private bool VerifyPromoCodeTestsEnabled()
+        {
+            if (GetConfigBoolValueOrFalse("RunPromoCodeTests"))
+            {
+                return true;
+            }
+
+            if (GetConfigBoolValueOrFalse("ShowPromoCodeWarning"))
+            {
+                Assert.Warn("The promo code involving tests are disabled by default because they use a paid service. " +
+                            "Set 'RunPromoCodeTests' configuration value to true to run the tests with promo codes.");
+            }
+
+            return false;
+        }
+
+        private UpsertBasketParameters CreateDefaultBasketParameters(params string[] references)
+        {
+            var codesEnabled = VerifyPromoCodeTestsEnabled();
+            return new UpsertBasketParameters
             {
                 ChannelId = "test-channel",
-                Coupon = new Coupon { Code = configuration["Basket:ValidPromoCode"] },
-                Delivery = new Delivery
+                Coupon = !codesEnabled ? null : new Coupon { Code = configuration["Basket:ValidPromoCode"] },
+                Delivery = CreateDefaultDelivery(),
+                Reservations = new List<ReservationParameters>
                 {
-                    Charge = new Price
+                    new ReservationParameters
                     {
-                        Currency = "GBP",
-                        DecimalPlaces = 2,
-                        Value = 145
-                    },
-                    Method = "postage"
-                },
-                Reservations = new List<Reservation>
-                {
-                    new Reservation
-                    {
-                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm", 
+                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm",
                             CultureInfo.InvariantCulture),
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new Seat { AggregateReference = r }).ToList()
+                        Items = references.Select(r => new ReservationItemParameters {AggregateReference = r}).ToList()
                     }
                 }
+            };
+        }
+
+        private Basket.Models.Basket CreateDefaultBasket(params string[] references)
+        {
+            var codesEnabled = VerifyPromoCodeTestsEnabled();
+            return new Basket.Models.Basket
+            {
+                ChannelId = "encoretickets",
+                Coupon = !codesEnabled ? null : new Coupon {Code = configuration["Basket:ValidPromoCode"]},
+                Delivery = CreateDefaultDelivery(),
+                Reservations = new List<Reservation>
+                {
+                    new Reservation
+                    {
+                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm",
+                            CultureInfo.InvariantCulture),
+                        ProductId = configuration["Basket:TestProductId"],
+                        VenueId = configuration["Basket:TestVenueId"],
+                        Quantity = references.Length,
+                        Items = references.Select(r => new ReservationItem {AggregateReference = r}).ToList()
+                    }
+                }
+            };
+        }
+
+        private Delivery CreateDefaultDelivery()
+        {
+            return new Delivery
+            {
+                Charge = new Price
+                {
+                    Currency = "GBP",
+                    DecimalPlaces = 2,
+                    Value = 145
+                },
+                Method = DeliveryMethod.Postage
             };
         }
 
@@ -259,16 +716,40 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(code, exception.ResponseCode);
         }
 
-        private void AssertUpsertBasketSuccess(Basket.Models.Basket request, Basket.Models.Basket result)
+        private void AssertUpsertBasketSuccess(Basket.Models.Basket request, Basket.Models.Basket result,
+            int expectedReservationsCount)
         {
+            AssertUpsertBasketSuccessCommon(result, request.Delivery, expectedReservationsCount);
+            Assert.AreEqual(request.ChannelId, result.ChannelId);
+            AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
+        }
+
+        private void AssertUpsertBasketSuccess(UpsertBasketParameters request, Basket.Models.Basket result,
+            int expectedReservationsCount)
+        {
+            AssertUpsertBasketSuccessCommon(result, request.Delivery, expectedReservationsCount);
+            Assert.AreEqual(request.ChannelId, result.ChannelId);
+            AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
+        }
+
+        private void AssertUpsertBasketSuccessCommon(Basket.Models.Basket result, Delivery sourceDelivery,
+            int expectedReservationsCount)
+        {
+            Assert.AreEqual(sourceDelivery.Method, result.Delivery.Method);
+            AssertExtension.AreObjectsValuesEqual(sourceDelivery.Charge, result.Delivery.Charge);
             Assert.NotNull(result.Reference);
             Assert.NotNull(result.Checksum);
-            Assert.AreEqual(request.ChannelId, result.ChannelId);
-            Assert.AreEqual(request.Delivery.Method, result.Delivery.Method);
-            AssertExtension.AreObjectsValuesEqual(request.Delivery.Charge, result.Delivery.Charge);
-            AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
-            Assert.NotNull(result.AppliedPromotion);
             Assert.NotNull(result.Reservations);
+            Assert.AreEqual(expectedReservationsCount, result.Reservations.Count);
+            if (VerifyPromoCodeTestsEnabled())
+            {
+                Assert.NotNull(result.AppliedPromotion);
+            }
+        }
+
+        private bool GetConfigBoolValueOrFalse(string configName)
+        {
+            return bool.TryParse(configuration[$"Basket:{configName}"], out var result) && result;
         }
     }
 }
