@@ -19,10 +19,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
         private static readonly int DefaultQuantity = 2;
 
-        [TestCaseSource(typeof(ReservationExtensionTestsSource), nameof(ReservationExtensionTestsSource.IsForFlexiTickets_Correct))]
-        public void IsForFlexiTickets_Correct(Reservation reservation, bool expected)
+        [TestCaseSource(typeof(ReservationExtensionTestsSource), nameof(ReservationExtensionTestsSource.IsFlexi_Correct))]
+        public void IsFlexi_Correct(Reservation reservation, bool expected)
         {
-            var actual = reservation.IsForFlexiTickets();
+            var actual = reservation.IsFlexi();
 
             Assert.AreEqual(expected, actual);
         }
@@ -110,7 +110,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
     public static class ReservationExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsForFlexiTickets_Correct = new[]
+        public static IEnumerable<TestCaseData> IsFlexi_Correct = new[]
         {
             new TestCaseData(
                 new Reservation

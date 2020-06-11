@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket GetBasketDetails(string basketReference)
         {
-            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}",
@@ -52,7 +52,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public IList<Delivery> GetBasketDeliveryOptions(string basketReference)
         {
-            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/deliveryOptions",
@@ -65,8 +65,8 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertBasket(Models.Basket source, bool? hasFlexiTickets = null)
         {
-            ThrowArgumentExceptionIfBasketDetailsAreIncorrect(source);
-            source.Reservations = source.Reservations?.Where(x => !x.IsForFlexiTickets() && x.Items != null).ToList();
+            ThrowArgumentExceptionIfBasketDetailsNotSet(source);
+            source.Reservations = source.Reservations?.Where(x => !x.IsFlexi() && x.Items != null).ToList();
             var request = source.Map<Models.Basket, UpsertBasketParameters>();
             if (hasFlexiTickets.HasValue)
             {
@@ -79,7 +79,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertBasket(UpsertBasketParameters basketParameters)
         {
-            ThrowArgumentExceptionIfBasketDetailsAreIncorrect(basketParameters);
+            ThrowArgumentExceptionIfBasketDetailsNotSet(basketParameters);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets",
@@ -100,7 +100,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertPromotion(string basketReference, Coupon coupon)
         {
-            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/applyPromotion",
@@ -114,7 +114,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket ClearBasket(string basketReference)
         {
-            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
+            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/clear",
@@ -133,8 +133,8 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket RemoveReservation(string basketReference, string reservationId)
         {
-            ThrowArgumentExceptionIfBasketReferenceIsIncorrect(basketReference);
-            ThrowArgumentExceptionIfIdIsIncorrect(reservationId, "reservation ID");
+            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
+            ThrowArgumentExceptionIfNotSet(reservationId, "reservation ID");
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/reservations/{reservationId}",
@@ -160,7 +160,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Promotion GetPromotionDetails(string promotionId)
         {
-            ThrowArgumentExceptionIfIdIsIncorrect(promotionId, "promotion ID");
+            ThrowArgumentExceptionIfNotSet(promotionId, "promotion ID");
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/promotions/{promotionId}",
@@ -194,33 +194,33 @@ namespace EncoreTickets.SDK.Basket
             }
         }
 
-        private void ThrowArgumentExceptionIfBasketReferenceIsIncorrect(string basketReference)
+        private void ThrowArgumentExceptionIfBasketReferenceNotSet(string basketReference)
         {
-            ThrowArgumentExceptionIfIdIsIncorrect(basketReference, "basket ID");
+            ThrowArgumentExceptionIfNotSet(basketReference, "basket ID");
         }
 
-        private void ThrowArgumentExceptionIfBasketDetailsAreIncorrect(object basketDetails)
+        private void ThrowArgumentExceptionIfBasketDetailsNotSet(object basketDetails)
         {
-            ThrowArgumentExceptionIfObjectIsNotSet(basketDetails, "details for basket");
+            ThrowArgumentExceptionIfNotSet(basketDetails, "details for basket");
         }
 
-        private void ThrowArgumentExceptionIfIdIsIncorrect(string id, string idName)
+        private void ThrowArgumentExceptionIfNotSet(string specificString, string name)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(specificString))
             {
-                ThrowArgumentExceptionIfSomethingIsNotSet(idName);
+                ThrowArgumentExceptionIfNotSet(name);
             }
         }
 
-        private void ThrowArgumentExceptionIfObjectIsNotSet(object specificObject, string name)
+        private void ThrowArgumentExceptionIfNotSet(object specificObject, string name)
         {
             if (specificObject == null)
             {
-                ThrowArgumentExceptionIfSomethingIsNotSet(name);
+                ThrowArgumentExceptionIfNotSet(name);
             }
         }
 
-        private void ThrowArgumentExceptionIfSomethingIsNotSet(string name)
+        private void ThrowArgumentExceptionIfNotSet(string name)
         {
             throw new ArgumentException($"{name} must be set");
         }

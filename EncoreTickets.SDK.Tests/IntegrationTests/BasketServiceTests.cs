@@ -128,10 +128,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasket(reference);
                 upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 2;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 2);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
@@ -151,10 +152,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var request = CreateDefaultBasket(reference);
                 request.AllowFlexiTickets = true;
                 upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 3;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 3);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
@@ -173,10 +175,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasketParameters(reference);
                 upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 2;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 2);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
@@ -196,10 +199,11 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var request = CreateDefaultBasketParameters(reference);
                 request.HasFlexiTickets = true;
                 upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 3;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
                 
-                AssertUpsertBasketSuccess(request, basketDetails, 3);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
             }
@@ -218,11 +222,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasket(reference);
                 upsertBasketResult = service.UpsertBasket(request);
-
                 var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult);
+                const int expectedReservationsCount = 3;
+
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 3);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
             }
@@ -242,11 +247,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var request = CreateDefaultBasket(reference);
                 request.AllowFlexiTickets = true;
                 upsertBasketResult = service.UpsertBasket(request);
-
                 var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult);
+                const int expectedReservationsCount = 3;
+
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 3);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
             }
@@ -265,11 +271,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var reference = configuration["Basket:TestReferences:0"];
                 var request = CreateDefaultBasket(reference);
                 upsertBasketResult = service.UpsertBasket(request);
-
                 var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult, true);
+                const int expectedReservationsCount = 3;
+
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 3);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
             }
@@ -289,11 +296,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 var request = CreateDefaultBasket(reference);
                 request.AllowFlexiTickets = true;
                 upsertBasketResult = service.UpsertBasket(request);
-
                 var upsertBasketResult2 = service.UpsertBasket(upsertBasketResult, false);
+                const int expectedReservationsCount = 2;
+
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, 2);
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult2.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult2.Checksum, basketDetails.Checksum);
             }

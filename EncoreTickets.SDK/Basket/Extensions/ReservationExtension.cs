@@ -8,11 +8,11 @@ namespace EncoreTickets.SDK.Basket.Extensions
     public static class ReservationExtension
     {
         /// <summary>
-        /// Indicates whether the reservation is used to flag flexi tickets.
+        /// Indicates whether the reservation is used for flexi tickets.
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        public static bool IsForFlexiTickets(this Reservation reservation)
+        public static bool IsFlexi(this Reservation reservation)
         {
             return (reservation?.ProductType?.Equals(ProductConstants.FlexiProductType,
                        StringComparison.InvariantCultureIgnoreCase) ?? false) &&
