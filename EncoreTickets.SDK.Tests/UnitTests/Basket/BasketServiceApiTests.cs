@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         private readonly SDK.Basket.Models.Basket TestBasketValid = new SDK.Basket.Models.Basket();
 
-        private MockersForApiService mockers;
+        private ApiServiceMocker mockers;
         
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiService();
+            mockers = new ApiServiceMocker();
         }
 
         #region GetBasketDetails

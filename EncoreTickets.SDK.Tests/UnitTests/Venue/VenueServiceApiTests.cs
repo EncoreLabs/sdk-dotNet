@@ -31,7 +31,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             Title = "title"
         };
 
-        private MockersForApiServiceWithAuthentication mockers;
+        private ApiServiceMockerWithAuthentication mockers;
 
         public override IAuthenticationService AuthenticationService => mockers.AuthenticationServiceMock.Object;
 
@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiServiceWithAuthentication();
+            mockers = new ApiServiceMockerWithAuthentication();
         }
 
         #region GetVenues

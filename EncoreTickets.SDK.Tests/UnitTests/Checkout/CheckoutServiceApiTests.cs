@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
 
         private static readonly ConfirmBookingParameters TestValidConfirmParameters = new ConfirmBookingParameters();
 
-        private MockersForApiService mockers;
+        private ApiServiceMocker mockers;
 
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiService();
+            mockers = new ApiServiceMocker();
             ApiContextTestHelper.ResetContextToDefault(Context);
         }
 

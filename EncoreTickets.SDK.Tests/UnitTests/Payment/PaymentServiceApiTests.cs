@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         private const string TestValidOrderId = "orderId";
         private const string CorrelationIdHeader = "X-Correlation-Id";
 
-        private MockersForApiServiceWithAuthentication mockers;
+        private ApiServiceMockerWithAuthentication mockers;
 
         public override IAuthenticationService AuthenticationService => mockers.AuthenticationServiceMock.Object;
 
@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiServiceWithAuthentication();
+            mockers = new ApiServiceMockerWithAuthentication();
             ApiContextTestHelper.ResetContextToDefault(Context);
             Thread.CurrentThread.CurrentCulture = TestHelper.Culture;
         }

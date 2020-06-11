@@ -2,6 +2,6 @@
 {
     public class MonthlyPriceRange : PriceRange
     {
-        public JsonDate Date { get; set; }
+        public YearMonthDate Date { get; set; }
     }
 }

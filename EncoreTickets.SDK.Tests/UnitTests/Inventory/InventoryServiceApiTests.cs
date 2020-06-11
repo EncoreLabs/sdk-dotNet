@@ -25,7 +25,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         private const string AffiliateIdHeader = "affiliateId";
         private const string MarketHeader = "x-market";
 
-        private MockersForApiService mockers;
+        private ApiServiceMocker mockers;
 
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiService();
+            mockers = new ApiServiceMocker();
             ApiContextTestHelper.ResetContextToDefault(Context);
         }
 

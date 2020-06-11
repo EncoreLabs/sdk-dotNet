@@ -6,6 +6,7 @@ using EncoreTickets.SDK.Api.Results.Response;
 using EncoreTickets.SDK.Api.Utilities.RequestExecutor;
 using EncoreTickets.SDK.Pricing.Models;
 using EncoreTickets.SDK.Pricing.Models.RequestModels;
+using EncoreTickets.SDK.Utilities;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Enums;
 
@@ -52,11 +53,7 @@ namespace EncoreTickets.SDK.Pricing
         /// <inheritdoc />
         public IList<PriceBand> GetPriceBands(string productId, int quantity, DateTime? performanceDateTime = null)
         {
-            if (string.IsNullOrWhiteSpace(productId))
-            {
-                throw new ArgumentException("Product ID must be set");
-            }
-
+            ThrowArgumentExceptionIfProductIdNotSet(productId);
             var queryParameters = new PriceBandsQueryParameters(performanceDateTime);
             var parameters = new ExecuteApiRequestParameters
             {
@@ -71,11 +68,7 @@ namespace EncoreTickets.SDK.Pricing
         /// <inheritdoc />
         public IList<DailyPriceRange> GetDailyPriceRanges(string productId, int quantity, DateTime fromDate, DateTime toDate)
         {
-            if (string.IsNullOrWhiteSpace(productId))
-            {
-                throw new ArgumentException("Product ID must be set");
-            }
-
+            ThrowArgumentExceptionIfProductIdNotSet(productId);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/pricing/days/products/{productId}/quantity/{quantity}" +
@@ -89,11 +82,7 @@ namespace EncoreTickets.SDK.Pricing
         /// <inheritdoc />
         public IList<MonthlyPriceRange> GetMonthlyPriceRanges(string productId, int quantity, DateTime fromDate, DateTime toDate)
         {
-            if (string.IsNullOrWhiteSpace(productId))
-            {
-                throw new ArgumentException("Product ID must be set");
-            }
-
+            ThrowArgumentExceptionIfProductIdNotSet(productId);
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/pricing/months/products/{productId}/quantity/{quantity}" +
@@ -167,6 +156,11 @@ namespace EncoreTickets.SDK.Pricing
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Partner>(parameters);
             return result.DataOrException;
+        }
+
+        private static void ThrowArgumentExceptionIfProductIdNotSet(string productId)
+        {
+            ValidationHelper.ThrowArgumentExceptionIfNotSet(("Product ID", productId));
         }
     }
 }

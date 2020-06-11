@@ -1,6 +1,6 @@
 ﻿namespace EncoreTickets.SDK.Pricing.Models
 {
-    public class JsonDate
+    public class YearMonthDate
     {
         public int Month { get; set; }
 
