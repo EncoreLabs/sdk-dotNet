@@ -21,6 +21,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
         private const string AffiliateHeader = "affiliateId";
         private const string CorrelationHeader = "X-Correlation-ID";
         private const string MarketHeader = "x-market";
+        private const string DisplayCurrencyHeader = "x-display-currency";
         private const string AgentIdHeader = "X-AGENT-ID";
         private const string AgentPasswordHeader = "X-AGENT-PASSWORD";
 
@@ -93,6 +94,11 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
             if (context?.Market != null)
             {
                 headers.Add(MarketHeader, context.Market.ToString());
+            }
+
+            if (!string.IsNullOrWhiteSpace(context?.DisplayCurrency))
+            {
+                headers.Add(DisplayCurrencyHeader, context.DisplayCurrency);
             }
 
             if (context?.AgentCredentials != null)

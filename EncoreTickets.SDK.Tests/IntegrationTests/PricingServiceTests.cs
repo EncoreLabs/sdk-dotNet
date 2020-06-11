@@ -83,9 +83,25 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.IsNotEmpty(priceBands);
             foreach (var priceBand in priceBands)
             {
-                Assert.NotNull(priceBand.SalePrice.FirstOrDefault());
-                Assert.NotNull(priceBand.FaceValue.FirstOrDefault());
-                Assert.AreEqual(date.Date, priceBand.Date?.Date);
+                AssertPriceBandIsValid(priceBand, date);
+            }
+        }
+
+        [Test]
+        public void GetPriceBands_WithDisplayCurrency_Successful()
+        {
+            var date = DateTime.Now.AddMonths(3);
+            const string displayCurrency = "USD";
+            service.Context.DisplayCurrency = displayCurrency;
+
+            var priceBands = service.GetPriceBands("1018", 2, date.Date);
+
+            Assert.IsNotEmpty(priceBands);
+            foreach (var priceBand in priceBands)
+            {
+                AssertPriceBandIsValid(priceBand, date);
+                Assert.True(priceBand.SalePrice.Any(p => p.Currency == displayCurrency));
+                Assert.True(priceBand.FaceValue.Any(p => p.Currency == displayCurrency));
             }
         }
 
@@ -250,6 +266,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.True(rate.EncoreRate > 0);
                 Assert.True(rate.ProtectionMargin >= 0);
             }
+        }
+
+        private void AssertPriceBandIsValid(PriceBand priceBand, DateTime requestedDate)
+        {
+            Assert.NotNull(priceBand.SalePrice.FirstOrDefault());
+            Assert.NotNull(priceBand.FaceValue.FirstOrDefault());
+            Assert.AreEqual(requestedDate.Date, priceBand.Date?.Date);
         }
 
         private void AssertPartnerIsValid(Partner partner)
