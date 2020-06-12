@@ -15,7 +15,6 @@ using EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers;
 using EncoreTickets.SDK.Utilities.BaseTypesExtensions;
 using EncoreTickets.SDK.Utilities.Serializers;
 using Moq;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using RestSharp;
 
@@ -45,6 +44,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             ""context"": """"
         }}";
 
+        private const string AffiliateIdHeader = "affiliateId";
+        private const string DisplayCurrencyHeader = "x-display-currency";
+
         private ApiServiceMockerWithAuthentication mocker;
         private BaseJsonSerializer serializer;
 
@@ -63,6 +65,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         {
             mocker = new ApiServiceMockerWithAuthentication();
             AutomaticAuthentication = true;
+            ApiContextTestHelper.ResetContextToDefault(Context);
         }
 
         [TestCase(null, null, null, null, true)]
@@ -105,13 +108,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             const string productId = "id";
             const int quantity = 2;
             var date = DateTime.Now;
+            Context.Affiliate = "test-affiliate";
+            Context.DisplayCurrency = "USD";
 
             TestActionCorrectlyExecuted<List<PriceBand>, IList<PriceBand>>(
                 () => GetPriceBands(productId, quantity, date),
                 $"v{ApiVersion}/pricing/products/{productId}/quantity/{quantity}/bands",
                 Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
-                    { { "date", date.ToEncoreDate() }, { "time", date.ToEncoreTime() } });
+                    { { "date", date.ToEncoreDate() }, { "time", date.ToEncoreTime() } },
+                expectedHeaders: new Dictionary<string, object>
+                    { { AffiliateIdHeader, Context.Affiliate }, { DisplayCurrencyHeader, Context.DisplayCurrency } });
         }
 
         [TestCaseSource(typeof(PricingServiceApiTestSource), nameof(GetPriceBands_ReturnsPriceBands))]
@@ -133,12 +140,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             const int quantity = 2;
             var fromDate = DateTime.Now;
             var toDate = fromDate.AddMonths(1);
+            Context.Affiliate = "test-affiliate";
 
             TestActionCorrectlyExecuted<List<DailyPriceRange>, IList<DailyPriceRange>>(
                 () => GetDailyPriceRanges(productId, quantity, fromDate, toDate),
                 $"v{ApiVersion}/pricing/days/products/{productId}/quantity/{quantity}" +
                     $"/from/{fromDate.ToEncoreDate()}/to/{toDate.ToEncoreDate()}",
-                Method.GET);
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object> { { AffiliateIdHeader, Context.Affiliate } });
         }
 
         [TestCaseSource(typeof(PricingServiceApiTestSource), nameof(GetDailyPriceRanges_ReturnsPriceRanges))]
@@ -170,12 +179,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             const int quantity = 2;
             var fromDate = DateTime.Now;
             var toDate = fromDate.AddMonths(1);
+            Context.Affiliate = "test-affiliate";
 
             TestActionCorrectlyExecuted<List<MonthlyPriceRange>, IList<MonthlyPriceRange>>(
                 () => GetMonthlyPriceRanges(productId, quantity, fromDate, toDate),
                 $"v{ApiVersion}/pricing/months/products/{productId}/quantity/{quantity}" +
                     $"/from/{fromDate.ToEncoreDate()}/to/{toDate.ToEncoreDate()}",
-                Method.GET);
+                Method.GET,
+                expectedHeaders: new Dictionary<string, object> { { AffiliateIdHeader, Context.Affiliate } });
         }
 
         [TestCaseSource(typeof(PricingServiceApiTestSource), nameof(GetMonthlyPriceRanges_ReturnsPriceRanges))]
@@ -317,16 +328,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             string endpoint,
             Method method,
             Dictionary<string, object> expectedQueryParameters = null,
+            Dictionary<string, object> expectedHeaders = null,
             bool shouldAuthenticate = false)
             where T : class, new()
         {
-            TestActionCorrectlyExecuted<T, T>(action, endpoint, method, expectedQueryParameters, shouldAuthenticate);
+            TestActionCorrectlyExecuted<T, T>(action, endpoint, method, 
+                expectedQueryParameters, expectedHeaders, shouldAuthenticate);
         }
 
         private void TestActionCorrectlyExecuted<TSetup, TResult>(Action action,
             string endpoint,
             Method method,
             Dictionary<string, object> expectedQueryParameters = null,
+            Dictionary<string, object> expectedHeaders = null,
             bool shouldAuthenticate = false)
             where TSetup : class, TResult, new()
             where TResult : class
@@ -351,7 +365,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 ShouldNotAuthenticate();
             }
             mocker.VerifyExecution<ApiResponse<TResult>>(BaseUrl,
-                endpoint, method, expectedQueryParameters: expectedQueryParameters);
+                endpoint, method, expectedQueryParameters: expectedQueryParameters, expectedHeaders: expectedHeaders);
         }
 
         private void TestSuccessfulAction<T>(Func<T> action, T expectedResult)
