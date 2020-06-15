@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Content
         /// <inheritdoc />
         public IList<Product> GetProducts(GetProductsParameters requestParameters = null)
         {
-            requestParameters ??= new GetProductsParameters();
+            requestParameters = requestParameters ?? new GetProductsParameters();
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/products",
