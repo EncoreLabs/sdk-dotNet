@@ -33,7 +33,7 @@ exit /b %errorlevel%
 "%USERPROFILE%\.nuget\packages\%OpenCoverFolderName%\tools\OpenCover.Console.exe" ^
 -register:user ^
 -target:"dotnet.exe" ^
--targetargs:"test" ^
+-targetargs:"test --filter FullyQualifiedName~UnitTests" ^
 -filter:"%Filters%" ^
 -mergebyhash ^
 -skipautoprops ^
