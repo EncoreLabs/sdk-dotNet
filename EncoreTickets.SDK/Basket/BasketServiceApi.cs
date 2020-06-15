@@ -11,6 +11,7 @@ using EncoreTickets.SDK.Basket.Exceptions;
 using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Basket.Models.RequestModels;
+using EncoreTickets.SDK.Utilities;
 using EncoreTickets.SDK.Utilities.Enums;
 using EncoreTickets.SDK.Utilities.Mapping;
 
@@ -133,8 +134,9 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket RemoveReservation(string basketReference, string reservationId)
         {
-            ThrowArgumentExceptionIfBasketReferenceNotSet(basketReference);
-            ThrowArgumentExceptionIfNotSet(reservationId, "reservation ID");
+            ValidationHelper.ThrowArgumentExceptionIfNotSet(
+                ("basket ID", basketReference), 
+                ("reservation ID", reservationId));
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/reservations/{reservationId}",
@@ -160,7 +162,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Promotion GetPromotionDetails(string promotionId)
         {
-            ThrowArgumentExceptionIfNotSet(promotionId, "promotion ID");
+            ValidationHelper.ThrowArgumentExceptionIfNotSet(("promotion ID", promotionId));
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/promotions/{promotionId}",
@@ -196,33 +198,12 @@ namespace EncoreTickets.SDK.Basket
 
         private void ThrowArgumentExceptionIfBasketReferenceNotSet(string basketReference)
         {
-            ThrowArgumentExceptionIfNotSet(basketReference, "basket ID");
+            ValidationHelper.ThrowArgumentExceptionIfNotSet(("basket ID", basketReference));
         }
 
         private void ThrowArgumentExceptionIfBasketDetailsNotSet(object basketDetails)
         {
-            ThrowArgumentExceptionIfNotSet(basketDetails, "details for basket");
-        }
-
-        private void ThrowArgumentExceptionIfNotSet(string specificString, string name)
-        {
-            if (string.IsNullOrWhiteSpace(specificString))
-            {
-                ThrowArgumentExceptionIfNotSet(name);
-            }
-        }
-
-        private void ThrowArgumentExceptionIfNotSet(object specificObject, string name)
-        {
-            if (specificObject == null)
-            {
-                ThrowArgumentExceptionIfNotSet(name);
-            }
-        }
-
-        private void ThrowArgumentExceptionIfNotSet(string name)
-        {
-            throw new ArgumentException($"{name} must be set");
+            ValidationHelper.ThrowArgumentExceptionIfNotSet(("details for basket", basketDetails));
         }
     }
 }

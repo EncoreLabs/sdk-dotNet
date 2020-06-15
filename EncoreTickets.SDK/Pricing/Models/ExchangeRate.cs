@@ -42,11 +42,11 @@ namespace EncoreTickets.SDK.Pricing.Models
         /// <summary>
         /// Gets or sets the time for the current exchange rate.
         /// </summary>
-        public DateTime DatetimeOfSourcing { get; set; }
+        public DateTimeOffset DatetimeOfSourcing { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         public int Sourced { get; set; }
     }

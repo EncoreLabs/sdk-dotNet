@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         private const string TestProductValidId = "1";
         private const string CorrelationIdHeader = "X-Correlation-Id";
 
-        private MockersForApiService mockers;
+        private ApiServiceMocker mockers;
 
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiService();
+            mockers = new ApiServiceMocker();
             Context.Correlation = Guid.NewGuid().ToString();
         }
 

@@ -10,13 +10,13 @@ using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 {
-    internal class MockersForApiService
+    internal class ApiServiceMocker
     {
         public Mock<ApiRestClientBuilder> RestClientBuilderMock;
 
         public Mock<RestClientWrapper> RestClientWrapperMock;
 
-        public MockersForApiService()
+        public ApiServiceMocker()
         {
             RestClientWrapperMock = GetRestClientWrapperMock();
             RestClientBuilderMock = GetApiRestClientBuilderMock(RestClientWrapperMock);

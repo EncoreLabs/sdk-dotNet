@@ -57,6 +57,12 @@ namespace EncoreTickets.SDK.Api.Models
         /// </summary>
         public Market? Market { get; set; }
 
+        /// <summary>
+        /// Gets or sets the display currency.
+        /// Used as a header in requests.
+        /// </summary>
+        public string DisplayCurrency { get; set; }
+
         internal Credentials AgentCredentials { get; set; }
 
         /// <summary>

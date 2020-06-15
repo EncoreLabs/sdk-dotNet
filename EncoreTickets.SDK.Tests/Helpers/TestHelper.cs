@@ -13,10 +13,17 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return DateTime.Parse(arg, Culture);
         }
 
-        public static T CopyObject<T>(T value)
+        public static T CopyObject<T>(this T value)
         {
             var output = JsonConvert.SerializeObject(value);
             return JsonConvert.DeserializeObject<T>(output);
+        }
+
+        public static TTarget CopyObjectToChildClass<TSource, TTarget>(this TSource value)
+            where TTarget : TSource
+        {
+            var output = JsonConvert.SerializeObject(value);
+            return JsonConvert.DeserializeObject<TTarget>(output);
         }
     }
 }

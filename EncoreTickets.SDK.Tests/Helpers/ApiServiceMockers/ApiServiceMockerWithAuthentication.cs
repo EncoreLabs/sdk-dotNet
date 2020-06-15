@@ -3,11 +3,11 @@ using Moq;
 
 namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 {
-    internal class MockersForApiServiceWithAuthentication : MockersForApiService
+    internal class ApiServiceMockerWithAuthentication : ApiServiceMocker
     {
         public Mock<IAuthenticationService> AuthenticationServiceMock;
 
-        public MockersForApiServiceWithAuthentication()
+        public ApiServiceMockerWithAuthentication()
         {
             AuthenticationServiceMock = GetAuthenticationServiceMock();
         }

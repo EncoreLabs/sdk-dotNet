@@ -15,7 +15,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 {
     internal class JwtAuthenticationServiceTests : JwtAuthenticationService
     {
-        private MockersForApiService mockers;
+        private ApiServiceMocker mockers;
 
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         [SetUp]
         public void CreateMockers()
         {
-            mockers = new MockersForApiServiceWithAuthentication();
+            mockers = new ApiServiceMockerWithAuthentication();
         }
 
         [TestCaseSource(typeof(JwtAuthenticationServiceTestsSource), nameof(JwtAuthenticationServiceTestsSource.Authenticate_CallsApiWithRightParameters))]
