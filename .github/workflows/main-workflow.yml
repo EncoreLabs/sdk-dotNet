@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master, release/*, hotfix/*, develop ]
+    branches: [ master, release/*, develop ]
   pull_request:
-    branches: [ master, release/*, hotfix/*, develop ]
+    branches: [ master, release/*, develop ]
 
 jobs:
 
@@ -37,10 +37,11 @@ jobs:
 
   build_dotnet_framework:
 
-    name: Test on .NET Framework and ${{ matrix.os }}
+    name: Test on .NET Framework ${{ matrix.framework_version }} and ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        framework_version: ['net461']
         os: [windows-latest]
 
     steps:
@@ -62,4 +63,4 @@ jobs:
       uses: darenm/Setup-VSTest@v1
 
     - name: Test
-      run: vstest.console.exe EncoreTickets.SDK.Tests\bin\Release\net461\EncoreTickets.SDK.Tests.dll /TestCaseFilter:"FullyQualifiedName~UnitTests"
+      run: vstest.console.exe EncoreTickets.SDK.Tests\bin\Release\${{ matrix.framework_version }}\EncoreTickets.SDK.Tests.dll /TestCaseFilter:"FullyQualifiedName~UnitTests"
