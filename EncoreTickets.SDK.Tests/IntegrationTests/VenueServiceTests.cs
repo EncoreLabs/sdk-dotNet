@@ -151,7 +151,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 service.GetVenueById(venueId);
                 Assert.Fail("Venue actually exists");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //ignore
             }

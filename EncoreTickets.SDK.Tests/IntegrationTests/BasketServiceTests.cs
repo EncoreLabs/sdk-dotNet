@@ -542,7 +542,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 service.ClearBasket(upsertBasketResult.Reference);
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
             AssertApiException(exception, HttpStatusCode.NotFound);

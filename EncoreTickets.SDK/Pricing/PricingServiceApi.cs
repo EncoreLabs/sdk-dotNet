@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Pricing
         /// Default constructor.
         /// </summary>
         /// <param name="context"></param>
-        /// /// <param name="automaticAuthentication"></param>
+        /// <param name="automaticAuthentication"></param>
         public PricingServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, PricingApiHost, automaticAuthentication)
         {

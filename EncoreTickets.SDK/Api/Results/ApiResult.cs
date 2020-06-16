@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Api.Results
     /// <summary>
     /// Class representing result of Api call.
     /// </summary>
-    /// <typeparam name="T">data type</typeparam>
+    /// <typeparam name="T">Type of expected API data.</typeparam>
     public class ApiResult<T>
     {
         private T apiData;
@@ -22,12 +22,12 @@ namespace EncoreTickets.SDK.Api.Results
         public bool IsSuccessful => RestResponse.IsSuccessful;
 
         /// <summary>
-        /// Gets <c>data</c> if the API request was successful, <see cref="T"/>; otherwise, <c> throws the API exception</c>, <see cref="ApiException"/>;.
+        /// Gets <c>data</c> if the API request was successful, <typeparamref name="T" />; otherwise, <c> throws the API exception</c>, <see cref="ApiException"/>;.
         /// </summary>
         public T DataOrException => IsSuccessful ? apiData : throw ApiException;
 
         /// <summary>
-        /// Gets <c>data</c> if the API request was successful, <see cref="T"/>; otherwise, <c> default</c>.
+        /// Gets <c>data</c> if the API request was successful, <typeparamref name="T" />; otherwise, <c> default</c>.
         /// </summary>
         public T DataOrDefault => IsSuccessful ? apiData : default;
 
@@ -58,7 +58,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiResult{T}"/>
-        /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, Context responseContext,
             Request requestInResponse)
@@ -70,7 +69,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiResult{T}"/>
-        /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, IEnumerable<Error> errors)
         {
@@ -82,7 +80,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiResult{T}"/>
-        /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
@@ -94,7 +91,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initializes a new instance of <see cref="ApiResult{T}"/>
-        /// <typeparam name="T">Type of expected data.</typeparam>
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context)
         {
@@ -102,7 +98,7 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Gets <c>data</c> if the API request was successful and response context does not have warnings, <see cref="T"/>;
+        /// Gets <c>data</c> if the API request was successful and response context does not have warnings, <typeparamref name="T" />;
         /// otherwise, <c> throws the API context exception</c>, <see cref="ContextApiException"/>;.
         /// </summary>
         /// <param name="codeOfInfoAsError">Information code in the context of the response, which is an error.</param>
