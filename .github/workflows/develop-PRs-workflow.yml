@@ -1,0 +1,37 @@
+name: Checking code for developers
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+
+  check_code_coverage:
+
+    name: Generate code coverage report
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Generate source code coverage report
+      run: dotnet test --no-restore --verbosity normal --filter FullyQualifiedName~UnitTests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+    - name: Prepare code coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@4.6.1
+      with:
+        reports: 'EncoreTickets.SDK.Tests\coverage.netcoreapp2.1.opencover.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'lcov'
+
+    - name: Comment the PR with code coverage report
+      uses: romeovs/lcov-reporter-action@v0.2.16
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: 'coveragereport\lcov.info'
