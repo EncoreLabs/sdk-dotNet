@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         public RestClientCredentials Credentials { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>.
         /// </summary>
         /// <param name="restClientCredentials">Credentials for requests.</param>
         public RestClientWrapper(RestClientCredentials restClientCredentials)
@@ -33,16 +33,17 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>.
         /// </summary>
-        public RestClientWrapper() : this(DefaultMaxExecutionsCount)
+        public RestClientWrapper()
+            : this(DefaultMaxExecutionsCount)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initializes a new instance of <see cref="RestClientWrapper"/>.
         /// </summary>
-        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed</param>
+        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed.</param>
         public RestClientWrapper(int executionsCount)
         {
             MaxExtraAttemptsCount = executionsCount > 1 ? executionsCount - 1 : 0;
@@ -103,7 +104,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         /// <summary>
         /// Executes a request with expected data of a certain type.
         /// </summary>
-        /// <param type="T">The type of an object expected in response.</param>
+        /// <typeparam name="T">The type of an object expected in response.</typeparam>
         /// <param name="client">The prepared rest client.</param>
         /// <param name="request">The prepared rest request.</param>
         /// <returns>Rest response.</returns>

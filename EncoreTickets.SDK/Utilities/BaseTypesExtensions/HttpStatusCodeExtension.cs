@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
     {
         public static bool IsServerError(this HttpStatusCode code)
         {
-            return (int) code >= 500;
+            return (int)code >= 500;
         }
     }
 }

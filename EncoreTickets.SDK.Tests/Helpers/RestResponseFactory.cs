@@ -47,8 +47,11 @@ namespace EncoreTickets.SDK.Tests.Helpers
             };
         }
 
-        private static IRestResponse<T> GetJsonResponseWithData<T>(IRestResponse<T> response, IRestClient client,
-            IRestRequest request, string content)
+        private static IRestResponse<T> GetJsonResponseWithData<T>(
+            IRestResponse<T> response,
+            IRestClient client,
+            IRestRequest request,
+            string content)
         {
             response.Content = content;
             response.Request = request;

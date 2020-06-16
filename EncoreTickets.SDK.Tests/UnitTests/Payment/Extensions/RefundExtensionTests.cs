@@ -22,47 +22,40 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund(),
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund
                 {
                     Status = "receiv"
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund
                 {
                     Status = "pending"
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
                     Status = "success"
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
                     Status = "RECEIVED"
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
                     Status = "received"
                 },
-                true
-            ),
+                true),
         };
     }
 }

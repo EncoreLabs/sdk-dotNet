@@ -26,10 +26,11 @@ namespace EncoreTickets.SDK.Checkout
         public override int? ApiVersion => 1;
 
         /// <summary>
-        /// Default constructor for the checkout service
+        /// Default constructor for the checkout service.
         /// </summary>
         /// <param name="context"></param>
-        public CheckoutServiceApi(ApiContext context) : base(context, CheckoutApiHost)
+        public CheckoutServiceApi(ApiContext context)
+            : base(context, CheckoutApiHost)
         {
         }
 
@@ -52,9 +53,11 @@ namespace EncoreTickets.SDK.Checkout
             return result.DataOrException;
         }
 
-
         /// <inheritdoc />
-        public bool ConfirmBooking(string agentId, string agentPassword, string bookingReference,
+        public bool ConfirmBooking(
+            string agentId,
+            string agentPassword,
+            string bookingReference,
             ConfirmBookingParameters bookingParameters)
         {
             var encoder = new Base64Encoder();

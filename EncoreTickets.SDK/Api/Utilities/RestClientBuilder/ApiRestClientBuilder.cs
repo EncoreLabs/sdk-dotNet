@@ -78,7 +78,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RestClientBuilder
             var buildNumber = GetBuildNumber();
             var headers = new Dictionary<string, string>
             {
-                {SdkVersionHeader, $"EncoreTickets.SDK.NET {buildNumber}"}
+                { SdkVersionHeader, $"EncoreTickets.SDK.NET {buildNumber}" }
             };
 
             if (!string.IsNullOrWhiteSpace(context?.Affiliate))

@@ -30,7 +30,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public InventoryServiceApiTests() : base(ApiContextTestHelper.DefaultApiContext)
+        public InventoryServiceApiTests()
+            : base(ApiContextTestHelper.DefaultApiContext)
         {
         }
 
@@ -289,7 +290,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Desc)]
-        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", (Direction) 100)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", (Direction)100)]
         public void GetAggregateSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr, Direction? direction)
         {
@@ -303,9 +304,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             };
             var queryParameters = new Dictionary<string, object>
             {
-                {"quantity", quantity},
-                {"date", parameters.PerformanceTime.ToString("yyyyMMdd")},
-                {"time", parameters.PerformanceTime.ToString("HHmm")},
+                { "quantity", quantity },
+                { "date", parameters.PerformanceTime.ToString("yyyyMMdd") },
+                { "time", parameters.PerformanceTime.ToString("HHmm") },
             };
 
             if (parameters.Direction != null && (parameters.Direction == Direction.Asc || parameters.Direction == Direction.Desc))
@@ -331,8 +332,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: queryParameters,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -435,13 +436,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
                 {
-                    {"date", performance.ToString("yyyyMMdd")},
-                    {"time", performance.ToString("HHmm")},
+                    { "date", performance.ToString("yyyyMMdd") },
+                    { "time", performance.ToString("HHmm") },
                 },
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -512,8 +513,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: queryParameters,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -551,7 +552,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         #endregion
     }
 
-    public static class InventoryServiceApiTestsSource
+    internal static class InventoryServiceApiTestsSource
     {
         #region SearchProducts
 
@@ -598,8 +599,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                         BookingStarts = new DateTime(2019, 08, 13),
                         BookingEnds = new DateTime(2020, 05, 23),
                     }
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseFailed_ThrowsApiException = new[]
@@ -623,8 +623,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion
@@ -652,8 +651,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 {
                     FirstBookableDate = new DateTime(2020, 05, 05),
                     LastBookableDate = new DateTime(2020, 05, 23),
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException = new[]
@@ -677,8 +675,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion
@@ -732,8 +729,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                         DateTime = new DateTime(2020, 10, 05, 19, 30, 00),
                         LargestLumpOfTickets = 33
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException = new[]
@@ -762,8 +758,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "fromDate: end date should not be more than 90 days from start dates"
-            ),
+                "fromDate: end date should not be more than 90 days from start dates"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -787,8 +782,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "fromDate: start date should not be in the past"
-            ),
+                "fromDate: start date should not be in the past"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -812,8 +806,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "productId: The product ID can only contain numbers, letters and dashes"
-            ),
+                "productId: The product ID can only contain numbers, letters and dashes"),
 
             // 403
             new TestCaseData(
@@ -838,8 +831,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.Forbidden,
-                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"
-            ),
+                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"),
 
             // 404
             new TestCaseData(
@@ -864,8 +856,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Product not found"
-            ),
+                "Product not found"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -888,8 +879,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion
@@ -1038,7 +1028,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     AvailableCount = 2,
                                     Pricing = new AggregatePricing
                                     {
-                                        SalePrice =new List<Price>
+                                        SalePrice = new List<Price>
                                         {
                                             new Price
                                             {
@@ -1070,7 +1060,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Number = 44,
                                             Pricing = new AggregatePricing
                                             {
-                                                SalePrice =new List<Price>
+                                                SalePrice = new List<Price>
                                                 {
                                                     new Price
                                                     {
@@ -1101,7 +1091,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Number = 45,
                                             Pricing = new AggregatePricing
                                             {
-                                                SalePrice =new List<Price>
+                                                SalePrice = new List<Price>
                                                 {
                                                     new Price
                                                     {
@@ -1141,8 +1131,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                         }
                     },
                     AvailableCount = 1,
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1169,8 +1158,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     DisplayCurrency = null,
                     Areas = new List<AggregateArea>(),
                     AvailableCount = 0,
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1202,8 +1190,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "direction: The value you selected is not a valid choice."
-            ),
+                "direction: The value you selected is not a valid choice."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1228,9 +1215,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "time: This value should not be null."
-            ),
-            
+                "time: This value should not be null."),
+
             // 404
             new TestCaseData(
                 @"{
@@ -1256,15 +1242,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Not found"
-            ),
+                "Not found"),
 
             // 503
             new TestCaseData(
                 @"<!DOCTYPE html><html>The request has failed. Fastly</html>",
                 HttpStatusCode.ServiceUnavailable,
-                "Cannot convert API error correctly.\r\n\r\n<!DOCTYPE html><html>The request has failed. Fastly</html>"
-            ),
+                "Cannot convert API error correctly.\r\n\r\n<!DOCTYPE html><html>The request has failed. Fastly</html>"),
         };
 
         #endregion
@@ -1553,8 +1537,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                             },
                         }
                     },
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1764,8 +1747,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                             },
                         }
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1796,8 +1778,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "productId: The product ID can only contain numbers, letters and dashes"
-            ),
+                "productId: The product ID can only contain numbers, letters and dashes"),
+
             // 400
             new TestCaseData(
                 @"{
@@ -1824,8 +1806,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "quantity: quantity should be at least 1"
-            ),
+                "quantity: quantity should be at least 1"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1851,8 +1832,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "dateString: invalid date, should be of 'Ymd' format"
-            ),
+                "dateString: invalid date, should be of 'Ymd' format"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1878,8 +1858,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "timeString: invalid time, should be of 'Hi' format"
-            ),
+                "timeString: invalid time, should be of 'Hi' format"),
 
             // 401
             new TestCaseData(
@@ -1906,9 +1885,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.Unauthorized,
-                "an invalid affiliateId has been specified, or the specified affiliate does not have access to this request"
-            ),
-            
+                "an invalid affiliateId has been specified, or the specified affiliate does not have access to this request"),
+
             // 404
             new TestCaseData(
                 @"{
@@ -1933,8 +1911,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion

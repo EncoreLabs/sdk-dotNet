@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Aws
         /// <summary>
         /// Constructor that instantiates this class by the name of an AWS profile and the name of an AWS region.
         /// </summary>
-        /// <param name="clientFactory">The factory for creating of AmazonSQS clients</param>
+        /// <param name="clientFactory">The factory for creating of AmazonSQS clients.</param>
         /// <param name="profileName">The AWS profile name.</param>
         /// <param name="regionName">The requested AWS region name.</param>
         public AwsSqs(ISqsClientFactory clientFactory, string profileName, string regionName)
@@ -28,8 +28,8 @@ namespace EncoreTickets.SDK.Aws
         /// Constructor that instantiates this class by the name of an AWS profile and the name of an AWS region.
         /// The specified AWS profile is created or updated with the specified credentials.
         /// </summary>
-        /// <param name="clientFactory">The factory for creating of AmazonSQS clients</param>
-        /// <param name="profileRegistrar">The registrar of Amazon profiles in the system</param>
+        /// <param name="clientFactory">The factory for creating of AmazonSQS clients.</param>
+        /// <param name="profileRegistrar">The registrar of Amazon profiles in the system.</param>
         /// <param name="profileName">The AWS profile name.</param>
         /// <param name="regionName">The requested AWS region name.</param>
         /// <param name="accessKey">The AWS access key to set to the profile.</param>

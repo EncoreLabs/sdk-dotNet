@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Venue
         public override int? ApiVersion => 2;
 
         /// <summary>
-        /// Default constructor for the Venue service
+        /// Default constructor for the Venue service.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="automaticAuthentication"></param>
@@ -157,7 +157,7 @@ namespace EncoreTickets.SDK.Venue
                     Seats = seatAttributes ?? new List<SeatDetailed>()
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
+                Deserializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return result.DataOrException?.Any(x =>

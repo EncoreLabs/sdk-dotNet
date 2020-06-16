@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
         }
     }
 
-    public static class EnumExtensionTestsSource
+    internal static class EnumExtensionTestsSource
     {
         public static IEnumerable<TestCaseData> GetEnumValues_ReturnsCorrectly = new[]
         {
@@ -48,8 +48,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                     Environments.QA,
                     Environments.Staging,
                     Environments.Production,
-                }
-            ),
+                }),
             new TestCaseData(
                 new List<ErrorWrapping>
                 {
@@ -57,60 +56,48 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                     ErrorWrapping.Errors,
                     ErrorWrapping.Context,
                     ErrorWrapping.NotParsedContent
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueExists_ReturnsCorrectly = new[]
         {
             new TestCaseData(
                 "1234",
-                (Environments) 1234
-            ),
+                (Environments)1234),
             new TestCaseData(
                 "Sandbox",
-                Environments.Sandbox
-            ),
+                Environments.Sandbox),
             new TestCaseData(
                 "sandbox",
-                Environments.Sandbox
-            ),
+                Environments.Sandbox),
             new TestCaseData(
                 "Production",
-                Environments.Production
-            ),
+                Environments.Production),
             new TestCaseData(
                 "Staging",
-                Environments.Staging
-            ),
+                Environments.Staging),
             new TestCaseData(
                 "QA",
-                Environments.QA
-            ),
+                Environments.QA),
             new TestCaseData(
                 "qa",
-                Environments.QA
-            ),
+                Environments.QA),
             new TestCaseData(
                 "Negative",
-                Intention.Negative
-            ),
+                Intention.Negative),
         };
 
         public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException = new[]
         {
             new TestCaseData(
                 "dev",
-                It.IsAny<Environments>()
-            ),
+                It.IsAny<Environments>()),
             new TestCaseData(
                 "prod",
-                It.IsAny<Environments>()
-            ),
+                It.IsAny<Environments>()),
             new TestCaseData(
                 "12.34",
-                It.IsAny<Environments>()
-            ),
+                It.IsAny<Environments>()),
         };
     }
 }

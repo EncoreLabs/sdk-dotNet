@@ -20,8 +20,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public JwtAuthenticationServiceTests() : base(new ApiContext(Environments.Sandbox),
-            "some-service.{0}tixuk.io/api/", "login")
+        public JwtAuthenticationServiceTests()
+            : base(new ApiContext(Environments.Sandbox), "some-service.{0}tixuk.io/api/", "login")
         {
         }
 
@@ -67,7 +67,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             string expectedMessage)
         {
             mockers.SetupFailedExecution<AccessToken>(responseContent, code);
-            
+
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var actual = Authenticate();
@@ -88,25 +88,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         }
     }
 
-    public static class JwtAuthenticationServiceTestsSource
+    internal static class JwtAuthenticationServiceTestsSource
     {
         public static IEnumerable<TestCaseData> Authenticate_CallsApiWithRightParameters = new[]
         {
             new TestCaseData(
                 new ApiContext(It.IsAny<Environments>(), "admin", "valid_password"),
-                "{\"username\":\"admin\",\"password\":\"valid_password\"}"
-            ),
+                "{\"username\":\"admin\",\"password\":\"valid_password\"}"),
             new TestCaseData(
                 new ApiContext(It.IsAny<Environments>(), "admin", "invalid_password"),
-                "{\"username\":\"admin\",\"password\":\"invalid_password\"}"
-            ),
+                "{\"username\":\"admin\",\"password\":\"invalid_password\"}"),
         };
 
         public static IEnumerable<TestCaseData> Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext = new[]
         {
             new TestCaseData(
-                "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni"
-            ),
+                "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni"),
         };
 
         public static IEnumerable<TestCaseData> Authenticate_IfApiResponseFailed_ThrowsApiException = new[]
@@ -114,37 +111,32 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             new TestCaseData(
                 "{\"request\":{\"body\":\"{\\\"username\\\":\\\"admin\\\",\\\"password\\\":\\\"invalid_password\\\"}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Bad credentials, please verify that your username/password are correctly set\"}]}}",
                 HttpStatusCode.Unauthorized,
-                "Bad credentials, please verify that your username/password are correctly set"
-            ),
+                "Bad credentials, please verify that your username/password are correctly set"),
         };
 
         public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ) {TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Api context is null"},
+                false) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Api context is null" },
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = null
                 },
-                false
-            ) {TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is null"},
+                false) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is null" },
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = ""
                 },
-                false
-            ) {TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is empty"},
+                false) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is empty" },
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO"
                 },
-                true
-            ) {TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is filled"},
+                true) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is filled" },
         };
     }
 }

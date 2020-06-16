@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Api.Results
         /// <summary>
         /// Gets or sets HTTP response.
         /// </summary>
-        public IRestResponse RestResponse{ get; set; }
+        public IRestResponse RestResponse { get; set; }
 
         /// <summary>
         /// Gets or sets the context returned in the API response.
@@ -57,9 +57,13 @@ namespace EncoreTickets.SDK.Api.Results
         public ApiException ApiException { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult{T}"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
-        public ApiResult(T data, IRestResponse response, ApiContext context, Context responseContext,
+        public ApiResult(
+            T data,
+            IRestResponse response,
+            ApiContext context,
+            Context responseContext,
             Request requestInResponse)
         {
             ResponseContext = responseContext;
@@ -68,18 +72,18 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult{T}"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, IEnumerable<Error> errors)
         {
             ResponseContext = errors != null
-                ? new Context {Errors = new List<Error>(errors)}
+                ? new Context { Errors = new List<Error>(errors) }
                 : null;
             InitializeCommonParameters(data, response, context);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult{T}"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
@@ -90,7 +94,7 @@ namespace EncoreTickets.SDK.Api.Results
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiResult{T}"/>
+        /// Initializes a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context)
         {
@@ -102,10 +106,10 @@ namespace EncoreTickets.SDK.Api.Results
         /// otherwise, <c> throws the API context exception</c>, <see cref="ContextApiException"/>;.
         /// </summary>
         /// <param name="codeOfInfoAsError">Information code in the context of the response, which is an error.</param>
-        /// <returns>Data</returns>
+        /// <returns>Data.</returns>
         public T GetDataOrContextException(string codeOfInfoAsError)
         {
-            return GetDataOrContextException(new[] {codeOfInfoAsError});
+            return GetDataOrContextException(new[] { codeOfInfoAsError });
         }
 
         private void InitializeCommonParameters(T data, IRestResponse response, ApiContext context)

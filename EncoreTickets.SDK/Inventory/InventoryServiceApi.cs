@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Inventory
     /// <inheritdoc cref="BaseApi" />
     /// <inheritdoc cref="IInventoryServiceApi" />
     /// <summary>
-    /// Wrapper class for the inventory service API
+    /// Wrapper class for the inventory service API.
     /// </summary>
     public class InventoryServiceApi : BaseApi, IInventoryServiceApi
     {
@@ -24,10 +24,11 @@ namespace EncoreTickets.SDK.Inventory
         public override int? ApiVersion => 4;
 
         /// <summary>
-        /// Default constructor for the Inventory service
+        /// Default constructor for the Inventory service.
         /// </summary>
         /// <param name="context"></param>
-        public InventoryServiceApi(ApiContext context) : base(context, InventoryApiHost)
+        public InventoryServiceApi(ApiContext context)
+            : base(context, InventoryApiHost)
         {
         }
 

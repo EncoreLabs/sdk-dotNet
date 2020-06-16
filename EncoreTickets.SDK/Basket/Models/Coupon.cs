@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Basket.Models
 {
     /// <summary>
-    /// Coupon model.   
+    /// Coupon model.
     /// </summary>
     public class Coupon
     {

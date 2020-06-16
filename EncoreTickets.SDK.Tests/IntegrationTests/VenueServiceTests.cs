@@ -145,7 +145,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void UpdateVenue_IfVenueDoesNotExist_Exception404()
         {
             var venueId = configuration["Venue:TestVenueIdNotExisting"];
-            var sourceVenue = new Venue.Models.Venue {InternalId = venueId};
+            var sourceVenue = new Venue.Models.Venue { InternalId = venueId };
             try
             {
                 service.GetVenueById(venueId);
@@ -153,7 +153,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -225,7 +225,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void UpsertStandardAttributeByTitle_IfContextUnauthorized_Exception401()
         {
-            var sourceAttribute = new Attribute {Title = "test"};
+            var sourceAttribute = new Attribute { Title = "test" };
             service = new VenueServiceApi(context);
 
             var exception = Assert.Catch<ApiException>(() =>

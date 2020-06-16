@@ -6,24 +6,24 @@ using EncoreTickets.SDK.Content.Models.RequestModels;
 namespace EncoreTickets.SDK.Content
 {
     /// <summary>
-    /// The interface of a content service
+    /// The interface of a content service.
     /// </summary>
     public interface IContentServiceApi : IServiceApi
     {
         /// <summary>
-        /// Get locations
+        /// Get locations.
         /// </summary>
         /// <returns></returns>
         IList<Location> GetLocations();
 
         /// <summary>
-        /// Get the available products
+        /// Get the available products.
         /// </summary>
         /// <returns></returns>
         IList<Product> GetProducts(GetProductsParameters parameters = null);
 
         /// <summary>
-        /// Get the product by id
+        /// Get the product by id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

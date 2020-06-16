@@ -24,15 +24,15 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         public ApiContext Context { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiRequestExecutor"/>
+        /// Initializes a new instance of <see cref="ApiRequestExecutor"/>.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
         /// <param name="baseUrl">The site URL.</param>
-        /// <param name="clientBuilder">The builder for objects that initialize RestSharp requests</param>
+        /// <param name="clientBuilder">The builder for objects that initialize RestSharp requests.</param>
         public ApiRequestExecutor(ApiContext context, string baseUrl, IApiRestClientBuilder clientBuilder)
         {
             Context = context;
-            BaseUrl= baseUrl;
+            BaseUrl = baseUrl;
             restClientBuilder = clientBuilder;
         }
 
@@ -40,7 +40,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// Get an object of <typeparamref name="T"/> from API when expected data should not be wrapped with extra data on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
-        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="requestParameters">Parameters for initializing an API request.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithNotWrappedResponse<T>(ExecuteApiRequestParameters requestParameters)
             where T : class, new()
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// Get an object of <typeparamref name="T"/> from API when expected data should be standard wrapped with extra data on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
-        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="requestParameters">Parameters for initializing an API request.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithWrappedResponse<T>(
             ExecuteApiRequestParameters requestParameters)
@@ -69,7 +69,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// <typeparam name="T">Type of expected object.</typeparam>
         /// <typeparam name="TApiResponse">Type of the response object.</typeparam>
         /// <typeparam name="TResponse">The type of data in a "response" section of the response object.</typeparam>
-        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="requestParameters">Parameters for initializing an API request.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithWrappedResponse<T, TApiResponse, TResponse>(
             ExecuteApiRequestParameters requestParameters)
@@ -85,7 +85,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         /// Get an object of <typeparamref name="T"/> from API when expected data should be wrapped with extra data and in "Results" block on API side.
         /// </summary>
         /// <typeparam name="T">Type of expected object.</typeparam>
-        /// <param name="requestParameters">Parameters for initializing an API request</param>
+        /// <param name="requestParameters">Parameters for initializing an API request.</param>
         /// <returns>Result of request execution.</returns>
         public ApiResult<T> ExecuteApiWithWrappedResultsInResponse<T>(
             ExecuteApiRequestParameters requestParameters)

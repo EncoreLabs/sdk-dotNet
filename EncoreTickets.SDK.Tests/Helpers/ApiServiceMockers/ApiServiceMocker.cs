@@ -12,9 +12,9 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 {
     internal class ApiServiceMocker
     {
-        public Mock<ApiRestClientBuilder> RestClientBuilderMock;
+        public Mock<ApiRestClientBuilder> RestClientBuilderMock { get; set; }
 
-        public Mock<RestClientWrapper> RestClientWrapperMock;
+        public Mock<RestClientWrapper> RestClientWrapperMock { get; set; }
 
         public ApiServiceMocker()
         {
@@ -73,16 +73,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             RestClientWrapperMock.Verify(
                 x => x.Execute<T>(
                     It.Is<IRestClient>(client =>
-                        baseUrl.Equals(client.BaseUrl.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                    ),
+                        baseUrl.Equals(client.BaseUrl.ToString(), StringComparison.InvariantCultureIgnoreCase)),
                     It.Is<IRestRequest>(request =>
                         request.Resource.Equals(resource, StringComparison.InvariantCultureIgnoreCase) &&
                         request.Method == method &&
                         request.RequestFormat == DataFormat.Json &&
                         AreQueryParametersInRequest(request, expectedQueryParameters) &&
                         AreHeadersInRequest(request, expectedHeaders) &&
-                        IsJsonBodyInRequest(request, bodyInJson))
-                ), times);
+                        IsJsonBodyInRequest(request, bodyInJson))), times);
         }
 
         private Mock<RestClientWrapper> GetRestClientWrapperMock()
@@ -99,21 +97,28 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
             return restClientBuilderMock;
         }
 
-        private bool AreQueryParametersInRequest(IRestRequest request,
+        private bool AreQueryParametersInRequest(
+            IRestRequest request,
             Dictionary<string, object> expectedQueryParameters)
         {
-            return AreParametersInRequest(request, expectedQueryParameters,
+            return AreParametersInRequest(
+                request,
+                expectedQueryParameters,
                 p => p.Type == ParameterType.QueryString || p.Type == ParameterType.QueryStringWithoutEncode);
         }
 
         private bool AreHeadersInRequest(IRestRequest request, Dictionary<string, object> expectedHeaders)
         {
-            return AreParametersInRequest(request, expectedHeaders,
+            return AreParametersInRequest(
+                request,
+                expectedHeaders,
                 p => p.Type == ParameterType.HttpHeader &&
                      !p.Name.Equals("x-sdk", StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private bool AreParametersInRequest(IRestRequest request, Dictionary<string, object> expectedParameters,
+        private bool AreParametersInRequest(
+            IRestRequest request,
+            Dictionary<string, object> expectedParameters,
             Func<Parameter, bool> getCertainParamsFromRequestFunc)
         {
             var parameters = request.Parameters.Where(getCertainParamsFromRequestFunc).ToList();

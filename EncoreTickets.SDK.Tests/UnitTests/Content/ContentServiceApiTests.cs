@@ -25,7 +25,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public ContentServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public ContentServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -37,7 +38,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         }
 
         #region GetLocations
-        
+
         [Test]
         public void GetLocations_CallsApiWithRightParameters()
         {
@@ -52,7 +53,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Location>>>(BaseUrl, "v1/locations", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Location>>>(
+                BaseUrl,
+                "v1/locations",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
@@ -107,14 +111,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Product>>>(
+                BaseUrl,
+                "v1/products",
+                Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
                 {
                     { "page", parameters.Page },
                     { "limit", parameters.Limit },
                     { "sort", parameters.Sort }
                 },
-                expectedHeaders: new Dictionary<string, object> {{ CorrelationIdHeader, Context.Correlation }});
+                expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [Test]
@@ -131,7 +138,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Product>>>(
+                BaseUrl,
+                "v1/products",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
@@ -191,12 +201,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Product>>(BaseUrl, $"v1/products/{id}", Method.GET,
+            mockers.VerifyExecution<ApiResponse<Product>>(
+                BaseUrl,
+                $"v1/products/{id}",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProductById_IfApiResponseSuccessful_ReturnsProduct))]
-        public void GetProductById_IfApiResponseSuccessful_ReturnsProduct(string responseContent,
+        public void GetProductById_IfApiResponseSuccessful_ReturnsProduct(
+            string responseContent,
             Product expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<Product>>(responseContent);
@@ -226,7 +240,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         #endregion
     }
 
-    public static class ContentServiceApiTestsSource
+    internal static class ContentServiceApiTestsSource
     {
         public static IEnumerable<TestCaseData> GetLocations_IfApiResponseSuccessful_ReturnsLocations = new[]
         {
@@ -326,16 +340,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                             },
                         }
                     }
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetLocations_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
                 "",
-                HttpStatusCode.InternalServerError
-            ),
+                HttpStatusCode.InternalServerError),
         };
 
         public static IEnumerable<TestCaseData> GetProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
@@ -401,16 +413,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         ShowType = null,
                         Venue = null
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetProducts_IfApiResponseFailed_ThrowsApiException = new[]
         {
             new TestCaseData(
                 "",
-                HttpStatusCode.InternalServerError
-            ),
+                HttpStatusCode.InternalServerError),
         };
 
         public static IEnumerable<TestCaseData> GetProductById_IfApiResponseSuccessful_ReturnsProduct = new[]
@@ -507,8 +517,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                     },
                     OnSale = "yes",
                     ShowFaceValue = false
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetProductById_IfApiResponseFailed_ThrowsApiException = new[]
@@ -532,8 +541,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
 	}
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
     }
 }

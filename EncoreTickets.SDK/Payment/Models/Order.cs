@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
-    /// Order Entity
+    /// Order Entity.
     /// </summary>
     public class Order
     {

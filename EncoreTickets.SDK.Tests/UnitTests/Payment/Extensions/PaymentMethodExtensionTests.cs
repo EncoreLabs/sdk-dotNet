@@ -31,52 +31,44 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
         {
             new TestCaseData(
                 null,
-                0
-            ),
+                0),
             new TestCaseData(
                 new PaymentMethod(),
-                0
-            ),
+                0),
             new TestCaseData(
                 new PaymentMethod
                 {
                     ExpiryDate = new DateTime(2020, 12, 31, 23, 59, 59)
                 },
-                12
-            ),
+                12),
             new TestCaseData(
                 new PaymentMethod
                 {
                     ExpiryDate = DateTime.MinValue
                 },
-                1
-            ),
+                1),
         };
-        
+
         public static IEnumerable<TestCaseData> GetYearFromPaymentCardExpiredDate_ReturnsCorrectly = new[]
         {
             new TestCaseData(
                 null,
-                0
-            ),
+                0),
             new TestCaseData(
                 new PaymentMethod(),
-                0
-            ),
+                0),
             new TestCaseData(
                 new PaymentMethod
                 {
                     ExpiryDate = new DateTime(2020, 12, 31, 23, 59, 59)
                 },
-                2020
-            ),
+                2020),
             new TestCaseData(
                 new PaymentMethod
                 {
                     ExpiryDate = DateTime.MinValue
                 },
-                1
-            ),
+                1),
         };
     }
 }

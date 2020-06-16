@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
         public void GetRestClient_IfUrlIsValid_ReturnsCorrectlyWithInitializedUrl(string baseUrl)
         {
             var wrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper(It.IsAny<RestClientCredentials>());
-            var restClientParameters = new RestClientParameters {BaseUrl = baseUrl};
+            var restClientParameters = new RestClientParameters { BaseUrl = baseUrl };
 
             var result = wrapper.GetRestClient(restClientParameters);
 
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             RestClientCredentials credentials)
         {
             var wrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper(credentials);
-            var restClientParameters = new RestClientParameters {BaseUrl = TestValidUrl};
+            var restClientParameters = new RestClientParameters { BaseUrl = TestValidUrl };
 
             var result = wrapper.GetRestClient(restClientParameters);
 
@@ -117,7 +117,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
 
             var result = restClientWrapper.GetRestRequest(restClientParameters);
 
-            Assert.AreEqual(expectedResource, result.Resource); 
+            Assert.AreEqual(expectedResource, result.Resource);
         }
 
         [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod))]
@@ -158,7 +158,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
         public void GetRestRequest_IfDataFormatDoesNotExist_ThrowsException(
             DataFormat format)
         {
-            var restClientParameters = new RestClientParameters{RequestDataFormat = format};
+            var restClientParameters = new RestClientParameters { RequestDataFormat = format };
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
 
             Assert.Catch(() => restClientWrapper.GetRestRequest(restClientParameters));
@@ -256,7 +256,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             var result = restClientWrapper.GetRestRequest(restClientParameters);
 
             Assert.AreEqual(RestSharp.DataFormat.Json, result.RequestFormat);
-            Assert.AreEqual(restClientParameters.RequestDataSerializer,result.JsonSerializer);
+            Assert.AreEqual(restClientParameters.RequestDataSerializer, result.JsonSerializer);
             Assert.Null(result.XmlSerializer);
         }
 
@@ -387,13 +387,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
         }
     }
 
-    public static class RestClientWrapperTestsSource
+    internal static class RestClientWrapperTestsSource
     {
         public static IEnumerable<TestCaseData> GetRestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull = new[]
         {
             new TestCaseData(
-                null
-            ),
+                null),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -401,8 +400,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = null,
                     AuthenticationMethod = AuthenticationMethod.JWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -410,8 +408,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "",
                     AuthenticationMethod = AuthenticationMethod.JWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -419,8 +416,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "   \n",
                     AuthenticationMethod = AuthenticationMethod.JWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -428,8 +424,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = null,
                     AuthenticationMethod = AuthenticationMethod.PredefinedJWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -437,8 +432,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "",
                     AuthenticationMethod = AuthenticationMethod.PredefinedJWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -446,8 +440,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "   \n",
                     AuthenticationMethod = AuthenticationMethod.PredefinedJWT
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -455,8 +448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Password = "password",
                     AccessToken = "token",
                     AuthenticationMethod = (AuthenticationMethod)190000000
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetRestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator = new[]
@@ -470,8 +462,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     AuthenticationMethod = AuthenticationMethod.JWT
                 },
                 new JwtAuthenticator("token"),
-                "Bearer token"
-            ),
+                "Bearer token"),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -481,8 +472,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     AuthenticationMethod = AuthenticationMethod.PredefinedJWT
                 },
                 new JwtAuthenticator("token"),
-                "Bearer token"
-            ),
+                "Bearer token"),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -492,8 +482,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     AuthenticationMethod = AuthenticationMethod.Basic
                 },
                 new HttpBasicAuthenticator("username", "password"),
-                "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
-            ),
+                "Basic dXNlcm5hbWU6cGFzc3dvcmQ="),
             new TestCaseData(
                 new RestClientCredentials
                 {
@@ -503,8 +492,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     AuthenticationMethod = AuthenticationMethod.Basic
                 },
                 new HttpBasicAuthenticator(null, null),
-                "Basic Og=="
-            ),
+                "Basic Og=="),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod = new[]
@@ -514,40 +502,34 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 {
                     RequestMethod = RequestMethod.Get,
                 },
-                Method.GET
-            ),
+                Method.GET),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestMethod = RequestMethod.Post,
                 },
-                Method.POST
-            ),
+                Method.POST),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestMethod = RequestMethod.Put,
                 },
-                Method.PUT
-            ),
+                Method.PUT),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestMethod = RequestMethod.Delete,
                 },
-                Method.DELETE
-            ),
+                Method.DELETE),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestMethod = RequestMethod.Patch,
                 },
-                Method.PATCH
-            ),
+                Method.PATCH),
             new TestCaseData(
                 new RestClientParameters(),
-                Method.GET
-            ),
+                Method.GET),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat = new[]
@@ -557,19 +539,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 {
                     RequestDataFormat = DataFormat.Json
                 },
-                RestSharp.DataFormat.Json
-            ),
+                RestSharp.DataFormat.Json),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml
                 },
-                RestSharp.DataFormat.Xml
-            ),
+                RestSharp.DataFormat.Xml),
             new TestCaseData(
                 new RestClientParameters(),
-                RestSharp.DataFormat.Json
-            ),
+                RestSharp.DataFormat.Json),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectHeaders = new[]
@@ -583,11 +562,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                         { "x-apply-price-engine", "true" },
                         { "x-market", "broadway" },
                     },
-                }
-            ),
+                }),
             new TestCaseData(
-                new RestClientParameters()
-            ),
+                new RestClientParameters()),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectUrlSegments = new[]
@@ -601,11 +578,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                         { "id", "1000" },
                         { "productId", "2000" },
                     },
-                }
-            ),
+                }),
             new TestCaseData(
-                new RestClientParameters()
-            ),
+                new RestClientParameters()),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectQueryParams = new[]
@@ -619,11 +594,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                         { "time", "10:00" },
                         { "page", "1" },
                     },
-                }
-            ),
+                }),
             new TestCaseData(
-                new RestClientParameters()
-            ),
+                new RestClientParameters()),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectBody = new[]
@@ -634,35 +607,30 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     RequestBody = new object(),
                     RequestDataFormat = DataFormat.Json
                 },
-                "application/json"
-            ),
+                "application/json"),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestBody = 4,
                     RequestDataFormat = DataFormat.Xml
                 },
-                "application/xml"
-            ),
+                "application/xml"),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestBody = null,
                     RequestDataFormat = DataFormat.Xml
                 },
-                null
-            ),
+                null),
             new TestCaseData(
                 new RestClientParameters(),
-                null
-            ),
+                null),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestBody = 100
                 },
-                "application/json"
-            ),
+                "application/json"),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer = new[]
@@ -672,21 +640,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 {
                     RequestDataFormat = DataFormat.Json,
                     RequestDataSerializer = new DefaultJsonSerializer()
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestDataSerializer = new DefaultJsonSerializer()
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
-                }
-            ),
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetRestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer = new[]
@@ -695,18 +660,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml,
-                    RequestDataSerializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
-                }
-            ),
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
+                }),
             new TestCaseData(
-                new RestClientParameters()
-            ),
+                new RestClientParameters()),
         };
 
         public static IEnumerable<TestCaseData> Execute_IfMaxExecutionsCountIsNotSet_IfResponseNotWithServerError_TriesToExecuteOnce = new[]
@@ -715,50 +677,42 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.OK
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.NotFound
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.Moved
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.NoContent
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.PaymentRequired
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.Redirect
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.RedirectMethod
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.TemporaryRedirect
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice = new[]
@@ -766,15 +720,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = (HttpStatusCode) 555
-                }
-            ),
+                    StatusCode = (HttpStatusCode)555
+                }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.InternalServerError
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> Execute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes = new[]
@@ -785,24 +737,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     StatusCode = HttpStatusCode.ServiceUnavailable
                 },
                 0,
-                1
-            ),
+                1),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = (HttpStatusCode) 555
+                    StatusCode = (HttpStatusCode)555
                 },
                 100,
-                100
-            ),
+                100),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusCode = HttpStatusCode.InternalServerError
                 },
                 5,
-                5
-            ),
+                5),
         };
 
         public static IEnumerable<TestCaseData> GenericExecute_IfResponseNotWithServerError_TriesToExecuteOnce = new[]
@@ -811,50 +760,42 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.OK
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.Moved
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.NoContent
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.PaymentRequired
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.Redirect
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.RedirectMethod
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.TemporaryRedirect
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.NotFound
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsNotSet_IfResponseFailedWithServerError_TriesToExecuteAtLeastTwice = new[]
@@ -863,14 +804,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.ServiceUnavailable
-                }
-            ),
+                }),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.InternalServerError
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GenericExecute_IfMaxAttemptsCountIsSet_IfResponseFailedWithServerError_TriesToExecuteMaxCountTimes = new[]
@@ -881,16 +820,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     StatusCode = HttpStatusCode.ServiceUnavailable
                 },
                 0,
-                1
-            ),
+                1),
             new TestCaseData(
                 new RestResponse<object>
                 {
                     StatusCode = HttpStatusCode.InternalServerError
                 },
                 5,
-                5
-            ),
+                5),
         };
     }
 }

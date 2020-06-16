@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Response
         [TestCaseSource(typeof(ApiResponseTestsSource), nameof(ApiResponseTestsSource.Data_ReturnsSameObjectAsInResponse))]
         public void Data_ReturnsSameObjectAsInResponse<T>(T instance)
         {
-            var response = new ApiResponse<T> {Response = instance};
+            var response = new ApiResponse<T> { Response = instance };
 
             Assert.AreEqual(instance, response.Data);
         }

@@ -18,7 +18,8 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         {
         }
 
-        protected DefaultJsonSerializer(JsonSerializerSettings settings) : base(settings)
+        protected DefaultJsonSerializer(JsonSerializerSettings settings)
+            : base(settings)
         {
         }
 

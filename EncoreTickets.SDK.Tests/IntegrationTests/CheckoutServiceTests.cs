@@ -268,8 +268,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         private (string agentId, string agentPassword, string agentChannel) GetAgentInfoFromConfig()
         {
-            var agentId = configuration ["Checkout:TestAgentId"];
-            var agentPassword = configuration ["Checkout:TestAgentPassword"];
+            var agentId = configuration["Checkout:TestAgentId"];
+            var agentPassword = configuration["Checkout:TestAgentPassword"];
             var channelId = configuration["Checkout:TestAgentChannelId"];
             return (agentId, agentPassword, channelId);
         }

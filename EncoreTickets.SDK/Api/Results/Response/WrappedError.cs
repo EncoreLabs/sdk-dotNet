@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
-    /// The model for failed API responses when only errors return
+    /// The model for failed API responses when only errors return.
     /// </summary>
     internal class WrappedError
     {

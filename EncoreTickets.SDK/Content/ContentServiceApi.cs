@@ -22,10 +22,11 @@ namespace EncoreTickets.SDK.Content
         public override int? ApiVersion => 1;
 
         /// <summary>
-        /// Default constructor for the content service
+        /// Default constructor for the content service.
         /// </summary>
         /// <param name="context"></param>
-        public ContentServiceApi(ApiContext context) : base(context, ContentApiHost)
+        public ContentServiceApi(ApiContext context)
+            : base(context, ContentApiHost)
         {
         }
 

@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
         {
             var sourceBasket = new SDK.Basket.Models.Basket
             {
-                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i}).ToList(),
+                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i }).ToList(),
                 Coupon = new Coupon { Code = "DISCOUNT" },
                 Reference = "1234567",
                 AllowFlexiTickets = true,

@@ -41,7 +41,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
             var aws = new AwsSqs(clientFactoryMock.Object, profileRegistrarMock.Object, profileName, regionName, accessKey, secretKey);
 
             profileRegistrarMock.Verify(
-                x => x.RegisterProfile(It.Is<string>(arg => arg == profileName), It.Is<string>(arg => arg == accessKey),
+                x => x.RegisterProfile(
+                    It.Is<string>(arg => arg == profileName),
+                    It.Is<string>(arg => arg == accessKey),
                     It.Is<string>(arg => arg == secretKey)),
                 Times.Once);
             clientFactoryMock.Verify(
@@ -64,7 +66,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
 
             var result = await aws.SendMessageAsync(queueUrl, messageBody);
 
-            amazonSqsMock.Verify(x =>
+            amazonSqsMock.Verify(
+                x =>
                 x.SendMessageAsync(
                     It.Is<SendMessageRequest>(arg => arg.QueueUrl == queueUrl && arg.MessageBody == messageBody),
                     It.Is<CancellationToken>(arg => arg == default)), Times.Once);

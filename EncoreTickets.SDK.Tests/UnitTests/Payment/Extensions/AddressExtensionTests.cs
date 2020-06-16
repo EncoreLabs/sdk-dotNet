@@ -24,12 +24,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
         {
             new TestCaseData(
                 null,
-                true
-            ),
+                true),
             new TestCaseData(
                 new Address(),
-                true
-            ),
+                true),
             new TestCaseData(
                 new Address
                 {
@@ -41,15 +39,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     Line2 = "house",
                     StateOrProvince = "minsk"
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Address
                 {
                     CountryCode = "BLR",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Address
                 {
@@ -60,8 +56,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     Line2 = "house",
                     StateOrProvince = "minsk"
                 },
-                false
-            ),
+                false),
         };
     }
 }

@@ -37,43 +37,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         public static IEnumerable<TestCaseData> Authenticate_DoesNotChangeContext = new[]
         {
             new TestCaseData(
-                new ApiContext(Environments.Production, "token")
-            ),
+                new ApiContext(Environments.Production, "token")),
             new TestCaseData(
-                new ApiContext(Environments.QA, "admin", "valid_password")
-            ),
+                new ApiContext(Environments.QA, "admin", "valid_password")),
             new TestCaseData(
-                new ApiContext(Environments.Staging, "admin", "valid_password")
-            ),
+                new ApiContext(Environments.Staging, "admin", "valid_password")),
         };
 
         public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = null
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = ""
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
                     AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO"
                 },
-                true
-            ),
+                true),
         };
     }
 }

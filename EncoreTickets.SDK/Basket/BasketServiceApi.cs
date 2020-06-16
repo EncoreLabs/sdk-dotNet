@@ -33,7 +33,8 @@ namespace EncoreTickets.SDK.Basket
         /// Default constructor for the Basket service.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
-        public BasketServiceApi(ApiContext context) : base(context, BasketApiHost)
+        public BasketServiceApi(ApiContext context)
+            : base(context, BasketApiHost)
         {
         }
 
@@ -94,7 +95,7 @@ namespace EncoreTickets.SDK.Basket
         /// <inheritdoc />
         public Models.Basket UpsertPromotion(string basketReference, string couponName)
         {
-            var coupon = new Coupon {Code = couponName};
+            var coupon = new Coupon { Code = couponName };
             return UpsertPromotion(basketReference, coupon);
         }
 
@@ -135,7 +136,7 @@ namespace EncoreTickets.SDK.Basket
         public Models.Basket RemoveReservation(string basketReference, string reservationId)
         {
             ValidationHelper.ThrowArgumentExceptionIfNotSet(
-                ("basket ID", basketReference), 
+                ("basket ID", basketReference),
                 ("reservation ID", reservationId));
             var parameters = new ExecuteApiRequestParameters
             {

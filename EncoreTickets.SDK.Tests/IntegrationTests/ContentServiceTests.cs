@@ -39,6 +39,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(location.IsoCode));
                 Assert.False(location.SubLocations.Any(loc => string.IsNullOrEmpty(loc.Name)));
             }
+
             Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
@@ -51,6 +52,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 AssertProductPropertiesAreSet(product);
             }
+
             Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 

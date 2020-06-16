@@ -29,7 +29,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public CheckoutServiceApiTests() : base(ApiContextTestHelper.DefaultApiContext)
+        public CheckoutServiceApiTests()
+            : base(ApiContextTestHelper.DefaultApiContext)
         {
         }
 
@@ -128,10 +129,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
             });
         }
 
-        [TestCaseSource(typeof(CheckoutServiceApiTestsSource),
+        [TestCaseSource(
+            typeof(CheckoutServiceApiTestsSource),
             nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters))]
-        public void ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters(string reference,
-            ConfirmBookingParameters parameters, string requestBody)
+        public void ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters(
+            string reference,
+            ConfirmBookingParameters parameters,
+            string requestBody)
         {
             mockers.SetupAnyExecution<ApiResponseWithResultsBlock<string>>();
 
@@ -154,8 +158,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         }
 
         [TestCaseSource(typeof(CheckoutServiceApiTestsSource), nameof(CheckoutServiceApiTestsSource.ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters))]
-        public void ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters(string agentId, string agentPassword, 
-            string reference, ConfirmBookingParameters parameters, string requestBody)
+        public void ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters(
+            string agentId,
+            string agentPassword,
+            string reference,
+            ConfirmBookingParameters parameters,
+            string requestBody)
         {
             var encoder = new Base64Encoder();
             mockers.SetupAnyExecution<ApiResponseWithResultsBlock<string>>();
@@ -176,8 +184,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 bodyInJson: requestBody,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {"X-AGENT-ID", encoder.Encode(agentId)},
-                    {"X-AGENT-PASSWORD", encoder.Encode(agentPassword)}
+                    { "X-AGENT-ID", encoder.Encode(agentId) },
+                    { "X-AGENT-PASSWORD", encoder.Encode(agentPassword) }
                 },
                 expectedQueryParameters: null);
         }
@@ -212,7 +220,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         #endregion
     }
 
-    public static class CheckoutServiceApiTestsSource
+    internal static class CheckoutServiceApiTestsSource
     {
         #region Checkout
 
@@ -261,8 +269,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     HasFlexiTickets = true,
                     PaymentType = PaymentType.Card
                 },
-                "{\"deliveryMethod\":\"C\",\"paymentType\":\"card\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentId\":null}"
-            ),
+                "{\"deliveryMethod\":\"C\",\"paymentType\":\"card\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentId\":null}"),
             new TestCaseData(
                 new BookingParameters
                 {
@@ -289,10 +296,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     PaymentType = PaymentType.Account,
                     PaymentId = "111"
                 },
-                "{\"deliveryMethod\":\"C\",\"paymentType\":\"account\",\"reference\":\"8602898\",\"channelId\":\"resia\",\"shopper\":{\"email\":\"agentEmail@mail.com\",\"title\":\"Mrs\",\"firstName\":\"clientFName\",\"lastName\":\"clientLName\",\"telephoneNumber\":\"123321321321\",\"externalId\":null},\"billingAddress\":{\"line1\":\"47-51 Great Suffolk St\",\"line2\":\"\",\"postalCode\":\"SE1 0BS\",\"city\":\"London\",\"countryCode\":\"UK\",\"countryName\":null,\"stateOrProvince\":null},\"origin\":null,\"redirectUrl\":\"http://localhost:8000/\",\"deliveryCharge\":0,\"recipientName\":null,\"giftVoucherMessage\":null,\"deliveryAddress\":null,\"hasFlexiTickets\":false,\"paymentId\":\"111\"}"
-            ),
+                "{\"deliveryMethod\":\"C\",\"paymentType\":\"account\",\"reference\":\"8602898\",\"channelId\":\"resia\",\"shopper\":{\"email\":\"agentEmail@mail.com\",\"title\":\"Mrs\",\"firstName\":\"clientFName\",\"lastName\":\"clientLName\",\"telephoneNumber\":\"123321321321\",\"externalId\":null},\"billingAddress\":{\"line1\":\"47-51 Great Suffolk St\",\"line2\":\"\",\"postalCode\":\"SE1 0BS\",\"city\":\"London\",\"countryCode\":\"UK\",\"countryName\":null,\"stateOrProvince\":null},\"origin\":null,\"redirectUrl\":\"http://localhost:8000/\",\"deliveryCharge\":0,\"recipientName\":null,\"giftVoucherMessage\":null,\"deliveryAddress\":null,\"hasFlexiTickets\":false,\"paymentId\":\"111\"}"),
         };
-        
+
         public static IEnumerable<TestCaseData> Checkout_IfApiResponseSuccessful_ReturnsPaymentInfo = new[]
         {
             new TestCaseData(
@@ -309,8 +315,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     PaymentId = "c72b2b7c-69ef-489c-83ee-1c731af93324",
                     PaymentType = null
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -325,8 +330,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     PaymentId = "c72b2b7c-69ef-489c-83ee-1c731af93324",
                     PaymentType = PaymentType.Card
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -341,8 +345,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     PaymentId = null,
                     PaymentType = PaymentType.Account
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> Checkout_IfApiResponseFailed_ThrowsApiException = new[]
@@ -363,8 +366,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "[Booking string] Failed to update booking details due to booking gateway unknown error [INSUFFDATA]: [Insuffient data has been supplied to complete this request.] (severity: E). Request data [{\"rqst\":{\"pThwiCheckoutInW03\":{\"refNo\":\"string\",\"tanSurname\":\"BUTLER\",\"booInitial\":\"SHAWN\",\"booTitle\":\"MISS\",\"booAddress1\":\"Barnard's Inn\",\"booAddress2\":\"86 Fetter Lane\",\"booAddress3\":\"London\",\"booAddress4\":\"NY\",\"booPostCode\":\"EC4A 1EN\",\"booCountryCode\":\"UK\",\"booPhone\":\"07882571812\",\"booEmailAddress\":\"user@example.com\",\"tksCode\":\"C\",\"flexiFlag\":\"Y\",\"mailChargePrice\":0,\"voucherRecipient\":\"Mr. Someone Else - Barnard's Inn, 86 Fetter Lane, London, EC4A 1EN, NY, United Kingdom\",\"voucherMessage\":\"Happy Birthday to you.\",\"offCode\":\"0\",\"booChannelId\":\"\",\"booTxFxrRateFloat\":0,\"promotion\":{\"couponCode\":\"\",\"promotionCode\":\"\"}}}}]."
-            ),
+                "[Booking string] Failed to update booking details due to booking gateway unknown error [INSUFFDATA]: [Insuffient data has been supplied to complete this request.] (severity: E). Request data [{\"rqst\":{\"pThwiCheckoutInW03\":{\"refNo\":\"string\",\"tanSurname\":\"BUTLER\",\"booInitial\":\"SHAWN\",\"booTitle\":\"MISS\",\"booAddress1\":\"Barnard's Inn\",\"booAddress2\":\"86 Fetter Lane\",\"booAddress3\":\"London\",\"booAddress4\":\"NY\",\"booPostCode\":\"EC4A 1EN\",\"booCountryCode\":\"UK\",\"booPhone\":\"07882571812\",\"booEmailAddress\":\"user@example.com\",\"tksCode\":\"C\",\"flexiFlag\":\"Y\",\"mailChargePrice\":0,\"voucherRecipient\":\"Mr. Someone Else - Barnard's Inn, 86 Fetter Lane, London, EC4A 1EN, NY, United Kingdom\",\"voucherMessage\":\"Happy Birthday to you.\",\"offCode\":\"0\",\"booChannelId\":\"\",\"booTxFxrRateFloat\":0,\"promotion\":{\"couponCode\":\"\",\"promotionCode\":\"\"}}}}]."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -380,8 +382,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Cannot update booking with reference [8526754] that was expired."
-            ),
+                "Cannot update booking with reference [8526754] that was expired."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -397,8 +398,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "deliveryMethod: Please provide a valid delivery method. It should be set to either 'C' for COBO, 'E' for ETicket or 'M' for Postal delivery."
-            ),
+                "deliveryMethod: Please provide a valid delivery method. It should be set to either 'C' for COBO, 'E' for ETicket or 'M' for Postal delivery."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -414,8 +414,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Booking with reference [1] was not found."
-            ),
+                "Booking with reference [1] was not found."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -430,8 +429,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Unable to find origin url for the provided channelId."
-            ),
+                "Unable to find origin url for the provided channelId."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -451,8 +449,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "reference: Please provide a booking reference number.\r\nchannelId: Please provide a Channel ID."
-            ),
+                "reference: Please provide a booking reference number.\r\nchannelId: Please provide a Channel ID."),
         };
 
         #endregion
@@ -469,8 +466,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     PaymentId = "your-payment-reference",
                     AgentPaymentReference = "your-reference"
                 },
-                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"
-            ),
+                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };
 
         public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters = new[]
@@ -485,8 +481,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                     PaymentId = "your-payment-reference",
                     AgentPaymentReference = "your-reference"
                 },
-                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"
-            ),
+                "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };
 
         public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult = new[]
@@ -502,8 +497,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     ""response"": {
         ""result"": ""success""
     }
-}"
-            ),
+}"),
         };
 
         public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseFailed_ThrowsApiException = new[]
@@ -526,8 +520,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Order for booking 8231754 and channel KyFiRKwzcp doesn't exists."
-            ),
+                "Order for booking 8231754 and channel KyFiRKwzcp doesn't exists."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -545,8 +538,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Payment with id [90984ea1-add6-4320-8e2b-dcd362fe4eb9] is not authorised."
-            ),
+                "Payment with id [90984ea1-add6-4320-8e2b-dcd362fe4eb9] is not authorised."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -565,8 +557,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Cannot confirm booking with reference [8527512] that is already paid."
-            ),
+                "Cannot confirm booking with reference [8527512] that is already paid."),
 
             // 403
             new TestCaseData(
@@ -581,8 +572,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     }
 }",
                 HttpStatusCode.Forbidden,
-                "Agent [resiaapi] is not authorized."
-            ),
+                "Agent [resiaapi] is not authorized."),
         };
 
         #endregion

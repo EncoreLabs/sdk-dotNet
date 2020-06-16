@@ -115,6 +115,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(availability.LargestLumpOfTickets);
                 Assert.AreNotEqual(availability.DateTime, default);
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -131,6 +132,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(availability.LargestLumpOfTickets);
                 Assert.AreNotEqual(availability.DateTime, default);
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -210,6 +212,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(area.AvailableCount);
                 Assert.False(string.IsNullOrEmpty(area.Name));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -235,6 +238,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(area.AvailableCount);
                 Assert.False(string.IsNullOrEmpty(area.Name));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -302,6 +306,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -330,6 +335,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 

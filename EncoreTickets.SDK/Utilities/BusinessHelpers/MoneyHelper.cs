@@ -30,7 +30,7 @@ namespace EncoreTickets.SDK.Utilities.BusinessHelpers
             var places = GetDecimalPlaces(decimalPlaces);
             return GetDecimalPowerForConversion(places);
         }
-        
+
         private static int GetDecimalPlaces(int? decimalPlaces)
         {
             return decimalPlaces ?? DefaultDecimalPlaces;
@@ -38,7 +38,7 @@ namespace EncoreTickets.SDK.Utilities.BusinessHelpers
 
         private static decimal GetDecimalPowerForConversion(int decimalPlaces)
         {
-            return (decimal) Math.Pow(10, decimalPlaces);
+            return (decimal)Math.Pow(10, decimalPlaces);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Utilities.RestClientWrapper
 {
     /// <summary>
-    /// Parameters to get information about response in <see cref="RestClientWrapper"/>
+    /// Parameters to get information about response in <see cref="RestClientWrapper"/>.
     /// </summary>
     public class RestResponseInformation
     {

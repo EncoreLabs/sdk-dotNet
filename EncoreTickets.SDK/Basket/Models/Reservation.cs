@@ -61,7 +61,7 @@ namespace EncoreTickets.SDK.Basket.Models
         public Price FaceValueInOfficeCurrency { get; set; }
 
         /// <summary>
-        /// Gets or sets the face value of the reservation represented in the shopper currency. 
+        /// Gets or sets the face value of the reservation represented in the shopper currency.
         /// </summary>
         public Price FaceValueInShopperCurrency { get; set; }
 

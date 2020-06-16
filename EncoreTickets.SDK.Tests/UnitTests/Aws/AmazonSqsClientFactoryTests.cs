@@ -11,12 +11,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
     {
         private AWSOptions optionsUsedForCreatingAmazonSqs;
 
-        protected override IAmazonSQS CreateAmazonSqsClient(AWSOptions options)
-        {
-            optionsUsedForCreatingAmazonSqs = options;
-            return new AmazonSQSClient(new AnonymousAWSCredentials(), RegionEndpoint.APEast1);
-        }
-
         [TestCase("dev", "eu-west-1")]
         public void CreateClient_InitializesCorrectly(string profileName, string regionName)
         {
@@ -25,6 +19,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Aws
             Assert.NotNull(optionsUsedForCreatingAmazonSqs);
             Assert.AreEqual(profileName, optionsUsedForCreatingAmazonSqs.Profile);
             Assert.AreEqual(regionName, optionsUsedForCreatingAmazonSqs.Region.SystemName);
+        }
+
+        protected override IAmazonSQS CreateAmazonSqsClient(AWSOptions options)
+        {
+            optionsUsedForCreatingAmazonSqs = options;
+            return new AmazonSQSClient(new AnonymousAWSCredentials(), RegionEndpoint.APEast1);
         }
     }
 }

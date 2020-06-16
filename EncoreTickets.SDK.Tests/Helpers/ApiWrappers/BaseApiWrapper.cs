@@ -11,7 +11,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiWrappers
 
         public string SourceHost => Host;
 
-        public BaseApiWrapper(ApiContext context, string host) : base(context, host)
+        public BaseApiWrapper(ApiContext context, string host)
+            : base(context, host)
         {
         }
     }

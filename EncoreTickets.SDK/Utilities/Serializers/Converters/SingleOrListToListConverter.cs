@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK.Utilities.Serializers.Converters
             var token = JToken.Load(reader);
             return token.Type == JTokenType.Array
                 ? token.ToObject<List<T>>()
-                : new List<T> {token.ToObject<T>()};
+                : new List<T> { token.ToObject<T>() };
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

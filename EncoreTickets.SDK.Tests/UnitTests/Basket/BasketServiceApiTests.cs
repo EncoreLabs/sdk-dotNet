@@ -22,14 +22,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         private const string TestBasketValidReference = "12345678";
         private const string TestPromotionValidId = "12345678";
 
-        private readonly SDK.Basket.Models.Basket TestBasketValid = new SDK.Basket.Models.Basket();
+        private readonly SDK.Basket.Models.Basket testBasketValid = new SDK.Basket.Models.Basket();
 
         private ApiServiceMocker mockers;
-        
+
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public BasketServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public BasketServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -76,7 +77,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket))]
-        public void GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -142,7 +144,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket))]
-        public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             List<Delivery> expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<Delivery>>>(responseContent);
@@ -192,8 +195,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters))]
-        public void UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters(SDK.Basket.Models.Basket basket,
-            bool? hasFlexiTickets, string requestBody)
+        public void UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters(
+            SDK.Basket.Models.Basket basket,
+            bool? hasFlexiTickets,
+            string requestBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -239,12 +244,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertBasket_IfApiResponseSuccessful_ReturnsBasket))]
-        public void UpsertBasket_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void UpsertBasket_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
 
-            var actual = UpsertBasket(TestBasketValid);
+            var actual = UpsertBasket(testBasketValid);
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
@@ -259,7 +265,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = UpsertBasket(TestBasketValid);
+                var actual = UpsertBasket(testBasketValid);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -269,7 +275,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         #endregion
 
         #region UpsertPromotion
-        
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
@@ -281,10 +287,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             });
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource),
+        [TestCaseSource(
+            typeof(BasketServiceApiTestsSource),
             nameof(BasketServiceApiTestsSource.UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters))]
-        public void UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters(string reference,
-            Coupon coupon, string expectedBody)
+        public void UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters(
+            string reference,
+            Coupon coupon,
+            string expectedBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -306,10 +315,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: null);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource),
+        [TestCaseSource(
+            typeof(BasketServiceApiTestsSource),
             nameof(BasketServiceApiTestsSource.UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters))]
-        public void UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters(string reference,
-            string couponName, string expectedBody)
+        public void UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters(
+            string reference,
+            string couponName,
+            string expectedBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -332,7 +344,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket))]
-        public void UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket(string responseContent,
+        public void UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -451,7 +464,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.ClearBasket_IfApiResponseSuccessful_ReturnsBasket))]
-        public void ClearBasket_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void ClearBasket_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -528,7 +542,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.RemoveReservation_IfApiResponseSuccessful_ReturnsBasket))]
-        public void RemoveReservation_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void RemoveReservation_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -568,6 +583,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             {
                 queryParameters.Add("limit", pageRequest.Limit);
             }
+
             if (pageRequest?.Page != null)
             {
                 queryParameters.Add("page", pageRequest.Page);
@@ -591,7 +607,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotions_IfApiResponseSuccessful_ReturnsPromotions))]
-        public void GetPromotions_IfApiResponseSuccessful_ReturnsPromotions(string responseContent,
+        public void GetPromotions_IfApiResponseSuccessful_ReturnsPromotions(
+            string responseContent,
             List<Promotion> expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<Promotion>>>(responseContent);
@@ -657,7 +674,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion))]
-        public void GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion(string responseContent,
+        public void GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion(
+            string responseContent,
             Promotion expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<Promotion>>(responseContent);
@@ -687,7 +705,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         #endregion
     }
 
-    public static class BasketServiceApiTestsSource
+    internal static class BasketServiceApiTestsSource
     {
         #region GetBasketDetails
 
@@ -893,8 +911,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-                ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseFailed_ThrowsApiException = new[]
@@ -919,8 +936,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
             // 404
             new TestCaseData(
@@ -942,8 +958,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"5926058\" was not found."
-            ),
+                "Basket with reference \"5926058\" was not found."),
         };
 
         #endregion
@@ -1041,8 +1056,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             DecimalPlaces = 2
                         }
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1067,8 +1081,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
             // 404
             new TestCaseData(
@@ -1090,8 +1103,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"86046\" was not found."
-            ),
+                "Basket with reference \"86046\" was not found."),
         };
 
         #endregion
@@ -1214,8 +1226,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     MissedPromotions = null
                 },
                 null,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new SDK.Basket.Models.Basket
                 {
@@ -1330,8 +1341,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     MissedPromotions = null
                 },
                 false,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new SDK.Basket.Models.Basket
                 {
@@ -1446,8 +1456,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     MissedPromotions = null
                 },
                 true,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new SDK.Basket.Models.Basket
                 {
@@ -1549,8 +1558,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     }
                 },
                 null,
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
+                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
             new TestCaseData(
                 new SDK.Basket.Models.Basket
                 {
@@ -1592,8 +1600,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     }
                 },
                 false,
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
+                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
             new TestCaseData(
                 new SDK.Basket.Models.Basket
                 {
@@ -1617,8 +1624,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     }
                 },
                 null,
-                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
         };
 
         public static IEnumerable<TestCaseData> UpsertBasket_IfBasketParametersArePassed_CallsApiWithRightParameters = new[]
@@ -1663,8 +1669,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     },
                     Coupon = null
                 },
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new UpsertBasketParameters
                 {
@@ -1705,8 +1710,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         Code = "SAMPLE_SOURCE_CODE",
                     }
                 },
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
+                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
             new TestCaseData(
                 new UpsertBasketParameters
                 {
@@ -1729,8 +1733,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         }
                     }
                 },
-                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
         };
 
         public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseSuccessful_ReturnsBasket = new[]
@@ -1913,8 +1916,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -2200,8 +2202,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -2431,8 +2432,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             DisplayText = "Buy one ticket, get another free."
                         }
                     }
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseFailed_ThrowsApiException = new[]
@@ -2457,8 +2457,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "channelId: This value should not be blank."
-            ),
+                "channelId: This value should not be blank."),
 
             // 503
             new TestCaseData(
@@ -2478,28 +2477,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.ServiceUnavailable,
-                "Unable to process \"new\" basket. Error code: \"THTNOTFOUND\"."
-            ),
+                "Unable to process \"new\" basket. Error code: \"THTNOTFOUND\"."),
         };
 
         #endregion
 
         #region UpsertPromotion
-        
+
         public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters = new[]
         {
             new TestCaseData(
                 "791631",
                 null,
-                "{\"coupon\":null}"
-            ),
+                "{\"coupon\":null}"),
             new TestCaseData(
                 "791631",
-                new Coupon{
+                new Coupon
+                {
                     Code = "PRODUCTDISCOUNT"
                 },
-                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"
-            ),
+                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters = new[]
@@ -2507,13 +2504,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 "791631",
                 null,
-                "{\"coupon\":{\"code\":null}}"
-            ),
+                "{\"coupon\":{\"code\":null}}"),
             new TestCaseData(
                 "791631",
                 "PRODUCTDISCOUNT",
-                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"
-            ),
+                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket = new[]
@@ -2747,8 +2742,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             DisplayText = "Buy one ticket, get another free."
                         }
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -2986,8 +2980,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             DisplayText = "Buy one ticket, get another free."
                         }
                     }
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulButPromoCodeInvalid_ThrowsInvalidPromoCodeException = new[]
@@ -3094,8 +3087,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "The supplied promotion code [test] was not applied as it didn't match a valid promotion code"
-            ),
+                "The supplied promotion code [test] was not applied as it didn't match a valid promotion code"),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith400Code_ThrowsBasketCannotBeModifiedException = new[]
@@ -3118,8 +3110,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "The basket with reference [8605916] cannot be modified. It has a status of [cancelled]. Only baskets in [active] status can be updated or confirmed."
-            ),
+                "The basket with reference [8605916] cannot be modified. It has a status of [cancelled]. Only baskets in [active] status can be updated or confirmed."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3138,8 +3129,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith404Code_ThrowsBasketNotFoundException = new[]
@@ -3162,8 +3152,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "Basket with reference \"34343434\" was not found."
-            ),
+                "Basket with reference \"34343434\" was not found."),
         };
 
         public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWithUnexpectedCode_ThrowsApiException = new[]
@@ -3187,8 +3176,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.ServiceUnavailable,
-                "test"
-            ),
+                "test"),
         };
 
         #endregion
@@ -3244,8 +3232,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3293,8 +3280,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> ClearBasket_IfApiResponseFailed_ThrowsApiException = new[]
@@ -3319,8 +3305,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
             // 404
             new TestCaseData(
@@ -3342,8 +3327,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"5926058\" was not found."
-            ),
+                "Basket with reference \"5926058\" was not found."),
         };
 
         #endregion
@@ -3581,8 +3565,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             DisplayText = "Buy one ticket, get another free."
                         }
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3631,8 +3614,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Coupon = null,
                     AppliedPromotion = null,
                     MissedPromotions = null
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> RemoveReservation_IfApiResponseFailed_ThrowsApiException = new[]
@@ -3658,8 +3640,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Reservation with id [2] does not exist for basket [8604865]."
-            ),
+                "Reservation with id [2] does not exist for basket [8604865]."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3680,8 +3661,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"04865\" was not found."
-            ),
+                "Basket with reference \"04865\" was not found."),
         };
 
         #endregion
@@ -3695,17 +3675,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 {
                     Limit = 500,
                     Page = 2
-                }
-            ),
+                }),
             new TestCaseData(
-                null
-            ),
+                null),
             new TestCaseData(
                 new PageRequest
                 {
                     Limit = 500
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseSuccessful_ReturnsPromotions = new[]
@@ -3762,8 +3739,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         ValidFrom = new DateTimeOffset(2019, 05, 28, 07, 00, 00, TimeSpan.Zero),
                         ValidTo = new DateTimeOffset(2019, 10, 30, 22, 59, 59, TimeSpan.Zero),
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseFailed_ThrowsApiException = new[]
@@ -3789,8 +3765,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Parameter \"page\" of value \"-1\" violated a constraint \"must be an integer\""
-            ),
+                "Parameter \"page\" of value \"-1\" violated a constraint \"must be an integer\""),
         };
 
         #endregion
@@ -3830,8 +3805,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     ReportingCode = "",
                     ValidFrom = new DateTimeOffset(2019, 11, 01, 07, 47, 43, TimeSpan.Zero),
                     ValidTo = new DateTimeOffset(2019, 11, 20, 07, 45, 28, TimeSpan.Zero),
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3863,8 +3837,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     ReportingCode = "ReportingCode001",
                     ValidFrom = new DateTimeOffset(2019, 08, 07, 08, 37, 49, TimeSpan.Zero),
                     ValidTo = new DateTimeOffset(2019, 08, 11, 08, 35, 42, TimeSpan.Zero),
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseFailed_ThrowsApiException = new[]
@@ -3889,8 +3862,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Promotion with id [2060] does not exist."
-            ),
+                "Promotion with id [2060] does not exist."),
         };
 
         #endregion

@@ -124,6 +124,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
 
             Assert.AreEqual(0, actual);
         }
+
         [TestCase(1000, 2, "10.00")]
         [TestCase(1000, 3, "1.000")]
         [TestCase(1000, 4, "0.1000")]

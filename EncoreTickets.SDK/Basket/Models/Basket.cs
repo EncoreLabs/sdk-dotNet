@@ -21,7 +21,7 @@ namespace EncoreTickets.SDK.Basket.Models
         public string ChannelId { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether the basket is mixed.
+        /// Gets or sets a value indicating whether gets or sets a flag indicating whether the basket is mixed.
         /// </summary>
         public bool Mixed { get; set; }
 
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Basket.Models
         public Delivery Delivery { get; set; }
 
         /// <summary>
-        /// Gets or sets FlexiTicket flag.
+        /// Gets or sets a value indicating whether gets or sets FlexiTicket flag.
         /// </summary>
         public bool AllowFlexiTickets { get; set; }
 

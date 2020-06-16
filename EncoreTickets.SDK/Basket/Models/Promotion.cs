@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Basket.Models
         public string DisplayText { get; set; }
 
         /// <summary>
-        /// Gets or sets the promotion description. 
+        /// Gets or sets the promotion description.
         /// </summary>
         public string Description { get; set; }
 

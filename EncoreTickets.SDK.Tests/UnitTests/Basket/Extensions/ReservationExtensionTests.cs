@@ -108,7 +108,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         }
     }
 
-    public static class ReservationExtensionTestsSource
+    internal static class ReservationExtensionTestsSource
     {
         public static IEnumerable<TestCaseData> IsFlexi_Correct = new[]
         {
@@ -118,34 +118,29 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                     ProductId = ProductConstants.FlexiProductId,
                     ProductType = ProductConstants.FlexiProductType
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId,
                     ProductType = ProductConstants.FlexiProductType.ToLower()
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Reservation
                 {
                     ProductType = ProductConstants.FlexiProductType
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Reservation(),
-                false
-            ),
+                false),
         };
     }
 }

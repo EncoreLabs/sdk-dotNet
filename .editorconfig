@@ -2,4 +2,28 @@
 
 # SA1413: Use trailing comma in multi-line initializers
 dotnet_diagnostic.SA1413.severity = none
+
+# SA1122: Use string.Empty for empty strings
 dotnet_diagnostic.SA1122.severity = none
+
+# SA1118: Parameter should not span multiple lines
+dotnet_diagnostic.SA1118.severity = none
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# TODO: Fix warnings related to the following rules:
+# dotnet_diagnostic.SA1201.severity = none
+# dotnet_diagnostic.SA1204.severity = none
+# dotnet_diagnostic.CS1591.severity = none
+# dotnet_diagnostic.SA1600.severity = none
+# dotnet_diagnostic.SA1602.severity = none
+# dotnet_diagnostic.SA1611.severity = none
+# dotnet_diagnostic.SA1614.severity = none
+# dotnet_diagnostic.SA1615.severity = none
+# dotnet_diagnostic.SA1616.severity = none
+# dotnet_diagnostic.SA1622.severity = none
+# dotnet_diagnostic.SA1642.severity = none

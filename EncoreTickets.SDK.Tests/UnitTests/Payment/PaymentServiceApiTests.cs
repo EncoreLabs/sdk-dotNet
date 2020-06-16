@@ -34,7 +34,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public PaymentServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public PaymentServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -88,7 +89,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{channelId}/{externalId}", Method.GET,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                $"v1/orders/{channelId}/{externalId}",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -142,9 +146,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, "v1/orders", Method.POST,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                "v1/orders",
+                Method.POST,
                 bodyInJson: requestBody,
-                expectedHeaders: new Dictionary<string, object>{ [CorrelationIdHeader] = Context.Correlation });
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder))]
@@ -208,7 +215,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{orderId}", Method.PATCH,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                $"v1/orders/{orderId}",
+                Method.PATCH,
                 bodyInJson: requestBody,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
@@ -249,7 +259,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         #region Country
 
         #region GetUsStates
-        
+
         [Test]
         public void GetUsStates_CallsApiWithRightParameters()
         {
@@ -265,7 +275,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/usa/states", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(
+                BaseUrl,
+                "v1/countries/usa/states",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -300,8 +313,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, 
-                "v1/countries/canada/provinces", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(
+                BaseUrl,
+                "v1/countries/canada/provinces",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -342,7 +357,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(BaseUrl, "v1/payments", Method.POST,
+            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(
+                BaseUrl,
+                "v1/payments",
+                Method.POST,
                 bodyInJson: requestBody,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
@@ -544,8 +562,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DaysToEvent = 2,
                         DeliveryMethod = "collection"
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -756,8 +773,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DeliveryMethod = "collection",
                         OfficeId = 1
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -924,8 +940,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         },
                     },
                     RiskData = null
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException = new[]
@@ -948,8 +963,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Cannot find Order. Please specify a valid orderId."
-            ),
+                "Cannot find Order. Please specify a valid orderId."),
         };
 
         public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters = new[]
@@ -1026,8 +1040,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DeliveryMethod = "collection"
                     }
                 },
-                "{\"description\":null,\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"amount\":{\"value\":6200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"telephoneNumber\":null,\"title\":\"Mr\",\"externalId\":\"ext-1\",\"locale\":null},\"items\":[{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"},{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":null,\"daysToEvent\":2}}"
-            ),
+                "{\"description\":null,\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"amount\":{\"value\":6200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"telephoneNumber\":null,\"title\":\"Mr\",\"externalId\":\"ext-1\",\"locale\":null},\"items\":[{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"},{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":null,\"daysToEvent\":2}}"),
             new TestCaseData(
                 new CreateOrderRequest
                 {
@@ -1082,8 +1095,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         OfficeId = 1
                     }
                 },
-                "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"
-            ),
+                "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"),
         };
 
         public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder = new[]
@@ -1254,8 +1266,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DaysToEvent = 2,
                         DeliveryMethod = "collection"
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1379,8 +1390,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DeliveryMethod = "collection",
                         OfficeId = 1
                     }
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1400,8 +1410,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "Order already exist for given channelId (localhost2) and externalId (905909)"
-            ),
+                "Order already exist for given channelId (localhost2) and externalId (905909)"),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1416,15 +1425,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "Unable to create the order. Please check that all your currencies are identical or create a separate order"
-            ),
+                "Unable to create the order. Please check that all your currencies are identical or create a separate order"),
 
             // 401
             new TestCaseData(
                 "{\"code\":401,\"message\":\"Invalid JWT Token\"}",
                 HttpStatusCode.Unauthorized,
-                "Invalid JWT Token"
-            ),
+                "Invalid JWT Token"),
         };
 
         public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters = new[]
@@ -1472,8 +1479,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         }
                     }
                 },
-                "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"
-            ),
+                "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"),
         };
 
         public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder = new[]
@@ -1616,8 +1622,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         DaysToEvent = 2,
                         DeliveryMethod = "collection"
                     }
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1784,8 +1789,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         },
                     },
                     RiskData = null
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1809,15 +1813,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."
-            ),
+                "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."),
 
             // 401
             new TestCaseData(
                 "{\"code\":401,\"message\":\"Invalid JWT Token\"}",
                 HttpStatusCode.Unauthorized,
-                "Invalid JWT Token"
-            ),
+                "Invalid JWT Token"),
 
             // 404
             new TestCaseData(
@@ -1837,8 +1839,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Cannot find Order. Please specify a valid orderId."
-            ),
+                "Cannot find Order. Please specify a valid orderId."),
         };
 
         #endregion
@@ -1891,8 +1892,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Name = "West Virginia",
                         Abbreviation = "WV"
                     },
-                }
-            ),
+                }),
         };
 
         public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces = new[]
@@ -1941,8 +1941,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Name = "New Brunswick",
                         Abbreviation = "NB"
                     },
-                }
-            ),
+                }),
         };
 
         #endregion
@@ -1961,8 +1960,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Currency = "GBP"
                     }
                 },
-                "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"
-            ),
+                "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"),
         };
 
         public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException = new[]
@@ -1982,8 +1980,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."
-            ),
+                "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."),
 
             // 404
             new TestCaseData(
@@ -2000,10 +1997,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."
-            ),
+                "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."),
         };
-
 
         #endregion
     }

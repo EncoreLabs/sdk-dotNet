@@ -53,7 +53,7 @@
         public Address DeliveryAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the user selected flexi tickets during booking.
+        /// Gets or sets a value indicating whether gets or sets whether the user selected flexi tickets during booking.
         /// </summary>
         public bool HasFlexiTickets { get; set; }
 
