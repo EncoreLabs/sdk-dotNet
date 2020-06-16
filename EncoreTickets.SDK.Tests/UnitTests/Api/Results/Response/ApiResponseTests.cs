@@ -8,7 +8,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Response
     {
         [TestCaseSource(typeof(ApiResponseTestsSource), nameof(ApiResponseTestsSource.Data_ReturnsSameObjectAsInResponse))]
         public void Data_ReturnsSameObjectAsInResponse<T>(T instance)
-            where T : class
         {
             var response = new ApiResponse<T> {Response = instance};
 
@@ -20,7 +19,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Response
     {
         public static IEnumerable<TestCaseData> Data_ReturnsSameObjectAsInResponse = new[]
         {
-            new TestCaseData(new object[] { }),
+            new TestCaseData(new int[] { }),
             new TestCaseData(new object()),
             new TestCaseData("test"),
             new TestCaseData(45.89),

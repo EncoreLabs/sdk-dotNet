@@ -6,7 +6,6 @@
     /// <typeparam name="T">The type of requested data.</typeparam>
     /// <inheritdoc/>
     internal class ApiResponse<T> : BaseWrappedApiResponse<T, T>
-        where T : class
     {
         /// <inheritdoc/>>
         public override T Data => Response;

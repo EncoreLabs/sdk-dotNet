@@ -118,7 +118,6 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
 
         private ApiResult<T> CreateApiResult<T>(
             IRestResponse<T> restResponse)
-            where T : class
         {
             if (restResponse.StatusCode == HttpStatusCode.OK)
             {
@@ -144,7 +143,6 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         }
 
         private ApiResult<T> TryToCreateApiResultForError<T>(IRestResponse restResponse)
-            where T : class
         {
             var errorWrappings = EnumExtension.GetEnumValues<ErrorWrapping>();
             foreach (var errorWrapping in errorWrappings)
