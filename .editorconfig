@@ -1,0 +1,5 @@
+﻿[*.cs]
+
+# SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = none
+dotnet_diagnostic.SA1122.severity = none
