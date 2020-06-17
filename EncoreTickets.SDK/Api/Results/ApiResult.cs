@@ -12,7 +12,6 @@ namespace EncoreTickets.SDK.Api.Results
     /// </summary>
     /// <typeparam name="T">data type</typeparam>
     public class ApiResult<T>
-        where T : class
     {
         private T apiData;
 

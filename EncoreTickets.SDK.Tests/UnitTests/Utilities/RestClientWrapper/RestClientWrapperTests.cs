@@ -179,11 +179,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 return;
             }
 
-            foreach (var (key, value) in restClientParameters.RequestHeaders)
+            foreach (var keyValue in restClientParameters.RequestHeaders)
             {
-                var requestHeader = parameters.FirstOrDefault(x => x.Name == key);
+                var requestHeader = parameters.FirstOrDefault(x => x.Name == keyValue.Key);
                 Assert.NotNull(requestHeader);
-                Assert.AreEqual(value, requestHeader.Value);
+                Assert.AreEqual(keyValue.Value, requestHeader.Value);
             }
         }
 
@@ -202,11 +202,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 return;
             }
 
-            foreach (var (key, value) in restClientParameters.RequestUrlSegments)
+            foreach (var keyValue in restClientParameters.RequestUrlSegments)
             {
-                var requestParameter = parameters.FirstOrDefault(x => x.Name == key);
+                var requestParameter = parameters.FirstOrDefault(x => x.Name == keyValue.Key);
                 Assert.NotNull(requestParameter);
-                Assert.AreEqual(value, requestParameter.Value);
+                Assert.AreEqual(keyValue.Value, requestParameter.Value);
             }
         }
 
@@ -225,11 +225,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 return;
             }
 
-            foreach (var (key, value) in restClientParameters.RequestQueryParameters)
+            foreach (var keyValue in restClientParameters.RequestQueryParameters)
             {
-                var requestParameter = parameters.FirstOrDefault(x => x.Name == key);
+                var requestParameter = parameters.FirstOrDefault(x => x.Name == keyValue.Key);
                 Assert.NotNull(requestParameter);
-                Assert.AreEqual(value, requestParameter.Value);
+                Assert.AreEqual(keyValue.Value, requestParameter.Value);
             }
         }
 
