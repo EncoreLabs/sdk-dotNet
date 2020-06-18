@@ -1,13 +1,7 @@
 ﻿[*.cs]
 
-# SA1413: Use trailing comma in multi-line initializers
-dotnet_diagnostic.SA1413.severity = none
-
 # SA1122: Use string.Empty for empty strings
 dotnet_diagnostic.SA1122.severity = none
-
-# SA1118: Parameter should not span multiple lines
-dotnet_diagnostic.SA1118.severity = none
 
 # SA1633: File should have header
 dotnet_diagnostic.SA1633.severity = none

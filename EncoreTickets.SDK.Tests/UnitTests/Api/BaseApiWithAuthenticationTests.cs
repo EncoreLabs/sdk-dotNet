@@ -52,12 +52,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             Context = new ApiContext
             {
-                AuthenticationMethod = AuthenticationMethod.Basic
+                AuthenticationMethod = AuthenticationMethod.Basic,
             };
             var basicService = AuthenticationService;
             Context = new ApiContext
             {
-                AuthenticationMethod = AuthenticationMethod.JWT
+                AuthenticationMethod = AuthenticationMethod.JWT,
             };
             var jwtService = AuthenticationService;
 
@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             var context = new ApiContext
             {
-                AuthenticationMethod = authenticationMethod
+                AuthenticationMethod = authenticationMethod,
             };
 
             var actual = GetAuthenticationService(context);
@@ -141,13 +141,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
             new TestCaseData(
                 new ApiContext
                 {
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 },
                 typeof(PredefinedJwtAuthenticationService)),
             new TestCaseData(
                 new ApiContext
                 {
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 },
                 typeof(JwtAuthenticationService)),
         };

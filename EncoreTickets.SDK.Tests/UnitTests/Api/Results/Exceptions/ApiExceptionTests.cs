@@ -167,76 +167,76 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusDescription = "Internal server error"
+                    StatusDescription = "Internal server error",
                 },
                 null,
                 new List<string>
                 {
-                    "Internal server error"
+                    "Internal server error",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusDescription = "Internal server error"
+                    StatusDescription = "Internal server error",
                 },
                 new Context(),
                 new List<string>
                 {
-                    "Internal server error"
+                    "Internal server error",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusDescription = "",
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 null,
                 new List<string>
                 {
-                    "Some error has occured"
+                    "Some error has occured",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
                     StatusDescription = "",
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 new Context(),
                 new List<string>
                 {
-                    "Some error has occured"
+                    "Some error has occured",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 null,
                 new List<string>
                 {
-                    "Some error has occured"
+                    "Some error has occured",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 new Context(),
                 new List<string>
                 {
-                    "Some error has occured"
+                    "Some error has occured",
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = ""
+                    ErrorMessage = "",
                 },
                 null,
                 null),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = ""
+                    ErrorMessage = "",
                 },
                 new Context(),
                 null),
@@ -252,7 +252,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 new Context
                 {
-                    Errors = new List<Error>()
+                    Errors = new List<Error>(),
                 },
                 null),
             new TestCaseData(
@@ -261,8 +261,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error()
-                    }
+                        new Error(),
+                    },
                 },
                 null),
             new TestCaseData(
@@ -271,8 +271,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Message = "" }
-                    }
+                        new Error { Message = "" },
+                    },
                 },
                 null),
             new TestCaseData(
@@ -281,12 +281,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Message = "Venue [9] is not found" }
-                    }
+                        new Error { Message = "Venue [9] is not found" },
+                    },
                 },
                 new List<string>
                 {
-                    "Venue [9] is not found"
+                    "Venue [9] is not found",
                 }),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
@@ -294,12 +294,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Field = "coupon.code" }
-                    }
+                        new Error { Field = "coupon.code" },
+                    },
                 },
                 new List<string>
                 {
-                    "coupon.code: this field is invalid"
+                    "coupon.code: this field is invalid",
                 }),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
@@ -310,13 +310,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         new Error
                         {
                             Message = "This value should not be blank.", Code = "validation_error",
-                            Field = "coupon.code"
-                        }
-                    }
+                            Field = "coupon.code",
+                        },
+                    },
                 },
                 new List<string>
                 {
-                    "coupon.code: This value should not be blank."
+                    "coupon.code: This value should not be blank.",
                 }),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
@@ -326,24 +326,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     {
                         new Error
                         {
-                            Message = "Product [9] is not found"
+                            Message = "Product [9] is not found",
                         },
                         new Error
                         {
-                            Message = "Unauthorized"
+                            Message = "Unauthorized",
                         },
                         new Error
                         {
                             Message = "This value should not be blank.", Code = "validation_error",
-                            Field = "coupon.code"
-                        }
-                    }
+                            Field = "coupon.code",
+                        },
+                    },
                 },
                 new List<string>
                 {
                     "Product [9] is not found",
                     "Unauthorized",
-                    "coupon.code: This value should not be blank."
+                    "coupon.code: This value should not be blank.",
                 }),
         };
 
@@ -358,13 +358,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = ""
+                    ErrorMessage = "",
                 },
                 null),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = ""
+                    ErrorMessage = "",
                 },
                 new Context()),
             new TestCaseData(
@@ -377,7 +377,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 It.IsAny<IRestResponse>(),
                 new Context
                 {
-                    Errors = new List<Error>()
+                    Errors = new List<Error>(),
                 }),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
@@ -385,8 +385,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error()
-                    }
+                        new Error(),
+                    },
                 }),
             new TestCaseData(
                 It.IsAny<IRestResponse>(),
@@ -394,8 +394,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Message = "" }
-                    }
+                        new Error { Message = "" },
+                    },
                 }),
         };
 
@@ -404,14 +404,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusDescription = "Internal server error"
+                    StatusDescription = "Internal server error",
                 },
                 null,
                 "Internal server error"),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusDescription = "Internal server error"
+                    StatusDescription = "Internal server error",
                 },
                 new Context(),
                 "Internal server error"),
@@ -419,7 +419,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 new RestResponse
                 {
                     StatusDescription = "",
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 null,
                 "Some error has occured"),
@@ -427,21 +427,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 new RestResponse
                 {
                     StatusDescription = "",
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 new Context(),
                 "Some error has occured"),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 null,
                 "Some error has occured"),
             new TestCaseData(
                 new RestResponse
                 {
-                    ErrorMessage = "Some error has occured"
+                    ErrorMessage = "Some error has occured",
                 },
                 new Context(),
                 "Some error has occured"),
@@ -451,8 +451,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Message = "Venue [9] is not found" }
-                    }
+                        new Error { Message = "Venue [9] is not found" },
+                    },
                 },
                 "Venue [9] is not found"),
             new TestCaseData(
@@ -461,8 +461,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 {
                     Errors = new List<Error>
                     {
-                        new Error { Field = "coupon.code" }
-                    }
+                        new Error { Field = "coupon.code" },
+                    },
                 },
                 "coupon.code: this field is invalid"),
             new TestCaseData(
@@ -474,9 +474,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         new Error
                         {
                             Message = "This value should not be blank.", Code = "validation_error",
-                            Field = "coupon.code"
-                        }
-                    }
+                            Field = "coupon.code",
+                        },
+                    },
                 },
                 "coupon.code: This value should not be blank."),
             new TestCaseData(
@@ -487,18 +487,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     {
                         new Error
                         {
-                            Message = "Product [9] is not found"
+                            Message = "Product [9] is not found",
                         },
                         new Error
                         {
-                            Message = "Unauthorized"
+                            Message = "Unauthorized",
                         },
                         new Error
                         {
                             Message = "This value should not be blank.", Code = "validation_error",
-                            Field = "coupon.code"
-                        }
-                    }
+                            Field = "coupon.code",
+                        },
+                    },
                 },
                 "Product [9] is not found\r\nUnauthorized\r\ncoupon.code: This value should not be blank."),
         };

@@ -23,12 +23,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
         private static readonly SDK.Venue.Models.Venue TestVenueWithValidId = new SDK.Venue.Models.Venue
         {
-            InternalId = TestVenueValidId
+            InternalId = TestVenueValidId,
         };
 
         private static readonly Attribute TestAttributeWithValidTitle = new Attribute
         {
-            Title = "title"
+            Title = "title",
         };
 
         private ApiServiceMockerWithAuthentication mockers;
@@ -515,17 +515,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             Region = new IsoLocation
                             {
                                 Name = "LDN",
-                                IsoCode = "LDN"
+                                IsoCode = "LDN",
                             },
                             Country = new IsoLocation
                             {
                                 Name = "Great Britain",
-                                IsoCode = "GBR"
+                                IsoCode = "GBR",
                             },
                             Latitude = "51.541490",
-                            Longitude = "-0.102537"
+                            Longitude = "-0.102537",
                         },
-                        ContentOverriddenAt = new DateTime(2019, 10, 7, 14, 31, 34)
+                        ContentOverriddenAt = new DateTime(2019, 10, 7, 14, 31, 34),
                     },
                     new SDK.Venue.Models.Venue
                     {
@@ -542,17 +542,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             Region = new IsoLocation
                             {
                                 Name = "London",
-                                IsoCode = "LDN"
+                                IsoCode = "LDN",
                             },
                             Country = new IsoLocation
                             {
                                 Name = "Great Britain",
-                                IsoCode = "GBR"
+                                IsoCode = "GBR",
                             },
                             Latitude = "51.5294",
-                            Longitude = "-0.1062"
+                            Longitude = "-0.1062",
                         },
-                        ContentOverriddenAt = new DateTime(2019, 9, 3, 14, 13, 28)
+                        ContentOverriddenAt = new DateTime(2019, 9, 3, 14, 13, 28),
                     },
                 }),
         };
@@ -585,24 +585,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         Region = new IsoLocation
                         {
                             Name = null,
-                            IsoCode = "LDN"
+                            IsoCode = "LDN",
                         },
                         Country = new IsoLocation
                         {
                             Name = "Great Britain",
-                            IsoCode = "GBR"
+                            IsoCode = "GBR",
                         },
                         Latitude = "51.5112",
-                        Longitude = "-0.133542"
+                        Longitude = "-0.133542",
                     },
                     SeatSettings = new SeatSettings
                     {
                         SeatsSupplied = true,
                         SeatSelectionMode = new SeatSelectionMode
                         {
-                            Name = "choosable"
+                            Name = "choosable",
                         },
-                        AllocationType = null
+                        AllocationType = null,
                     },
                     SeatLayouts = new List<SeatLayout>
                     {
@@ -626,15 +626,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
                                 },
                                 new Seat
                                 {
@@ -646,11 +646,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
-                                }
-                            }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
+                                },
+                            },
                         },
                         new SeatLayout
                         {
@@ -661,18 +661,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                 new PerformanceTimeItem
                                 {
                                     Id = 5,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00)
+                                    PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00),
                                 },
                                 new PerformanceTimeItem
                                 {
                                     Id = 6,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00)
+                                    PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00),
                                 },
                                 new PerformanceTimeItem
                                 {
                                     Id = 7,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00)
-                                }
+                                    PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00),
+                                },
                             },
                             IsDefault = false,
                             CreatedAt = new DateTime(2019, 11, 12, 08, 50, 19),
@@ -689,24 +689,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "SlightlyRestrictedView",
                                             Description = "Slightly restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     },
                     VenueTerminals = new List<VenueTerminal>
                     {
@@ -725,43 +725,43 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         Description = "Bakerloo",
                                         TransportMode = new TransportMode
                                         {
-                                            Name = "tube"
-                                        }
+                                            Name = "tube",
+                                        },
                                     },
                                     new Route
                                     {
                                         Description = "Piccadilly",
                                         TransportMode = new TransportMode
                                         {
-                                            Name = "tube"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                                            Name = "tube",
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     },
                     Facilities = new List<Facility>
                     {
                         new Facility
                         {
-                            Description = "Air conditioned"
+                            Description = "Air conditioned",
                         },
                         new Facility
                         {
-                            Description = "Bar"
-                        }
+                            Description = "Bar",
+                        },
                     },
                     TransportAttributes = new List<TransportAttribute>
                     {
                         new TransportAttribute
                         {
-                            Description = "inCongestionZone"
-                        }
+                            Description = "inCongestionZone",
+                        },
                     },
                     ContentOverriddenAt = null,
                     CreatedAt = null,
                     UpdatedAt = null,
-                    Published = true
+                    Published = true,
                 }),
         };
 
@@ -782,7 +782,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 new TestCaseData(
                     new SDK.Venue.Models.Venue
                     {
-                        InternalId = ""
+                        InternalId = "",
                     }),
             };
 
@@ -806,24 +806,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             Region = new IsoLocation
                             {
                                 Name = null,
-                                IsoCode = "LDN"
+                                IsoCode = "LDN",
                             },
                             Country = new IsoLocation
                             {
                                 Name = "Great Britain",
-                                IsoCode = "GBR"
+                                IsoCode = "GBR",
                             },
                             Latitude = "51.5112",
-                            Longitude = "-0.133542"
+                            Longitude = "-0.133542",
                         },
                         SeatSettings = new SeatSettings
                         {
                             SeatsSupplied = true,
                             SeatSelectionMode = new SeatSelectionMode
                             {
-                                Name = "choosable"
+                                Name = "choosable",
                             },
-                            AllocationType = null
+                            AllocationType = null,
                         },
                         SeatLayouts = new List<SeatLayout>
                         {
@@ -847,15 +847,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                             {
                                                 Title = "RestrictedView",
                                                 Description = "Restricted view",
-                                                Intention = Intention.Negative
+                                                Intention = Intention.Negative,
                                             },
                                             new Attribute
                                             {
                                                 Title = "SideView",
                                                 Description = "Side view",
-                                                Intention = Intention.Negative
-                                            }
-                                        }
+                                                Intention = Intention.Negative,
+                                            },
+                                        },
                                     },
                                     new Seat
                                     {
@@ -867,11 +867,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                             {
                                                 Title = "RestrictedView",
                                                 Description = "Restricted view",
-                                                Intention = Intention.Negative
-                                            }
-                                        }
-                                    }
-                                }
+                                                Intention = Intention.Negative,
+                                            },
+                                        },
+                                    },
+                                },
                             },
                             new SeatLayout
                             {
@@ -882,18 +882,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                     new PerformanceTimeItem
                                     {
                                         Id = 5,
-                                        PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00)
+                                        PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00),
                                     },
                                     new PerformanceTimeItem
                                     {
                                         Id = 6,
-                                        PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00)
+                                        PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00),
                                     },
                                     new PerformanceTimeItem
                                     {
                                         Id = 7,
-                                        PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00)
-                                    }
+                                        PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00),
+                                    },
                                 },
                                 IsDefault = false,
                                 CreatedAt = new DateTime(2019, 11, 12, 08, 50, 19),
@@ -910,24 +910,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                             {
                                                 Title = "SlightlyRestrictedView",
                                                 Description = "Slightly restricted view",
-                                                Intention = Intention.Negative
+                                                Intention = Intention.Negative,
                                             },
                                             new Attribute
                                             {
                                                 Title = "RestrictedView",
                                                 Description = "Restricted view",
-                                                Intention = Intention.Negative
+                                                Intention = Intention.Negative,
                                             },
                                             new Attribute
                                             {
                                                 Title = "SideView",
                                                 Description = "Side view",
-                                                Intention = Intention.Negative
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                                                Intention = Intention.Negative,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
                         },
                         VenueTerminals = new List<VenueTerminal>
                         {
@@ -946,43 +946,43 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                             Description = "Bakerloo",
                                             TransportMode = new TransportMode
                                             {
-                                                Name = "tube"
-                                            }
+                                                Name = "tube",
+                                            },
                                         },
                                         new Route
                                         {
                                             Description = "Piccadilly",
                                             TransportMode = new TransportMode
                                             {
-                                                Name = "tube"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                                                Name = "tube",
+                                            },
+                                        },
+                                    },
+                                },
+                            },
                         },
                         Facilities = new List<Facility>
                         {
                             new Facility
                             {
-                                Description = "Air conditioned"
+                                Description = "Air conditioned",
                             },
                             new Facility
                             {
-                                Description = "Bar"
-                            }
+                                Description = "Bar",
+                            },
                         },
                         TransportAttributes = new List<TransportAttribute>
                         {
                             new TransportAttribute
                             {
-                                Description = "inCongestionZone"
-                            }
+                                Description = "inCongestionZone",
+                            },
                         },
                         ContentOverriddenAt = null,
                         CreatedAt = null,
                         UpdatedAt = null,
-                        Published = true
+                        Published = true,
                     },
                     "{\"compositeId\":\"THEB00-VEN-LDN~163\",\"internalId\":\"163\",\"title\":\"Lyric Theatre\",\"cardTitle\":null,\"description\":null,\"address\":{\"firstLine\":\"29 Shaftesbury Avenue\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"W1D 7ES\",\"region\":{\"name\":null,\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.5112\",\"longitude\":\"-0.133542\"},\"seatSettings\":{\"seatsSupplied\":true,\"seatSelectionMode\":{\"name\":\"choosable\"},\"allocationType\":null},\"seatLayouts\":[{\"dateStart\":null,\"dateEnd\":null,\"performanceTimes\":[],\"isDefault\":true,\"createdAt\":\"2019-11-12T08:50:14Z\",\"updatedAt\":\"2019-11-12T08:50:14Z\",\"seats\":[{\"area\":\"UPPER_CIRCLE\",\"seatIdentifier\":\"UPPER_CIRCLE-C28\",\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"SideView\",\"description\":\"Side view\",\"intention\":\"negative\",\"mapping\":null}]},{\"area\":\"BALCONY\",\"seatIdentifier\":\"BALCONY-A20\",\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null}]}]},{\"dateStart\":\"2019-01-10T00:00:00Z\",\"dateEnd\":\"2019-02-02T23:59:59Z\",\"performanceTimes\":[{\"id\":5,\"performanceTime\":\"1970-01-01T14:00:00Z\"},{\"id\":6,\"performanceTime\":\"1970-01-01T16:00:00Z\"},{\"id\":7,\"performanceTime\":\"1970-01-01T18:00:00Z\"}],\"isDefault\":false,\"createdAt\":\"2019-11-12T08:50:19Z\",\"updatedAt\":\"2019-11-12T08:50:19Z\",\"seats\":[{\"area\":\"DRESS_CIRCLE\",\"seatIdentifier\":\"DRESS_CIRCLE-G3\",\"attributes\":[{\"title\":\"SlightlyRestrictedView\",\"description\":\"Slightly restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"SideView\",\"description\":\"Side view\",\"intention\":\"negative\",\"mapping\":null}]}]}],\"venueTerminals\":[{\"directions\":\"Take Shaftesbury Avenue along the side where the famous illuminated signs are. The theatre will be on your left about 100 metres along.\",\"journeyTime\":\"3mins\",\"terminal\":{\"name\":\"Piccadilly Circus\",\"routes\":[{\"description\":\"Bakerloo\",\"transportMode\":{\"name\":\"tube\"}},{\"description\":\"Piccadilly\",\"transportMode\":{\"name\":\"tube\"}}]}}],\"facilities\":[{\"description\":\"Air conditioned\"},{\"description\":\"Bar\"}],\"transportAttributes\":[{\"description\":\"inCongestionZone\"}],\"contentOverriddenAt\":null,\"createdAt\":null,\"updatedAt\":null,\"published\":true}"),
                 new TestCaseData(
@@ -991,7 +991,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 new TestCaseData(
                     new SDK.Venue.Models.Venue
                     {
-                        InternalId = "not_id"
+                        InternalId = "not_id",
                     },
                     "{\"compositeId\":null,\"internalId\":\"not_id\",\"title\":null,\"cardTitle\":null,\"description\":null,\"address\":null,\"seatSettings\":null,\"seatLayouts\":null,\"venueTerminals\":null,\"facilities\":null,\"transportAttributes\":null,\"contentOverriddenAt\":null,\"createdAt\":null,\"updatedAt\":null,\"published\":false}"),
             };
@@ -1017,24 +1017,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         Region = new IsoLocation
                         {
                             Name = null,
-                            IsoCode = "LDN"
+                            IsoCode = "LDN",
                         },
                         Country = new IsoLocation
                         {
                             Name = "Great Britain",
-                            IsoCode = "GBR"
+                            IsoCode = "GBR",
                         },
                         Latitude = "51.5112",
-                        Longitude = "-0.133542"
+                        Longitude = "-0.133542",
                     },
                     SeatSettings = new SeatSettings
                     {
                         SeatsSupplied = true,
                         SeatSelectionMode = new SeatSelectionMode
                         {
-                            Name = "choosable"
+                            Name = "choosable",
                         },
-                        AllocationType = null
+                        AllocationType = null,
                     },
                     SeatLayouts = new List<SeatLayout>
                     {
@@ -1059,16 +1059,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
                                             Intention = Intention.Negative,
-                                            Mapping = new List<string>()
+                                            Mapping = new List<string>(),
                                         },
                                         new Attribute
                                         {
                                             Title = "PillarInView",
                                             Description = "Pillar in view",
                                             Intention = Intention.Negative,
-                                            Mapping = new List<string>()
-                                        }
-                                    }
+                                            Mapping = new List<string>(),
+                                        },
+                                    },
                                 },
                                 new Seat
                                 {
@@ -1080,15 +1080,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
                                 },
                                 new Seat
                                 {
@@ -1100,11 +1100,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
-                                }
-                            }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
+                                },
+                            },
                         },
                         new SeatLayout
                         {
@@ -1115,18 +1115,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                 new PerformanceTimeItem
                                 {
                                     Id = 5,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00)
+                                    PerformanceTime = new DateTime(1970, 01, 01, 14, 00, 00),
                                 },
                                 new PerformanceTimeItem
                                 {
                                     Id = 6,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00)
+                                    PerformanceTime = new DateTime(1970, 01, 01, 16, 00, 00),
                                 },
                                 new PerformanceTimeItem
                                 {
                                     Id = 7,
-                                    PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00)
-                                }
+                                    PerformanceTime = new DateTime(1970, 01, 01, 18, 00, 00),
+                                },
                             },
                             IsDefault = false,
                             CreatedAt = new DateTime(2019, 11, 12, 08, 50, 19),
@@ -1143,24 +1143,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         {
                                             Title = "SlightlyRestrictedView",
                                             Description = "Slightly restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "RestrictedView",
                                             Description = "Restricted view",
-                                            Intention = Intention.Negative
+                                            Intention = Intention.Negative,
                                         },
                                         new Attribute
                                         {
                                             Title = "SideView",
                                             Description = "Side view",
-                                            Intention = Intention.Negative
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                                            Intention = Intention.Negative,
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     },
                     VenueTerminals = new List<VenueTerminal>
                     {
@@ -1179,43 +1179,43 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                                         Description = "Bakerloo",
                                         TransportMode = new TransportMode
                                         {
-                                            Name = "tube"
-                                        }
+                                            Name = "tube",
+                                        },
                                     },
                                     new Route
                                     {
                                         Description = "Piccadilly",
                                         TransportMode = new TransportMode
                                         {
-                                            Name = "tube"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                                            Name = "tube",
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     },
                     Facilities = new List<Facility>
                     {
                         new Facility
                         {
-                            Description = "Air conditioned"
+                            Description = "Air conditioned",
                         },
                         new Facility
                         {
-                            Description = "Bar"
-                        }
+                            Description = "Bar",
+                        },
                     },
                     TransportAttributes = new List<TransportAttribute>
                     {
                         new TransportAttribute
                         {
-                            Description = "inCongestionZone"
-                        }
+                            Description = "inCongestionZone",
+                        },
                     },
                     ContentOverriddenAt = null,
                     CreatedAt = null,
                     UpdatedAt = null,
-                    Published = true
+                    Published = true,
                 }),
         };
 
@@ -1247,7 +1247,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             new TestCaseData(
                 "{\"request\":{\"body\":\"{\\\"compositeId\\\":null,\\\"internalId\\\":\\\"not_id\\\",\\\"title\\\":null,\\\"cardTitle\\\":null,\\\"description\\\":null,\\\"address\\\":null,\\\"seatSettings\\\":null,\\\"seatLayouts\\\":null,\\\"venueTerminals\\\":null,\\\"facilities\\\":null,\\\"transportAttributes\\\":null,\\\"contentOverriddenAt\\\":null,\\\"createdAt\\\":null,\\\"updatedAt\\\":null,\\\"published\\\":false}\",\"query\":{},\"urlParams\":{\"venueId\":\"not_id\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Venue not found\"}]}}",
                 HttpStatusCode.NotFound,
-                "Venue not found")
+                "Venue not found"),
         };
 
         public static IEnumerable<TestCaseData> StandardAttributes_IfApiResponseSuccessful_ReturnsAttributes { get; } = new[]
@@ -1261,57 +1261,57 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             Title = "EndOfRow",
                             Description = "Seat at end of row",
                             Intention = Intention.Positive,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "AisleSeat",
                             Description = "Aisle seat",
                             Intention = Intention.Positive,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "ExtraLegRoom",
                             Description = "Extra legroom",
                             Intention = Intention.Positive,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "SlightlyRestrictedView",
                             Description = "Slightly restricted view",
                             Intention = Intention.Negative,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "RestrictedView",
                             Description = "Restricted view",
                             Intention = Intention.Negative,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "VeryRestrictedView",
                             Description = "Very restricted view",
                             Intention = Intention.Negative,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "MissMoments",
                             Description = "Might miss certain moments",
                             Intention = Intention.Negative,
-                            Mapping = new List<string>()
+                            Mapping = new List<string>(),
                         },
                         new Attribute
                         {
                             Title = "SideView",
                             Description = "Side view",
                             Intention = Intention.Negative,
-                            Mapping = new List<string>()
-                        }
+                            Mapping = new List<string>(),
+                        },
                     }),
             };
 
@@ -1340,7 +1340,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     Title = "EndOfRow",
                     Description = "Seat at end of row",
                     Intention = Intention.Positive,
-                    Mapping = null
+                    Mapping = null,
                 },
                 "{\"title\":\"EndOfRow\",\"description\":\"Seat at end of row\",\"intention\":\"positive\",\"mapping\":null}"),
             new TestCaseData(
@@ -1352,8 +1352,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     Mapping = new List<string>
                     {
                         "sssss",
-                        "asdasd"
-                    }
+                        "asdasd",
+                    },
                 },
                 "{\"title\":\"test4\",\"description\":\"test description3\",\"intention\":\"positive\",\"mapping\":[\"sssss\",\"asdasd\"]}"),
             new TestCaseData(
@@ -1361,14 +1361,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 {
                     Title = "test",
                     Description = "",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 },
                 "{\"title\":\"test\",\"description\":\"\",\"intention\":\"negative\",\"mapping\":null}"),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "test",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 },
                 "{\"title\":\"test\",\"description\":null,\"intention\":\"negative\",\"mapping\":null}"),
             new TestCaseData(
@@ -1389,7 +1389,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     Title = "EndOfRow",
                     Description = "Seat at end of row",
                     Intention = Intention.Positive,
-                    Mapping = new List<string>()
+                    Mapping = new List<string>(),
                 }),
             new TestCaseData(
                 "{\"request\":{\"body\":\"{\\n  \\\"title\\\":\\\"test4\\\",\\n  \\\"description\\\": \\\"test description3\\\",\\n  \\\"intention\\\": \\\"positive\\\",\\n  \\\"mapping\\\": [\\n  \\t\\\"sssss\\\",\\n  \\t\\\"asdasd\\\"\\n  ]\\n}\",\"query\":{},\"urlParams\":{}},\"response\":{\"title\":\"test4\",\"description\":\"test description3\",\"intention\":\"positive\",\"mapping\":[\"sssss\",\"asdasd\"]},\"context\":null}",
@@ -1401,8 +1401,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     Mapping = new List<string>
                     {
                         "sssss",
-                        "asdasd"
-                    }
+                        "asdasd",
+                    },
                 }),
         };
 
@@ -1448,7 +1448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             new TestCaseData(
                 new SDK.Venue.Models.Venue
                 {
-                    InternalId = ""
+                    InternalId = "",
                 }),
         };
 
@@ -1470,15 +1470,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "RestrictedView",
                                 Description = "Restricted view",
-                                Intention = Intention.Negative
+                                Intention = Intention.Negative,
                             },
                             new Attribute
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = Intention.Negative
-                            }
-                        }
+                                Intention = Intention.Negative,
+                            },
+                        },
                     },
                     new SeatDetailed
                     {
@@ -1489,7 +1489,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         {
                             "1500",
                             "1700",
-                            "1900"
+                            "1900",
                         },
                         Attributes = new List<Attribute>
                         {
@@ -1497,10 +1497,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = Intention.Negative
-                            }
-                        }
-                    }
+                                Intention = Intention.Negative,
+                            },
+                        },
+                    },
                 }),
         };
 
@@ -1535,15 +1535,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "RestrictedView",
                                 Description = "Restricted view",
-                                Intention = Intention.Negative
+                                Intention = Intention.Negative,
                             },
                             new Attribute
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = Intention.Negative
+                                Intention = Intention.Negative,
                             },
-                        }
+                        },
                     },
                 },
                 "{\"seats\":[{\"seatIdentifier\":\"STALLS-O2\",\"startDate\":null,\"endDate\":null,\"performanceTimes\":[],\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":null},{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\",\"mapping\":null}]}]}"),
@@ -1560,7 +1560,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                         {
                             "1500",
                             "1700",
-                            "1900"
+                            "1900",
                         },
                         Attributes = new List<Attribute>
                         {
@@ -1568,10 +1568,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                             {
                                 Title = "PillarInView",
                                 Description = "Pillar in view",
-                                Intention = Intention.Negative
-                            }
-                        }
-                    }
+                                Intention = Intention.Negative,
+                            },
+                        },
+                    },
                 },
                 "{\"seats\":[{\"seatIdentifier\":\"UPPER_CIRCLE-G14\",\"startDate\":\"2019-03-10\",\"endDate\":\"2019-03-30\",\"performanceTimes\":[\"1500\",\"1700\",\"1900\"],\"attributes\":[{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\",\"mapping\":null}]}]}"),
             new TestCaseData(

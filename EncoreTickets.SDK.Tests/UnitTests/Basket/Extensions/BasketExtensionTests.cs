@@ -181,8 +181,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 145
-                }
+                    Value = 145,
+                },
             };
 
             var result = basketDetails.GetBasketTotalWithoutDelivery();
@@ -214,20 +214,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 2500
+                    Value = 2500,
                 },
                 new Price
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 3700
+                    Value = 3700,
                 },
                 new Price
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 1250
-                }
+                    Value = 1250,
+                },
             };
         }
 

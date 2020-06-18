@@ -40,21 +40,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status"
+                    Status = "status",
                 },
                 "status",
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status1"
+                    Status = "status1",
                 },
                 "status2",
                 false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status"
+                    Status = "status",
                 },
                 "sTaTus",
                 true),
@@ -73,21 +73,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status4"
+                    Status = "status4",
                 },
                 new[] { "status1", "status2", "status3" },
                 false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status2"
+                    Status = "status2",
                 },
                 new[] { "status1", "status2", "status3" },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "STATUS3"
+                    Status = "STATUS3",
                 },
                 new[] { "status1", "status2", "status3" },
                 true),

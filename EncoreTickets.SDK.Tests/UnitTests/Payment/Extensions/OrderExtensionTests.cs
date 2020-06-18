@@ -12,7 +12,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
         {
             var order = new Order
             {
-                Payments = new List<SDK.Payment.Models.Payment> { payment }
+                Payments = new List<SDK.Payment.Models.Payment> { payment },
             };
 
             var actual = order.HasSuccessfulPayment();
@@ -34,49 +34,49 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "new"
+                    Status = "new",
                 },
                 false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "authorised"
+                    Status = "authorised",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "captured"
+                    Status = "captured",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "partially_refunded"
+                    Status = "partially_refunded",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "refunded"
+                    Status = "refunded",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "partially_compensated"
+                    Status = "partially_compensated",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "compensated"
+                    Status = "compensated",
                 },
                 true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "REFUNDEd"
+                    Status = "REFUNDEd",
                 },
                 true),
         };

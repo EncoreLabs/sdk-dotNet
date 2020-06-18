@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     LegacyCountryCode = null,
                     Line1 = "address",
                     Line2 = "house",
-                    StateOrProvince = "minsk"
+                    StateOrProvince = "minsk",
                 },
                 false),
             new TestCaseData(
@@ -54,7 +54,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     LegacyCountryCode = null,
                     Line1 = "address",
                     Line2 = "house",
-                    StateOrProvince = "minsk"
+                    StateOrProvince = "minsk",
                 },
                 false),
         };

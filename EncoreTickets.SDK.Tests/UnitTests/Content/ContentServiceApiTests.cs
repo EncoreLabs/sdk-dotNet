@@ -99,7 +99,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             {
                 Page = 1,
                 Limit = 1000,
-                Sort = "id"
+                Sort = "id",
             };
 
             try
@@ -119,7 +119,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 {
                     { "page", parameters.Page },
                     { "limit", parameters.Limit },
-                    { "sort", parameters.Sort }
+                    { "sort", parameters.Sort },
                 },
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
@@ -308,9 +308,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "Chicago",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
                             new Location
                             {
@@ -321,9 +321,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "Las Vegas",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
                             new Location
                             {
@@ -334,12 +334,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "New York",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
-                        }
-                    }
+                        },
+                    },
                 }),
         };
 
@@ -395,7 +395,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£10.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
                     new Product
                     {
@@ -403,7 +403,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£20.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
                     new Product
                     {
@@ -411,7 +411,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£50.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
                 }),
         };
@@ -482,7 +482,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                     ShowType = new ShowType
                     {
                         Id = null,
-                        Type = "show"
+                        Type = "show",
                     },
                     FirstPreviewDate = null,
                     OpeningDate = null,
@@ -506,17 +506,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                             Region = new Location
                             {
                                 Name = null,
-                                IsoCode = "LDN"
+                                IsoCode = "LDN",
                             },
                             Country = new Location
                             {
                                 Name = "Great Britain",
-                                IsoCode = "GBR"
-                            }
-                        }
+                                IsoCode = "GBR",
+                            },
+                        },
                     },
                     OnSale = "yes",
-                    ShowFaceValue = false
+                    ShowFaceValue = false,
                 }),
         };
 

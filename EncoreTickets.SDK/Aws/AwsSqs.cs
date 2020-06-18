@@ -54,7 +54,7 @@ namespace EncoreTickets.SDK.Aws
             var sqsRequest = new SendMessageRequest
             {
                 QueueUrl = queueUrl,
-                MessageBody = messageBody
+                MessageBody = messageBody,
             };
             return await Client.SendMessageAsync(sqsRequest);
         }

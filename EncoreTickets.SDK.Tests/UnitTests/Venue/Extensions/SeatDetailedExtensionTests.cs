@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = new List<Attribute> { new Attribute() }
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
                 true),
             new TestCaseData(
@@ -37,28 +37,28 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 new SeatDetailed
                 {
                     SeatIdentifier = null,
-                    Attributes = new List<Attribute> { new Attribute() }
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
                 false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "",
-                    Attributes = new List<Attribute> { new Attribute() }
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
                 false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = null
+                    Attributes = null,
                 },
                 false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = new List<Attribute>()
+                    Attributes = new List<Attribute>(),
                 },
                 false),
         };

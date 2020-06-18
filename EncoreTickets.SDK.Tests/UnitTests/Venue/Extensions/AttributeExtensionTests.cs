@@ -45,7 +45,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "title",
                     Description = "description",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 },
                 true),
             new TestCaseData(
@@ -53,7 +53,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "   ",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 true),
             new TestCaseData(
@@ -61,14 +61,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 false),
             new TestCaseData(
                 new Attribute
                 {
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 false),
             new TestCaseData(
@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "title",
                     Description = "",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 false),
             new TestCaseData(
@@ -84,7 +84,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "title",
                     Description = null,
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 false),
             new TestCaseData(
@@ -92,7 +92,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "title",
                     Description = "description",
-                    Intention = (Intention)3
+                    Intention = (Intention)3,
                 },
                 false),
         };
@@ -106,7 +106,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 }),
             new TestCaseData(
                 "description",
@@ -115,7 +115,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 }),
             new TestCaseData(
                 "description",
@@ -124,7 +124,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 }),
             new TestCaseData(
                 "description",
@@ -141,7 +141,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 }),
             new TestCaseData(
                 "description",
@@ -150,7 +150,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 }),
         };
     }

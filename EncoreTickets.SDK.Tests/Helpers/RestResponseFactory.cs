@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return new RestResponse<T>
             {
                 ResponseStatus = ResponseStatus.Completed,
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.OK,
             };
         }
 
@@ -43,7 +43,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return new RestResponse<T>
             {
                 ResponseStatus = ResponseStatus.Error,
-                StatusCode = code
+                StatusCode = code,
             };
         }
 

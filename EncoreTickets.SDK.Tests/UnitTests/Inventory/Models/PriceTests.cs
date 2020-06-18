@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Models
             {
                 Value = value,
                 Currency = currency,
-                DecimalPlaces = decimalPlaces
+                DecimalPlaces = decimalPlaces,
             };
 
             var actual = price.ToString();

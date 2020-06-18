@@ -136,7 +136,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info()
+                    new Info(),
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -144,7 +144,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Message = "Some info" }
+                    new Info { Message = "Some info" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -152,7 +152,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Code = "validation_error" }
+                    new Info { Code = "validation_error" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -160,7 +160,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" }
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -171,7 +171,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info { Message = "Some info" },
                     new Info { Code = "validation_error" },
                     new Info(),
-                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" }
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -196,7 +196,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info()
+                    new Info(),
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>()),
@@ -211,7 +211,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Message = "Some info" }
+                    new Info { Message = "Some info" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -219,7 +219,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Code = "validation_error" }
+                    new Info { Code = "validation_error" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -227,7 +227,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" }
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
@@ -238,7 +238,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     new Info { Message = "Some info" },
                     new Info { Code = "validation_error" },
                     new Info(),
-                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" }
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),

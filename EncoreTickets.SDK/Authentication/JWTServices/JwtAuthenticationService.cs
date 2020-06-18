@@ -40,8 +40,8 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
                 Body = new Credentials
                 {
                     Username = Context.UserName ?? string.Empty,
-                    Password = Context.Password ?? string.Empty
-                }
+                    Password = Context.Password ?? string.Empty,
+                },
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(requestParameters);
             return result.DataOrException;

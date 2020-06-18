@@ -93,7 +93,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             var restClientParameters = new RestClientParameters
             {
                 BaseUrl = TestValidUrl,
-                ResponseDataFormat = responseDataFormat
+                ResponseDataFormat = responseDataFormat,
             };
 
             Assert.Catch(() => wrapper.GetRestClient(restClientParameters));
@@ -399,7 +399,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = null,
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -407,7 +407,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "",
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -415,7 +415,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "   \n",
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -423,7 +423,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = null,
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -431,7 +431,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "",
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -439,7 +439,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "   \n",
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 }),
             new TestCaseData(
                 new RestClientCredentials
@@ -447,7 +447,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "token",
-                    AuthenticationMethod = (AuthenticationMethod)190000000
+                    AuthenticationMethod = (AuthenticationMethod)190000000,
                 }),
         };
 
@@ -459,7 +459,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "token",
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 },
                 new JwtAuthenticator("token"),
                 "Bearer token"),
@@ -469,7 +469,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "token",
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 },
                 new JwtAuthenticator("token"),
                 "Bearer token"),
@@ -479,7 +479,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = "username",
                     Password = "password",
                     AccessToken = "token",
-                    AuthenticationMethod = AuthenticationMethod.Basic
+                    AuthenticationMethod = AuthenticationMethod.Basic,
                 },
                 new HttpBasicAuthenticator("username", "password"),
                 "Basic dXNlcm5hbWU6cGFzc3dvcmQ="),
@@ -489,7 +489,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                     Username = null,
                     Password = null,
                     AccessToken = "token",
-                    AuthenticationMethod = AuthenticationMethod.Basic
+                    AuthenticationMethod = AuthenticationMethod.Basic,
                 },
                 new HttpBasicAuthenticator(null, null),
                 "Basic Og=="),
@@ -537,13 +537,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestClientParameters
                 {
-                    RequestDataFormat = DataFormat.Json
+                    RequestDataFormat = DataFormat.Json,
                 },
                 RestSharp.DataFormat.Json),
             new TestCaseData(
                 new RestClientParameters
                 {
-                    RequestDataFormat = DataFormat.Xml
+                    RequestDataFormat = DataFormat.Xml,
                 },
                 RestSharp.DataFormat.Xml),
             new TestCaseData(
@@ -605,21 +605,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestBody = new object(),
-                    RequestDataFormat = DataFormat.Json
+                    RequestDataFormat = DataFormat.Json,
                 },
                 "application/json"),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestBody = 4,
-                    RequestDataFormat = DataFormat.Xml
+                    RequestDataFormat = DataFormat.Xml,
                 },
                 "application/xml"),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestBody = null,
-                    RequestDataFormat = DataFormat.Xml
+                    RequestDataFormat = DataFormat.Xml,
                 },
                 null),
             new TestCaseData(
@@ -628,7 +628,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestClientParameters
                 {
-                    RequestBody = 100
+                    RequestBody = 100,
                 },
                 "application/json"),
         };
@@ -639,18 +639,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new DefaultJsonSerializer()
+                    RequestDataSerializer = new DefaultJsonSerializer(),
                 }),
             new TestCaseData(
                 new RestClientParameters
                 {
-                    RequestDataSerializer = new DefaultJsonSerializer()
+                    RequestDataSerializer = new DefaultJsonSerializer(),
                 }),
             new TestCaseData(
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Json,
-                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() }),
                 }),
         };
 
@@ -665,7 +665,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters
                 {
                     RequestDataFormat = DataFormat.Xml,
-                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
+                    RequestDataSerializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() }),
                 }),
             new TestCaseData(
                 new RestClientParameters()),
@@ -676,42 +676,42 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.OK
+                    StatusCode = HttpStatusCode.OK,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.Moved
+                    StatusCode = HttpStatusCode.Moved,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.NoContent
+                    StatusCode = HttpStatusCode.NoContent,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.PaymentRequired
+                    StatusCode = HttpStatusCode.PaymentRequired,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.Redirect
+                    StatusCode = HttpStatusCode.Redirect,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.RedirectMethod
+                    StatusCode = HttpStatusCode.RedirectMethod,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.TemporaryRedirect
+                    StatusCode = HttpStatusCode.TemporaryRedirect,
                 }),
         };
 
@@ -720,12 +720,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = (HttpStatusCode)555
+                    StatusCode = (HttpStatusCode)555,
                 }),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.InternalServerError
+                    StatusCode = HttpStatusCode.InternalServerError,
                 }),
         };
 
@@ -734,21 +734,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.ServiceUnavailable
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
                 },
                 0,
                 1),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = (HttpStatusCode)555
+                    StatusCode = (HttpStatusCode)555,
                 },
                 100,
                 100),
             new TestCaseData(
                 new RestResponse
                 {
-                    StatusCode = HttpStatusCode.InternalServerError
+                    StatusCode = HttpStatusCode.InternalServerError,
                 },
                 5,
                 5),
@@ -759,42 +759,42 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.OK
+                    StatusCode = HttpStatusCode.OK,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.Moved
+                    StatusCode = HttpStatusCode.Moved,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.NoContent
+                    StatusCode = HttpStatusCode.NoContent,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.PaymentRequired
+                    StatusCode = HttpStatusCode.PaymentRequired,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.Redirect
+                    StatusCode = HttpStatusCode.Redirect,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.RedirectMethod
+                    StatusCode = HttpStatusCode.RedirectMethod,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.TemporaryRedirect
+                    StatusCode = HttpStatusCode.TemporaryRedirect,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
                 }),
         };
 
@@ -803,12 +803,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.ServiceUnavailable
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
                 }),
             new TestCaseData(
                 new RestResponse<object>
                 {
-                    StatusCode = HttpStatusCode.InternalServerError
+                    StatusCode = HttpStatusCode.InternalServerError,
                 }),
         };
 
@@ -817,14 +817,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new TestCaseData(
                     new RestResponse<object>
                     {
-                        StatusCode = HttpStatusCode.ServiceUnavailable
+                        StatusCode = HttpStatusCode.ServiceUnavailable,
                     },
                     0,
                     1),
                 new TestCaseData(
                     new RestResponse<object>
                     {
-                        StatusCode = HttpStatusCode.InternalServerError
+                        StatusCode = HttpStatusCode.InternalServerError,
                     },
                     5,
                     5),

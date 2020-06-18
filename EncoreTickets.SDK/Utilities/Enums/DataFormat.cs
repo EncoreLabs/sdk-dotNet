@@ -6,6 +6,6 @@
     public enum DataFormat
     {
         Xml,
-        Json
+        Json,
     }
 }

@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var client = new RestClient(restClientParameters.BaseUrl)
             {
-                Authenticator = GetAuthenticator()
+                Authenticator = GetAuthenticator(),
             };
             AddResponseHandlers(client, restClientParameters);
             return client;
@@ -75,7 +75,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             var request = new RestRequest(restClientParameters.RequestUrl)
             {
                 Method = restClientParameters.RequestMethod.Map<RequestMethod, Method>(),
-                RequestFormat = restClientParameters.RequestDataFormat.Map<DataFormat, RestSharp.DataFormat>()
+                RequestFormat = restClientParameters.RequestDataFormat.Map<DataFormat, RestSharp.DataFormat>(),
             };
             SetRequestParameters(request, restClientParameters.RequestHeaders, ParameterType.HttpHeader);
             SetRequestParameters(request, restClientParameters.RequestUrlSegments, ParameterType.UrlSegment);

@@ -6,6 +6,6 @@
     public enum Direction
     {
         Asc,
-        Desc
+        Desc,
     }
 }

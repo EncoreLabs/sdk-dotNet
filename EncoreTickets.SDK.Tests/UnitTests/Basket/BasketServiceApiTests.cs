@@ -847,7 +847,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "P",
                                     Number = "31",
-                                    LocationDescription = ""
+                                    LocationDescription = "",
                                 },
                                 new ReservationItem
                                 {
@@ -857,62 +857,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "P",
                                     Number = "32",
-                                    LocationDescription = ""
+                                    LocationDescription = "",
                                 },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
         };
 
@@ -1026,8 +1026,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 145,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                         new Delivery
                         {
@@ -1036,8 +1036,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                         new Delivery
                         {
@@ -1046,8 +1046,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                         new Delivery
                         {
@@ -1056,8 +1056,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                     }),
             };
@@ -1131,9 +1131,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                            Method = DeliveryMethod.Eticket
+                            Method = DeliveryMethod.Eticket,
                         },
                         AllowFlexiTickets = false,
                         Status = BasketStatus.Active,
@@ -1165,7 +1165,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "31",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                     new ReservationItem
                                     {
@@ -1175,62 +1175,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "32",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                 },
                                 FaceValueInOfficeCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 FaceValueInShopperCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInOfficeCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInShopperCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
-                            }
+                            },
                         },
                         Coupon = null,
                         AppliedPromotion = null,
-                        MissedPromotions = null
+                        MissedPromotions = null,
                     },
                     null,
                     "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
@@ -1248,9 +1248,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                            Method = DeliveryMethod.Eticket
+                            Method = DeliveryMethod.Eticket,
                         },
                         AllowFlexiTickets = false,
                         Status = BasketStatus.Active,
@@ -1282,7 +1282,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "31",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                     new ReservationItem
                                     {
@@ -1292,62 +1292,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "32",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                 },
                                 FaceValueInOfficeCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 FaceValueInShopperCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInOfficeCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInShopperCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
-                            }
+                            },
                         },
                         Coupon = null,
                         AppliedPromotion = null,
-                        MissedPromotions = null
+                        MissedPromotions = null,
                     },
                     false,
                     "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
@@ -1365,9 +1365,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                            Method = DeliveryMethod.Eticket
+                            Method = DeliveryMethod.Eticket,
                         },
                         AllowFlexiTickets = false,
                         Status = BasketStatus.Active,
@@ -1399,7 +1399,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "31",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                     new ReservationItem
                                     {
@@ -1409,62 +1409,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         AreaName = "CIRCLE",
                                         Row = "P",
                                         Number = "32",
-                                        LocationDescription = ""
+                                        LocationDescription = "",
                                     },
                                 },
                                 FaceValueInOfficeCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 FaceValueInShopperCurrency = new Price
                                 {
                                     Value = 3950,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInShopperCurrency = new Price
                                 {
                                     Value = 5100,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInOfficeCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInShopperCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
-                            }
+                            },
                         },
                         Coupon = null,
                         AppliedPromotion = null,
-                        MissedPromotions = null
+                        MissedPromotions = null,
                     },
                     true,
                     "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
@@ -1480,8 +1480,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                         AllowFlexiTickets = true,
                         ShopperCurrency = "GBP",
@@ -1500,8 +1500,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                    }
+                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                    },
                                 },
                             },
                             new Reservation
@@ -1517,57 +1517,57 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 FaceValueInShopperCurrency = new Price
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 SalePriceInShopperCurrency = new Price
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInOfficeCurrency = new Price
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustedSalePriceInShopperCurrency = new Price
                                 {
                                     Value = 199,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInOfficeCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                                 AdjustmentAmountInShopperCurrency = new Price
                                 {
                                     Value = 0,
                                     Currency = "GBP",
-                                    DecimalPlaces = 2
+                                    DecimalPlaces = 2,
                                 },
                             },
-                            new Reservation()
+                            new Reservation(),
                         },
                         Coupon = new Coupon
                         {
                             Code = "SAMPLE_SOURCE_CODE",
-                        }
+                        },
                     },
                     null,
                     "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
@@ -1583,8 +1583,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
-                            }
+                                DecimalPlaces = 2,
+                            },
                         },
                         AllowFlexiTickets = true,
                         ShopperCurrency = "GBP",
@@ -1602,15 +1602,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                    }
+                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                    },
                                 },
-                            }
+                            },
                         },
                         Coupon = new Coupon
                         {
                             Code = "SAMPLE_SOURCE_CODE",
-                        }
+                        },
                     },
                     false,
                     "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
@@ -1631,11 +1631,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k"
-                                    }
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                    },
                                 },
-                            }
-                        }
+                            },
+                        },
                     },
                     null,
                     "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
@@ -1654,9 +1654,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 3950,
                             Currency = "GBP",
-                            DecimalPlaces = 2
+                            DecimalPlaces = 2,
                         },
-                        Method = DeliveryMethod.Eticket
+                        Method = DeliveryMethod.Eticket,
                     },
                     ShopperCurrency = "GBP",
                     ShopperReference = "test",
@@ -1681,9 +1681,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                 },
                             },
-                        }
+                        },
                     },
-                    Coupon = null
+                    Coupon = null,
                 },
                 "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
@@ -1698,8 +1698,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     HasFlexiTickets = true,
                     ShopperCurrency = "GBP",
@@ -1717,15 +1717,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItemParameters
                                 {
                                     AggregateReference =
-                                        "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                }
+                                        "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                },
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
                         Code = "SAMPLE_SOURCE_CODE",
-                    }
+                    },
                 },
                 "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
             new TestCaseData(
@@ -1745,11 +1745,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItemParameters
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k"
-                                }
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                },
                             },
-                        }
-                    }
+                        },
+                    },
                 },
                 "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
         };
@@ -1878,62 +1878,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "X",
                                     Number = "45",
-                                    LocationDescription = ""
-                                }
+                                    LocationDescription = "",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
             new TestCaseData(
                 @"{
@@ -2106,56 +2106,56 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "X",
                                     Number = "45",
-                                    LocationDescription = ""
-                                }
+                                    LocationDescription = "",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                         },
                         new Reservation
@@ -2171,55 +2171,55 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
             new TestCaseData(
                 @"{
@@ -2348,8 +2348,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2378,68 +2378,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2447,9 +2447,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
                 }),
         };
 
@@ -2512,7 +2512,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 "791631",
                 new Coupon
                 {
-                    Code = "PRODUCTDISCOUNT"
+                    Code = "PRODUCTDISCOUNT",
                 },
                 "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"),
         };
@@ -2658,8 +2658,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2688,68 +2688,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2757,9 +2757,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -2896,8 +2896,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2926,68 +2926,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2995,9 +2995,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
                 }),
         };
 
@@ -3006,7 +3006,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 new Coupon
                 {
-                    Code = "test"
+                    Code = "test",
                 },
                 @"{
     ""request"": {
@@ -3249,7 +3249,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
             new TestCaseData(
                 @"{
@@ -3297,7 +3297,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
         };
 
@@ -3481,8 +3481,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -3511,68 +3511,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -3580,9 +3580,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -3631,7 +3631,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
+                    MissedPromotions = null,
                 }),
         };
 
@@ -3692,14 +3692,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 new PageRequest
                 {
                     Limit = 500,
-                    Page = 2
+                    Page = 2,
                 }),
             new TestCaseData(
                 null),
             new TestCaseData(
                 new PageRequest
                 {
-                    Limit = 500
+                    Limit = 500,
                 }),
         };
 

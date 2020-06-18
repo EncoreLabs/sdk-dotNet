@@ -128,7 +128,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 {
                     Number = 100,
                     Double = 9.087,
-                    str = "test string"
+                    str = "test string",
                 },
                 "{\"number\":100,\"double\":9.087,\"str\":\"test string\"}"),
             new TestCaseData(
@@ -141,13 +141,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                         new
                         {
                             someObject = new object(),
-                            Number = 100
+                            Number = 100,
                         },
                         new
                         {
-                            someString = "string"
-                        }
-                    }
+                            someString = "string",
+                        },
+                    },
                 },
                 "{\"someList\":[{\"someObject\":{},\"number\":100},{\"someString\":\"string\"}]}"),
             new TestCaseData(
@@ -155,7 +155,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 null,
                 new
                 {
-                    DOUBLE = true
+                    DOUBLE = true,
                 },
                 "{\"double\":true}"),
             new TestCaseData(
@@ -163,7 +163,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 null,
                 new
                 {
-                    dEcImAl = 0.2456M
+                    dEcImAl = 0.2456M,
                 },
                 "{\"dEcImAl\":0.2456}"),
             new TestCaseData(
@@ -216,7 +216,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 null,
                 new
                 {
-                    Enum = Environments.QA
+                    Enum = Environments.QA,
                 },
                 "{\"enum\":\"qa\"}"),
             new TestCaseData(
@@ -224,7 +224,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 new DefaultNamingStrategy(),
                 new
                 {
-                    Enum = Environments.QA
+                    Enum = Environments.QA,
                 },
                 "{\"enum\":\"QA\"}"),
             new TestCaseData(
@@ -232,7 +232,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 null,
                 new
                 {
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
                 "{\"intention\":\"positive\"}"),
         };
@@ -310,7 +310,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                     {
                         number = 100,
                         doubl = 9.087,
-                        str = "test string"
+                        str = "test string",
                     }),
                 new TestCaseData(
                     null,
@@ -319,7 +319,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                     {
                         number = 100,
                         doubl = 9.087,
-                        anotherNumber = default(int)
+                        anotherNumber = default(int),
                     }),
                 new TestCaseData(
                     null,
@@ -329,22 +329,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                         SomeList = new List<object>
                         {
                             new object(),
-                            new object()
-                        }
+                            new object(),
+                        },
                     }),
                 new TestCaseData(
                     null,
                     "{\"double\":true}",
                     new
                     {
-                        DOUBLE = true
+                        DOUBLE = true,
                     }),
                 new TestCaseData(
                     null,
                     "{\"dEcImAl\":0.2456}",
                     new
                     {
-                        dEcImAl = 0.2456M
+                        dEcImAl = 0.2456M,
                     }),
                 new TestCaseData(
                     null,
@@ -399,21 +399,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                     "{\"enum\":\"qa\"}",
                     new
                     {
-                        Enum = Environments.QA
+                        Enum = Environments.QA,
                     }),
                 new TestCaseData(
                     null,
                     "{\"intention\":\"positive\"}",
                     new
                     {
-                        Intention = Intention.Positive
+                        Intention = Intention.Positive,
                     }),
                 new TestCaseData(
                     null,
                     "{\"intention\":1000}",
                     new
                     {
-                        Intention = (Intention)1000
+                        Intention = (Intention)1000,
                     }),
             };
 

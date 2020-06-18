@@ -185,7 +185,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 expectedHeaders: new Dictionary<string, object>
                 {
                     { "X-AGENT-ID", encoder.Encode(agentId) },
-                    { "X-AGENT-PASSWORD", encoder.Encode(agentPassword) }
+                    { "X-AGENT-PASSWORD", encoder.Encode(agentPassword) },
                 },
                 expectedQueryParameters: null);
         }
@@ -238,7 +238,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                         FirstName = "Shawn",
                         LastName = "Butler",
                         TelephoneNumber = "07882571812",
-                        ExternalId = "8263702"
+                        ExternalId = "8263702",
                     },
                     BillingAddress = new Address
                     {
@@ -248,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                         City = "London",
                         CountryCode = "GB",
                         CountryName = "United Kingdom",
-                        StateOrProvince = "NY"
+                        StateOrProvince = "NY",
                     },
                     Origin = "https://example.com",
                     RedirectUrl = "https://example.com",
@@ -264,10 +264,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                         City = "London",
                         CountryCode = "GB",
                         CountryName = "United Kingdom",
-                        StateOrProvince = "NY"
+                        StateOrProvince = "NY",
                     },
                     HasFlexiTickets = true,
-                    PaymentType = PaymentType.Card
+                    PaymentType = PaymentType.Card,
                 },
                 "{\"deliveryMethod\":\"C\",\"paymentType\":\"card\",\"reference\":\"8527089\",\"channelId\":\"europa-test\",\"shopper\":{\"email\":\"user@example.com\",\"title\":\"Miss\",\"firstName\":\"Shawn\",\"lastName\":\"Butler\",\"telephoneNumber\":\"07882571812\",\"externalId\":\"8263702\"},\"billingAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"origin\":\"https://example.com\",\"redirectUrl\":\"https://example.com\",\"deliveryCharge\":245,\"recipientName\":\"Mr. Someone Else\",\"giftVoucherMessage\":\"Happy Birthday to you.\",\"deliveryAddress\":{\"line1\":\"Barnard's Inn\",\"line2\":\"86 Fetter Lane\",\"postalCode\":\"EC4A 1EN\",\"city\":\"London\",\"countryCode\":\"GB\",\"countryName\":\"United Kingdom\",\"stateOrProvince\":\"NY\"},\"hasFlexiTickets\":true,\"paymentId\":null}"),
             new TestCaseData(
@@ -281,7 +281,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                         Title = "Mrs",
                         FirstName = "clientFName",
                         LastName = "clientLName",
-                        TelephoneNumber = "123321321321"
+                        TelephoneNumber = "123321321321",
                     },
                     BillingAddress = new Address
                     {
@@ -289,12 +289,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                         Line2 = "",
                         PostalCode = "SE1 0BS",
                         City = "London",
-                        CountryCode = "UK"
+                        CountryCode = "UK",
                     },
                     RedirectUrl = "http://localhost:8000/",
                     DeliveryMethod = DeliveryMethod.Collection,
                     PaymentType = PaymentType.Account,
-                    PaymentId = "111"
+                    PaymentId = "111",
                 },
                 "{\"deliveryMethod\":\"C\",\"paymentType\":\"account\",\"reference\":\"8602898\",\"channelId\":\"resia\",\"shopper\":{\"email\":\"agentEmail@mail.com\",\"title\":\"Mrs\",\"firstName\":\"clientFName\",\"lastName\":\"clientLName\",\"telephoneNumber\":\"123321321321\",\"externalId\":null},\"billingAddress\":{\"line1\":\"47-51 Great Suffolk St\",\"line2\":\"\",\"postalCode\":\"SE1 0BS\",\"city\":\"London\",\"countryCode\":\"UK\",\"countryName\":null,\"stateOrProvince\":null},\"origin\":null,\"redirectUrl\":\"http://localhost:8000/\",\"deliveryCharge\":0,\"recipientName\":null,\"giftVoucherMessage\":null,\"deliveryAddress\":null,\"hasFlexiTickets\":false,\"paymentId\":\"111\"}"),
         };
@@ -314,7 +314,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 new PaymentInfo
                 {
                     PaymentId = "c72b2b7c-69ef-489c-83ee-1c731af93324",
-                    PaymentType = null
+                    PaymentType = null,
                 }),
             new TestCaseData(
                 @"{
@@ -329,7 +329,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 new PaymentInfo
                 {
                     PaymentId = "c72b2b7c-69ef-489c-83ee-1c731af93324",
-                    PaymentType = PaymentType.Card
+                    PaymentType = PaymentType.Card,
                 }),
             new TestCaseData(
                 @"{
@@ -344,7 +344,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 new PaymentInfo
                 {
                     PaymentId = null,
-                    PaymentType = PaymentType.Account
+                    PaymentType = PaymentType.Account,
                 }),
         };
 
@@ -464,7 +464,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     ChannelId = "resiaapi",
                     PaymentId = "your-payment-reference",
-                    AgentPaymentReference = "your-reference"
+                    AgentPaymentReference = "your-reference",
                 },
                 "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };
@@ -479,7 +479,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 {
                     ChannelId = "resiaapi",
                     PaymentId = "your-payment-reference",
-                    AgentPaymentReference = "your-reference"
+                    AgentPaymentReference = "your-reference",
                 },
                 "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };

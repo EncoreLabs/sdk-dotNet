@@ -122,19 +122,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = null
+                    AccessToken = null,
                 },
                 false) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is null" },
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = ""
+                    AccessToken = "",
                 },
                 false) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is empty" },
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO"
+                    AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO",
                 },
                 true) { TestName = $"{nameof(IsThereAuthentication_ReturnsCorrectly)}: Token is filled" },
         };

@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA)
             {
-                Correlation = Guid.NewGuid().ToString()
+                Correlation = Guid.NewGuid().ToString(),
             };
             service = new ContentServiceApi(context);
         }

@@ -103,7 +103,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var tree1Level2Item1 = new TreeItem(8, 4);
             var setupList = new List<TreeItem>
             {
-                tree1Parent, tree2Parent, tree1Level1Item1, tree1Level1Item2, tree1Level1Item3, tree2Level1Item1, tree2Level1Item2, tree1Level2Item1
+                tree1Parent, tree2Parent, tree1Level1Item1, tree1Level1Item2, tree1Level1Item3, tree2Level1Item1, tree2Level1Item2, tree1Level2Item1,
             };
             var expectedTraversalList = new List<TreeItem>
             {
@@ -114,11 +114,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
                 tree1Level1Item3,
                 tree2Parent,
                 tree2Level1Item1,
-                tree2Level1Item2
+                tree2Level1Item2,
             };
             var expectedParents = new List<TreeItem>
             {
-                tree1Parent, tree2Parent
+                tree1Parent, tree2Parent,
             };
             return (setupList, expectedTraversalList, expectedParents);
         }

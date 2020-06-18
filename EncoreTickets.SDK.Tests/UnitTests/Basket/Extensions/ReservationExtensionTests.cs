@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         {
             Currency = "GBP",
             DecimalPlaces = 2,
-            Value = 2500
+            Value = 2500,
         };
 
         private static readonly int DefaultQuantity = 2;
@@ -116,26 +116,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId,
-                    ProductType = ProductConstants.FlexiProductType
+                    ProductType = ProductConstants.FlexiProductType,
                 },
                 true),
             new TestCaseData(
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId,
-                    ProductType = ProductConstants.FlexiProductType.ToLower()
+                    ProductType = ProductConstants.FlexiProductType.ToLower(),
                 },
                 true),
             new TestCaseData(
                 new Reservation
                 {
-                    ProductId = ProductConstants.FlexiProductId
+                    ProductId = ProductConstants.FlexiProductId,
                 },
                 false),
             new TestCaseData(
                 new Reservation
                 {
-                    ProductType = ProductConstants.FlexiProductType
+                    ProductType = ProductConstants.FlexiProductType,
                 },
                 false),
             new TestCaseData(

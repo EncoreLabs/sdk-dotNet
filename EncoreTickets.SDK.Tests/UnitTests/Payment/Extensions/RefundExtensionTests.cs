@@ -29,31 +29,31 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
             new TestCaseData(
                 new Refund
                 {
-                    Status = "receiv"
+                    Status = "receiv",
                 },
                 false),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "pending"
+                    Status = "pending",
                 },
                 true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "success"
+                    Status = "success",
                 },
                 true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "RECEIVED"
+                    Status = "RECEIVED",
                 },
                 true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "received"
+                    Status = "received",
                 },
                 true),
         };

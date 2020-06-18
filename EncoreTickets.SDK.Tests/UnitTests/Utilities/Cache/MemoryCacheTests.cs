@@ -330,7 +330,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             new TestCaseData(4),
             new TestCaseData(1.2),
             new TestCaseData("Success"),
-            new TestCaseData(new List<string> { "a", "b", "c" })
+            new TestCaseData(new List<string> { "a", "b", "c" }),
         };
     }
 }

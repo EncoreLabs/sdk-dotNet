@@ -46,7 +46,7 @@ namespace EncoreTickets.SDK.Basket
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return result.DataOrException;
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Basket
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/deliveryOptions",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Delivery>>(parameters);
             return result.DataOrException;
@@ -87,7 +87,7 @@ namespace EncoreTickets.SDK.Basket
             {
                 Endpoint = $"v{ApiVersion}/baskets",
                 Method = RequestMethod.Patch,
-                Body = basketParameters
+                Body = basketParameters,
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
@@ -108,7 +108,7 @@ namespace EncoreTickets.SDK.Basket
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/applyPromotion",
                 Method = RequestMethod.Patch,
-                Body = new ApplyPromotionRequest { Coupon = coupon }
+                Body = new ApplyPromotionRequest { Coupon = coupon },
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return GetUpsertPromotionResult(result, coupon, basketReference);
@@ -121,7 +121,7 @@ namespace EncoreTickets.SDK.Basket
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/clear",
-                Method = RequestMethod.Patch
+                Method = RequestMethod.Patch,
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
@@ -142,7 +142,7 @@ namespace EncoreTickets.SDK.Basket
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/baskets/{basketReference}/reservations/{reservationId}",
-                Method = RequestMethod.Delete
+                Method = RequestMethod.Delete,
             };
             var response = Executor.ExecuteApiWithWrappedResponse<Models.Basket>(parameters);
             return response.DataOrException;
@@ -155,7 +155,7 @@ namespace EncoreTickets.SDK.Basket
             {
                 Endpoint = $"v{ApiVersion}/promotions",
                 Method = RequestMethod.Get,
-                Query = pageParameters
+                Query = pageParameters,
             };
             var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Promotion>>(parameters);
             return result.DataOrException;
@@ -168,7 +168,7 @@ namespace EncoreTickets.SDK.Basket
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/promotions/{promotionId}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Promotion>(parameters);
             return result.DataOrException;

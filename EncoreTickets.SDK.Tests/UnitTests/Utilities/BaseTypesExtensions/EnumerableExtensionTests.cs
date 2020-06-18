@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             {
                 new { Id = 2, Value = "string2" },
                 null,
-                new { Id = 3, Value = "string3" }
+                new { Id = 3, Value = "string3" },
             };
 
             var result = EnumerableExtension.Prepend(originalList, item).ToList();

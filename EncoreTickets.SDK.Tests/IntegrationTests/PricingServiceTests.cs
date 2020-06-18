@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"])
             {
-                Affiliate = configuration["Pricing:AffiliateId"]
+                Affiliate = configuration["Pricing:AffiliateId"],
             };
             service = new PricingServiceApi(context, true);
         }
@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var parameters = new ExchangeRatesParameters
             {
-                Direction = Direction.Asc
+                Direction = Direction.Asc,
             };
 
             var rates = service.GetExchangeRates(parameters);

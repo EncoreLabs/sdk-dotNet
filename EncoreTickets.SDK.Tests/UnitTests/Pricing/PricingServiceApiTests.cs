@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     Direction = direction,
                     Limit = limit,
                     Page = page,
-                    Sort = sort
+                    Sort = sort,
                 };
 
             TestActionCorrectlyExecuted<ResponseForPage<ExchangeRate>>(
@@ -92,7 +92,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     { "direction", parameters.Direction.ToString() },
                     { "limit", parameters.Limit },
                     { "page", parameters.Page },
-                    { "sort", parameters.Sort }
+                    { "sort", parameters.Sort },
                 },
                 shouldAuthenticate: true);
         }
@@ -448,7 +448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Rate = 1.47m,
                             Sourced = 1,
                             TargetCurrency = "USD",
-                            UpdatedAt = DateTimeOffset.Now
+                            UpdatedAt = DateTimeOffset.Now,
                         },
                         new ExchangeRate
                         {
@@ -461,10 +461,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Rate = 158m,
                             Sourced = 1,
                             TargetCurrency = "JPY",
-                            UpdatedAt = DateTimeOffset.Now
-                        }
-                    }
-                })
+                            UpdatedAt = DateTimeOffset.Now,
+                        },
+                    },
+                }),
         };
 
         #endregion
@@ -487,14 +487,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             {
                                 Currency = "GBP",
                                 DecimalPlaces = 2,
-                                Value = 100
+                                Value = 100,
                             },
                             new Price
                             {
                                 Currency = "USD",
                                 DecimalPlaces = 2,
-                                Value = 147
-                            }
+                                Value = 147,
+                            },
                         },
                         SalePrice = new List<Price>
                         {
@@ -502,17 +502,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             {
                                 Currency = "GBP",
                                 DecimalPlaces = 2,
-                                Value = 200
+                                Value = 200,
                             },
                             new Price
                             {
                                 Currency = "USD",
                                 DecimalPlaces = 2,
-                                Value = 294
-                            }
-                        }
-                    }
-                })
+                                Value = 294,
+                            },
+                        },
+                    },
+                }),
         };
 
         #endregion
@@ -532,8 +532,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Currency = "GBP",
                         DecimalPlaces = 2,
-                        Value = 100
-                    }
+                        Value = 100,
+                    },
                 },
                 MaxPrice = new List<Price>
                 {
@@ -541,10 +541,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Currency = "GBP",
                         DecimalPlaces = 2,
-                        Value = 200
-                    }
-                }
-            }
+                        Value = 200,
+                    },
+                },
+            },
         };
 
         private static List<DailyPriceRange> CreateTestDailyRanges()
@@ -565,7 +565,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 monthlyRange.Date = new YearMonthDate
                 {
                     Month = DateTimeOffset.Now.Month,
-                    Year = DateTimeOffset.Now.Year
+                    Year = DateTimeOffset.Now.Year,
                 };
                 return monthlyRange;
             }).ToList();
@@ -573,12 +573,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         public static IEnumerable<TestCaseData> DailyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
-            new TestCaseData(CreateTestDailyRanges())
+            new TestCaseData(CreateTestDailyRanges()),
         };
 
         public static IEnumerable<TestCaseData> MonthlyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
-            new TestCaseData(CreateTestMonthlyRanges())
+            new TestCaseData(CreateTestMonthlyRanges()),
         };
 
         #endregion
@@ -594,15 +594,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Active = 1,
                         Id = 1,
-                        Name = "rule1"
+                        Name = "rule1",
                     },
                     new PriceRuleSummary
                     {
                         Active = 1,
                         Id = 2,
-                        Name = "rule2"
-                    }
-                })
+                        Name = "rule2",
+                    },
+                }),
         };
 
         public static IEnumerable<TestCaseData> PriceRule_ReturnsPriceRule { get; } = new[]
@@ -629,8 +629,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Mode = 1,
                             RoundingPrecision = 2,
                             RoundingType = "up",
-                            Weight = 4
-                        }
+                            Weight = 4,
+                        },
                     },
                     Qualifiers = new List<PriceQualifier>
                     {
@@ -650,12 +650,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                                     Id = 1,
                                     Name = "p1",
                                     Type = "1",
-                                    Value = "100"
-                                }
-                            }
-                        }
-                    }
-                })
+                                    Value = "100",
+                                },
+                            },
+                        },
+                    },
+                }),
         };
 
         #endregion
@@ -667,13 +667,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             new PartnerGroup
             {
                 Id = 1,
-                Name = "group1"
+                Name = "group1",
             },
             new PartnerGroup
             {
                 Id = 2,
-                Name = "group2"
-            }
+                Name = "group2",
+            },
         };
 
         private static readonly List<Partner> Partners = new List<Partner>
@@ -686,7 +686,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 Id = 1,
                 Name = "partner1",
                 OfficeId = "32",
-                PartnerGroup = PartnerGroups[0]
+                PartnerGroup = PartnerGroups[0],
             },
             new Partner
             {
@@ -696,23 +696,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 Id = 2,
                 Name = "partner2",
                 OfficeId = "66",
-                PartnerGroup = PartnerGroups[0]
-            }
+                PartnerGroup = PartnerGroups[0],
+            },
         };
 
         public static IEnumerable<TestCaseData> PartnerGroups_ReturnsPartnerGroups { get; } = new[]
         {
-            new TestCaseData(PartnerGroups)
+            new TestCaseData(PartnerGroups),
         };
 
         public static IEnumerable<TestCaseData> PartnersInGroup_ReturnsPartners { get; } = new[]
         {
-            new TestCaseData(Partners)
+            new TestCaseData(Partners),
         };
 
         public static IEnumerable<TestCaseData> Partner_ReturnsPartner { get; } = new[]
         {
-            new TestCaseData(Partners[0])
+            new TestCaseData(Partners[0]),
         };
 
         #endregion

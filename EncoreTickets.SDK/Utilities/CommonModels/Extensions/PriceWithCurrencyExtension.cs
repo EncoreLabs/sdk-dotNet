@@ -104,7 +104,7 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
                 {
                     Currency = price.Currency,
                     DecimalPlaces = price.DecimalPlaces,
-                    Value = (price.Value ?? 0) * number
+                    Value = (price.Value ?? 0) * number,
                 }
                 : null;
 
@@ -125,7 +125,7 @@ namespace EncoreTickets.SDK.Utilities.CommonModels.Extensions
             {
                 Currency = firstPrice.Currency,
                 DecimalPlaces = firstPrice.DecimalPlaces,
-                Value = operation(firstPrice.Value ?? 0, secondPrice.Value ?? 0)
+                Value = operation(firstPrice.Value ?? 0, secondPrice.Value ?? 0),
             };
         }
     }

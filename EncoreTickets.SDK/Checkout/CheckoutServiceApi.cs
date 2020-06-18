@@ -48,7 +48,7 @@ namespace EncoreTickets.SDK.Checkout
                 Endpoint = $"v{ApiVersion}/checkout",
                 Method = RequestMethod.Post,
                 Body = new BookingQueryParameters(bookingParameters),
-                Serializer = new DefaultJsonSerializer(new DefaultNamingStrategy())
+                Serializer = new DefaultJsonSerializer(new DefaultNamingStrategy()),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PaymentInfo>(requestParameters);
             return result.DataOrException;
@@ -65,7 +65,7 @@ namespace EncoreTickets.SDK.Checkout
             Context.AgentCredentials = new Credentials
             {
                 Username = encoder.Encode(agentId),
-                Password = encoder.Encode(agentPassword)
+                Password = encoder.Encode(agentPassword),
             };
             return ConfirmBooking(bookingReference, bookingParameters);
         }
@@ -87,7 +87,7 @@ namespace EncoreTickets.SDK.Checkout
             {
                 Endpoint = $"v{ApiVersion}/bookings/{bookingReference}/confirm",
                 Method = RequestMethod.Post,
-                Body = bookingParameters
+                Body = bookingParameters,
             };
             var result = Executor.ExecuteApiWithWrappedResultsInResponse<string>(requestParameters);
             return result.DataOrException.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase);

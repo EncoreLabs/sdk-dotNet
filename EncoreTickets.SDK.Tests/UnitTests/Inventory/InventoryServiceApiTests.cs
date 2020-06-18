@@ -300,7 +300,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             {
                 PerformanceTime = TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
                 Direction = direction,
-                Quantity = quantity
+                Quantity = quantity,
             };
             var queryParameters = new Dictionary<string, object>
             {
@@ -467,7 +467,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
                 Direction = direction,
                 Sort = sort,
-                GroupingLimit = groupingLimit
+                GroupingLimit = groupingLimit,
             };
             var queryParameters = new Dictionary<string, object>();
             if (parameters.PerformanceTime != null)
@@ -593,12 +593,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                         Type = "show",
                         Venue = new SDK.Inventory.Models.Venue
                         {
-                            Id = "138"
+                            Id = "138",
                         },
                         OnSale = "yes",
                         BookingStarts = new DateTime(2019, 08, 13),
                         BookingEnds = new DateTime(2020, 05, 23),
-                    }
+                    },
                 }),
         };
 
@@ -717,17 +717,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 03, 19, 30, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 04, 16, 00, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 05, 19, 30, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
                 }),
         };
@@ -1034,8 +1034,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             {
                                                 Value = 3200,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
-                                            }
+                                                DecimalPlaces = 2,
+                                            },
                                         },
                                         FaceValue = new List<Price>
                                         {
@@ -1043,12 +1043,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             {
                                                 Value = 2500,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
-                                            }
+                                                DecimalPlaces = 2,
+                                            },
                                         },
                                         PercentageDiscount = 0,
                                         IncludesBookingFee = true,
-                                        CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                        CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                     },
                                     Seats = new List<AggregateSeat>
                                     {
@@ -1067,8 +1067,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 3200,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 FaceValue = new List<Price>
                                                 {
@@ -1076,12 +1076,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 2500,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 PercentageDiscount = 0,
                                                 IncludesBookingFee = true,
-                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                             },
                                         },
                                         new AggregateSeat
@@ -1099,8 +1099,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 3200,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 FaceValue = new List<Price>
                                                 {
@@ -1108,12 +1108,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 2500,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 PercentageDiscount = 0,
                                                 IncludesBookingFee = true,
-                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                             },
                                         },
                                     },
@@ -1124,13 +1124,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Seats = new List<string>
                                             {
                                                 "CIRCLE-X44",
-                                                "CIRCLE-X45"
-                                            }
+                                                "CIRCLE-X45",
+                                            },
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
                     AvailableCount = 1,
                 }),
@@ -1425,7 +1425,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     Attributes = new Attributes
                                     {
                                         RestrictedView = false,
-                                        SideView = false
+                                        SideView = false,
                                     },
                                     Pricing = new SDK.Inventory.Models.Pricing
                                     {
@@ -1434,18 +1434,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Value = 1600,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         FaceValue = new Price
                                         {
                                             Value = 1600,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         Percentage = 0,
                                         Offer = false,
                                         NoBookingFee = true,
-                                        Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                        Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                     },
                                     Seats = new List<Seat>
                                     {
@@ -1459,7 +1459,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
-                                                SideView = false
+                                                SideView = false,
                                             },
                                             SeatIdentifier = "CHILD_3-15-16101",
                                             Pricing = new SDK.Inventory.Models.Pricing
@@ -1469,18 +1469,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 FaceValue = new Price
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
                                                 NoBookingFee = true,
-                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                             },
                                         },
                                         new Seat
@@ -1493,7 +1493,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
-                                                SideView = false
+                                                SideView = false,
                                             },
                                             SeatIdentifier = "CHILD_3-15-16102",
                                             Pricing = new SDK.Inventory.Models.Pricing
@@ -1503,20 +1503,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 FaceValue = new Price
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
                                                 NoBookingFee = true,
-                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                             },
-                                        }
+                                        },
                                     },
                                     SeatLumps = new List<SeatLump>
                                     {
@@ -1524,20 +1524,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Seats = new List<string>
                                             {
-                                                "CHILD_3-15-16101"
-                                            }
+                                                "CHILD_3-15-16101",
+                                            },
                                         },
                                         new SeatLump
                                         {
                                             Seats = new List<string>
                                             {
-                                                "CHILD_3-15-16103"
-                                            }
+                                                "CHILD_3-15-16103",
+                                            },
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
                 }),
             new TestCaseData(
@@ -1675,7 +1675,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     Attributes = new Attributes
                                     {
                                         RestrictedView = false,
-                                        SideView = false
+                                        SideView = false,
                                     },
                                     Pricing = new SDK.Inventory.Models.Pricing
                                     {
@@ -1684,18 +1684,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Value = 39900,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         FaceValue = new Price
                                         {
                                             Value = 39900,
                                             Currency = "USD",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         Percentage = 0,
                                         Offer = false,
                                         NoBookingFee = false,
-                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
+                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06),
                                     },
                                     Seats = new List<Seat>(),
                                     SeatLumps = new List<SeatLump>(),
@@ -1710,7 +1710,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Date = new DateTime(2020, 07, 11),
                                             Time = new TimeSpan(14, 00, 00),
                                             Quantity = 1,
-                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium"
+                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium",
                                         },
                                         PriceReference = new PriceReference
                                         {
@@ -1718,36 +1718,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             {
                                                 Value = 39900,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             CostPrice = new Price
                                             {
                                                 Value = 39900,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             SalePrice = new Price
                                             {
                                                 Value = 39900,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             OriginalSalePrice = new Price
                                             {
                                                 Value = 49100,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             FxRate = new FxRate
                                             {
-                                                Rate = 0.811389M
+                                                Rate = 0.811389M,
                                             },
-                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
-                                        }
-                                    }
-                                }
+                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06),
+                                        },
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
                 }),
         };

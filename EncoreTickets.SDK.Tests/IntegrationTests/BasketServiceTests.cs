@@ -560,7 +560,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var pageParameters = new PageRequest
             {
-                Limit = 10
+                Limit = 10,
             };
 
             var promotions = service.GetPromotions(pageParameters);
@@ -581,7 +581,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var pageParameters = new PageRequest
             {
-                Limit = -10
+                Limit = -10,
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -663,9 +663,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new ReservationItemParameters { AggregateReference = r }).ToList()
-                    }
-                }
+                        Items = references.Select(r => new ReservationItemParameters { AggregateReference = r }).ToList(),
+                    },
+                },
             };
         }
 
@@ -688,9 +688,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new ReservationItem { AggregateReference = r }).ToList()
-                    }
-                }
+                        Items = references.Select(r => new ReservationItem { AggregateReference = r }).ToList(),
+                    },
+                },
             };
         }
 
@@ -702,9 +702,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     Currency = "GBP",
                     DecimalPlaces = 2,
-                    Value = 145
+                    Value = 145,
                 },
-                Method = DeliveryMethod.Postage
+                Method = DeliveryMethod.Postage,
             };
         }
 

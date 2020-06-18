@@ -493,13 +493,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -507,7 +507,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -516,7 +516,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
                         CountryCode = "GB",
-                        LegacyCountryCode = "UK"
+                        LegacyCountryCode = "UK",
                     },
                     Items = new List<OrderItem>
                     {
@@ -529,14 +529,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -547,21 +547,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
+                        DeliveryMethod = "collection",
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -681,7 +681,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 11800,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "partially_refunded",
                             Events = new List<PaymentEvent>
@@ -692,7 +692,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     CreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
                                     PspReference = "881579100117023F",
                                     PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
-                                    Status = true
+                                    Status = true,
                                 },
                                 new PaymentEvent
                                 {
@@ -700,7 +700,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     CreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
                                     PspReference = "851579100114678C",
                                     PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
-                                    Status = true
+                                    Status = true,
                                 },
                             },
                             Refunds = new List<Refund>
@@ -714,10 +714,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     Amount = new Amount
                                     {
                                         Value = 100,
-                                        Currency = "GBP"
+                                        Currency = "GBP",
                                     },
                                     Reason = "Test Booking",
-                                    Status = "success"
+                                    Status = "success",
                                 },
                                 new Refund
                                 {
@@ -728,10 +728,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     Amount = new Amount
                                     {
                                         Value = 100,
-                                        Currency = "GBP"
+                                        Currency = "GBP",
                                     },
                                     Reason = "Test Booking",
-                                    Status = "success"
+                                    Status = "success",
                                 },
                             },
                             Compensations = new List<Refund>(),
@@ -741,16 +741,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                 HolderName = "RE",
                                 Scheme = "visa",
                                 Number = "444433******1111",
-                                ExpiryDate = new DateTime(2020, 10, 1)
+                                ExpiryDate = new DateTime(2020, 10, 1),
                             },
                             PspMerchantAccount = "EncoreTicketsCallCentre",
-                            PspName = "AdyenTest"
-                        }
+                            PspName = "AdyenTest",
+                        },
                     },
                     Shopper = new Shopper
                     {
                         LastName = "RE",
-                        TelephoneNumber = "re"
+                        TelephoneNumber = "re",
                     },
                     Items = new List<OrderItem>
                     {
@@ -762,17 +762,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5900,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "1587"
+                            ExternalId = "1587",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
+                        OfficeId = 1,
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -876,13 +876,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             {
                                 Value = 11000,
                                 Currency = "GBP",
-                                ExchangeRate = 0.0
+                                ExchangeRate = 0.0,
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -890,7 +890,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Tome1918607-70c1-492e-87bb-627122e99fef",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -898,7 +898,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Addresse1918607-70c1-492e-87bb-627122e99fef",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -911,14 +911,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -929,17 +929,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
-                    RiskData = null
+                    RiskData = null,
                 }),
         };
 
@@ -979,7 +979,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 6200,
-                        Currency = "GBP"
+                        Currency = "GBP",
                     },
                     Shopper = new Shopper
                     {
@@ -987,7 +987,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -995,7 +995,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Line2",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1007,14 +1007,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1024,21 +1024,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
-                        }
+                            ExternalId = "3608",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
+                        DeliveryMethod = "collection",
+                    },
                 },
                 "{\"description\":null,\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"amount\":{\"value\":6200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"telephoneNumber\":null,\"title\":\"Mr\",\"externalId\":\"ext-1\",\"locale\":null},\"items\":[{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"},{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":null,\"daysToEvent\":2}}"),
             new TestCaseData(
@@ -1051,7 +1051,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 8100,
-                        Currency = "GBP"
+                        Currency = "GBP",
                     },
                     Shopper = new Shopper
                     {
@@ -1060,7 +1060,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "MS",
                         FirstName = "INNA",
                         LastName = "IVANOVA",
-                        ExternalId = null
+                        ExternalId = null,
                     },
                     BillingAddress = new Address
                     {
@@ -1070,7 +1070,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         City = "Cambridge Circus",
                         CountryCode = "UK",
                         LegacyCountryCode = null,
-                        StateOrProvince = "London"
+                        StateOrProvince = "London",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1082,18 +1082,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = null,
-                            ExternalId = "1587"
-                        }
+                            ExternalId = "1587",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
+                        OfficeId = 1,
+                    },
                 },
                 "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"),
         };
@@ -1197,13 +1197,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1211,7 +1211,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -1220,7 +1220,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
                         CountryCode = "GB",
-                        LegacyCountryCode = "UK"
+                        LegacyCountryCode = "UK",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1233,14 +1233,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1251,21 +1251,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
-                        }
+                            ExternalId = "3608",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
+                        DeliveryMethod = "collection",
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -1344,13 +1344,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1358,7 +1358,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "INNA",
                         LastName = "IVANOVA",
                         TelephoneNumber = "02072578183",
-                        Title = "MS"
+                        Title = "MS",
                     },
                     BillingAddress = new Address
                     {
@@ -1367,7 +1367,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         City = "Cambridge Circus",
                         CountryCode = "GB",
                         LegacyCountryCode = "UK",
-                        StateOrProvince = "London"
+                        StateOrProvince = "London",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1379,17 +1379,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "1587"
+                            ExternalId = "1587",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
+                        OfficeId = 1,
+                    },
                 }),
         };
 
@@ -1448,7 +1448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "newMr",
                         ExternalId = "newext-1",
                         TelephoneNumber = "new+441234567890",
-                        Locale = "fr_FR"
+                        Locale = "fr_FR",
                     },
                     BillingAddress = new Address
                     {
@@ -1456,7 +1456,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "new123 street",
                         PostalCode = "newAB1 2EF",
                         City = "newHometown",
-                        CountryCode = "FR"
+                        CountryCode = "FR",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1468,16 +1468,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 3000,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "123"
-                        }
-                    }
+                            ExternalId = "123",
+                        },
+                    },
                 },
                 "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"),
         };
@@ -1570,13 +1570,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1586,7 +1586,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "newMr",
                         ExternalId = "newext-1",
                         TelephoneNumber = "new+441234567890",
-                        Locale = "fr_FR"
+                        Locale = "fr_FR",
                     },
                     BillingAddress = new Address
                     {
@@ -1594,7 +1594,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "new123 street",
                         PostalCode = "newAB1 2EF",
                         City = "newHometown",
-                        CountryCode = "FR"
+                        CountryCode = "FR",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1607,21 +1607,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 3000,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "123"
-                        }
+                            ExternalId = "123",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
+                        DeliveryMethod = "collection",
+                    },
                 }),
             new TestCaseData(
                 @"{
@@ -1725,13 +1725,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             {
                                 Value = 11000,
                                 Currency = "GBP",
-                                ExchangeRate = 0.0
+                                ExchangeRate = 0.0,
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1739,7 +1739,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -1747,7 +1747,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1760,14 +1760,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1778,17 +1778,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
-                    RiskData = null
+                    RiskData = null,
                 }),
         };
 
@@ -1875,22 +1875,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     new CountryTerritorialUnit
                     {
                         Name = "Alabama",
-                        Abbreviation = "AL"
+                        Abbreviation = "AL",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Alaska",
-                        Abbreviation = "AK"
+                        Abbreviation = "AK",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Arizona",
-                        Abbreviation = "AZ"
+                        Abbreviation = "AZ",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "West Virginia",
-                        Abbreviation = "WV"
+                        Abbreviation = "WV",
                     },
                 }),
         };
@@ -1924,22 +1924,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     new CountryTerritorialUnit
                     {
                         Name = "Alberta",
-                        Abbreviation = "AB"
+                        Abbreviation = "AB",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "British Columbia",
-                        Abbreviation = "BC"
+                        Abbreviation = "BC",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Manitoba",
-                        Abbreviation = "MB"
+                        Abbreviation = "MB",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "New Brunswick",
-                        Abbreviation = "NB"
+                        Abbreviation = "NB",
                     },
                 }),
         };
@@ -1957,8 +1957,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 4200,
-                        Currency = "GBP"
-                    }
+                        Currency = "GBP",
+                    },
                 },
                 "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"),
         };

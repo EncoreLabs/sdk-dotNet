@@ -42,7 +42,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             {
                 Value = value,
                 Currency = currency,
-                DecimalPlaces = decimalPlaces
+                DecimalPlaces = decimalPlaces,
             };
 
             var actual = price.ToStringFormat();
@@ -72,7 +72,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
         {
             var price = new Price
             {
-                DecimalPlaces = decimalPlaces
+                DecimalPlaces = decimalPlaces,
             };
 
             var actual = price.SetDecimalValue(sourceValue);
@@ -107,7 +107,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             var price = new Price
             {
                 Value = sourceValue,
-                DecimalPlaces = decimalPlaces
+                DecimalPlaces = decimalPlaces,
             };
 
             var actual = price.ValueToDecimal();
@@ -140,7 +140,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             var price = new Price
             {
                 Value = sourceValue,
-                DecimalPlaces = decimalPlaces
+                DecimalPlaces = decimalPlaces,
             };
 
             var actual = price.ValueToDecimalAsString();
@@ -259,7 +259,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
             {
                 Currency = currency,
                 DecimalPlaces = decimalPlaces,
-                Value = value
+                Value = value,
             };
         }
 

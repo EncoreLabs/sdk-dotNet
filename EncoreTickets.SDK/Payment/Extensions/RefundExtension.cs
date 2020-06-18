@@ -12,7 +12,7 @@ namespace EncoreTickets.SDK.Payment.Extensions
             {
                 RefundApiConstants.RefundStatusReceived,
                 RefundApiConstants.RefundStatusPending,
-                RefundApiConstants.RefundStatusSuccess
+                RefundApiConstants.RefundStatusSuccess,
             };
             return refund.HasOneOfStatuses(statuses);
         }

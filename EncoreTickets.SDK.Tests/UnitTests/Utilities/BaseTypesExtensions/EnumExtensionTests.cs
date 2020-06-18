@@ -55,7 +55,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                     ErrorWrapping.MessageWithCode,
                     ErrorWrapping.Errors,
                     ErrorWrapping.Context,
-                    ErrorWrapping.NotParsedContent
+                    ErrorWrapping.NotParsedContent,
                 }),
         };
 

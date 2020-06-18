@@ -23,6 +23,6 @@
         /// <summary>
         /// for e-voucher
         /// </summary>
-        Evoucher
+        Evoucher,
     }
 }

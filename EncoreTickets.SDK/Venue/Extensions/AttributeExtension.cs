@@ -36,7 +36,7 @@ namespace EncoreTickets.SDK.Venue.Extensions
             {
                 Title = ExtraAttributeTitle,
                 Description = description,
-                Intention = intention
+                Intention = intention,
             };
         }
     }

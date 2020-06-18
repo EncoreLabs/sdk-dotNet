@@ -215,7 +215,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
                 "notValidPromotionCode",
                 new Context { Info = new List<Info> { new Info { Code = "information" } } })
             {
-                TestName = "GetDataOrContextException_IfInfoWithCodeDoesNotExistInInfoInContext_ReturnsData"
+                TestName = "GetDataOrContextException_IfInfoWithCodeDoesNotExistInInfoInContext_ReturnsData",
             },
         };
 
@@ -225,7 +225,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
                 "notValidPromotionCode",
                 new Context { Info = new List<Info> { new Info { Code = "notValidPromotionCode" } } })
             {
-                TestName = "GetDataOrContextException_IfInfoWithCodeExistsInInfoInContext_ThrowsException"
+                TestName = "GetDataOrContextException_IfInfoWithCodeExistsInInfoInContext_ThrowsException",
             },
         };
     }

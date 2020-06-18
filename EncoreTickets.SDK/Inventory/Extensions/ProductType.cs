@@ -9,6 +9,6 @@
         Attraction,
         Event,
         Other,
-        NotSet
+        NotSet,
     }
 }

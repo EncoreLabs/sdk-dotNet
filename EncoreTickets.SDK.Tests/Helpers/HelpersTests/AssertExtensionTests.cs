@@ -72,14 +72,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     },
                     new object[]
                     {
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     })
                 { TestName = "Same object arrays from objects with property of a basic type" },
             new TestCaseData(
@@ -90,8 +90,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                             new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                             new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                             new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                            new ObjectWithPropertyOfGenericType<bool> { Object = false }
-                        }
+                            new ObjectWithPropertyOfGenericType<bool> { Object = false },
+                        },
                     },
                     new object[]
                     {
@@ -100,8 +100,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                             new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                             new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                             new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                            new ObjectWithPropertyOfGenericType<bool> { Object = false }
-                        }
+                            new ObjectWithPropertyOfGenericType<bool> { Object = false },
+                        },
                     })
                 { TestName = "Same object arrays from arrays of objects with property of a basic type" },
             new TestCaseData(
@@ -114,7 +114,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<double>>
                             { Object = new ObjectWithPropertyOfGenericType<double> { Object = -45.78 } },
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<bool>>
-                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } }
+                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } },
                     },
                     new object[]
                     {
@@ -125,7 +125,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<double>>
                             { Object = new ObjectWithPropertyOfGenericType<double> { Object = -45.78 } },
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<bool>>
-                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } }
+                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } },
                     })
                 { TestName = "Same object arrays from objects with property of a custom type" },
         };
@@ -208,14 +208,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     },
                     new object[]
                     {
                         new ObjectWithPropertyOfGenericType<string> { Object = "" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     })
                 { TestName = "Object arrays from same objects with property of a basic type except an object with String property" },
             new TestCaseData(
@@ -224,14 +224,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     },
                     new object[]
                     {
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 3 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     })
                 { TestName = "Object arrays from same objects with property of a basic type except an object with Int property" },
             new TestCaseData(
@@ -240,14 +240,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     },
                     new object[]
                     {
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -0.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     })
                 { TestName = "Object arrays from same objects with property of a basic type except an object with Double property" },
             new TestCaseData(
@@ -256,14 +256,14 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = false }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = false },
                     },
                     new object[]
                     {
                         new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                         new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                         new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                        new ObjectWithPropertyOfGenericType<bool> { Object = true }
+                        new ObjectWithPropertyOfGenericType<bool> { Object = true },
                     })
                 { TestName = "Object arrays from same objects with property of a basic type except an object with Bool property" },
             new TestCaseData(
@@ -274,8 +274,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                             new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                             new ObjectWithPropertyOfGenericType<int> { Object = 345 },
                             new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                            new ObjectWithPropertyOfGenericType<bool> { Object = false }
-                        }
+                            new ObjectWithPropertyOfGenericType<bool> { Object = false },
+                        },
                     },
                     new object[]
                     {
@@ -284,8 +284,8 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                             new ObjectWithPropertyOfGenericType<string> { Object = "TEST" },
                             new ObjectWithPropertyOfGenericType<int> { Object = 3 },
                             new ObjectWithPropertyOfGenericType<double> { Object = -45.78 },
-                            new ObjectWithPropertyOfGenericType<bool> { Object = false }
-                        }
+                            new ObjectWithPropertyOfGenericType<bool> { Object = false },
+                        },
                     })
                 { TestName = "Object arrays from arrays of objects with same property of a basic type except one object" },
             new TestCaseData(
@@ -298,7 +298,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<double>>
                             { Object = new ObjectWithPropertyOfGenericType<double> { Object = -45.78 } },
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<bool>>
-                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } }
+                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } },
                     },
                     new object[]
                     {
@@ -309,7 +309,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.HelpersTests
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<double>>
                             { Object = new ObjectWithPropertyOfGenericType<double> { Object = -45.78 } },
                         new ObjectWithPropertyOfGenericType<ObjectWithPropertyOfGenericType<bool>>
-                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } }
+                            { Object = new ObjectWithPropertyOfGenericType<bool> { Object = false } },
                     })
                 { TestName = "Object arrays from objects with same property of a custom type except one object" },
         };
