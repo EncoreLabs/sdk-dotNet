@@ -53,7 +53,6 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ApiException"/> class.
-        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException()
         {
@@ -61,7 +60,6 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ApiException"/> class.
-        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException(string message, IRestResponse response, ApiContext requestContext)
             : this(response, requestContext, null, null)
@@ -71,7 +69,6 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ApiException"/> class.
-        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException(ApiException sourceException)
             : this(

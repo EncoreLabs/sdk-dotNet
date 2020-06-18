@@ -25,7 +25,6 @@ namespace EncoreTickets.SDK.Inventory
 
         /// <summary>
         /// Initialises a new instance of the <see cref="InventoryServiceApi"/> class.
-        /// Default constructor for the Inventory service.
         /// </summary>
         /// <param name="context"></param>
         public InventoryServiceApi(ApiContext context)

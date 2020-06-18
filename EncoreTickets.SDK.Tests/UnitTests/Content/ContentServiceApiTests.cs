@@ -60,7 +60,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.Locations_IfApiResponseSuccessful_ReturnsLocations))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetLocations_IfApiResponseSuccessful_ReturnsLocations))]
         public void GetLocations_IfApiResponseSuccessful_ReturnsLocations(
             string responseContent,
             List<Location> expected)
@@ -72,7 +72,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.Locations_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetLocations_IfApiResponseFailed_ThrowsApiException))]
         public void GetLocations_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code)
@@ -145,7 +145,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.Products_IfApiResponseSuccessful_ReturnsProducts))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProducts_IfApiResponseSuccessful_ReturnsProducts))]
         public void GetProducts_IfApiResponseSuccessful_ReturnsProducts(
             string responseContent,
             List<Product> expected)
@@ -157,7 +157,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.Products_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProducts_IfApiResponseFailed_ThrowsApiException))]
         public void GetProducts_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code)
@@ -208,7 +208,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.ProductById_IfApiResponseSuccessful_ReturnsProduct))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProductById_IfApiResponseSuccessful_ReturnsProduct))]
         public void GetProductById_IfApiResponseSuccessful_ReturnsProduct(
             string responseContent,
             Product expected)
@@ -220,7 +220,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.ProductById_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProductById_IfApiResponseFailed_ThrowsApiException))]
         public void GetProductById_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -242,7 +242,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
 
     internal static class ContentServiceApiTestsSource
     {
-        public static IEnumerable<TestCaseData> Locations_IfApiResponseSuccessful_ReturnsLocations { get; } = new[]
+        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseSuccessful_ReturnsLocations { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -343,14 +343,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Locations_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
                 HttpStatusCode.InternalServerError),
         };
 
-        public static IEnumerable<TestCaseData> Products_IfApiResponseSuccessful_ReturnsProducts { get; } = new[]
+        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseSuccessful_ReturnsProducts { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -416,14 +416,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Products_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
                 HttpStatusCode.InternalServerError),
         };
 
-        public static IEnumerable<TestCaseData> ProductById_IfApiResponseSuccessful_ReturnsProduct { get; } = new[]
+        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseSuccessful_ReturnsProduct { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -520,7 +520,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 }),
         };
 
-        public static IEnumerable<TestCaseData> ProductById_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 @"{

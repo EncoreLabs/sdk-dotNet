@@ -31,7 +31,6 @@ namespace EncoreTickets.SDK.Basket
 
         /// <summary>
         /// Initialises a new instance of the <see cref="BasketServiceApi"/> class.
-        /// Default constructor for the Basket service.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
         public BasketServiceApi(ApiContext context)

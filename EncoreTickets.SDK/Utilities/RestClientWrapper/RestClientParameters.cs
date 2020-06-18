@@ -67,7 +67,6 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
 
         /// <summary>
         /// Initialises a new instance of the <see cref="RestClientParameters"/> class.
-        /// Initialises a new instance of <see cref="RestClientParameters"/>.
         /// </summary>
         public RestClientParameters()
         {

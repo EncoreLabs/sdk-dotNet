@@ -96,7 +96,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.Order_IfApiResponseSuccessful_ReturnsOrder))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseSuccessful_ReturnsOrder))]
         public void GetOrder_IfApiResponseSuccessful_ReturnsOrder(
             string responseContent,
             Order expected)
@@ -108,7 +108,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.Order_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseFailed_ThrowsApiException))]
         public void GetOrder_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -391,7 +391,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
     {
         #region Order
 
-        public static IEnumerable<TestCaseData> Order_IfApiResponseSuccessful_ReturnsOrder { get; } = new[]
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -943,7 +943,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Order_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(

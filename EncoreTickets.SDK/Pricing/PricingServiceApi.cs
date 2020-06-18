@@ -27,7 +27,6 @@ namespace EncoreTickets.SDK.Pricing
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PricingServiceApi"/> class.
-        /// Default constructor.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="automaticAuthentication"></param>

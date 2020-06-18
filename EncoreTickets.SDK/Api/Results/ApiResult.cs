@@ -84,7 +84,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ApiResult{T}"/> class.
-        /// Initialises a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context, string error)
         {
@@ -96,7 +95,6 @@ namespace EncoreTickets.SDK.Api.Results
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ApiResult{T}"/> class.
-        /// Initialises a new instance of <see cref="ApiResult{T}"/>.
         /// </summary>
         public ApiResult(T data, IRestResponse response, ApiContext context)
         {

@@ -28,7 +28,6 @@ namespace EncoreTickets.SDK.Venue
 
         /// <summary>
         /// Initialises a new instance of the <see cref="VenueServiceApi"/> class.
-        /// Default constructor for the Venue service.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="automaticAuthentication"></param>

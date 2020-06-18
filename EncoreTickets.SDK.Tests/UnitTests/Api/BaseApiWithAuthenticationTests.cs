@@ -66,7 +66,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
         [TestCaseSource(
             typeof(BaseApiWithAuthenticationTestsSource),
-            nameof(BaseApiWithAuthenticationTestsSource.AuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
+            nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
         public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(ApiContext context, Type expectedType)
         {
             var actual = GetAuthenticationService(context);
@@ -130,7 +130,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
     {
         public static readonly string TestHost = "venue-service.{0}tixuk.io/api/";
 
-        public static IEnumerable<TestCaseData> AuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),

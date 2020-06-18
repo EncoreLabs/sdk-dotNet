@@ -76,7 +76,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: null);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.BasketDetails_IfApiResponseSuccessful_ReturnsBasket))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket))]
         public void GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket(
             string responseContent,
             SDK.Basket.Models.Basket expected)
@@ -88,7 +88,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.BasketDetails_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDetails_IfApiResponseFailed_ThrowsApiException))]
         public void GetBasketDetails_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -155,7 +155,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.BasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException))]
         public void GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -574,7 +574,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         #region GetPromotions
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.Promotions_CallsApiWithRightParameters))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotions_CallsApiWithRightParameters))]
         public void GetPromotions_CallsApiWithRightParameters(PageRequest pageRequest)
         {
             mockers.SetupAnyExecution<ApiResponseWithResultsBlock<List<Promotion>>>();
@@ -606,7 +606,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: queryParameters);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.Promotions_IfApiResponseSuccessful_ReturnsPromotions))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotions_IfApiResponseSuccessful_ReturnsPromotions))]
         public void GetPromotions_IfApiResponseSuccessful_ReturnsPromotions(
             string responseContent,
             List<Promotion> expected)
@@ -618,7 +618,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.Promotions_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotions_IfApiResponseFailed_ThrowsApiException))]
         public void GetPromotions_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -673,7 +673,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: null);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.PromotionDetails_IfApiResponseSuccessful_ReturnsPromotion))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion))]
         public void GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion(
             string responseContent,
             Promotion expected)
@@ -685,7 +685,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.PromotionDetails_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotionDetails_IfApiResponseFailed_ThrowsApiException))]
         public void GetPromotionDetails_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -709,7 +709,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     {
         #region GetBasketDetails
 
-        public static IEnumerable<TestCaseData> BasketDetails_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
+        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -916,7 +916,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 }),
         };
 
-        public static IEnumerable<TestCaseData> BasketDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1062,7 +1062,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     }),
             };
 
-        public static IEnumerable<TestCaseData> BasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException { get; } =
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException { get; } =
             new[]
             {
                 // 400
@@ -3686,7 +3686,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         #region GetPromotions
 
-        public static IEnumerable<TestCaseData> Promotions_CallsApiWithRightParameters { get; } = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new PageRequest
@@ -3703,7 +3703,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Promotions_IfApiResponseSuccessful_ReturnsPromotions { get; } = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseSuccessful_ReturnsPromotions { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3760,7 +3760,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Promotions_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -3790,7 +3790,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         #region GetPromotionDetails
 
-        public static IEnumerable<TestCaseData> PromotionDetails_IfApiResponseSuccessful_ReturnsPromotion { get; } =
+        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion { get; } =
             new[]
             {
                 new TestCaseData(
@@ -3859,7 +3859,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     }),
             };
 
-        public static IEnumerable<TestCaseData> PromotionDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(

@@ -158,7 +158,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 });
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.AvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange))]
         public void GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange(
             string responseContent,
             AvailabilityRange expected)
@@ -170,7 +170,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.AvailabilityRange_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException))]
         public void GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -337,7 +337,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 });
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.AggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability))]
         public void GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability(
             string responseContent,
             AggregateSeatAvailability expected)
@@ -349,7 +349,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.AggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
         public void GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -531,7 +531,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.SeatAvailability_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetSeatAvailability_IfApiResponseFailed_ThrowsApiException))]
         [Obsolete]
         public void GetSeatAvailability_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
@@ -630,7 +630,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #region GetAvailabilityRange
 
-        public static IEnumerable<TestCaseData> AvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange { get; } = new[]
             {
                 new TestCaseData(
                     @"{
@@ -654,7 +654,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     }),
             };
 
-        public static IEnumerable<TestCaseData> AvailabilityRange_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException { get; } = new[]
             {
                 new TestCaseData(
                     @"{
@@ -886,7 +886,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
 
         #region GetAggregateSeatAvailability
 
-        public static IEnumerable<TestCaseData> AggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1163,7 +1163,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 }),
         };
 
-        public static IEnumerable<TestCaseData> AggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1752,7 +1752,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 }),
         };
 
-        public static IEnumerable<TestCaseData> SeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(

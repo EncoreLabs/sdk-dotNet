@@ -27,7 +27,6 @@ namespace EncoreTickets.SDK.Checkout
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CheckoutServiceApi"/> class.
-        /// Default constructor for the checkout service.
         /// </summary>
         /// <param name="context"></param>
         public CheckoutServiceApi(ApiContext context)

@@ -23,7 +23,6 @@ namespace EncoreTickets.SDK.Content
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ContentServiceApi"/> class.
-        /// Default constructor for the content service.
         /// </summary>
         /// <param name="context"></param>
         public ContentServiceApi(ApiContext context)

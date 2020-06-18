@@ -70,7 +70,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             mockers.VerifyExecution<ApiResponseWithResultsBlock<List<SDK.Venue.Models.Venue>>>(BaseUrl, $"v{ApiVersion}/venues", Method.GET);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.Venues_IfApiResponseSuccessful_ReturnsVenues))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenues_IfApiResponseSuccessful_ReturnsVenues))]
         public void GetVenues_IfApiResponseSuccessful_ReturnsVenues(
             string responseContent,
             List<SDK.Venue.Models.Venue> expected)
@@ -82,7 +82,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.Venues_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenues_IfApiResponseFailed_ThrowsApiException))]
         public void GetVenues_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code)
@@ -131,7 +131,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             mockers.VerifyExecution<ApiResponse<SDK.Venue.Models.Venue>>(BaseUrl, $"v{ApiVersion}/venues/{venueId}", Method.GET);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.VenueById_IfApiResponseSuccessful_ReturnsVenue))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenueById_IfApiResponseSuccessful_ReturnsVenue))]
         public void GetVenueById_IfApiResponseSuccessful_ReturnsVenue(
             string responseContent,
             SDK.Venue.Models.Venue expected)
@@ -143,7 +143,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.VenueById_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetVenueById_IfApiResponseFailed_ThrowsApiException))]
         public void GetVenueById_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -260,7 +260,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.StandardAttributes_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetStandardAttributes_IfApiResponseFailed_ThrowsApiException))]
         public void GetStandardAttributes_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code)
@@ -388,7 +388,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 Method.GET);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.SeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes))]
         public void GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes(
             string responseContent,
             List<SeatDetailed> expected)
@@ -400,7 +400,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.SeatAttributes_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetSeatAttributes_IfApiResponseFailed_ThrowsApiException))]
         public void GetSeatAttributes_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -494,7 +494,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
 
     internal static class VenueServiceTestsSource
     {
-        public static IEnumerable<TestCaseData> Venues_IfApiResponseSuccessful_ReturnsVenues { get; } = new[]
+        public static IEnumerable<TestCaseData> GetVenues_IfApiResponseSuccessful_ReturnsVenues { get; } = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{}},\"response\":{\"results\":[{\"compositeId\":\"THEB00-VEN-LDN~12\",\"internalId\":\"12\",\"title\":\"test!!!\",\"address\":{\"firstLine\":\"Upper Street\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"N1 2UD\",\"region\":{\"name\":\"LDN\",\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.541490\",\"longitude\":\"-0.102537\"},\"contentOverriddenAt\":\"2019-10-07T14:31:34+00:00\"},{\"compositeId\":\"THEB00-VEN-LDN~138\",\"internalId\":\"138\",\"title\":\"Apollo Victoria Theatre v3\",\"address\":{\"firstLine\":\"Rosebery Avenue\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"EC1R 4TN\",\"region\":{\"name\":\"London\",\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.5294\",\"longitude\":\"-0.1062\"},\"contentOverriddenAt\":\"2019-09-03T14:13:28+00:00\"}]},\"context\":null}",
@@ -557,14 +557,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Venues_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetVenues_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
                 HttpStatusCode.InternalServerError),
         };
 
-        public static IEnumerable<TestCaseData> VenueById_IfApiResponseSuccessful_ReturnsVenue { get; } = new[]
+        public static IEnumerable<TestCaseData> GetVenueById_IfApiResponseSuccessful_ReturnsVenue { get; } = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"venueId\":\"163\"}},\"response\":{\"compositeId\":\"THEB00-VEN-LDN~163\",\"internalId\":\"163\",\"title\":\"Lyric Theatre\",\"cardTitle\":null,\"description\":null,\"address\":{\"firstLine\":\"29 Shaftesbury Avenue\",\"secondLine\":null,\"thirdLine\":null,\"city\":\"London\",\"postcode\":\"W1D 7ES\",\"region\":{\"name\":null,\"isoCode\":\"LDN\"},\"country\":{\"name\":\"Great Britain\",\"isoCode\":\"GBR\"},\"latitude\":\"51.5112\",\"longitude\":\"-0.133542\"},\"seatSettings\":{\"seatsSupplied\":true,\"seatSelectionMode\":{\"name\":\"choosable\"},\"allocationType\":null},\"seatLayouts\":[{\"dateStart\":null,\"dateEnd\":null,\"performanceTimes\":[],\"isDefault\":true,\"createdAt\":\"2019-11-12T08:50:14+00:00\",\"updatedAt\":\"2019-11-12T08:50:14+00:00\",\"seats\":[{\"area\":\"UPPER_CIRCLE\",\"seatIdentifier\":\"UPPER_CIRCLE-C28\",\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\"},{\"title\":\"SideView\",\"description\":\"Side view\",\"intention\":\"negative\"}]},{\"area\":\"BALCONY\",\"seatIdentifier\":\"BALCONY-A20\",\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\"}]}]},{\"dateStart\":\"2019-01-10T00:00:00+00:00\",\"dateEnd\":\"2019-02-02T23:59:59+00:00\",\"performanceTimes\":[{\"id\":5,\"performanceTime\":\"1970-01-01T14:00:00+00:00\"},{\"id\":6,\"performanceTime\":\"1970-01-01T16:00:00+00:00\"},{\"id\":7,\"performanceTime\":\"1970-01-01T18:00:00+00:00\"}],\"isDefault\":false,\"createdAt\":\"2019-11-12T08:50:19+00:00\",\"updatedAt\":\"2019-11-12T08:50:19+00:00\",\"seats\":[{\"area\":\"DRESS_CIRCLE\",\"seatIdentifier\":\"DRESS_CIRCLE-G3\",\"attributes\":[{\"title\":\"SlightlyRestrictedView\",\"description\":\"Slightly restricted view\",\"intention\":\"negative\"},{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\"},{\"title\":\"SideView\",\"description\":\"Side view\",\"intention\":\"negative\"}]}]}],\"venueTerminals\":[{\"directions\":\"Take Shaftesbury Avenue along the side where the famous illuminated signs are. The theatre will be on your left about 100 metres along.\",\"journeyTime\":\"3mins\",\"terminal\":{\"name\":\"Piccadilly Circus\",\"routes\":[{\"description\":\"Bakerloo\",\"transportMode\":{\"name\":\"tube\"}},{\"description\":\"Piccadilly\",\"transportMode\":{\"name\":\"tube\"}}]}}],\"facilities\":[{\"description\":\"Air conditioned\"},{\"description\":\"Bar\"}],\"transportAttributes\":[{\"description\":\"inCongestionZone\"}],\"contentOverriddenAt\":null,\"createdAt\":null,\"updatedAt\":null,\"published\":true},\"context\":null}",
@@ -765,7 +765,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 }),
         };
 
-        public static IEnumerable<TestCaseData> VenueById_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetVenueById_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"venueId\":\"not_id\"}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Not found\"}]}}",
@@ -1315,7 +1315,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                     }),
             };
 
-        public static IEnumerable<TestCaseData> StandardAttributes_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetStandardAttributes_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
@@ -1452,7 +1452,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 }),
         };
 
-        public static IEnumerable<TestCaseData> SeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes { get; } = new[]
+        public static IEnumerable<TestCaseData> GetSeatAttributes_IfApiResponseSuccessful_ReturnsSeatAttributes { get; } = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{\"venueId\":\"163\"}},\"response\":[{\"seatIdentifier\":\"STALLS-O3\",\"startDate\":\"\",\"endDate\":\"\",\"performanceTimes\":[],\"attributes\":[{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\"},{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\"}]},{\"seatIdentifier\":\"UPPER_CIRCLE-G14\",\"startDate\":\"2019-03-10\",\"endDate\":\"2019-03-30\",\"performanceTimes\":[\"1500\",\"1700\",\"1900\"],\"attributes\":[{\"title\":\"PillarInView\",\"description\":\"Pillar in view\",\"intention\":\"negative\"}]}],\"context\":null}",
@@ -1504,7 +1504,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 }),
         };
 
-        public static IEnumerable<TestCaseData> SeatAttributes_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetSeatAttributes_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(
