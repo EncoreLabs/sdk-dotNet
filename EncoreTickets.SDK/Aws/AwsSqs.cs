@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Aws
         protected IAmazonSQS Client { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AwsSqs"/> class.
+        /// Initialises a new instance of the <see cref="AwsSqs"/> class.
         /// Constructor that instantiates this class by the name of an AWS profile and the name of an AWS region.
         /// </summary>
         /// <param name="clientFactory">The factory for creating of AmazonSQS clients.</param>
@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Aws
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AwsSqs"/> class.
+        /// Initialises a new instance of the <see cref="AwsSqs"/> class.
         /// Constructor that instantiates this class by the name of an AWS profile and the name of an AWS region.
         /// The specified AWS profile is created or updated with the specified credentials.
         /// </summary>

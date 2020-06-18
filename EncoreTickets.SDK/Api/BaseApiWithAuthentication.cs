@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Api
         protected bool AutomaticAuthentication { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApiWithAuthentication"/> class.
+        /// Initialises a new instance of the <see cref="BaseApiWithAuthentication"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="host">The host.</param>

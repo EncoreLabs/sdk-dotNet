@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
         private readonly System.Runtime.Caching.MemoryCache cache;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryCache"/> class.
+        /// Initialises a new instance of the <see cref="MemoryCache"/> class.
         /// Creates an instance of <see cref="MemoryCache"/> class with the default instance of <see cref="System.Runtime.Caching.MemoryCache"/> />.
         /// </summary>
         public MemoryCache()
@@ -18,7 +18,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryCache"/> class.
+        /// Initialises a new instance of the <see cref="MemoryCache"/> class.
         /// Creates an instance of <see cref="MemoryCache"/> class with the named instance of <see cref="System.Runtime.Caching.MemoryCache"/> />.
         /// </summary>
         public MemoryCache(string name)

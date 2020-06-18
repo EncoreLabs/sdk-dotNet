@@ -66,8 +66,8 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         public IDeserializer ResponseDataDeserializer { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RestClientParameters"/> class.
-        /// Initializes a new instance of <see cref="RestClientParameters"/>.
+        /// Initialises a new instance of the <see cref="RestClientParameters"/> class.
+        /// Initialises a new instance of <see cref="RestClientParameters"/>.
         /// </summary>
         public RestClientParameters()
         {

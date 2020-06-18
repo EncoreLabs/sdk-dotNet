@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Api
         protected string Host { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApi"/> class.
+        /// Initialises a new instance of the <see cref="BaseApi"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="host">The host.</param>

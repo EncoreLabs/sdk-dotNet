@@ -66,7 +66,7 @@ namespace EncoreTickets.SDK.Api.Models
         internal Credentials AgentCredentials { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments environment,
@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Api.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments environment,
@@ -92,7 +92,7 @@ namespace EncoreTickets.SDK.Api.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext()
             : this(Environments.Production)
@@ -100,7 +100,7 @@ namespace EncoreTickets.SDK.Api.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments env,

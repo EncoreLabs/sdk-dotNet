@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         public RestClientCredentials Credentials { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RestClientWrapper"/> class.
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
         /// <param name="restClientCredentials">Credentials for requests.</param>
         public RestClientWrapper(RestClientCredentials restClientCredentials)
@@ -33,7 +33,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RestClientWrapper"/> class.
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
         public RestClientWrapper()
             : this(DefaultMaxExecutionsCount)
@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RestClientWrapper"/> class.
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
         /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed.</param>
         public RestClientWrapper(int executionsCount)

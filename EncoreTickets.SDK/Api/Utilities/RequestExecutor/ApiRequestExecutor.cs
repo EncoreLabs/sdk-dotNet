@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Api.Utilities.RequestExecutor
         public ApiContext Context { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiRequestExecutor"/> class.
+        /// Initialises a new instance of the <see cref="ApiRequestExecutor"/> class.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
         /// <param name="baseUrl">The site URL.</param>

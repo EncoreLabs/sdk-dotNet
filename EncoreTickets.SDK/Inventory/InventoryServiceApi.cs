@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Inventory
         public override int? ApiVersion => 4;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InventoryServiceApi"/> class.
+        /// Initialises a new instance of the <see cref="InventoryServiceApi"/> class.
         /// Default constructor for the Inventory service.
         /// </summary>
         /// <param name="context"></param>

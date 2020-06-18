@@ -10,7 +10,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
         private readonly ICache cache;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LazyCacheDecorator"/> class.
+        /// Initialises a new instance of the <see cref="LazyCacheDecorator"/> class.
         /// </summary>
         public LazyCacheDecorator(ICache cache)
         {

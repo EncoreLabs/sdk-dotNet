@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Checkout
         public override int? ApiVersion => 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CheckoutServiceApi"/> class.
+        /// Initialises a new instance of the <see cref="CheckoutServiceApi"/> class.
         /// Default constructor for the checkout service.
         /// </summary>
         /// <param name="context"></param>

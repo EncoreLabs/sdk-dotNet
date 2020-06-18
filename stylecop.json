@@ -9,6 +9,17 @@
       "indentationSize": 4,
       "useTabs": false
     },
+    "maintainabilityRules": {
+      "topLevelTypes": [
+        "class",
+        "interface",
+        "struct",
+        "enum"
+      ]
+    },
+    "namingRules": {
+      "includeInferredTupleElementNames": true
+    },
     "orderingRules": {
       "usingDirectivesPlacement": "outsideNamespace",
       "elementOrder": [

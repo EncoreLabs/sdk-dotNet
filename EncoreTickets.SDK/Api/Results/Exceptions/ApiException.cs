@@ -52,16 +52,16 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         public Context ContextInResponse { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiException"/> class.
-        /// Initializes a new instance of <see cref="ApiException"/>.
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
+        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiException"/> class.
-        /// Initializes a new instance of <see cref="ApiException"/>.
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
+        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException(string message, IRestResponse response, ApiContext requestContext)
             : this(response, requestContext, null, null)
@@ -70,8 +70,8 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiException"/> class.
-        /// Initializes a new instance of <see cref="ApiException"/>.
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
+        /// Initialises a new instance of <see cref="ApiException"/>.
         /// </summary>
         public ApiException(ApiException sourceException)
             : this(
@@ -83,7 +83,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiException"/> class.
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
         /// </summary>
         public ApiException(
             IRestResponse response,
