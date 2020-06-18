@@ -90,7 +90,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 
     internal static class JwtAuthenticationServiceTestsSource
     {
-        public static IEnumerable<TestCaseData> Authenticate_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> Authenticate_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(It.IsAny<Environments>(), "admin", "valid_password"),
@@ -100,13 +100,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                 "{\"username\":\"admin\",\"password\":\"invalid_password\"}"),
         };
 
-        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext = new[]
+        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseSuccessful_ReturnsInitializedContext { get; } = new[]
         {
             new TestCaseData(
                 "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni"),
         };
 
-        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> Authenticate_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "{\"request\":{\"body\":\"{\\\"username\\\":\\\"admin\\\",\\\"password\\\":\\\"invalid_password\\\"}\",\"query\":{},\"urlParams\":{}},\"response\":\"\",\"context\":{\"errors\":[{\"message\":\"Bad credentials, please verify that your username/password are correctly set\"}]}}",
@@ -114,7 +114,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                 "Bad credentials, please verify that your username/password are correctly set"),
         };
 
-        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

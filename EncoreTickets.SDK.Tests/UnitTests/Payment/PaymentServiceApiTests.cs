@@ -96,7 +96,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseSuccessful_ReturnsOrder))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.Order_IfApiResponseSuccessful_ReturnsOrder))]
         public void GetOrder_IfApiResponseSuccessful_ReturnsOrder(
             string responseContent,
             Order expected)
@@ -108,7 +108,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetOrder_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.Order_IfApiResponseFailed_ThrowsApiException))]
         public void GetOrder_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -282,7 +282,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetUsStates_IfApiResponseSuccessful_ReturnsUsStates))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UsStates_IfApiResponseSuccessful_ReturnsUsStates))]
         public void GetUsStates_IfApiResponseSuccessful_ReturnsUsStates(
             string responseContent,
             List<CountryTerritorialUnit> expected)
@@ -391,7 +391,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
     {
         #region Order
 
-        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder = new[]
+        public static IEnumerable<TestCaseData> Order_IfApiResponseSuccessful_ReturnsOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -943,7 +943,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }),
         };
 
-        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> Order_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(
@@ -966,7 +966,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "Cannot find Order. Please specify a valid orderId."),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new CreateOrderRequest
@@ -1098,7 +1098,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1393,7 +1393,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1434,7 +1434,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "Invalid JWT Token"),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "5b148b26-7e48-489e-8156-89534194f8a6",
@@ -1482,7 +1482,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1792,7 +1792,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1846,7 +1846,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
         #region Country
 
-        public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates = new[]
+        public static IEnumerable<TestCaseData> UsStates_IfApiResponseSuccessful_ReturnsUsStates { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1895,7 +1895,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 }),
         };
 
-        public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces = new[]
+        public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1948,7 +1948,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
         #region Payment
 
-        public static IEnumerable<TestCaseData> CreateNewPayment_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> CreateNewPayment_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new CreatePaymentRequest
@@ -1963,7 +1963,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"),
         };
 
-        public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(

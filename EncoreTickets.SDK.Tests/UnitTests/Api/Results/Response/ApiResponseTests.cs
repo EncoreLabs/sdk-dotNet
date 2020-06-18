@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Response
 
     internal static class ApiResponseTestsSource
     {
-        public static IEnumerable<TestCaseData> Data_ReturnsSameObjectAsInResponse = new[]
+        public static IEnumerable<TestCaseData> Data_ReturnsSameObjectAsInResponse { get; } = new[]
         {
             new TestCaseData(new int[] { }),
             new TestCaseData(new object()),

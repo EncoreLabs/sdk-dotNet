@@ -426,7 +426,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
     {
         #region ExchangeRates
 
-        public static IEnumerable<TestCaseData> GetExchangeRates_ReturnsExchangeRates = new[]
+        public static IEnumerable<TestCaseData> ExchangeRates_ReturnsExchangeRates { get; } = new[]
         {
             new TestCaseData(
                 new ResponseForPage<ExchangeRate>()
@@ -471,7 +471,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         #region PriceBands
 
-        public static IEnumerable<TestCaseData> GetPriceBands_ReturnsPriceBands = new[]
+        public static IEnumerable<TestCaseData> PriceBands_ReturnsPriceBands { get; } = new[]
         {
             new TestCaseData(
                 new List<PriceBand>
@@ -571,12 +571,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             }).ToList();
         }
 
-        public static IEnumerable<TestCaseData> GetDailyPriceRanges_ReturnsPriceRanges = new[]
+        public static IEnumerable<TestCaseData> DailyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
             new TestCaseData(CreateTestDailyRanges())
         };
 
-        public static IEnumerable<TestCaseData> GetMonthlyPriceRanges_ReturnsPriceRanges = new[]
+        public static IEnumerable<TestCaseData> MonthlyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
             new TestCaseData(CreateTestMonthlyRanges())
         };
@@ -585,7 +585,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         #region PriceRules
 
-        public static IEnumerable<TestCaseData> GetPriceRuleSummaries_ReturnsPriceRuleSummaries = new[]
+        public static IEnumerable<TestCaseData> PriceRuleSummaries_ReturnsPriceRuleSummaries { get; } = new[]
         {
             new TestCaseData(
                 new List<PriceRuleSummary>
@@ -605,7 +605,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 })
         };
 
-        public static IEnumerable<TestCaseData> GetPriceRule_ReturnsPriceRule = new[]
+        public static IEnumerable<TestCaseData> PriceRule_ReturnsPriceRule { get; } = new[]
         {
             new TestCaseData(
                 new PriceRule
@@ -700,17 +700,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             }
         };
 
-        public static IEnumerable<TestCaseData> GetPartnerGroups_ReturnsPartnerGroups = new[]
+        public static IEnumerable<TestCaseData> PartnerGroups_ReturnsPartnerGroups { get; } = new[]
         {
             new TestCaseData(PartnerGroups)
         };
 
-        public static IEnumerable<TestCaseData> GetPartnersInGroup_ReturnsPartners = new[]
+        public static IEnumerable<TestCaseData> PartnersInGroup_ReturnsPartners { get; } = new[]
         {
             new TestCaseData(Partners)
         };
 
-        public static IEnumerable<TestCaseData> GetPartner_ReturnsPartner = new[]
+        public static IEnumerable<TestCaseData> Partner_ReturnsPartner { get; } = new[]
         {
             new TestCaseData(Partners[0])
         };

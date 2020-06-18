@@ -144,7 +144,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
     {
         private const string SdkVersion = "4.0.1";
 
-        public static IEnumerable<TestCaseData> CreateClientWrapper_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> CreateClientWrapper_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -234,7 +234,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 }),
         };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedBaseProperties = new[]
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedBaseProperties { get; } = new[]
         {
             new TestCaseData(
                 new ExecuteApiRequestParameters
@@ -252,75 +252,74 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 }),
         };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedHeaders =
-            new[]
-            {
-                new TestCaseData(
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
-                    }),
-                new TestCaseData(
-                    new ApiContext(),
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
-                    }),
-                new TestCaseData(
-                    new ApiContext
-                    {
-                        Affiliate = " ",
-                        Correlation = "",
-                        Market = null
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
-                    }),
-                new TestCaseData(
-                    new ApiContext
-                    {
-                        Affiliate = "boxoffice"
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
-                        { "affiliateId", "boxoffice" },
-                    }),
-                new TestCaseData(
-                    new ApiContext
-                    {
-                        Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
-                        { "X-Correlation-ID", "30435ee1-c0ce-4664-85b9-cf5402f20e83" },
-                    }),
-                new TestCaseData(
-                    new ApiContext
-                    {
-                        Market = Market.Uk
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
-                        { "x-market", "Uk" },
-                    }),
-                new TestCaseData(
-                    new ApiContext
-                    {
-                        Market = Market.Broadway
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
-                        { "x-market", "Broadway" },
-                    }),
-            };
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedHeaders { get; } = new[]
+        {
+            new TestCaseData(
+                null,
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
+                }),
+            new TestCaseData(
+                new ApiContext(),
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
+                }),
+            new TestCaseData(
+                new ApiContext
+                {
+                    Affiliate = " ",
+                    Correlation = "",
+                    Market = null
+                },
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" }
+                }),
+            new TestCaseData(
+                new ApiContext
+                {
+                    Affiliate = "boxoffice"
+                },
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
+                    { "affiliateId", "boxoffice" },
+                }),
+            new TestCaseData(
+                new ApiContext
+                {
+                    Correlation = "30435ee1-c0ce-4664-85b9-cf5402f20e83"
+                },
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
+                    { "X-Correlation-ID", "30435ee1-c0ce-4664-85b9-cf5402f20e83" },
+                }),
+            new TestCaseData(
+                new ApiContext
+                {
+                    Market = Market.Uk
+                },
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
+                    { "x-market", "Uk" },
+                }),
+            new TestCaseData(
+                new ApiContext
+                {
+                    Market = Market.Broadway
+                },
+                new Dictionary<string, string>
+                {
+                    { "x-SDK", $"EncoreTickets.SDK.NET {SdkVersion}" },
+                    { "x-market", "Broadway" },
+                }),
+        };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedQueryParameters = new[]
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedQueryParameters { get; } = new[]
         {
             new TestCaseData(
                 new ExecuteApiRequestParameters(),
@@ -421,36 +420,36 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 }),
         };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedSerializer = new[]
-            {
-                new TestCaseData(
-                    new ExecuteApiRequestParameters(),
-                    new DefaultJsonSerializer(),
-                    DataFormat.Json),
-                new TestCaseData(
-                    new ExecuteApiRequestParameters
-                    {
-                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                    },
-                    new DefaultJsonSerializer
-                    {
-                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                    },
-                    DataFormat.Json),
-                new TestCaseData(
-                    new ExecuteApiRequestParameters
-                    {
-                        Serializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() }),
-                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                    },
-                    new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
-                    {
-                        DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
-                    },
-                    DataFormat.Json),
-            };
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedSerializer { get; } = new[]
+        {
+            new TestCaseData(
+                new ExecuteApiRequestParameters(),
+                new DefaultJsonSerializer(),
+                DataFormat.Json),
+            new TestCaseData(
+                new ExecuteApiRequestParameters
+                {
+                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                },
+                new DefaultJsonSerializer
+                {
+                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                },
+                DataFormat.Json),
+            new TestCaseData(
+                new ExecuteApiRequestParameters
+                {
+                    Serializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() }),
+                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                },
+                new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() })
+                {
+                    DateFormat = "yyyy-MM-ddTHH:mm:sszzz"
+                },
+                DataFormat.Json),
+        };
 
-        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedDeserializer = new[]
+        public static IEnumerable<TestCaseData> CreateClientWrapperParameters_ReturnsParametersWithInitializedDeserializer { get; } = new[]
         {
             new TestCaseData(
                 new ExecuteApiRequestParameters(),
@@ -479,7 +478,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Utilities
                 DataFormat.Json),
         };
 
-        public static IEnumerable<TestCaseData> SaveResponseInfoInApiContext_SetsInfoInApiContext = new[]
+        public static IEnumerable<TestCaseData> SaveResponseInfoInApiContext_SetsInfoInApiContext { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(),

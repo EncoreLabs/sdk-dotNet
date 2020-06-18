@@ -90,7 +90,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
 
     internal static class EnumerableExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> ExcludeEmptyStrings_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> ExcludeEmptyStrings_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new[] { "test", "test test", "", null, "   ", "test" },
@@ -103,7 +103,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                 null),
         };
 
-        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNotNull_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNotNull_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new[] { "test", "test test", "", null, "   ", "test" },
@@ -119,7 +119,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                 null),
         };
 
-        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new List<string>()),

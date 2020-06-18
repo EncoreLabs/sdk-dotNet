@@ -121,7 +121,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
     internal static class ContextApiExceptionTestsSource
     {
-        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -183,7 +183,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 null),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfErrorsDoesNotExist_ReturnsDefaultMessage = new[]
+        public static IEnumerable<TestCaseData> Message_IfErrorsDoesNotExist_ReturnsDefaultMessage { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -206,7 +206,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 new Context { Errors = new List<Error> { new Error { Message = "ERROR" } } }),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfErrorsExists_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Message_IfErrorsExists_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 new List<Info>

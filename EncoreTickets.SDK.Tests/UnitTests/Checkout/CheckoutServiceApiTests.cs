@@ -224,7 +224,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
     {
         #region Checkout
 
-        public static IEnumerable<TestCaseData> Checkout_IfBookingIsSet_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> Checkout_IfBookingIsSet_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new BookingParameters
@@ -299,7 +299,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 "{\"deliveryMethod\":\"C\",\"paymentType\":\"account\",\"reference\":\"8602898\",\"channelId\":\"resia\",\"shopper\":{\"email\":\"agentEmail@mail.com\",\"title\":\"Mrs\",\"firstName\":\"clientFName\",\"lastName\":\"clientLName\",\"telephoneNumber\":\"123321321321\",\"externalId\":null},\"billingAddress\":{\"line1\":\"47-51 Great Suffolk St\",\"line2\":\"\",\"postalCode\":\"SE1 0BS\",\"city\":\"London\",\"countryCode\":\"UK\",\"countryName\":null,\"stateOrProvince\":null},\"origin\":null,\"redirectUrl\":\"http://localhost:8000/\",\"deliveryCharge\":0,\"recipientName\":null,\"giftVoucherMessage\":null,\"deliveryAddress\":null,\"hasFlexiTickets\":false,\"paymentId\":\"111\"}"),
         };
 
-        public static IEnumerable<TestCaseData> Checkout_IfApiResponseSuccessful_ReturnsPaymentInfo = new[]
+        public static IEnumerable<TestCaseData> Checkout_IfApiResponseSuccessful_ReturnsPaymentInfo { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -348,7 +348,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Checkout_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> Checkout_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -456,7 +456,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
 
         #region ConfirmBooking
 
-        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfNotAgentBooking_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "8527512",
@@ -469,7 +469,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };
 
-        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfParametersAreSet_IfAgentBooking_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "some_agent",
@@ -484,10 +484,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
                 "{\"channelId\":\"resiaapi\",\"paymentId\":\"your-payment-reference\",\"agentPaymentReference\":\"your-reference\"}"),
         };
 
-        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult = new[]
-        {
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseSuccessful_ReturnsBoolResult { get; } = new[]
+            {
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": ""{\""channelId\"":\""resiaapi\"",\""paymentId\"":\""your-payment-reference\"",\""agentPaymentReference\"":\""your-reference\""}"",
         ""urlParams"": {
@@ -498,9 +498,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Checkout
         ""result"": ""success""
     }
 }"),
-        };
+            };
 
-        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> ConfirmBooking_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(

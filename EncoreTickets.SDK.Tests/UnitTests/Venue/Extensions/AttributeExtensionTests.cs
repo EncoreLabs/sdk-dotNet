@@ -35,7 +35,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
 
     internal static class AttributeExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -97,7 +97,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 false),
         };
 
-        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntentionAsStr_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntentionAsStr_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 "description",
@@ -132,7 +132,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 null),
         };
 
-        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntention_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntention_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 "description",

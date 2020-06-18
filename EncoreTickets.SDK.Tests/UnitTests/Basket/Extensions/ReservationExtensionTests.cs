@@ -110,7 +110,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
     internal static class ReservationExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsFlexi_Correct = new[]
+        public static IEnumerable<TestCaseData> IsFlexi_Correct { get; } = new[]
         {
             new TestCaseData(
                 new Reservation

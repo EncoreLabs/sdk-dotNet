@@ -17,7 +17,6 @@ dotnet_diagnostic.SA1101.severity = none
 
 # TODO: Fix warnings related to the following rules:
  dotnet_diagnostic.SA1201.severity = none
-# dotnet_diagnostic.SA1204.severity = none
  dotnet_diagnostic.CS1591.severity = none
  dotnet_diagnostic.SA1600.severity = none
  dotnet_diagnostic.SA1602.severity = none

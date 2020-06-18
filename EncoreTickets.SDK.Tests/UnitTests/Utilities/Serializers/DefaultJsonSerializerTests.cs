@@ -69,7 +69,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
 
     internal static class DefaultJsonSerializerTestsSource
     {
-        public static IEnumerable<TestCaseData> Serialize_ReturnsCorrectJson = new[]
+        public static IEnumerable<TestCaseData> Serialize_ReturnsCorrectJson { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -237,187 +237,187 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Serializers
                 "{\"intention\":\"positive\"}"),
         };
 
-        public static IEnumerable<TestCaseData> Deserialize_IfJsonCanBeDeserialized_ReturnsCorrectObject = new[]
-        {
-            new TestCaseData(
-                null,
-                "1",
-                1),
-            new TestCaseData(
-                null,
-                "-18901",
-                -18901),
-            new TestCaseData(
-                null,
-                "4.123456789",
-                4.1234567890),
-            new TestCaseData(
-                null,
-                "4.0",
-                4M),
-            new TestCaseData(
-                null,
-                "4.0",
-                4D),
-            new TestCaseData(
-                null,
-                "\"test string\"",
-                "test string"),
-            new TestCaseData(
-                null,
-                "true",
-                true),
-            new TestCaseData(
-                null,
-                "\"false\"",
-                false),
-            new TestCaseData(
-                null,
-                "{}",
-                new object()),
-            new TestCaseData(
-                null,
-                "[]",
-                new List<object>()),
-            new TestCaseData(
-                null,
-                "[]",
-                new List<string>()),
-            new TestCaseData(
-                null,
-                "[,,,]",
-                new List<object> { null, null, null }),
-            new TestCaseData(
-                null,
-                "[1,2,3,4,5,6,7,8,]",
-                new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 }),
-            new TestCaseData(
-                null,
-                "[1,2,3,4,5,6,7,8,9]",
-                new List<double> { 1, 2, 3, 4, 5, 6, 7, 8, 9 }),
-            new TestCaseData(
-                null,
-                "[1,2,3]",
-                new List<string> { "1", "2", "3" }),
-            new TestCaseData(
-                null,
-                "[1,2,3,4,5,6,7,8,9]",
-                new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 }),
-            new TestCaseData(
-                null,
-                "{\"number\":100,\"doubl\":9.087,\"str\":\"test string\"}",
-                new
-                {
-                    number = 100,
-                    doubl = 9.087,
-                    str = "test string"
-                }),
-            new TestCaseData(
-                null,
-                "{\"number\":100,\"doubl\":9.087,\"str\":\"test string\"}",
-                new
-                {
-                    number = 100,
-                    doubl = 9.087,
-                    anotherNumber = default(int)
-                }),
-            new TestCaseData(
-                null,
-                "{\"someList\":[{\"someObject\":{},\"number\":100},{\"someString\":\"string\"}]}",
-                new
-                {
-                    SomeList = new List<object>
+        public static IEnumerable<TestCaseData> Deserialize_IfJsonCanBeDeserialized_ReturnsCorrectObject { get; } = new[]
+            {
+                new TestCaseData(
+                    null,
+                    "1",
+                    1),
+                new TestCaseData(
+                    null,
+                    "-18901",
+                    -18901),
+                new TestCaseData(
+                    null,
+                    "4.123456789",
+                    4.1234567890),
+                new TestCaseData(
+                    null,
+                    "4.0",
+                    4M),
+                new TestCaseData(
+                    null,
+                    "4.0",
+                    4D),
+                new TestCaseData(
+                    null,
+                    "\"test string\"",
+                    "test string"),
+                new TestCaseData(
+                    null,
+                    "true",
+                    true),
+                new TestCaseData(
+                    null,
+                    "\"false\"",
+                    false),
+                new TestCaseData(
+                    null,
+                    "{}",
+                    new object()),
+                new TestCaseData(
+                    null,
+                    "[]",
+                    new List<object>()),
+                new TestCaseData(
+                    null,
+                    "[]",
+                    new List<string>()),
+                new TestCaseData(
+                    null,
+                    "[,,,]",
+                    new List<object> { null, null, null }),
+                new TestCaseData(
+                    null,
+                    "[1,2,3,4,5,6,7,8,]",
+                    new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 }),
+                new TestCaseData(
+                    null,
+                    "[1,2,3,4,5,6,7,8,9]",
+                    new List<double> { 1, 2, 3, 4, 5, 6, 7, 8, 9 }),
+                new TestCaseData(
+                    null,
+                    "[1,2,3]",
+                    new List<string> { "1", "2", "3" }),
+                new TestCaseData(
+                    null,
+                    "[1,2,3,4,5,6,7,8,9]",
+                    new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 }),
+                new TestCaseData(
+                    null,
+                    "{\"number\":100,\"doubl\":9.087,\"str\":\"test string\"}",
+                    new
                     {
-                        new object(),
-                        new object()
-                    }
-                }),
-            new TestCaseData(
-                null,
-                "{\"double\":true}",
-                new
-                {
-                    DOUBLE = true
-                }),
-            new TestCaseData(
-                null,
-                "{\"dEcImAl\":0.2456}",
-                new
-                {
-                    dEcImAl = 0.2456M
-                }),
-            new TestCaseData(
-                null,
-                "\"2020-12-31T23:59:59Z\"",
-                new DateTime(2020, 12, 31, 23, 59, 59)),
-            new TestCaseData(
-                null,
-                "\"2020-12-31T23:59:59Z\"",
-                new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Utc)),
-            new TestCaseData(
-                null,
-                "\"2020-12-31T23:59:59Z\"",
-                new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Unspecified)),
-            new TestCaseData(
-                "yyyy-MM-ddTHH:mm:sszzz",
-                "\"2020-10-31T16:55:20+00:00\"",
-                new DateTime(2020, 10, 31, 16, 55, 20, DateTimeKind.Utc)),
-            new TestCaseData(
-                "yyyy-MM-ddTHH:mm:sszzz",
-                "\"2020-10-31\"",
-                new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
-            new TestCaseData(
-                "yyyy-MM-ddTHH:mm:sszzz",
-                "\"2020-10-31T16:55:20+00:00\"",
-                new DateTime(2020, 10, 31, 16, 55, 20, DateTimeKind.Utc)),
-            new TestCaseData(
-                "yyyy/MM/dd",
-                "\"2020/10/11\"",
-                new DateTime(2020, 10, 11, 0, 0, 0, DateTimeKind.Utc)),
-            new TestCaseData(
-                "yyyy/dd/MM",
-                "\"2020/10/11\"",
-                new DateTime(2020, 11, 10, 0, 0, 0, DateTimeKind.Utc)),
-            new TestCaseData(
-                "yyyy/MM/dd",
-                "\"2020-10-31\"",
-                new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
-            new TestCaseData(
-                "dd/MM/yyyy",
-                "\"2020-10-31\"",
-                new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
-            new TestCaseData(
-                null,
-                "\"production\"",
-                Environments.Production),
-            new TestCaseData(
-                null,
-                "250",
-                (Environments)250),
-            new TestCaseData(
-                null,
-                "{\"enum\":\"qa\"}",
-                new
-                {
-                    Enum = Environments.QA
-                }),
-            new TestCaseData(
-                null,
-                "{\"intention\":\"positive\"}",
-                new
-                {
-                    Intention = Intention.Positive
-                }),
-            new TestCaseData(
-                null,
-                "{\"intention\":1000}",
-                new
-                {
-                    Intention = (Intention)1000
-                }),
-        };
+                        number = 100,
+                        doubl = 9.087,
+                        str = "test string"
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"number\":100,\"doubl\":9.087,\"str\":\"test string\"}",
+                    new
+                    {
+                        number = 100,
+                        doubl = 9.087,
+                        anotherNumber = default(int)
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"someList\":[{\"someObject\":{},\"number\":100},{\"someString\":\"string\"}]}",
+                    new
+                    {
+                        SomeList = new List<object>
+                        {
+                            new object(),
+                            new object()
+                        }
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"double\":true}",
+                    new
+                    {
+                        DOUBLE = true
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"dEcImAl\":0.2456}",
+                    new
+                    {
+                        dEcImAl = 0.2456M
+                    }),
+                new TestCaseData(
+                    null,
+                    "\"2020-12-31T23:59:59Z\"",
+                    new DateTime(2020, 12, 31, 23, 59, 59)),
+                new TestCaseData(
+                    null,
+                    "\"2020-12-31T23:59:59Z\"",
+                    new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Utc)),
+                new TestCaseData(
+                    null,
+                    "\"2020-12-31T23:59:59Z\"",
+                    new DateTime(2020, 12, 31, 23, 59, 59, DateTimeKind.Unspecified)),
+                new TestCaseData(
+                    "yyyy-MM-ddTHH:mm:sszzz",
+                    "\"2020-10-31T16:55:20+00:00\"",
+                    new DateTime(2020, 10, 31, 16, 55, 20, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "yyyy-MM-ddTHH:mm:sszzz",
+                    "\"2020-10-31\"",
+                    new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "yyyy-MM-ddTHH:mm:sszzz",
+                    "\"2020-10-31T16:55:20+00:00\"",
+                    new DateTime(2020, 10, 31, 16, 55, 20, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "yyyy/MM/dd",
+                    "\"2020/10/11\"",
+                    new DateTime(2020, 10, 11, 0, 0, 0, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "yyyy/dd/MM",
+                    "\"2020/10/11\"",
+                    new DateTime(2020, 11, 10, 0, 0, 0, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "yyyy/MM/dd",
+                    "\"2020-10-31\"",
+                    new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
+                new TestCaseData(
+                    "dd/MM/yyyy",
+                    "\"2020-10-31\"",
+                    new DateTime(2020, 10, 31, 0, 0, 0, DateTimeKind.Utc)),
+                new TestCaseData(
+                    null,
+                    "\"production\"",
+                    Environments.Production),
+                new TestCaseData(
+                    null,
+                    "250",
+                    (Environments)250),
+                new TestCaseData(
+                    null,
+                    "{\"enum\":\"qa\"}",
+                    new
+                    {
+                        Enum = Environments.QA
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"intention\":\"positive\"}",
+                    new
+                    {
+                        Intention = Intention.Positive
+                    }),
+                new TestCaseData(
+                    null,
+                    "{\"intention\":1000}",
+                    new
+                    {
+                        Intention = (Intention)1000
+                    }),
+            };
 
-        public static IEnumerable<TestCaseData> DeserializeRestResponse_IfJsonCannotBeDeserialized_ThrowsException = new[]
+        public static IEnumerable<TestCaseData> DeserializeRestResponse_IfJsonCannotBeDeserialized_ThrowsException { get; } = new[]
         {
             new TestCaseData(
                 null,

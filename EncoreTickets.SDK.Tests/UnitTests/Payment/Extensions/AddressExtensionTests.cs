@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class AddressExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> ToNullIfEmpty_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> ToNullIfEmpty_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

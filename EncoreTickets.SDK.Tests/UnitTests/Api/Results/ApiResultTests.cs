@@ -174,7 +174,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
             Assert.AreEqual(thrownException, result.ApiException);
         }
 
-        [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData))]
+        [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.DataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData))]
         public void GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData(string codeOfInfoAsError, Context responseContext)
         {
             var data = new[] { new object(), new object(), };
@@ -186,7 +186,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
             Assert.AreEqual(data, actual);
         }
 
-        [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException))]
+        [TestCaseSource(typeof(ApiResultTestsSource), nameof(ApiResultTestsSource.DataOrContextException_IfContextWithInfosAsErrors_ThrowsException))]
         public void GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException(string codeOfInfoAsError, Context responseContext)
         {
             var data = new[] { new object(), new object(), };
@@ -199,7 +199,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
 
     internal static class ApiResultTestsSource
     {
-        public static IEnumerable<TestCaseData> GetDataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData = new[]
+        public static IEnumerable<TestCaseData> DataOrContextException_IfContextWithoutInfosAsErrors_ReturnsData { get; } = new[]
         {
             new TestCaseData(
                 "notValidPromotionCode",
@@ -208,18 +208,25 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results
                 "notValidPromotionCode",
                 new Context()) { TestName = "GetDataOrContextException_IfInfoInContextIsNull_ReturnsData" },
             new TestCaseData(
-                "notValidPromotionCode",
-                new Context { Info = new List<Info>() }) { TestName = "GetDataOrContextException_IfInfoInContextIsEmptyCollection_ReturnsData" },
+                    "notValidPromotionCode",
+                    new Context { Info = new List<Info>() })
+                { TestName = "GetDataOrContextException_IfInfoInContextIsEmptyCollection_ReturnsData" },
             new TestCaseData(
                 "notValidPromotionCode",
-                new Context { Info = new List<Info> { new Info { Code = "information" } } }) { TestName = "GetDataOrContextException_IfInfoWithCodeDoesNotExistInInfoInContext_ReturnsData" },
+                new Context { Info = new List<Info> { new Info { Code = "information" } } })
+            {
+                TestName = "GetDataOrContextException_IfInfoWithCodeDoesNotExistInInfoInContext_ReturnsData"
+            },
         };
 
-        public static IEnumerable<TestCaseData> GetDataOrContextException_IfContextWithInfosAsErrors_ThrowsException = new[]
+        public static IEnumerable<TestCaseData> DataOrContextException_IfContextWithInfosAsErrors_ThrowsException { get; } = new[]
         {
             new TestCaseData(
                 "notValidPromotionCode",
-                new Context { Info = new List<Info> { new Info { Code = "notValidPromotionCode" } } }) { TestName = "GetDataOrContextException_IfInfoWithCodeExistsInInfoInContext_ThrowsException" },
+                new Context { Info = new List<Info> { new Info { Code = "notValidPromotionCode" } } })
+            {
+                TestName = "GetDataOrContextException_IfInfoWithCodeExistsInInfoInContext_ThrowsException"
+            },
         };
     }
 }

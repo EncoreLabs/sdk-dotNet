@@ -8,7 +8,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 {
     internal class PaymentMethodExtensionTests
     {
-        [TestCaseSource(typeof(PaymentMethodExtensionTestsSource), nameof(PaymentMethodExtensionTestsSource.GetMonthFromPaymentCardExpiredDate_ReturnsCorrectly))]
+        [TestCaseSource(typeof(PaymentMethodExtensionTestsSource), nameof(PaymentMethodExtensionTestsSource.MonthFromPaymentCardExpiredDate_ReturnsCorrectly))]
         public void GetMonthFromPaymentCardExpiredDate_ReturnsCorrectly(PaymentMethod paymentMethod, int expected)
         {
             var actual = paymentMethod.GetMonthFromPaymentCardExpiredDate();
@@ -16,7 +16,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(PaymentMethodExtensionTestsSource), nameof(PaymentMethodExtensionTestsSource.GetYearFromPaymentCardExpiredDate_ReturnsCorrectly))]
+        [TestCaseSource(typeof(PaymentMethodExtensionTestsSource), nameof(PaymentMethodExtensionTestsSource.YearFromPaymentCardExpiredDate_ReturnsCorrectly))]
         public void GetYearFromPaymentCardExpiredDate_ReturnsCorrectly(PaymentMethod paymentMethod, int expected)
         {
             var actual = paymentMethod.GetYearFromPaymentCardExpiredDate();
@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class PaymentMethodExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> GetMonthFromPaymentCardExpiredDate_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> MonthFromPaymentCardExpiredDate_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -49,7 +49,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                 1),
         };
 
-        public static IEnumerable<TestCaseData> GetYearFromPaymentCardExpiredDate_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> YearFromPaymentCardExpiredDate_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

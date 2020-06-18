@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 
     internal static class JwtWithApiKeyAuthenticationServiceTestsSource
     {
-        public static IEnumerable<TestCaseData> Authenticate_DoesNotChangeContext = new[]
+        public static IEnumerable<TestCaseData> Authenticate_DoesNotChangeContext { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(Environments.Production, "token")),
@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
                 new ApiContext(Environments.Staging, "admin", "valid_password")),
         };
 
-        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

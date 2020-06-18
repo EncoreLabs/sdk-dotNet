@@ -123,22 +123,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
 
     internal static class ApiExceptionTestsSource
     {
-        public static IEnumerable<TestCaseData> ConstructorWithResponseArguments_InitializesResponseProperties = new[]
-        {
-            new TestCaseData(new RestResponse(), new ApiContext(), new Context(), new Request()),
-            new TestCaseData(null, new ApiContext(), new Context(), new Request()),
-            new TestCaseData(new RestResponse(), null, new Context(), new Request()),
-            new TestCaseData(new RestResponse(), new ApiContext(), null, new Request()),
-            new TestCaseData(new RestResponse(), new ApiContext(), new Context(), null),
-        };
+        public static IEnumerable<TestCaseData> ConstructorWithResponseArguments_InitializesResponseProperties { get; } = new[]
+            {
+                new TestCaseData(new RestResponse(), new ApiContext(), new Context(), new Request()),
+                new TestCaseData(null, new ApiContext(), new Context(), new Request()),
+                new TestCaseData(new RestResponse(), null, new Context(), new Request()),
+                new TestCaseData(new RestResponse(), new ApiContext(), null, new Request()),
+                new TestCaseData(new RestResponse(), new ApiContext(), new Context(), null),
+            };
 
-        public static IEnumerable<TestCaseData> ConstructorWithSourceException_InitializesResponseProprtiesBasedOnSourceException = new[]
+        public static IEnumerable<TestCaseData> ConstructorWithSourceException_InitializesResponseProprtiesBasedOnSourceException { get; } = new[]
         {
             new TestCaseData(new ApiException(new RestResponse(), new ApiContext(), new Context(), new Request())),
             new TestCaseData(new ApiException()),
         };
 
-        public static IEnumerable<TestCaseData> ResponseCode_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> ResponseCode_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -154,7 +154,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 HttpStatusCode.OK),
         };
 
-        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -309,7 +309,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     {
                         new Error
                         {
-                            Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },
@@ -333,7 +334,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         },
                         new Error
                         {
-                            Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },
@@ -345,7 +347,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfPredefinedMessageIsNull_IfErrorsDoesNotExist_ReturnsDefaultMessage = new[]
+        public static IEnumerable<TestCaseData> Message_IfPredefinedMessageIsNull_IfErrorsDoesNotExist_ReturnsDefaultMessage { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -397,7 +399,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfPredefinedMessageIsNull_IfErrorsExists_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Message_IfPredefinedMessageIsNull_IfErrorsExists_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 new RestResponse
@@ -471,7 +473,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                     {
                         new Error
                         {
-                            Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },
@@ -492,7 +495,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
                         },
                         new Error
                         {
-                            Message = "This value should not be blank.", Code = "validation_error", Field = "coupon.code"
+                            Message = "This value should not be blank.", Code = "validation_error",
+                            Field = "coupon.code"
                         }
                     }
                 },

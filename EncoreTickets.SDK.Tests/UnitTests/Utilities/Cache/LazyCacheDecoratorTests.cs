@@ -355,7 +355,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
 
     internal static class LazyCacheDecoratorTestsSource
     {
-        public static IEnumerable<TestCaseData> TestCasesWithNotNullData = new[]
+        public static IEnumerable<TestCaseData> TestCasesWithNotNullData { get; } = new[]
         {
             new TestCaseData("1730"),
             new TestCaseData(4),

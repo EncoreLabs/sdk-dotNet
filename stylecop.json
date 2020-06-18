@@ -9,7 +9,14 @@
       "useTabs": false
     },
     "orderingRules": {
-      "usingDirectivesPlacement": "outsideNamespace"
+      "usingDirectivesPlacement": "outsideNamespace",
+      "elementOrder": [
+        "kind",
+        "constant",
+        "accessibility",
+        "static", 
+        "readonly"
+      ]
     }
   }
 }

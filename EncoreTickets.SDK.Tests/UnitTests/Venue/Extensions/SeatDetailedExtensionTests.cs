@@ -18,7 +18,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
 
     internal static class SeatDetailedExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new SeatDetailed

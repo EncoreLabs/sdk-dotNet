@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 
     internal static class AuthenticationServiceFactoryTestsSource
     {
-        public static IEnumerable<TestCaseData> Create_IfServiceForAuthMethodExists_ReturnsService = new[]
+        public static IEnumerable<TestCaseData> Create_IfServiceForAuthMethodExists_ReturnsService { get; } = new[]
         {
             new TestCaseData(
                 AuthenticationMethod.JWT,

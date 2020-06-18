@@ -27,7 +27,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
 
     internal static class EntityWithStatusExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> HasStatus_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> HasStatus_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
@@ -60,7 +60,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
                 true),
         };
 
-        public static IEnumerable<TestCaseData> HasOneOfStatuses_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> HasOneOfStatuses_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

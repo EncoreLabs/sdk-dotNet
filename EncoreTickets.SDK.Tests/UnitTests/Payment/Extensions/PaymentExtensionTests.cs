@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class PaymentExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsSuccessfulPayment_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsSuccessfulPayment_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,

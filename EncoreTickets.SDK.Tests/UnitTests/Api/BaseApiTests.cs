@@ -54,7 +54,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
     {
         public static readonly string TestHost = "venue-service.{0}tixuk.io/api/";
 
-        public static IEnumerable<TestCaseData> BaseUrl_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> BaseUrl_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
