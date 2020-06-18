@@ -119,6 +119,41 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             return response;
         }
 
+        private static void SetRequestParameters(IRestRequest request, Dictionary<string, string> parameters, ParameterType type)
+        {
+            if (parameters == null)
+            {
+                return;
+            }
+
+            foreach (var param in parameters)
+            {
+                request.AddParameter(param.Key, param.Value, type);
+            }
+        }
+
+        private static void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
+        {
+            if (restClientParameters.RequestBody != null)
+            {
+                request.AddBody(restClientParameters.RequestBody);
+            }
+        }
+
+        private static void SetRequestSerializer(IRestRequest request, RestClientParameters restClientParameters)
+        {
+            if (restClientParameters.RequestDataFormat == DataFormat.Json &&
+                restClientParameters.RequestDataSerializer != default)
+            {
+                request.JsonSerializer = restClientParameters.RequestDataSerializer;
+            }
+        }
+
+        private static bool ShouldRequestBeRepeated(IRestResponse response)
+        {
+            return response.StatusCode.IsServerError();
+        }
+
         private IAuthenticator GetAuthenticator()
         {
             if (Credentials == null)
@@ -147,41 +182,6 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             {
                 client.AddHandler(contentType, () => restClientParameters.ResponseDataDeserializer);
             }
-        }
-
-        private static void SetRequestParameters(IRestRequest request, Dictionary<string, string> parameters, ParameterType type)
-        {
-            if (parameters == null)
-            {
-                return;
-            }
-
-            foreach (var param in parameters)
-            {
-                request.AddParameter(param.Key, param.Value, type);
-            }
-        }
-
-        private static void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
-        {
-            if (restClientParameters.RequestBody != null)
-            {
-                request.AddBody(restClientParameters.RequestBody);
-            }
-        }
-
-        private void SetRequestSerializer(IRestRequest request, RestClientParameters restClientParameters)
-        {
-            if (restClientParameters.RequestDataFormat == DataFormat.Json &&
-                restClientParameters.RequestDataSerializer != default)
-            {
-                request.JsonSerializer = restClientParameters.RequestDataSerializer;
-            }
-        }
-
-        private bool ShouldRequestBeRepeated(IRestResponse response)
-        {
-            return response.StatusCode.IsServerError();
         }
     }
 }
