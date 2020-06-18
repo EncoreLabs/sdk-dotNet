@@ -27,6 +27,7 @@ namespace EncoreTickets.SDK.Venue
         public override int? ApiVersion => 2;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="VenueServiceApi"/> class.
         /// Default constructor for the Venue service.
         /// </summary>
         /// <param name="context"></param>

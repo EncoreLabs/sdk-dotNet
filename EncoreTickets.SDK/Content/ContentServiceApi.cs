@@ -22,6 +22,7 @@ namespace EncoreTickets.SDK.Content
         public override int? ApiVersion => 1;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ContentServiceApi"/> class.
         /// Default constructor for the content service.
         /// </summary>
         /// <param name="context"></param>

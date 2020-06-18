@@ -26,6 +26,7 @@ namespace EncoreTickets.SDK.Pricing
         public override int? ApiVersion => 3;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PricingServiceApi"/> class.
         /// Default constructor.
         /// </summary>
         /// <param name="context"></param>

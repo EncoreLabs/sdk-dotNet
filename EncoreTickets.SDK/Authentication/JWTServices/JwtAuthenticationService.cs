@@ -12,6 +12,7 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
     public class JwtAuthenticationService : BaseJwtAuthenticationService
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="JwtAuthenticationService"/> class.
         /// Initializes an instance for the JWT authentication service based on credentials.
         /// </summary>
         /// <param name="context">The API context.</param>

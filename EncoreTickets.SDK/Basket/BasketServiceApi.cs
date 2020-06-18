@@ -30,6 +30,7 @@ namespace EncoreTickets.SDK.Basket
         public override int? ApiVersion => 1;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BasketServiceApi"/> class.
         /// Default constructor for the Basket service.
         /// </summary>
         /// <param name="context">The API context for requests.</param>

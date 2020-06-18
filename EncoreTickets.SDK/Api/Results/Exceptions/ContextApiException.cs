@@ -21,7 +21,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         public IEnumerable<Info> ContextErrors { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>.
+        /// Initializes a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
         public ContextApiException(IEnumerable<Info> infosAsErrors)
         {
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>.
+        /// Initializes a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
         public ContextApiException(ContextApiException sourceException)
             : this(
@@ -42,7 +42,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>.
+        /// Initializes a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
         public ContextApiException(
             IEnumerable<Info> infosAsErrors,
