@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             apiKey = configuration["Payment:ApiKey"];
             context = new ApiContext(environment, apiKey)
             {
-                Correlation = Guid.NewGuid().ToString()
+                Correlation = Guid.NewGuid().ToString(),
             };
             service = new PaymentServiceApi(context, true);
         }
@@ -84,7 +84,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 Value = 8100,
                 Currency = "USD",
-                ExchangeRate = 1.2
+                ExchangeRate = 1.2,
             };
             var orderRequest = new CreateOrderRequest
             {
@@ -101,7 +101,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     City = "Cambridge Circus",
                     CountryCode = "UK",
                     LegacyCountryCode = null,
-                    StateOrProvince = "London"
+                    StateOrProvince = "London",
                 },
                 Shopper = new Shopper
                 {
@@ -110,7 +110,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     Title = "MS",
                     FirstName = "INNA",
                     LastName = "IVANOVA",
-                    ExternalId = null
+                    ExternalId = null,
                 },
                 Items = new List<OrderItem>
                 {
@@ -121,16 +121,16 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         Quantity = 1,
                         Amount = amount,
                         Tax = null,
-                        ExternalId = "1587"
-                    }
+                        ExternalId = "1587",
+                    },
                 },
                 Amount = amount,
                 RiskData = new RiskData
                 {
                     DaysToEvent = 0,
                     DeliveryMethod = "collection",
-                    OfficeId = 1
-                }
+                    OfficeId = 1,
+                },
             };
 
             var order = service.CreateOrder(orderRequest);
@@ -155,7 +155,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     Value = 8100,
                     Currency = "USD",
-                    ExchangeRate = 1.2
+                    ExchangeRate = 1.2,
                 },
             };
 
@@ -180,7 +180,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Shopper = order.Shopper,
                 BillingAddress = order.BillingAddress,
                 Items = order.Items,
-                RiskData = order.RiskData
+                RiskData = order.RiskData,
             };
             updateOrderRequest.Shopper.FirstName = $"Tom{newGuid}";
             updateOrderRequest.BillingAddress.Line2 = $"Address{newGuid}";
@@ -209,8 +209,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     DaysToEvent = 2,
                     DeliveryMethod = "invalid",
-                    OfficeId = 1
-                }
+                    OfficeId = 1,
+                },
             };
 
             var exception = Assert.Catch<ApiException>(() =>

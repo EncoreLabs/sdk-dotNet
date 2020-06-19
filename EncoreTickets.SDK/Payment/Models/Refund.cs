@@ -4,7 +4,7 @@ using EncoreTickets.SDK.Utilities.CommonModels;
 namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
-    /// Stores refund details
+    /// Stores refund details.
     /// </summary>
     public class Refund : IEntityWithStatus
     {

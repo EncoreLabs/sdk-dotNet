@@ -21,7 +21,7 @@ namespace EncoreTickets.SDK.Basket.Models.RequestModels
         public Delivery Delivery { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether the basket supports Flexi tickets.
+        /// Gets or sets a value indicating whether gets or sets a flag indicating whether the basket supports Flexi tickets.
         /// </summary>
         public bool HasFlexiTickets { get; set; }
 

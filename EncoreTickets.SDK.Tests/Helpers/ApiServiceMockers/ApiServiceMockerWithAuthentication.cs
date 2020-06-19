@@ -5,7 +5,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiServiceMockers
 {
     internal class ApiServiceMockerWithAuthentication : ApiServiceMocker
     {
-        public Mock<IAuthenticationService> AuthenticationServiceMock;
+        public Mock<IAuthenticationService> AuthenticationServiceMock { get; set; }
 
         public ApiServiceMockerWithAuthentication()
         {

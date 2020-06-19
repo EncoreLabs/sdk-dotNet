@@ -55,7 +55,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mocker.RestClientBuilderMock.Object);
 
-        public PricingServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public PricingServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
             serializer = new DefaultJsonSerializer();
         }
@@ -79,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     Direction = direction,
                     Limit = limit,
                     Page = page,
-                    Sort = sort
+                    Sort = sort,
                 };
 
             TestActionCorrectlyExecuted<ResponseForPage<ExchangeRate>>(
@@ -91,7 +92,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     { "direction", parameters.Direction.ToString() },
                     { "limit", parameters.Limit },
                     { "page", parameters.Page },
-                    { "sort", parameters.Sort }
+                    { "sort", parameters.Sort },
                 },
                 shouldAuthenticate: true);
         }
@@ -153,7 +154,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         [TestCaseSource(typeof(PricingServiceApiTestSource), nameof(GetDailyPriceRanges_ReturnsPriceRanges))]
         public void GetDailyPriceRanges_ReturnsPriceRanges(IList<DailyPriceRange> expectedResult)
         {
-            TestSuccessfulAction(() => GetDailyPriceRanges("product_id", 2, DateTime.Now, DateTime.Now.AddMonths(1)),
+            TestSuccessfulAction(
+                () => GetDailyPriceRanges("product_id", 2, DateTime.Now, DateTime.Now.AddMonths(1)),
                 expectedResult);
         }
 
@@ -167,7 +169,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         public void GetDailyPriceRanges_NotFoundProduct_ThrowsApiException()
         {
             TestApiExceptionOnFailedAction<IList<DailyPriceRange>>(
-                () => GetDailyPriceRanges("invalid_product", 1, DateTime.Now, DateTime.Now.AddDays(1)), 
+                () => GetDailyPriceRanges("invalid_product", 1, DateTime.Now, DateTime.Now.AddDays(1)),
                 NotFoundResponseContent,
                 HttpStatusCode.NotFound);
         }
@@ -192,7 +194,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         [TestCaseSource(typeof(PricingServiceApiTestSource), nameof(GetMonthlyPriceRanges_ReturnsPriceRanges))]
         public void GetMonthlyPriceRanges_ReturnsPriceRanges(IList<MonthlyPriceRange> expectedResult)
         {
-            TestSuccessfulAction(() => GetMonthlyPriceRanges("product_id", 2, DateTime.Now, DateTime.Now.AddMonths(1)),
+            TestSuccessfulAction(
+                () => GetMonthlyPriceRanges("product_id", 2, DateTime.Now, DateTime.Now.AddMonths(1)),
                 expectedResult);
         }
 
@@ -231,7 +234,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         public void GetPriceRule_CorrectlyCalled()
         {
             const int id = 1;
-            
+
             TestActionCorrectlyExecuted<PriceRule>(
                 () => GetPriceRule(id),
                 $"v{ApiVersion}/admin/pricing/rules/{id}",
@@ -324,7 +327,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 HttpStatusCode.NotFound);
         }
 
-        private void TestActionCorrectlyExecuted<T>(Action action,
+        private void TestActionCorrectlyExecuted<T>(
+            Action action,
             string endpoint,
             Method method,
             Dictionary<string, object> expectedQueryParameters = null,
@@ -332,11 +336,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             bool shouldAuthenticate = false)
             where T : class, new()
         {
-            TestActionCorrectlyExecuted<T, T>(action, endpoint, method, 
-                expectedQueryParameters, expectedHeaders, shouldAuthenticate);
+            TestActionCorrectlyExecuted<T, T>(
+                action,
+                endpoint,
+                method,
+                expectedQueryParameters,
+                expectedHeaders,
+                shouldAuthenticate);
         }
 
-        private void TestActionCorrectlyExecuted<TSetup, TResult>(Action action,
+        private void TestActionCorrectlyExecuted<TSetup, TResult>(
+            Action action,
             string endpoint,
             Method method,
             Dictionary<string, object> expectedQueryParameters = null,
@@ -364,8 +374,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             {
                 ShouldNotAuthenticate();
             }
-            mocker.VerifyExecution<ApiResponse<TResult>>(BaseUrl,
-                endpoint, method, expectedQueryParameters: expectedQueryParameters, expectedHeaders: expectedHeaders);
+
+            mocker.VerifyExecution<ApiResponse<TResult>>(
+                BaseUrl,
+                endpoint,
+                method,
+                expectedQueryParameters: expectedQueryParameters,
+                expectedHeaders: expectedHeaders);
         }
 
         private void TestSuccessfulAction<T>(Func<T> action, T expectedResult)
@@ -380,7 +395,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             AssertExtension.AreObjectsValuesEqual(expectedResult, result);
         }
 
-        private void TestApiExceptionOnFailedAction<T>(Action action,
+        private void TestApiExceptionOnFailedAction<T>(
+            Action action,
             string responseContent,
             HttpStatusCode code)
             where T : class
@@ -406,11 +422,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         }
     }
 
-    internal class PricingServiceApiTestSource
+    internal static class PricingServiceApiTestSource
     {
         #region ExchangeRates
 
-        public static IEnumerable<TestCaseData> GetExchangeRates_ReturnsExchangeRates = new[]
+        public static IEnumerable<TestCaseData> GetExchangeRates_ReturnsExchangeRates { get; } = new[]
         {
             new TestCaseData(
                 new ResponseForPage<ExchangeRate>()
@@ -432,7 +448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Rate = 1.47m,
                             Sourced = 1,
                             TargetCurrency = "USD",
-                            UpdatedAt = DateTimeOffset.Now
+                            UpdatedAt = DateTimeOffset.Now,
                         },
                         new ExchangeRate
                         {
@@ -445,18 +461,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Rate = 158m,
                             Sourced = 1,
                             TargetCurrency = "JPY",
-                            UpdatedAt = DateTimeOffset.Now
-                        }
-                    }
-                }
-            )
+                            UpdatedAt = DateTimeOffset.Now,
+                        },
+                    },
+                }),
         };
 
         #endregion
 
         #region PriceBands
 
-        public static IEnumerable<TestCaseData> GetPriceBands_ReturnsPriceBands = new[]
+        public static IEnumerable<TestCaseData> GetPriceBands_ReturnsPriceBands { get; } = new[]
         {
             new TestCaseData(
                 new List<PriceBand>
@@ -472,14 +487,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             {
                                 Currency = "GBP",
                                 DecimalPlaces = 2,
-                                Value = 100
+                                Value = 100,
                             },
                             new Price
                             {
                                 Currency = "USD",
                                 DecimalPlaces = 2,
-                                Value = 147
-                            }
+                                Value = 147,
+                            },
                         },
                         SalePrice = new List<Price>
                         {
@@ -487,25 +502,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             {
                                 Currency = "GBP",
                                 DecimalPlaces = 2,
-                                Value = 200
+                                Value = 200,
                             },
                             new Price
                             {
                                 Currency = "USD",
                                 DecimalPlaces = 2,
-                                Value = 294
-                            }
-                        }
-                    }
-                }
-            )
+                                Value = 294,
+                            },
+                        },
+                    },
+                }),
         };
 
         #endregion
 
         #region PriceRanges
 
-        private static IEnumerable<PriceRange> TestPriceRanges = new List<PriceRange>
+        private static readonly IEnumerable<PriceRange> TestPriceRanges = new List<PriceRange>
         {
             new PriceRange
             {
@@ -518,8 +532,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Currency = "GBP",
                         DecimalPlaces = 2,
-                        Value = 100
-                    }
+                        Value = 100,
+                    },
                 },
                 MaxPrice = new List<Price>
                 {
@@ -527,10 +541,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Currency = "GBP",
                         DecimalPlaces = 2,
-                        Value = 200
-                    }
-                }
-            }
+                        Value = 200,
+                    },
+                },
+            },
         };
 
         private static List<DailyPriceRange> CreateTestDailyRanges()
@@ -551,27 +565,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 monthlyRange.Date = new YearMonthDate
                 {
                     Month = DateTimeOffset.Now.Month,
-                    Year = DateTimeOffset.Now.Year
+                    Year = DateTimeOffset.Now.Year,
                 };
                 return monthlyRange;
             }).ToList();
         }
 
-        public static IEnumerable<TestCaseData> GetDailyPriceRanges_ReturnsPriceRanges = new[]
+        public static IEnumerable<TestCaseData> GetDailyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
-            new TestCaseData(CreateTestDailyRanges())
+            new TestCaseData(CreateTestDailyRanges()),
         };
 
-        public static IEnumerable<TestCaseData> GetMonthlyPriceRanges_ReturnsPriceRanges = new[]
+        public static IEnumerable<TestCaseData> GetMonthlyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
-            new TestCaseData(CreateTestMonthlyRanges())
+            new TestCaseData(CreateTestMonthlyRanges()),
         };
 
         #endregion
 
         #region PriceRules
 
-        public static IEnumerable<TestCaseData> GetPriceRuleSummaries_ReturnsPriceRuleSummaries = new[]
+        public static IEnumerable<TestCaseData> GetPriceRuleSummaries_ReturnsPriceRuleSummaries { get; } = new[]
         {
             new TestCaseData(
                 new List<PriceRuleSummary>
@@ -580,19 +594,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                     {
                         Active = 1,
                         Id = 1,
-                        Name = "rule1"
+                        Name = "rule1",
                     },
                     new PriceRuleSummary
                     {
                         Active = 1,
                         Id = 2,
-                        Name = "rule2"
-                    }
-                }
-            )
+                        Name = "rule2",
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetPriceRule_ReturnsPriceRule = new[]
+        public static IEnumerable<TestCaseData> GetPriceRule_ReturnsPriceRule { get; } = new[]
         {
             new TestCaseData(
                 new PriceRule
@@ -616,8 +629,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                             Mode = 1,
                             RoundingPrecision = 2,
                             RoundingType = "up",
-                            Weight = 4
-                        }
+                            Weight = 4,
+                        },
                     },
                     Qualifiers = new List<PriceQualifier>
                     {
@@ -637,34 +650,33 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                                     Id = 1,
                                     Name = "p1",
                                     Type = "1",
-                                    Value = "100"
-                                }
-                            }
-                        }
-                    }
-                }
-            )
+                                    Value = "100",
+                                },
+                            },
+                        },
+                    },
+                }),
         };
 
         #endregion
 
         #region PartnersAndGroups
 
-        private static List<PartnerGroup> PartnerGroups = new List<PartnerGroup>
+        private static readonly List<PartnerGroup> PartnerGroups = new List<PartnerGroup>
         {
             new PartnerGroup
             {
                 Id = 1,
-                Name = "group1"
+                Name = "group1",
             },
             new PartnerGroup
             {
                 Id = 2,
-                Name = "group2"
-            }
+                Name = "group2",
+            },
         };
 
-        private static List<Partner> Partners = new List<Partner>
+        private static readonly List<Partner> Partners = new List<Partner>
         {
             new Partner
             {
@@ -674,7 +686,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 Id = 1,
                 Name = "partner1",
                 OfficeId = "32",
-                PartnerGroup = PartnerGroups[0]
+                PartnerGroup = PartnerGroups[0],
             },
             new Partner
             {
@@ -684,23 +696,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
                 Id = 2,
                 Name = "partner2",
                 OfficeId = "66",
-                PartnerGroup = PartnerGroups[0]
-            }
+                PartnerGroup = PartnerGroups[0],
+            },
         };
 
-        public static IEnumerable<TestCaseData> GetPartnerGroups_ReturnsPartnerGroups = new[]
+        public static IEnumerable<TestCaseData> GetPartnerGroups_ReturnsPartnerGroups { get; } = new[]
         {
-            new TestCaseData(PartnerGroups)
+            new TestCaseData(PartnerGroups),
         };
 
-        public static IEnumerable<TestCaseData> GetPartnersInGroup_ReturnsPartners = new[]
+        public static IEnumerable<TestCaseData> GetPartnersInGroup_ReturnsPartners { get; } = new[]
         {
-            new TestCaseData(Partners)
+            new TestCaseData(Partners),
         };
 
-        public static IEnumerable<TestCaseData> GetPartner_ReturnsPartner = new[]
+        public static IEnumerable<TestCaseData> GetPartner_ReturnsPartner { get; } = new[]
         {
-            new TestCaseData(Partners[0])
+            new TestCaseData(Partners[0]),
         };
 
         #endregion

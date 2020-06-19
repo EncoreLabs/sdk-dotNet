@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
-    /// The model for API errors
+    /// The model for API errors.
     /// </summary>
     public class Error
     {

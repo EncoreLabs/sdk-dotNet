@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Extensions
         {
             var product = new Product
             {
-                OnSale = onSale
+                OnSale = onSale,
             };
 
             var result = product.GetOnSale();
@@ -37,7 +37,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory.Extensions
         {
             var product = new Product
             {
-                Type = type
+                Type = type,
             };
 
             var result = product.GetProductType();

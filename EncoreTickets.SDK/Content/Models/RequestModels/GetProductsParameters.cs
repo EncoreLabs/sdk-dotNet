@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Content.Models.RequestModels
     {
         /// <summary>
         /// Gets or sets sort by.
-        /// Default value : id
+        /// Default value : id.
         /// </summary>
         public string Sort { get; set; }
     }

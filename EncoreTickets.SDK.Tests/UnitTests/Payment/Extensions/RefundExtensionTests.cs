@@ -18,51 +18,44 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class RefundExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsSuccessfulRefund_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsSuccessfulRefund_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund(),
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "receiv"
+                    Status = "receiv",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "pending"
+                    Status = "pending",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "success"
+                    Status = "success",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "RECEIVED"
+                    Status = "RECEIVED",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Refund
                 {
-                    Status = "received"
+                    Status = "received",
                 },
-                true
-            ),
+                true),
         };
     }
 }

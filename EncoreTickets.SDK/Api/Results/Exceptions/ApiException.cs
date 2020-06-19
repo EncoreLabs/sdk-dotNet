@@ -52,14 +52,14 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         public Context ContextInResponse { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiException"/>
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
         /// </summary>
         public ApiException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiException"/>
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
         /// </summary>
         public ApiException(string message, IRestResponse response, ApiContext requestContext)
             : this(response, requestContext, null, null)
@@ -68,9 +68,10 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiException"/>
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
         /// </summary>
-        public ApiException(ApiException sourceException) : this(
+        public ApiException(ApiException sourceException)
+            : this(
             sourceException?.Response,
             sourceException?.Context,
             sourceException?.ContextInResponse,
@@ -79,9 +80,12 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ApiException"/>
+        /// Initialises a new instance of the <see cref="ApiException"/> class.
         /// </summary>
-        public ApiException(IRestResponse response, ApiContext requestContext, Context contextInResponse,
+        public ApiException(
+            IRestResponse response,
+            ApiContext requestContext,
+            Context contextInResponse,
             Request requestInResponse)
         {
             RequestInResponse = requestInResponse;
@@ -93,7 +97,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Returns easily read errors that are the cause of the exception.
         /// </summary>
-        /// <returns>Collection of strings</returns>
+        /// <returns>Collection of strings.</returns>
         protected List<string> GetErrors()
         {
             var errors = GetErrorsAsString(Response, ContextInResponse);
@@ -103,7 +107,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         /// <summary>
         /// Returns a string contained easily read info about errors that are the cause of the exception.
         /// </summary>
-        /// <returns>Message about errors</returns>
+        /// <returns>Message about errors.</returns>
         protected string GetMessage()
         {
             if (predefinedMessage != null)
@@ -129,7 +133,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             }
 
             var error = GetErrorAsStringFromRestResponse(response);
-            return new List<string> {error};
+            return new List<string> { error };
         }
 
         private static string GetErrorAsStringFromRestResponse(IRestResponse response)

@@ -21,7 +21,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
             var seat = new ReservationItem
             {
                 AggregateReference = "reference",
-                AreaName = "E"
+                AreaName = "E",
             };
 
             var result = seat.Map<ReservationItem, ReservationItemParameters>();
@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
         {
             var sourceBasket = new SDK.Basket.Models.Basket
             {
-                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i}).ToList(),
+                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i }).ToList(),
                 Coupon = new Coupon { Code = "DISCOUNT" },
                 Reference = "1234567",
                 AllowFlexiTickets = true,
@@ -46,11 +46,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                     {
                         Currency = DefaultCurrency,
                         DecimalPlaces = DefaultDecimalPlaces,
-                        Value = 145
-                    }
+                        Value = 145,
+                    },
                 },
                 ShopperReference = "test reference",
-                ShopperCurrency = "USD"
+                ShopperCurrency = "USD",
             };
 
             var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketParameters>();
@@ -74,7 +74,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 ProductId = "1234",
                 VenueId = "123",
                 Items = new List<ReservationItem> { new ReservationItem { AggregateReference = "reference1" }, new ReservationItem { AggregateReference = "reference2" } },
-                Quantity = 2
+                Quantity = 2,
             };
 
             var result = reservation.Map<Reservation, ReservationParameters>();

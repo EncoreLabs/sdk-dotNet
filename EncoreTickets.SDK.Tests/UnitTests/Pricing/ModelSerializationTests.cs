@@ -18,7 +18,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
         {
             serializer = new DefaultJsonSerializer
             {
-                DateFormat = DateFormat
+                DateFormat = DateFormat,
             };
         }
 

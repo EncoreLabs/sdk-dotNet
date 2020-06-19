@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         public RestClientCredentials Credentials { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
         /// <param name="restClientCredentials">Credentials for requests.</param>
         public RestClientWrapper(RestClientCredentials restClientCredentials)
@@ -33,16 +33,17 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
-        public RestClientWrapper() : this(DefaultMaxExecutionsCount)
+        public RestClientWrapper()
+            : this(DefaultMaxExecutionsCount)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RestClientWrapper"/>
+        /// Initialises a new instance of the <see cref="RestClientWrapper"/> class.
         /// </summary>
-        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed</param>
+        /// <param name="executionsCount">Optional: maximum number of additional retries if a request failed.</param>
         public RestClientWrapper(int executionsCount)
         {
             MaxExtraAttemptsCount = executionsCount > 1 ? executionsCount - 1 : 0;
@@ -58,7 +59,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var client = new RestClient(restClientParameters.BaseUrl)
             {
-                Authenticator = GetAuthenticator()
+                Authenticator = GetAuthenticator(),
             };
             AddResponseHandlers(client, restClientParameters);
             return client;
@@ -74,7 +75,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             var request = new RestRequest(restClientParameters.RequestUrl)
             {
                 Method = restClientParameters.RequestMethod.Map<RequestMethod, Method>(),
-                RequestFormat = restClientParameters.RequestDataFormat.Map<DataFormat, RestSharp.DataFormat>()
+                RequestFormat = restClientParameters.RequestDataFormat.Map<DataFormat, RestSharp.DataFormat>(),
             };
             SetRequestParameters(request, restClientParameters.RequestHeaders, ParameterType.HttpHeader);
             SetRequestParameters(request, restClientParameters.RequestUrlSegments, ParameterType.UrlSegment);
@@ -103,7 +104,7 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
         /// <summary>
         /// Executes a request with expected data of a certain type.
         /// </summary>
-        /// <param type="T">The type of an object expected in response.</param>
+        /// <typeparam name="T">The type of an object expected in response.</typeparam>
         /// <param name="client">The prepared rest client.</param>
         /// <param name="request">The prepared rest request.</param>
         /// <returns>Rest response.</returns>
@@ -116,6 +117,41 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
                 .Retry(MaxExtraAttemptsCount)
                 .Execute(() => client.Execute<T>(request));
             return response;
+        }
+
+        private static void SetRequestParameters(IRestRequest request, Dictionary<string, string> parameters, ParameterType type)
+        {
+            if (parameters == null)
+            {
+                return;
+            }
+
+            foreach (var param in parameters)
+            {
+                request.AddParameter(param.Key, param.Value, type);
+            }
+        }
+
+        private static void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
+        {
+            if (restClientParameters.RequestBody != null)
+            {
+                request.AddBody(restClientParameters.RequestBody);
+            }
+        }
+
+        private static void SetRequestSerializer(IRestRequest request, RestClientParameters restClientParameters)
+        {
+            if (restClientParameters.RequestDataFormat == DataFormat.Json &&
+                restClientParameters.RequestDataSerializer != default)
+            {
+                request.JsonSerializer = restClientParameters.RequestDataSerializer;
+            }
+        }
+
+        private static bool ShouldRequestBeRepeated(IRestResponse response)
+        {
+            return response.StatusCode.IsServerError();
         }
 
         private IAuthenticator GetAuthenticator()
@@ -146,41 +182,6 @@ namespace EncoreTickets.SDK.Utilities.RestClientWrapper
             {
                 client.AddHandler(contentType, () => restClientParameters.ResponseDataDeserializer);
             }
-        }
-
-        private static void SetRequestParameters(IRestRequest request, Dictionary<string, string> parameters, ParameterType type)
-        {
-            if (parameters == null)
-            {
-                return;
-            }
-
-            foreach (var param in parameters)
-            {
-                request.AddParameter(param.Key, param.Value, type);
-            }
-        }
-
-        private static void SetRequestBody(IRestRequest request, RestClientParameters restClientParameters)
-        {
-            if (restClientParameters.RequestBody != null)
-            {
-                request.AddBody(restClientParameters.RequestBody);
-            }
-        }
-
-        private void SetRequestSerializer(IRestRequest request, RestClientParameters restClientParameters)
-        {
-            if (restClientParameters.RequestDataFormat == DataFormat.Json &&
-                restClientParameters.RequestDataSerializer != default)
-            {
-                request.JsonSerializer = restClientParameters.RequestDataSerializer;
-            }
-        }
-
-        private bool ShouldRequestBeRepeated(IRestResponse response)
-        {
-            return response.StatusCode.IsServerError();
         }
     }
 }

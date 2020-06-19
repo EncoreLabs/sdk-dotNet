@@ -26,10 +26,11 @@ namespace EncoreTickets.SDK.Checkout
         public override int? ApiVersion => 1;
 
         /// <summary>
-        /// Default constructor for the checkout service
+        /// Initialises a new instance of the <see cref="CheckoutServiceApi"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public CheckoutServiceApi(ApiContext context) : base(context, CheckoutApiHost)
+        public CheckoutServiceApi(ApiContext context)
+            : base(context, CheckoutApiHost)
         {
         }
 
@@ -46,22 +47,24 @@ namespace EncoreTickets.SDK.Checkout
                 Endpoint = $"v{ApiVersion}/checkout",
                 Method = RequestMethod.Post,
                 Body = new BookingQueryParameters(bookingParameters),
-                Serializer = new DefaultJsonSerializer(new DefaultNamingStrategy())
+                Serializer = new DefaultJsonSerializer(new DefaultNamingStrategy()),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PaymentInfo>(requestParameters);
             return result.DataOrException;
         }
 
-
         /// <inheritdoc />
-        public bool ConfirmBooking(string agentId, string agentPassword, string bookingReference,
+        public bool ConfirmBooking(
+            string agentId,
+            string agentPassword,
+            string bookingReference,
             ConfirmBookingParameters bookingParameters)
         {
             var encoder = new Base64Encoder();
             Context.AgentCredentials = new Credentials
             {
                 Username = encoder.Encode(agentId),
-                Password = encoder.Encode(agentPassword)
+                Password = encoder.Encode(agentPassword),
             };
             return ConfirmBooking(bookingReference, bookingParameters);
         }
@@ -83,7 +86,7 @@ namespace EncoreTickets.SDK.Checkout
             {
                 Endpoint = $"v{ApiVersion}/bookings/{bookingReference}/confirm",
                 Method = RequestMethod.Post,
-                Body = bookingParameters
+                Body = bookingParameters,
             };
             var result = Executor.ExecuteApiWithWrappedResultsInResponse<string>(requestParameters);
             return result.DataOrException.Equals(ActionResultStatuses.Success, StringComparison.InvariantCultureIgnoreCase);

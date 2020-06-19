@@ -9,6 +9,6 @@
         Post,
         Put,
         Patch,
-        Delete
+        Delete,
     }
 }

@@ -10,12 +10,12 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
     public interface ITree<out TKey, out TValue>
     {
         /// <summary>
-        /// The key that defines the parent-child relationship in a tree.
+        /// Gets the key that defines the parent-child relationship in a tree.
         /// </summary>
         TKey Key { get; }
 
         /// <summary>
-        /// The value of a tree node.
+        /// Gets the value of a tree node.
         /// </summary>
         TValue Item { get; }
 

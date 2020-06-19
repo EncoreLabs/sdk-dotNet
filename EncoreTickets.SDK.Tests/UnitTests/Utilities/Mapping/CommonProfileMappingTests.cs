@@ -28,7 +28,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
 
         [TestCase(DataFormat.Xml, RestSharp.DataFormat.Xml)]
         [TestCase(DataFormat.Json, RestSharp.DataFormat.Json)]
-        public void FromDataFormatToRestSharpDataFormat_IfDataFormatExists_MapsCorrectly(DataFormat source,
+        public void FromDataFormatToRestSharpDataFormat_IfDataFormatExists_MapsCorrectly(
+            DataFormat source,
             RestSharp.DataFormat expected)
         {
             var result = source.Map<DataFormat, RestSharp.DataFormat>();

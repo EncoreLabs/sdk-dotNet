@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         {
             Currency = "GBP",
             DecimalPlaces = 2,
-            Value = 2500
+            Value = 2500,
         };
 
         private static readonly int DefaultQuantity = 2;
@@ -108,44 +108,39 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         }
     }
 
-    public static class ReservationExtensionTestsSource
+    internal static class ReservationExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsFlexi_Correct = new[]
+        public static IEnumerable<TestCaseData> IsFlexi_Correct { get; } = new[]
         {
             new TestCaseData(
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId,
-                    ProductType = ProductConstants.FlexiProductType
+                    ProductType = ProductConstants.FlexiProductType,
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Reservation
                 {
                     ProductId = ProductConstants.FlexiProductId,
-                    ProductType = ProductConstants.FlexiProductType.ToLower()
+                    ProductType = ProductConstants.FlexiProductType.ToLower(),
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Reservation
                 {
-                    ProductId = ProductConstants.FlexiProductId
+                    ProductId = ProductConstants.FlexiProductId,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Reservation
                 {
-                    ProductType = ProductConstants.FlexiProductType
+                    ProductType = ProductConstants.FlexiProductType,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Reservation(),
-                false
-            ),
+                false),
         };
     }
 }

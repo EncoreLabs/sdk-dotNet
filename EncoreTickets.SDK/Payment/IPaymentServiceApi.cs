@@ -11,9 +11,9 @@ namespace EncoreTickets.SDK.Payment
         /// <summary>
         /// Get details of an order by its channelId and externalId.
         /// </summary>
-        /// <param name="channelId">Unique identifier of a website processing a payment</param>
-        /// <param name="externalId">Unique reference representing an order for</param>
-        /// <returns>Order details</returns>
+        /// <param name="channelId">Unique identifier of a website processing a payment.</param>
+        /// <param name="externalId">Unique reference representing an order for.</param>
+        /// <returns>Order details.</returns>
         /// <exception cref="ApiException">If request is invalid return 404 status code with error message.</exception>
         Order GetOrder(string channelId, string externalId);
 
@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Payment
         /// <summary>
         /// Update partially an order when this is possible, you cannot update an order that has a payment authorised, captured, refunded or partially_refunded.
         /// </summary>
-        /// <param name="orderId">Order ID</param>
+        /// <param name="orderId">Order ID.</param>
         /// <param name="orderRequest">Request body can update billing address, shopper and/or line items. If nothing provided, nothing updated.</param>
         /// <returns>Return the current state of the updated order.</returns>
         /// <exception cref="ApiException">If request is invalid return 400 status code with error message.</exception>
@@ -38,7 +38,7 @@ namespace EncoreTickets.SDK.Payment
         /// Create a new payment for an order.
         /// </summary>
         /// <param name="paymentRequest"></param>
-        /// <returns>Return the created payment</returns>
+        /// <returns>Return the created payment.</returns>
         Models.Payment CreateNewPayment(CreatePaymentRequest paymentRequest);
 
         /// <summary>

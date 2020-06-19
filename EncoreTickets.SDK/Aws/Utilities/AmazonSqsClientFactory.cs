@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Aws.Utilities
             var options = new AWSOptions
             {
                 Profile = profileName,
-                Region = RegionEndpoint.GetBySystemName(regionName)
+                Region = RegionEndpoint.GetBySystemName(regionName),
             };
             return CreateAmazonSqsClient(options);
         }

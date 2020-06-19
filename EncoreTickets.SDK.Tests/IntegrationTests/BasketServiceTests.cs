@@ -202,7 +202,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 const int expectedReservationsCount = 3;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
-                
+
                 AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
                 Assert.AreEqual(upsertBasketResult.Checksum, basketDetails.Checksum);
@@ -387,7 +387,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Coupon coupon;
             try
             {
-                (upsertBasketResult, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                (upsertBasketResult, coupon) = PrepareUpsertPromotionRequest(
+                    configuration["Basket:TestReferences:0"],
                     configuration["Basket:ValidPromoCode"]);
 
                 var basketDetails = service.UpsertPromotion(upsertBasketResult.Reference, coupon);
@@ -409,7 +410,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Coupon coupon;
             try
             {
-                (basket, coupon) = PrepareUpsertPromotionRequest(configuration["Basket:TestReferences:0"],
+                (basket, coupon) = PrepareUpsertPromotionRequest(
+                    configuration["Basket:TestReferences:0"],
                     "invalid promo code");
 
                 Assert.Throws<InvalidPromoCodeException>(() =>
@@ -486,7 +488,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         #endregion
 
         #region RemoveReservation
-        
+
         [Test]
         public void RemoveReservation_Successful()
         {
@@ -542,9 +544,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 service.ClearBasket(upsertBasketResult.Reference);
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
+
             AssertApiException(exception, HttpStatusCode.NotFound);
         }
 
@@ -557,7 +560,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var pageParameters = new PageRequest
             {
-                Limit = 10
+                Limit = 10,
             };
 
             var promotions = service.GetPromotions(pageParameters);
@@ -578,7 +581,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var pageParameters = new PageRequest
             {
-                Limit = -10
+                Limit = -10,
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -653,14 +656,16 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     new ReservationParameters
                     {
-                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm",
+                        Date = DateTimeOffset.ParseExact(
+                            configuration["Basket:TestDate"],
+                            "yyyy-MM-ddTHH:mm",
                             CultureInfo.InvariantCulture),
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new ReservationItemParameters {AggregateReference = r}).ToList()
-                    }
-                }
+                        Items = references.Select(r => new ReservationItemParameters { AggregateReference = r }).ToList(),
+                    },
+                },
             };
         }
 
@@ -670,20 +675,22 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             return new Basket.Models.Basket
             {
                 ChannelId = "encoretickets",
-                Coupon = !codesEnabled ? null : new Coupon {Code = configuration["Basket:ValidPromoCode"]},
+                Coupon = !codesEnabled ? null : new Coupon { Code = configuration["Basket:ValidPromoCode"] },
                 Delivery = CreateDefaultDelivery(),
                 Reservations = new List<Reservation>
                 {
                     new Reservation
                     {
-                        Date = DateTimeOffset.ParseExact(configuration["Basket:TestDate"], "yyyy-MM-ddTHH:mm",
+                        Date = DateTimeOffset.ParseExact(
+                            configuration["Basket:TestDate"],
+                            "yyyy-MM-ddTHH:mm",
                             CultureInfo.InvariantCulture),
                         ProductId = configuration["Basket:TestProductId"],
                         VenueId = configuration["Basket:TestVenueId"],
                         Quantity = references.Length,
-                        Items = references.Select(r => new ReservationItem {AggregateReference = r}).ToList()
-                    }
-                }
+                        Items = references.Select(r => new ReservationItem { AggregateReference = r }).ToList(),
+                    },
+                },
             };
         }
 
@@ -695,9 +702,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 {
                     Currency = "GBP",
                     DecimalPlaces = 2,
-                    Value = 145
+                    Value = 145,
                 },
-                Method = DeliveryMethod.Postage
+                Method = DeliveryMethod.Postage,
             };
         }
 
@@ -716,7 +723,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             Assert.AreEqual(code, exception.ResponseCode);
         }
 
-        private void AssertUpsertBasketSuccess(Basket.Models.Basket request, Basket.Models.Basket result,
+        private void AssertUpsertBasketSuccess(
+            Basket.Models.Basket request,
+            Basket.Models.Basket result,
             int expectedReservationsCount)
         {
             AssertUpsertBasketSuccessCommon(result, request.Delivery, expectedReservationsCount);
@@ -724,7 +733,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
         }
 
-        private void AssertUpsertBasketSuccess(UpsertBasketParameters request, Basket.Models.Basket result,
+        private void AssertUpsertBasketSuccess(
+            UpsertBasketParameters request,
+            Basket.Models.Basket result,
             int expectedReservationsCount)
         {
             AssertUpsertBasketSuccessCommon(result, request.Delivery, expectedReservationsCount);
@@ -732,7 +743,9 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             AssertExtension.AreObjectsValuesEqual(request.Coupon, result.Coupon);
         }
 
-        private void AssertUpsertBasketSuccessCommon(Basket.Models.Basket result, Delivery sourceDelivery,
+        private void AssertUpsertBasketSuccessCommon(
+            Basket.Models.Basket result,
+            Delivery sourceDelivery,
             int expectedReservationsCount)
         {
             Assert.AreEqual(sourceDelivery.Method, result.Delivery.Method);

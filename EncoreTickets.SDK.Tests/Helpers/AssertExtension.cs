@@ -28,7 +28,8 @@ namespace EncoreTickets.SDK.Tests.Helpers
             }
         }
 
-        public static void ShouldBeEquivalentToObjectWithMoreProperties<TActual, TExpected>(this TActual actual,
+        public static void ShouldBeEquivalentToObjectWithMoreProperties<TActual, TExpected>(
+            this TActual actual,
             TExpected expected)
         {
             var properties = typeof(TActual)

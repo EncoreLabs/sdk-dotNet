@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Authentication
         /// <summary>
         /// Returns an authentication service based on selected authentication method from a context.
         /// </summary>
-        /// <param name="context">The API context</param>
+        /// <param name="context">The API context.</param>
         /// <param name="host">The service host.</param>
         /// <param name="loginEndpoint">The endpoint of the login method for the service.</param>
         /// <returns>Authentication service.</returns>

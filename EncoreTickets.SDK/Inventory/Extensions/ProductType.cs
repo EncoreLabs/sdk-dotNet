@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Inventory.Extensions
 {
     /// <summary>
-    /// The enum for product type
+    /// The enum for product type.
     /// </summary>
     public enum ProductType
     {
@@ -9,6 +9,6 @@
         Attraction,
         Event,
         Other,
-        NotSet
+        NotSet,
     }
 }

@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Aws
     public interface IAwsSqs
     {
         /// <summary>
-        /// Asynchronously sends a message to the specified AWS queue
+        /// Asynchronously sends a message to the specified AWS queue.
         /// </summary>
         /// <param name="queueUrl">The URL of the AWS queue.</param>
         /// <param name="messageBody">The message to send to the queue.</param>

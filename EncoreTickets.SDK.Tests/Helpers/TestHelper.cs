@@ -6,7 +6,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
 {
     internal static class TestHelper
     {
-        public static CultureInfo Culture = new CultureInfo("en");
+        public static readonly CultureInfo Culture = new CultureInfo("en");
 
         public static DateTime ConvertTestArgumentToDateTime(string arg)
         {

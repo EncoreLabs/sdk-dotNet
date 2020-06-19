@@ -8,7 +8,8 @@ namespace EncoreTickets.SDK.Utilities.Mapping
     {
         private static readonly Lazy<IMapper> Mapper = new Lazy<IMapper>(() =>
         {
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<CommonProfile>();
                 cfg.AddProfile<BasketProfile>();
                 cfg.AddProfile<InventoryProfile>();

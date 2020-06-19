@@ -9,7 +9,8 @@ namespace EncoreTickets.SDK.Basket.Exceptions
     {
         public string BasketId { get; set; }
 
-        public BasketCannotBeModifiedException(ApiException sourceException, string basketId) : base(sourceException)
+        public BasketCannotBeModifiedException(ApiException sourceException, string basketId)
+            : base(sourceException)
         {
             BasketId = basketId;
         }

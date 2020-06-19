@@ -25,7 +25,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public ContentServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public ContentServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -37,7 +38,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         }
 
         #region GetLocations
-        
+
         [Test]
         public void GetLocations_CallsApiWithRightParameters()
         {
@@ -52,7 +53,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Location>>>(BaseUrl, "v1/locations", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Location>>>(
+                BaseUrl,
+                "v1/locations",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
@@ -95,7 +99,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
             {
                 Page = 1,
                 Limit = 1000,
-                Sort = "id"
+                Sort = "id",
             };
 
             try
@@ -107,14 +111,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Product>>>(
+                BaseUrl,
+                "v1/products",
+                Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
                 {
                     { "page", parameters.Page },
                     { "limit", parameters.Limit },
-                    { "sort", parameters.Sort }
+                    { "sort", parameters.Sort },
                 },
-                expectedHeaders: new Dictionary<string, object> {{ CorrelationIdHeader, Context.Correlation }});
+                expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [Test]
@@ -131,7 +138,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<Product>>>(BaseUrl, "v1/products", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<Product>>>(
+                BaseUrl,
+                "v1/products",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
@@ -191,12 +201,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Product>>(BaseUrl, $"v1/products/{id}", Method.GET,
+            mockers.VerifyExecution<ApiResponse<Product>>(
+                BaseUrl,
+                $"v1/products/{id}",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { { CorrelationIdHeader, Context.Correlation } });
         }
 
         [TestCaseSource(typeof(ContentServiceApiTestsSource), nameof(ContentServiceApiTestsSource.GetProductById_IfApiResponseSuccessful_ReturnsProduct))]
-        public void GetProductById_IfApiResponseSuccessful_ReturnsProduct(string responseContent,
+        public void GetProductById_IfApiResponseSuccessful_ReturnsProduct(
+            string responseContent,
             Product expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<Product>>(responseContent);
@@ -226,9 +240,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
         #endregion
     }
 
-    public static class ContentServiceApiTestsSource
+    internal static class ContentServiceApiTestsSource
     {
-        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseSuccessful_ReturnsLocations = new[]
+        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseSuccessful_ReturnsLocations { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -294,9 +308,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "Chicago",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
                             new Location
                             {
@@ -307,9 +321,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "Las Vegas",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
                             new Location
                             {
@@ -320,25 +334,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                                     new Location
                                     {
                                         Name = "New York",
-                                        IsoCode = null
-                                    }
-                                }
+                                        IsoCode = null,
+                                    },
+                                },
                             },
-                        }
-                    }
-                }
-            ),
+                        },
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetLocations_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
-                HttpStatusCode.InternalServerError
-            ),
+                HttpStatusCode.InternalServerError),
         };
 
-        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
+        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseSuccessful_ReturnsProducts { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -383,7 +395,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£10.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
                     new Product
                     {
@@ -391,7 +403,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£20.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
                     new Product
                     {
@@ -399,21 +411,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                         Name = "£50.00 Gift Voucher",
                         AreaCode = null,
                         ShowType = null,
-                        Venue = null
+                        Venue = null,
                     },
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetProducts_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 "",
-                HttpStatusCode.InternalServerError
-            ),
+                HttpStatusCode.InternalServerError),
         };
 
-        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseSuccessful_ReturnsProduct = new[]
+        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseSuccessful_ReturnsProduct { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -472,7 +482,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                     ShowType = new ShowType
                     {
                         Id = null,
-                        Type = "show"
+                        Type = "show",
                     },
                     FirstPreviewDate = null,
                     OpeningDate = null,
@@ -496,22 +506,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
                             Region = new Location
                             {
                                 Name = null,
-                                IsoCode = "LDN"
+                                IsoCode = "LDN",
                             },
                             Country = new Location
                             {
                                 Name = "Great Britain",
-                                IsoCode = "GBR"
-                            }
-                        }
+                                IsoCode = "GBR",
+                            },
+                        },
                     },
                     OnSale = "yes",
-                    ShowFaceValue = false
-                }
-            ),
+                    ShowFaceValue = false,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetProductById_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -532,8 +541,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Content
 	}
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
     }
 }

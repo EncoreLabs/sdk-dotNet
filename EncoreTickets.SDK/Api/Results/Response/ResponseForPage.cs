@@ -7,7 +7,7 @@ namespace EncoreTickets.SDK.Api.Results.Response
     /// <summary>
     /// The entity for collecting items received with additional information for pagination.
     /// </summary>
-    /// <typeparam name="T">Model type</typeparam>
+    /// <typeparam name="T">Model type.</typeparam>
     [JsonObject]
     public class ResponseForPage<T> : IEnumerable<T>
     {

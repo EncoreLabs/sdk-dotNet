@@ -28,8 +28,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         [TestCase(0)]
         public void ItemCount_Correct(int expectedResult, params int[] quantities)
         {
-            var reservations = quantities?.Select(q => new Reservation {Quantity = q}).ToList();
-            var basketDetails = new SDK.Basket.Models.Basket {Reservations = reservations};
+            var reservations = quantities?.Select(q => new Reservation { Quantity = q }).ToList();
+            var basketDetails = new SDK.Basket.Models.Basket { Reservations = reservations };
 
             var result = basketDetails.ItemCount();
 
@@ -181,8 +181,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 145
-                }
+                    Value = 145,
+                },
             };
 
             var result = basketDetails.GetBasketTotalWithoutDelivery();
@@ -208,24 +208,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
         private List<Price> CreateDefaultListOfPrices()
         {
-            return new List<Price>{ new Price
+            return new List<Price>
+            {
+                new Price
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 2500
+                    Value = 2500,
                 },
                 new Price
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 3700
+                    Value = 3700,
                 },
                 new Price
                 {
                     Currency = DefaultCurrency,
                     DecimalPlaces = DefaultDecimalPlaces,
-                    Value = 1250
-                }
+                    Value = 1250,
+                },
             };
         }
 

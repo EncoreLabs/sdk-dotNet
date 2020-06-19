@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             configuration = ConfigurationHelper.GetConfiguration();
             context = new ApiContext(Environments.QA)
             {
-                Affiliate = configuration["Inventory:TestAffiliateId"]
+                Affiliate = configuration["Inventory:TestAffiliateId"],
             };
             service = new InventoryServiceApi(context);
         }
@@ -115,6 +115,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(availability.LargestLumpOfTickets);
                 Assert.AreNotEqual(availability.DateTime, default);
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -131,6 +132,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(availability.LargestLumpOfTickets);
                 Assert.AreNotEqual(availability.DateTime, default);
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -210,6 +212,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(area.AvailableCount);
                 Assert.False(string.IsNullOrEmpty(area.Name));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -224,7 +227,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 Quantity = 1,
                 PerformanceTime = availability.DateTime,
-                Direction = Direction.Desc
+                Direction = Direction.Desc,
             };
 
             var seats = service.GetAggregateSeatAvailability(productId, parameters);
@@ -235,6 +238,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.NotNull(area.AvailableCount);
                 Assert.False(string.IsNullOrEmpty(area.Name));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -302,6 +306,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 
@@ -318,7 +323,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 PerformanceTime = availability.DateTime,
                 Direction = Direction.Desc,
                 GroupingLimit = 1,
-                Sort = ""
+                Sort = "",
             };
 
             var seats = service.GetSeatAvailability(productId, 1, parameters);
@@ -330,6 +335,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(area.Name));
                 Assert.False(string.IsNullOrEmpty(area.ItemReference));
             }
+
             Assert.IsNotNull(context.ReceivedCorrelation);
         }
 

@@ -30,7 +30,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public InventoryServiceApiTests() : base(ApiContextTestHelper.DefaultApiContext)
+        public InventoryServiceApiTests()
+            : base(ApiContextTestHelper.DefaultApiContext)
         {
         }
 
@@ -289,7 +290,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", null)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Asc)]
         [TestCase("1587", 2, "1/10/2020 3:56:51 PM", Direction.Desc)]
-        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", (Direction) 100)]
+        [TestCase("1587", 2, "1/10/2020 3:56:51 PM", (Direction)100)]
         public void GetAggregateSeatAvailability_IfProductIdAndQuantityAndPerformanceAreSet_CallsApiWithRightParameters(
             string productId, int quantity, string dateAsStr, Direction? direction)
         {
@@ -299,13 +300,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             {
                 PerformanceTime = TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
                 Direction = direction,
-                Quantity = quantity
+                Quantity = quantity,
             };
             var queryParameters = new Dictionary<string, object>
             {
-                {"quantity", quantity},
-                {"date", parameters.PerformanceTime.ToString("yyyyMMdd")},
-                {"time", parameters.PerformanceTime.ToString("HHmm")},
+                { "quantity", quantity },
+                { "date", parameters.PerformanceTime.ToString("yyyyMMdd") },
+                { "time", parameters.PerformanceTime.ToString("HHmm") },
             };
 
             if (parameters.Direction != null && (parameters.Direction == Direction.Asc || parameters.Direction == Direction.Desc))
@@ -331,8 +332,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: queryParameters,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -435,13 +436,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 Method.GET,
                 expectedQueryParameters: new Dictionary<string, object>
                 {
-                    {"date", performance.ToString("yyyyMMdd")},
-                    {"time", performance.ToString("HHmm")},
+                    { "date", performance.ToString("yyyyMMdd") },
+                    { "time", performance.ToString("HHmm") },
                 },
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -466,7 +467,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(dateAsStr),
                 Direction = direction,
                 Sort = sort,
-                GroupingLimit = groupingLimit
+                GroupingLimit = groupingLimit,
             };
             var queryParameters = new Dictionary<string, object>();
             if (parameters.PerformanceTime != null)
@@ -512,8 +513,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 expectedQueryParameters: queryParameters,
                 expectedHeaders: new Dictionary<string, object>
                 {
-                    {AffiliateIdHeader, Context.Affiliate},
-                    {CorrelationIdHeader, Context.Correlation},
+                    { AffiliateIdHeader, Context.Affiliate },
+                    { CorrelationIdHeader, Context.Correlation },
                 });
         }
 
@@ -551,11 +552,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         #endregion
     }
 
-    public static class InventoryServiceApiTestsSource
+    internal static class InventoryServiceApiTestsSource
     {
         #region SearchProducts
 
-        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseSuccessful_ReturnsProducts = new[]
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseSuccessful_ReturnsProducts { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -592,17 +593,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                         Type = "show",
                         Venue = new SDK.Inventory.Models.Venue
                         {
-                            Id = "138"
+                            Id = "138",
                         },
                         OnSale = "yes",
                         BookingStarts = new DateTime(2019, 08, 13),
                         BookingEnds = new DateTime(2020, 05, 23),
-                    }
-                }
-            ),
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> SearchProducts_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -623,18 +623,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion
 
         #region GetAvailabilityRange
 
-        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange = new[]
-        {
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseSuccessful_ReturnsBookingRange { get; } = new[]
+            {
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -648,18 +647,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     },
     ""context"": null
 }",
-                new AvailabilityRange
-                {
-                    FirstBookableDate = new DateTime(2020, 05, 05),
-                    LastBookableDate = new DateTime(2020, 05, 23),
-                }
-            ),
-        };
+                    new AvailabilityRange
+                    {
+                        FirstBookableDate = new DateTime(2020, 05, 05),
+                        LastBookableDate = new DateTime(2020, 05, 23),
+                    }),
+            };
 
-        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException = new[]
-        {
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> GetAvailabilityRange_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+            {
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -676,16 +674,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
         ]
     }
 }",
-                HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
-        };
+                    HttpStatusCode.NotFound,
+                    "Sorry, nothing was found"),
+            };
 
         #endregion
 
         #region GetAvailabilities
 
-        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseSuccessful_ReturnsPerformances { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -720,23 +717,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 03, 19, 30, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 04, 16, 00, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
                     new Availability
                     {
                         DateTime = new DateTime(2020, 10, 05, 19, 30, 00),
-                        LargestLumpOfTickets = 33
+                        LargestLumpOfTickets = 33,
                     },
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -762,8 +758,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "fromDate: end date should not be more than 90 days from start dates"
-            ),
+                "fromDate: end date should not be more than 90 days from start dates"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -787,8 +782,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "fromDate: start date should not be in the past"
-            ),
+                "fromDate: start date should not be in the past"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -812,8 +806,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "productId: The product ID can only contain numbers, letters and dashes"
-            ),
+                "productId: The product ID can only contain numbers, letters and dashes"),
 
             // 403
             new TestCaseData(
@@ -838,8 +831,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.Forbidden,
-                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"
-            ),
+                "Invalid request: Request to EApi failed because the specified affiliate does not have access to this product: Not allowed to use this show"),
 
             // 404
             new TestCaseData(
@@ -864,8 +856,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Product not found"
-            ),
+                "Product not found"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -888,15 +879,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion
 
         #region GetAggregateSeatAvailability
 
-        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1038,14 +1028,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     AvailableCount = 2,
                                     Pricing = new AggregatePricing
                                     {
-                                        SalePrice =new List<Price>
+                                        SalePrice = new List<Price>
                                         {
                                             new Price
                                             {
                                                 Value = 3200,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
-                                            }
+                                                DecimalPlaces = 2,
+                                            },
                                         },
                                         FaceValue = new List<Price>
                                         {
@@ -1053,31 +1043,32 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             {
                                                 Value = 2500,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
-                                            }
+                                                DecimalPlaces = 2,
+                                            },
                                         },
                                         PercentageDiscount = 0,
                                         IncludesBookingFee = true,
-                                        CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                        CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                     },
                                     Seats = new List<AggregateSeat>
                                     {
                                         new AggregateSeat
                                         {
                                             SeatIdentifier = "CIRCLE-X44",
-                                            AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDQiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.L-E7HTETVnPRzkr6ghsFVTL4X62rSycnF-S_PtIH8KM",
+                                            AggregateReference =
+                                                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDQiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.L-E7HTETVnPRzkr6ghsFVTL4X62rSycnF-S_PtIH8KM",
                                             Row = "X",
                                             Number = 44,
                                             Pricing = new AggregatePricing
                                             {
-                                                SalePrice =new List<Price>
+                                                SalePrice = new List<Price>
                                                 {
                                                     new Price
                                                     {
                                                         Value = 3200,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 FaceValue = new List<Price>
                                                 {
@@ -1085,30 +1076,31 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 2500,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 PercentageDiscount = 0,
                                                 IncludesBookingFee = true,
-                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                             },
                                         },
                                         new AggregateSeat
                                         {
                                             SeatIdentifier = "CIRCLE-X45",
-                                            AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.AyrGkcbn5WhSfjA-himFaF9ivbhA1CFBFI5hSd-OKGw",
+                                            AggregateReference =
+                                                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDQ7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.AyrGkcbn5WhSfjA-himFaF9ivbhA1CFBFI5hSd-OKGw",
                                             Row = "X",
                                             Number = 45,
                                             Pricing = new AggregatePricing
                                             {
-                                                SalePrice =new List<Price>
+                                                SalePrice = new List<Price>
                                                 {
                                                     new Price
                                                     {
                                                         Value = 3200,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 FaceValue = new List<Price>
                                                 {
@@ -1116,12 +1108,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                     {
                                                         Value = 2500,
                                                         Currency = "GBP",
-                                                        DecimalPlaces = 2
-                                                    }
+                                                        DecimalPlaces = 2,
+                                                    },
                                                 },
                                                 PercentageDiscount = 0,
                                                 IncludesBookingFee = true,
-                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02)
+                                                CreatedAt = new DateTime(2020, 05, 13, 11, 09, 02),
                                             },
                                         },
                                     },
@@ -1132,17 +1124,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Seats = new List<string>
                                             {
                                                 "CIRCLE-X44",
-                                                "CIRCLE-X45"
-                                            }
+                                                "CIRCLE-X45",
+                                            },
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
                     AvailableCount = 1,
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1169,11 +1160,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                     DisplayCurrency = null,
                     Areas = new List<AggregateArea>(),
                     AvailableCount = 0,
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetAggregateSeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1202,8 +1192,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "direction: The value you selected is not a valid choice."
-            ),
+                "direction: The value you selected is not a valid choice."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1228,9 +1217,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "time: This value should not be null."
-            ),
-            
+                "time: This value should not be null."),
+
             // 404
             new TestCaseData(
                 @"{
@@ -1256,22 +1244,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.NotFound,
-                "Not found"
-            ),
+                "Not found"),
 
             // 503
             new TestCaseData(
                 @"<!DOCTYPE html><html>The request has failed. Fastly</html>",
                 HttpStatusCode.ServiceUnavailable,
-                "Cannot convert API error correctly.\r\n\r\n<!DOCTYPE html><html>The request has failed. Fastly</html>"
-            ),
+                "Cannot convert API error correctly.\r\n\r\n<!DOCTYPE html><html>The request has failed. Fastly</html>"),
         };
 
         #endregion
 
         #region GetSeatAvailability
 
-        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability = new[]
+        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseSuccessful_ReturnsAvailability { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1439,7 +1425,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     Attributes = new Attributes
                                     {
                                         RestrictedView = false,
-                                        SideView = false
+                                        SideView = false,
                                     },
                                     Pricing = new SDK.Inventory.Models.Pricing
                                     {
@@ -1448,18 +1434,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Value = 1600,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         FaceValue = new Price
                                         {
                                             Value = 1600,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         Percentage = 0,
                                         Offer = false,
                                         NoBookingFee = true,
-                                        Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                        Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                     },
                                     Seats = new List<Seat>
                                     {
@@ -1473,7 +1459,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
-                                                SideView = false
+                                                SideView = false,
                                             },
                                             SeatIdentifier = "CHILD_3-15-16101",
                                             Pricing = new SDK.Inventory.Models.Pricing
@@ -1483,18 +1469,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 FaceValue = new Price
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
                                                 NoBookingFee = true,
-                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                             },
                                         },
                                         new Seat
@@ -1507,7 +1493,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Attributes = new Attributes
                                             {
                                                 RestrictedView = false,
-                                                SideView = false
+                                                SideView = false,
                                             },
                                             SeatIdentifier = "CHILD_3-15-16102",
                                             Pricing = new SDK.Inventory.Models.Pricing
@@ -1517,20 +1503,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 FaceValue = new Price
                                                 {
                                                     Value = 1600,
                                                     Currency = "GBP",
-                                                    DecimalPlaces = 2
+                                                    DecimalPlaces = 2,
                                                 },
                                                 Percentage = 0,
                                                 Offer = false,
                                                 NoBookingFee = true,
-                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26)
+                                                Timestamp = new DateTime(2020, 05, 05, 18, 44, 26),
                                             },
-                                        }
+                                        },
                                     },
                                     SeatLumps = new List<SeatLump>
                                     {
@@ -1538,23 +1524,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Seats = new List<string>
                                             {
-                                                "CHILD_3-15-16101"
-                                            }
+                                                "CHILD_3-15-16101",
+                                            },
                                         },
                                         new SeatLump
                                         {
                                             Seats = new List<string>
                                             {
-                                                "CHILD_3-15-16103"
-                                            }
+                                                "CHILD_3-15-16103",
+                                            },
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
-                }
-            ),
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1690,7 +1675,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                     Attributes = new Attributes
                                     {
                                         RestrictedView = false,
-                                        SideView = false
+                                        SideView = false,
                                     },
                                     Pricing = new SDK.Inventory.Models.Pricing
                                     {
@@ -1699,18 +1684,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                         {
                                             Value = 39900,
                                             Currency = "GBP",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         FaceValue = new Price
                                         {
                                             Value = 39900,
                                             Currency = "USD",
-                                            DecimalPlaces = 2
+                                            DecimalPlaces = 2,
                                         },
                                         Percentage = 0,
                                         Offer = false,
                                         NoBookingFee = false,
-                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
+                                        Timestamp = new DateTime(2020, 05, 07, 09, 01, 06),
                                     },
                                     Seats = new List<Seat>(),
                                     SeatLumps = new List<SeatLump>(),
@@ -1725,7 +1710,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             Date = new DateTime(2020, 07, 11),
                                             Time = new TimeSpan(14, 00, 00),
                                             Quantity = 1,
-                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium"
+                                            SeatLocationDescription = "(Part 2 same day 7:30PM) Premium",
                                         },
                                         PriceReference = new PriceReference
                                         {
@@ -1733,42 +1718,41 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                                             {
                                                 Value = 39900,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             CostPrice = new Price
                                             {
                                                 Value = 39900,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             SalePrice = new Price
                                             {
                                                 Value = 39900,
                                                 Currency = "GBP",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             OriginalSalePrice = new Price
                                             {
                                                 Value = 49100,
                                                 Currency = "USD",
-                                                DecimalPlaces = 2
+                                                DecimalPlaces = 2,
                                             },
                                             FxRate = new FxRate
                                             {
-                                                Rate = 0.811389M
+                                                Rate = 0.811389M,
                                             },
-                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06)
-                                        }
-                                    }
-                                }
+                                            Timestamp = new DateTime(2020, 05, 07, 09, 01, 06),
+                                        },
+                                    },
+                                },
                             },
-                        }
+                        },
                     },
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetSeatAvailability_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1796,8 +1780,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "productId: The product ID can only contain numbers, letters and dashes"
-            ),
+                "productId: The product ID can only contain numbers, letters and dashes"),
+
             // 400
             new TestCaseData(
                 @"{
@@ -1824,8 +1808,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "quantity: quantity should be at least 1"
-            ),
+                "quantity: quantity should be at least 1"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1851,8 +1834,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "dateString: invalid date, should be of 'Ymd' format"
-            ),
+                "dateString: invalid date, should be of 'Ymd' format"),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -1878,8 +1860,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "timeString: invalid time, should be of 'Hi' format"
-            ),
+                "timeString: invalid time, should be of 'Hi' format"),
 
             // 401
             new TestCaseData(
@@ -1906,9 +1887,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.Unauthorized,
-                "an invalid affiliateId has been specified, or the specified affiliate does not have access to this request"
-            ),
-            
+                "an invalid affiliateId has been specified, or the specified affiliate does not have access to this request"),
+
             // 404
             new TestCaseData(
                 @"{
@@ -1933,8 +1913,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Sorry, nothing was found"
-            ),
+                "Sorry, nothing was found"),
         };
 
         #endregion

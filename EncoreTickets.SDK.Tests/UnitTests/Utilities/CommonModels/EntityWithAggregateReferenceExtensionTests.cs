@@ -190,7 +190,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
         {
             var expected = expectedDateAsStr == null
                 ? null
-                : (DateTime?) TestHelper.ConvertTestArgumentToDateTime(expectedDateAsStr);
+                : (DateTime?)TestHelper.ConvertTestArgumentToDateTime(expectedDateAsStr);
             var entity = CreateEntityWithAggregateReference(aggregateReference);
 
             var actual = entity.GetItemDate();

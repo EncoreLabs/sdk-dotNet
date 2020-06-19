@@ -23,6 +23,6 @@
         /// <summary>
         /// A basket is expired.
         /// </summary>
-        Expired
+        Expired,
     }
 }

@@ -15,59 +15,52 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
             Assert.AreEqual(expected, actual);
         }
     }
-    
-    public static class SeatDetailedExtensionTestsSource
+
+    internal static class SeatDetailedExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = new List<Attribute>{new Attribute()}
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new SeatDetailed(),
-                false
-            ),
+                false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = null,
-                    Attributes = new List<Attribute>{new Attribute()}
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "",
-                    Attributes = new List<Attribute>{new Attribute()}
+                    Attributes = new List<Attribute> { new Attribute() },
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = null
+                    Attributes = null,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new SeatDetailed
                 {
                     SeatIdentifier = "circle-8",
-                    Attributes = new List<Attribute>()
+                    Attributes = new List<Attribute>(),
                 },
-                false
-            ),
+                false),
         };
     }
 }

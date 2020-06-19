@@ -49,6 +49,7 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
                     parent.Children.AddLast(item);
                 }
             }
+
             return treeItems.Where(x => x.Parent == null);
         }
 

@@ -3,6 +3,6 @@
     public enum Market
     {
         Uk,
-        Broadway
+        Broadway,
     }
 }

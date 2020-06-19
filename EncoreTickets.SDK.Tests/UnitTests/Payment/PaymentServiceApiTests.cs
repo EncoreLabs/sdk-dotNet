@@ -34,7 +34,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public PaymentServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public PaymentServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -88,7 +89,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{channelId}/{externalId}", Method.GET,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                $"v1/orders/{channelId}/{externalId}",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -142,9 +146,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, "v1/orders", Method.POST,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                "v1/orders",
+                Method.POST,
                 bodyInJson: requestBody,
-                expectedHeaders: new Dictionary<string, object>{ [CorrelationIdHeader] = Context.Correlation });
+                expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
         [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder))]
@@ -208,7 +215,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<Order>>(BaseUrl, $"v1/orders/{orderId}", Method.PATCH,
+            mockers.VerifyExecution<ApiResponse<Order>>(
+                BaseUrl,
+                $"v1/orders/{orderId}",
+                Method.PATCH,
                 bodyInJson: requestBody,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
@@ -249,7 +259,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
         #region Country
 
         #region GetUsStates
-        
+
         [Test]
         public void GetUsStates_CallsApiWithRightParameters()
         {
@@ -265,7 +275,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, "v1/countries/usa/states", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(
+                BaseUrl,
+                "v1/countries/usa/states",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -300,8 +313,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 // ignored
             }
 
-            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(BaseUrl, 
-                "v1/countries/canada/provinces", Method.GET,
+            mockers.VerifyExecution<ApiResponse<List<CountryTerritorialUnit>>>(
+                BaseUrl,
+                "v1/countries/canada/provinces",
+                Method.GET,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
@@ -342,7 +357,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
             }
 
             mockers.VerifyAuthenticateExecution(Times.Once());
-            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(BaseUrl, "v1/payments", Method.POST,
+            mockers.VerifyExecution<ApiResponse<SDK.Payment.Models.Payment>>(
+                BaseUrl,
+                "v1/payments",
+                Method.POST,
                 bodyInJson: requestBody,
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
@@ -373,7 +391,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
     {
         #region Order
 
-        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder = new[]
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseSuccessful_ReturnsOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -475,13 +493,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -489,7 +507,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -498,7 +516,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
                         CountryCode = "GB",
-                        LegacyCountryCode = "UK"
+                        LegacyCountryCode = "UK",
                     },
                     Items = new List<OrderItem>
                     {
@@ -511,14 +529,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -529,23 +547,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
-                }
-            ),
+                        DeliveryMethod = "collection",
+                    },
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -664,7 +681,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 11800,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "partially_refunded",
                             Events = new List<PaymentEvent>
@@ -675,7 +692,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     CreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
                                     PspReference = "881579100117023F",
                                     PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 17),
-                                    Status = true
+                                    Status = true,
                                 },
                                 new PaymentEvent
                                 {
@@ -683,7 +700,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     CreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
                                     PspReference = "851579100114678C",
                                     PspCreatedAt = new DateTime(2020, 01, 15, 14, 55, 15),
-                                    Status = true
+                                    Status = true,
                                 },
                             },
                             Refunds = new List<Refund>
@@ -697,10 +714,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     Amount = new Amount
                                     {
                                         Value = 100,
-                                        Currency = "GBP"
+                                        Currency = "GBP",
                                     },
                                     Reason = "Test Booking",
-                                    Status = "success"
+                                    Status = "success",
                                 },
                                 new Refund
                                 {
@@ -711,10 +728,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                     Amount = new Amount
                                     {
                                         Value = 100,
-                                        Currency = "GBP"
+                                        Currency = "GBP",
                                     },
                                     Reason = "Test Booking",
-                                    Status = "success"
+                                    Status = "success",
                                 },
                             },
                             Compensations = new List<Refund>(),
@@ -724,16 +741,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                                 HolderName = "RE",
                                 Scheme = "visa",
                                 Number = "444433******1111",
-                                ExpiryDate = new DateTime(2020, 10, 1)
+                                ExpiryDate = new DateTime(2020, 10, 1),
                             },
                             PspMerchantAccount = "EncoreTicketsCallCentre",
-                            PspName = "AdyenTest"
-                        }
+                            PspName = "AdyenTest",
+                        },
                     },
                     Shopper = new Shopper
                     {
                         LastName = "RE",
-                        TelephoneNumber = "re"
+                        TelephoneNumber = "re",
                     },
                     Items = new List<OrderItem>
                     {
@@ -745,19 +762,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5900,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "1587"
+                            ExternalId = "1587",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
-                }
-            ),
+                        OfficeId = 1,
+                    },
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -860,13 +876,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             {
                                 Value = 11000,
                                 Currency = "GBP",
-                                ExchangeRate = 0.0
+                                ExchangeRate = 0.0,
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -874,7 +890,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Tome1918607-70c1-492e-87bb-627122e99fef",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -882,7 +898,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Addresse1918607-70c1-492e-87bb-627122e99fef",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -895,14 +911,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -913,22 +929,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
-                    RiskData = null
-                }
-            ),
+                    RiskData = null,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(
@@ -948,11 +963,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Cannot find Order. Please specify a valid orderId."
-            ),
+                "Cannot find Order. Please specify a valid orderId."),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new CreateOrderRequest
@@ -965,7 +979,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 6200,
-                        Currency = "GBP"
+                        Currency = "GBP",
                     },
                     Shopper = new Shopper
                     {
@@ -973,7 +987,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -981,7 +995,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Line2",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -993,14 +1007,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1010,24 +1024,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
-                        }
+                            ExternalId = "3608",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
+                        DeliveryMethod = "collection",
+                    },
                 },
-                "{\"description\":null,\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"amount\":{\"value\":6200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"telephoneNumber\":null,\"title\":\"Mr\",\"externalId\":\"ext-1\",\"locale\":null},\"items\":[{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"},{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":null,\"daysToEvent\":2}}"
-            ),
+                "{\"description\":null,\"channelId\":\"localhost2\",\"externalId\":\"905909\",\"redirectUrl\":\"https://londontheatredd.wl.front-default.bb-qa6.qa.encoretix.co.uk/checkout#/payment-details?reference=6836136&checksum=A8B6ED89A1\",\"origin\":\"http://localhost:8000\",\"amount\":{\"value\":6200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"Line1\",\"line2\":\"Line2\",\"postalCode\":\"AB1 2EF\",\"city\":\"Hometown\",\"countryCode\":\"GB\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"aburak@encore.co.uk\",\"firstName\":\"Aliaksei\",\"lastName\":\"Burak\",\"telephoneNumber\":null,\"title\":\"Mr\",\"externalId\":\"ext-1\",\"locale\":null},\"items\":[{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"},{\"id\":null,\"name\":\"Book Of Mormon\",\"description\":\"Online ticket sale Book Of Mormon\",\"quantity\":1,\"amount\":{\"value\":5400,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"3608\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":null,\"daysToEvent\":2}}"),
             new TestCaseData(
                 new CreateOrderRequest
                 {
@@ -1038,7 +1051,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 8100,
-                        Currency = "GBP"
+                        Currency = "GBP",
                     },
                     Shopper = new Shopper
                     {
@@ -1047,7 +1060,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "MS",
                         FirstName = "INNA",
                         LastName = "IVANOVA",
-                        ExternalId = null
+                        ExternalId = null,
                     },
                     BillingAddress = new Address
                     {
@@ -1057,7 +1070,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         City = "Cambridge Circus",
                         CountryCode = "UK",
                         LegacyCountryCode = null,
-                        StateOrProvince = "London"
+                        StateOrProvince = "London",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1069,24 +1082,23 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = null,
-                            ExternalId = "1587"
-                        }
+                            ExternalId = "1587",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
+                        OfficeId = 1,
+                    },
                 },
-                "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"
-            ),
+                "{\"description\":null,\"channelId\":\"europa-qa\",\"externalId\":\"889454\",\"redirectUrl\":\"https://payment-service.qatixuk.io/redirect\",\"origin\":\"https://payment-service.qatixuk.io\",\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"billingAddress\":{\"line1\":\"115 Shaftesbury Avenue\",\"line2\":null,\"postalCode\":\"WC2H 8AF\",\"city\":\"Cambridge Circus\",\"countryCode\":\"UK\",\"legacyCountryCode\":null,\"stateOrProvince\":\"London\"},\"shopper\":{\"email\":\"test@test.com\",\"firstName\":\"INNA\",\"lastName\":\"IVANOVA\",\"telephoneNumber\":\"02072578183\",\"title\":\"MS\",\"externalId\":null,\"locale\":null},\"items\":[{\"id\":null,\"name\":\"WICKED\",\"description\":null,\"quantity\":1,\"amount\":{\"value\":8100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":null,\"externalId\":\"1587\"}],\"riskData\":{\"deliveryMethod\":\"collection\",\"officeId\":1,\"daysToEvent\":0}}"),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseSuccessful_ReturnsCreatedOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1185,13 +1197,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1199,7 +1211,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Aliaksei",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -1208,7 +1220,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
                         CountryCode = "GB",
-                        LegacyCountryCode = "UK"
+                        LegacyCountryCode = "UK",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1221,14 +1233,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1239,23 +1251,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
-                        }
+                            ExternalId = "3608",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
-                }
-            ),
+                        DeliveryMethod = "collection",
+                    },
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1333,13 +1344,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1347,7 +1358,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "INNA",
                         LastName = "IVANOVA",
                         TelephoneNumber = "02072578183",
-                        Title = "MS"
+                        Title = "MS",
                     },
                     BillingAddress = new Address
                     {
@@ -1356,7 +1367,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         City = "Cambridge Circus",
                         CountryCode = "GB",
                         LegacyCountryCode = "UK",
-                        StateOrProvince = "London"
+                        StateOrProvince = "London",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1368,22 +1379,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 8100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "1587"
+                            ExternalId = "1587",
                         },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 0,
                         DeliveryMethod = "collection",
-                        OfficeId = 1
-                    }
-                }
-            ),
+                        OfficeId = 1,
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> CreateOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1400,8 +1410,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "Order already exist for given channelId (localhost2) and externalId (905909)"
-            ),
+                "Order already exist for given channelId (localhost2) and externalId (905909)"),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1416,18 +1425,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "Unable to create the order. Please check that all your currencies are identical or create a separate order"
-            ),
+                "Unable to create the order. Please check that all your currencies are identical or create a separate order"),
 
             // 401
             new TestCaseData(
                 "{\"code\":401,\"message\":\"Invalid JWT Token\"}",
                 HttpStatusCode.Unauthorized,
-                "Invalid JWT Token"
-            ),
+                "Invalid JWT Token"),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "5b148b26-7e48-489e-8156-89534194f8a6",
@@ -1441,7 +1448,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "newMr",
                         ExternalId = "newext-1",
                         TelephoneNumber = "new+441234567890",
-                        Locale = "fr_FR"
+                        Locale = "fr_FR",
                     },
                     BillingAddress = new Address
                     {
@@ -1449,7 +1456,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "new123 street",
                         PostalCode = "newAB1 2EF",
                         City = "newHometown",
-                        CountryCode = "FR"
+                        CountryCode = "FR",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1461,22 +1468,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 3000,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "123"
-                        }
-                    }
+                            ExternalId = "123",
+                        },
+                    },
                 },
-                "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"
-            ),
+                "{\"billingAddress\":{\"line1\":\"newHouse 1\",\"line2\":\"new123 street\",\"postalCode\":\"newAB1 2EF\",\"city\":\"newHometown\",\"countryCode\":\"FR\",\"legacyCountryCode\":null,\"stateOrProvince\":null},\"shopper\":{\"email\":\"newshopper@email.tld\",\"firstName\":\"newJohn\",\"lastName\":\"newDoe\",\"telephoneNumber\":\"new+441234567890\",\"title\":\"newMr\",\"externalId\":\"newext-1\",\"locale\":\"fr_FR\"},\"items\":[{\"id\":null,\"name\":\"newLion King\",\"description\":\"newOnline ticket sale The lion king\",\"quantity\":2,\"amount\":{\"value\":3000,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null,\"tax\":{\"value\":100,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"externalId\":\"123\"}],\"riskData\":null}"),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseSuccessful_ReturnsUpdatedOrder { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1564,13 +1570,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 6200,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1580,7 +1586,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Title = "newMr",
                         ExternalId = "newext-1",
                         TelephoneNumber = "new+441234567890",
-                        Locale = "fr_FR"
+                        Locale = "fr_FR",
                     },
                     BillingAddress = new Address
                     {
@@ -1588,7 +1594,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "new123 street",
                         PostalCode = "newAB1 2EF",
                         City = "newHometown",
-                        CountryCode = "FR"
+                        CountryCode = "FR",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1601,23 +1607,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 3000,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "123"
-                        }
+                            ExternalId = "123",
+                        },
                     },
                     RiskData = new RiskData
                     {
                         DaysToEvent = 2,
-                        DeliveryMethod = "collection"
-                    }
-                }
-            ),
+                        DeliveryMethod = "collection",
+                    },
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -1720,13 +1725,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             {
                                 Value = 11000,
                                 Currency = "GBP",
-                                ExchangeRate = 0.0
+                                ExchangeRate = 0.0,
                             },
                             Status = "new",
                             Events = new List<PaymentEvent>(),
                             Refunds = new List<Refund>(),
-                            Compensations = new List<Refund>()
-                        }
+                            Compensations = new List<Refund>(),
+                        },
                     },
                     Shopper = new Shopper
                     {
@@ -1734,7 +1739,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         FirstName = "Tom7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
                         LastName = "Burak",
                         Title = "Mr",
-                        ExternalId = "ext-1"
+                        ExternalId = "ext-1",
                     },
                     BillingAddress = new Address
                     {
@@ -1742,7 +1747,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                         Line2 = "Address7ad4a9f9-0654-43f1-b51b-1f36a24bd62a",
                         PostalCode = "AB1 2EF",
                         City = "Hometown",
-                        CountryCode = "GB"
+                        CountryCode = "GB",
                     },
                     Items = new List<OrderItem>
                     {
@@ -1755,14 +1760,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                         new OrderItem
                         {
@@ -1773,22 +1778,21 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                             Amount = new Amount
                             {
                                 Value = 5400,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
                             Tax = new Amount
                             {
                                 Value = 100,
-                                Currency = "GBP"
+                                Currency = "GBP",
                             },
-                            ExternalId = "3608"
+                            ExternalId = "3608",
                         },
                     },
-                    RiskData = null
-                }
-            ),
+                    RiskData = null,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> UpdateOrder_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1809,15 +1813,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."
-            ),
+                "deliveryMethod: Invalid deliveryMethod. Please specify a valid delivery method."),
 
             // 401
             new TestCaseData(
                 "{\"code\":401,\"message\":\"Invalid JWT Token\"}",
                 HttpStatusCode.Unauthorized,
-                "Invalid JWT Token"
-            ),
+                "Invalid JWT Token"),
 
             // 404
             new TestCaseData(
@@ -1837,15 +1839,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Cannot find Order. Please specify a valid orderId."
-            ),
+                "Cannot find Order. Please specify a valid orderId."),
         };
 
         #endregion
 
         #region Country
 
-        public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates = new[]
+        public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1874,28 +1875,27 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     new CountryTerritorialUnit
                     {
                         Name = "Alabama",
-                        Abbreviation = "AL"
+                        Abbreviation = "AL",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Alaska",
-                        Abbreviation = "AK"
+                        Abbreviation = "AK",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Arizona",
-                        Abbreviation = "AZ"
+                        Abbreviation = "AZ",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "West Virginia",
-                        Abbreviation = "WV"
+                        Abbreviation = "WV",
                     },
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces = new[]
+        public static IEnumerable<TestCaseData> GetCanadaProvinces_IfApiResponseSuccessful_ReturnsCanadaProvinces { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1924,32 +1924,31 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     new CountryTerritorialUnit
                     {
                         Name = "Alberta",
-                        Abbreviation = "AB"
+                        Abbreviation = "AB",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "British Columbia",
-                        Abbreviation = "BC"
+                        Abbreviation = "BC",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "Manitoba",
-                        Abbreviation = "MB"
+                        Abbreviation = "MB",
                     },
                     new CountryTerritorialUnit
                     {
                         Name = "New Brunswick",
-                        Abbreviation = "NB"
+                        Abbreviation = "NB",
                     },
-                }
-            ),
+                }),
         };
 
         #endregion
 
         #region Payment
 
-        public static IEnumerable<TestCaseData> CreateNewPayment_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> CreateNewPayment_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new CreatePaymentRequest
@@ -1958,14 +1957,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                     Amount = new Amount
                     {
                         Value = 4200,
-                        Currency = "GBP"
-                    }
+                        Currency = "GBP",
+                    },
                 },
-                "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"
-            ),
+                "{\"orderId\":\"5b148b26-7e48-489e-8156-89534194f8a6\",\"amount\":{\"value\":4200,\"currency\":\"GBP\",\"exchangeRate\":0.0},\"amountOriginal\":null}"),
         };
 
-        public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> CreateNewPayment_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -1982,8 +1980,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.BadRequest,
-                "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."
-            ),
+                "New payment for order with ID \"5b148b26-7e48-489e-8156-89534194f8a6\" already exists."),
 
             // 404
             new TestCaseData(
@@ -2000,10 +1997,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
   }
 }",
                 HttpStatusCode.NotFound,
-                "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."
-            ),
+                "Order with id \"ff40a916-e609-46a7-a57a-5eaee55940de\" does not exist."),
         };
-
 
         #endregion
     }

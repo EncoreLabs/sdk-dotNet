@@ -22,14 +22,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         private const string TestBasketValidReference = "12345678";
         private const string TestPromotionValidId = "12345678";
 
-        private readonly SDK.Basket.Models.Basket TestBasketValid = new SDK.Basket.Models.Basket();
+        private readonly SDK.Basket.Models.Basket testBasketValid = new SDK.Basket.Models.Basket();
 
         private ApiServiceMocker mockers;
-        
+
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public BasketServiceApiTests() : base(new ApiContext(Environments.Sandbox))
+        public BasketServiceApiTests()
+            : base(new ApiContext(Environments.Sandbox))
         {
         }
 
@@ -76,7 +77,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket))]
-        public void GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -142,7 +144,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket))]
-        public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             List<Delivery> expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<Delivery>>>(responseContent);
@@ -192,8 +195,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters))]
-        public void UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters(SDK.Basket.Models.Basket basket,
-            bool? hasFlexiTickets, string requestBody)
+        public void UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters(
+            SDK.Basket.Models.Basket basket,
+            bool? hasFlexiTickets,
+            string requestBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -239,12 +244,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertBasket_IfApiResponseSuccessful_ReturnsBasket))]
-        public void UpsertBasket_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void UpsertBasket_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
 
-            var actual = UpsertBasket(TestBasketValid);
+            var actual = UpsertBasket(testBasketValid);
 
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
@@ -259,7 +265,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             var exception = Assert.Catch<ApiException>(() =>
             {
-                var actual = UpsertBasket(TestBasketValid);
+                var actual = UpsertBasket(testBasketValid);
             });
 
             Assert.AreEqual(code, exception.ResponseCode);
@@ -269,7 +275,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         #endregion
 
         #region UpsertPromotion
-        
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
@@ -281,10 +287,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             });
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource),
+        [TestCaseSource(
+            typeof(BasketServiceApiTestsSource),
             nameof(BasketServiceApiTestsSource.UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters))]
-        public void UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters(string reference,
-            Coupon coupon, string expectedBody)
+        public void UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters(
+            string reference,
+            Coupon coupon,
+            string expectedBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -306,10 +315,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: null);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource),
+        [TestCaseSource(
+            typeof(BasketServiceApiTestsSource),
             nameof(BasketServiceApiTestsSource.UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters))]
-        public void UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters(string reference,
-            string couponName, string expectedBody)
+        public void UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters(
+            string reference,
+            string couponName,
+            string expectedBody)
         {
             mockers.SetupAnyExecution<ApiResponse<SDK.Basket.Models.Basket>>();
 
@@ -332,7 +344,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket))]
-        public void UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket(string responseContent,
+        public void UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -451,7 +464,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.ClearBasket_IfApiResponseSuccessful_ReturnsBasket))]
-        public void ClearBasket_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void ClearBasket_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -528,7 +542,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.RemoveReservation_IfApiResponseSuccessful_ReturnsBasket))]
-        public void RemoveReservation_IfApiResponseSuccessful_ReturnsBasket(string responseContent,
+        public void RemoveReservation_IfApiResponseSuccessful_ReturnsBasket(
+            string responseContent,
             SDK.Basket.Models.Basket expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<SDK.Basket.Models.Basket>>(responseContent);
@@ -568,6 +583,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             {
                 queryParameters.Add("limit", pageRequest.Limit);
             }
+
             if (pageRequest?.Page != null)
             {
                 queryParameters.Add("page", pageRequest.Page);
@@ -591,7 +607,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotions_IfApiResponseSuccessful_ReturnsPromotions))]
-        public void GetPromotions_IfApiResponseSuccessful_ReturnsPromotions(string responseContent,
+        public void GetPromotions_IfApiResponseSuccessful_ReturnsPromotions(
+            string responseContent,
             List<Promotion> expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponseWithResultsBlock<List<Promotion>>>(responseContent);
@@ -657,7 +674,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         }
 
         [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion))]
-        public void GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion(string responseContent,
+        public void GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion(
+            string responseContent,
             Promotion expected)
         {
             mockers.SetupSuccessfulExecution<ApiResponse<Promotion>>(responseContent);
@@ -687,11 +705,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         #endregion
     }
 
-    public static class BasketServiceApiTestsSource
+    internal static class BasketServiceApiTestsSource
     {
         #region GetBasketDetails
 
-        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket = new[]
+        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -823,81 +841,82 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 new ReservationItem
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                    AggregateReference =
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "P",
                                     Number = "31",
-                                    LocationDescription = ""
+                                    LocationDescription = "",
                                 },
                                 new ReservationItem
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                    AggregateReference =
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "P",
                                     Number = "32",
-                                    LocationDescription = ""
+                                    LocationDescription = "",
                                 },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 5100,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-                ),
+                    MissedPromotions = null,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetBasketDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -919,8 +938,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
             // 404
             new TestCaseData(
@@ -942,18 +960,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"5926058\" was not found."
-            ),
+                "Basket with reference \"5926058\" was not found."),
         };
 
         #endregion
 
         #region GetBasketDeliveryOptions
 
-        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket = new[]
-        {
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket { get; } =
+            new[]
+            {
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -999,57 +1017,57 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     },
     ""context"": null
 }",
-                new List<Delivery>
-                {
-                    new Delivery
+                    new List<Delivery>
                     {
-                        Method = DeliveryMethod.Postage,
-                        Charge = new Price
+                        new Delivery
                         {
-                            Value = 145,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                    new Delivery
-                    {
-                        Method = DeliveryMethod.Eticket,
-                        Charge = new Price
+                            Method = DeliveryMethod.Postage,
+                            Charge = new Price
+                            {
+                                Value = 145,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                        new Delivery
                         {
-                            Value = 0,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                    new Delivery
-                    {
-                        Method = DeliveryMethod.Collection,
-                        Charge = new Price
+                            Method = DeliveryMethod.Eticket,
+                            Charge = new Price
+                            {
+                                Value = 0,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                        new Delivery
                         {
-                            Value = 0,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                    new Delivery
-                    {
-                        Method = DeliveryMethod.Evoucher,
-                        Charge = new Price
+                            Method = DeliveryMethod.Collection,
+                            Charge = new Price
+                            {
+                                Value = 0,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                        new Delivery
                         {
-                            Value = 0,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                }
-            ),
-        };
+                            Method = DeliveryMethod.Evoucher,
+                            Charge = new Price
+                            {
+                                Value = 0,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                    }),
+            };
 
-        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException = new[]
-        {
-            // 400
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseFailed_ThrowsApiException { get; } =
+            new[]
+            {
+                // 400
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -1066,13 +1084,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                    HttpStatusCode.BadRequest,
+                    "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
-            // 404
-            new TestCaseData(
-                @"{
+                // 404
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -1089,539 +1106,542 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                HttpStatusCode.NotFound,
-                "Basket with reference \"86046\" was not found."
-            ),
-        };
+                    HttpStatusCode.NotFound,
+                    "Basket with reference \"86046\" was not found."),
+            };
 
         #endregion
 
         #region UpsertBasket
 
-        public static IEnumerable<TestCaseData> UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters = new[]
-        {
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    Reference = "791631",
-                    Checksum = "2001040924",
-                    ChannelId = "integrator-qa-boxoffice",
-                    Mixed = false,
-                    ExchangeRate = 1,
-                    Delivery = new Delivery
+        public static IEnumerable<TestCaseData> UpsertBasket_IfBasketIsPassed_CallsApiWithRightParameters { get; } =
+            new[]
+            {
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
                     {
-                        Charge = new Price
+                        Reference = "791631",
+                        Checksum = "2001040924",
+                        ChannelId = "integrator-qa-boxoffice",
+                        Mixed = false,
+                        ExchangeRate = 1,
+                        Delivery = new Delivery
                         {
-                            Value = 3950,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
+                            Charge = new Price
+                            {
+                                Value = 3950,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                            Method = DeliveryMethod.Eticket,
                         },
-                        Method = DeliveryMethod.Eticket
-                    },
-                    AllowFlexiTickets = false,
-                    Status = BasketStatus.Active,
-                    OfficeCurrency = "GBP",
-                    ShopperCurrency = "GBP",
-                    ShopperReference = "test",
-                    ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
-                    CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
+                        AllowFlexiTickets = false,
+                        Status = BasketStatus.Active,
+                        OfficeCurrency = "GBP",
+                        ShopperCurrency = "GBP",
+                        ShopperReference = "test",
+                        ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
+                        CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
+                        Reservations = new List<Reservation>
                         {
-                            Id = 1,
-                            LinkedReservationId = 0,
-                            VenueId = "139",
-                            VenueName = "Dominion Theatre",
-                            ProductId = "2017",
-                            ProductType = "SHW",
-                            ProductName = "White Christmas",
-                            Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 2,
-                            Items = new List<ReservationItem>
+                            new Reservation
                             {
-                                new ReservationItem
+                                Id = 1,
+                                LinkedReservationId = 0,
+                                VenueId = "139",
+                                VenueName = "Dominion Theatre",
+                                ProductId = "2017",
+                                ProductType = "SHW",
+                                ProductName = "White Christmas",
+                                Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 2,
+                                Items = new List<ReservationItem>
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "31",
-                                    LocationDescription = ""
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "31",
+                                        LocationDescription = "",
+                                    },
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "32",
+                                        LocationDescription = "",
+                                    },
                                 },
-                                new ReservationItem
+                                FaceValueInOfficeCurrency = new Price
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "32",
-                                    LocationDescription = ""
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
                                 },
-                            },
-                            FaceValueInOfficeCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            FaceValueInShopperCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInOfficeCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInShopperCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                        }
-                    },
-                    Coupon = null,
-                    AppliedPromotion = null,
-                    MissedPromotions = null
-                },
-                null,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    Reference = "791631",
-                    Checksum = "2001040924",
-                    ChannelId = "integrator-qa-boxoffice",
-                    Mixed = false,
-                    ExchangeRate = 1,
-                    Delivery = new Delivery
-                    {
-                        Charge = new Price
-                        {
-                            Value = 3950,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        },
-                        Method = DeliveryMethod.Eticket
-                    },
-                    AllowFlexiTickets = false,
-                    Status = BasketStatus.Active,
-                    OfficeCurrency = "GBP",
-                    ShopperCurrency = "GBP",
-                    ShopperReference = "test",
-                    ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
-                    CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
-                        {
-                            Id = 1,
-                            LinkedReservationId = 0,
-                            VenueId = "139",
-                            VenueName = "Dominion Theatre",
-                            ProductId = "2017",
-                            ProductType = "SHW",
-                            ProductName = "White Christmas",
-                            Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 2,
-                            Items = new List<ReservationItem>
-                            {
-                                new ReservationItem
+                                FaceValueInShopperCurrency = new Price
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "31",
-                                    LocationDescription = ""
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
                                 },
-                                new ReservationItem
+                                SalePriceInOfficeCurrency = new Price
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "32",
-                                    LocationDescription = ""
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
                                 },
-                            },
-                            FaceValueInOfficeCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            FaceValueInShopperCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInOfficeCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInShopperCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                        }
-                    },
-                    Coupon = null,
-                    AppliedPromotion = null,
-                    MissedPromotions = null
-                },
-                false,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    Reference = "791631",
-                    Checksum = "2001040924",
-                    ChannelId = "integrator-qa-boxoffice",
-                    Mixed = false,
-                    ExchangeRate = 1,
-                    Delivery = new Delivery
-                    {
-                        Charge = new Price
-                        {
-                            Value = 3950,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        },
-                        Method = DeliveryMethod.Eticket
-                    },
-                    AllowFlexiTickets = false,
-                    Status = BasketStatus.Active,
-                    OfficeCurrency = "GBP",
-                    ShopperCurrency = "GBP",
-                    ShopperReference = "test",
-                    ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
-                    CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
-                        {
-                            Id = 1,
-                            LinkedReservationId = 0,
-                            VenueId = "139",
-                            VenueName = "Dominion Theatre",
-                            ProductId = "2017",
-                            ProductType = "SHW",
-                            ProductName = "White Christmas",
-                            Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 2,
-                            Items = new List<ReservationItem>
-                            {
-                                new ReservationItem
+                                SalePriceInShopperCurrency = new Price
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "31",
-                                    LocationDescription = ""
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
                                 },
-                                new ReservationItem
+                                AdjustedSalePriceInOfficeCurrency = new Price
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
-                                    AreaId = "DC",
-                                    AreaName = "CIRCLE",
-                                    Row = "P",
-                                    Number = "32",
-                                    LocationDescription = ""
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
                                 },
-                            },
-                            FaceValueInOfficeCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            FaceValueInShopperCurrency = new Price
-                            {
-                                Value = 3950,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInShopperCurrency = new Price
-                            {
-                                Value = 5100,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInOfficeCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInShopperCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                        }
-                    },
-                    Coupon = null,
-                    AppliedPromotion = null,
-                    MissedPromotions = null
-                },
-                true,
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    Reference = "1010101",
-                    ChannelId = "encoretickets",
-                    Delivery = new Delivery
-                    {
-                        Method = DeliveryMethod.Collection,
-                        Charge = new Price
-                        {
-                            Value = 1000,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                    AllowFlexiTickets = true,
-                    ShopperCurrency = "GBP",
-                    ShopperReference = "5ec76ed81e39699b102d01a39fe74f1c",
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
-                        {
-                            Id = 1,
-                            VenueId = "163",
-                            ProductId = "2102",
-                            Date = new DateTimeOffset(2019, 04, 10, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 1,
-                            Items = new List<ReservationItem>
-                            {
-                                new ReservationItem
+                                AdjustedSalePriceInShopperCurrency = new Price
                                 {
-                                    AggregateReference = "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                }
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInOfficeCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInShopperCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
                             },
                         },
-                        new Reservation
+                        Coupon = null,
+                        AppliedPromotion = null,
+                        MissedPromotions = null,
+                    },
+                    null,
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
+                    {
+                        Reference = "791631",
+                        Checksum = "2001040924",
+                        ChannelId = "integrator-qa-boxoffice",
+                        Mixed = false,
+                        ExchangeRate = 1,
+                        Delivery = new Delivery
                         {
-                            Id = 2,
-                            LinkedReservationId = 1,
-                            VenueId = "901",
-                            ProductId = "9001",
-                            ProductType = "FLX",
-                            Date = new DateTimeOffset(2020, 10, 23, 00, 01, 00, TimeSpan.FromHours(1)),
-                            Quantity = 1,
-                            FaceValueInOfficeCurrency = new Price
+                            Charge = new Price
                             {
-                                Value = 199,
+                                Value = 3950,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                            FaceValueInShopperCurrency = new Price
+                            Method = DeliveryMethod.Eticket,
+                        },
+                        AllowFlexiTickets = false,
+                        Status = BasketStatus.Active,
+                        OfficeCurrency = "GBP",
+                        ShopperCurrency = "GBP",
+                        ShopperReference = "test",
+                        ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
+                        CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
+                        Reservations = new List<Reservation>
+                        {
+                            new Reservation
                             {
-                                Value = 199,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 199,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            SalePriceInShopperCurrency = new Price
-                            {
-                                Value = 199,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInOfficeCurrency = new Price
-                            {
-                                Value = 199,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustedSalePriceInShopperCurrency = new Price
-                            {
-                                Value = 199,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInOfficeCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
-                            },
-                            AdjustmentAmountInShopperCurrency = new Price
-                            {
-                                Value = 0,
-                                Currency = "GBP",
-                                DecimalPlaces = 2
+                                Id = 1,
+                                LinkedReservationId = 0,
+                                VenueId = "139",
+                                VenueName = "Dominion Theatre",
+                                ProductId = "2017",
+                                ProductType = "SHW",
+                                ProductName = "White Christmas",
+                                Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 2,
+                                Items = new List<ReservationItem>
+                                {
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "31",
+                                        LocationDescription = "",
+                                    },
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "32",
+                                        LocationDescription = "",
+                                    },
+                                },
+                                FaceValueInOfficeCurrency = new Price
+                                {
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                FaceValueInShopperCurrency = new Price
+                                {
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInOfficeCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInShopperCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
                             },
                         },
-                        new Reservation()
+                        Coupon = null,
+                        AppliedPromotion = null,
+                        MissedPromotions = null,
                     },
-                    Coupon = new Coupon
+                    false,
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
                     {
-                        Code = "SAMPLE_SOURCE_CODE",
-                    }
-                },
-                null,
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    Reference = "1010101",
-                    ChannelId = "encoretickets",
-                    Delivery = new Delivery
-                    {
-                        Method = DeliveryMethod.Collection,
-                        Charge = new Price
+                        Reference = "791631",
+                        Checksum = "2001040924",
+                        ChannelId = "integrator-qa-boxoffice",
+                        Mixed = false,
+                        ExchangeRate = 1,
+                        Delivery = new Delivery
                         {
-                            Value = 1000,
-                            Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
-                    },
-                    AllowFlexiTickets = true,
-                    ShopperCurrency = "GBP",
-                    ShopperReference = "5ec76ed81e39699b102d01a39fe74f1c",
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
-                        {
-                            VenueId = "163",
-                            ProductId = "2102",
-                            Date = new DateTimeOffset(2019, 04, 10, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 1,
-                            Items = new List<ReservationItem>
+                            Charge = new Price
                             {
-                                new ReservationItem
-                                {
-                                    AggregateReference = "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                }
+                                Value = 3950,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
                             },
-                        }
-                    },
-                    Coupon = new Coupon
-                    {
-                        Code = "SAMPLE_SOURCE_CODE",
-                    }
-                },
-                false,
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
-            new TestCaseData(
-                new SDK.Basket.Models.Basket
-                {
-                    ChannelId = "{{affiliateId}}",
-                    Reservations = new List<Reservation>
-                    {
-                        new Reservation
+                            Method = DeliveryMethod.Eticket,
+                        },
+                        AllowFlexiTickets = false,
+                        Status = BasketStatus.Active,
+                        OfficeCurrency = "GBP",
+                        ShopperCurrency = "GBP",
+                        ShopperReference = "test",
+                        ExpiredAt = new DateTimeOffset(2020, 01, 04, 09, 39, 28, TimeSpan.Zero),
+                        CreatedAt = new DateTimeOffset(2020, 01, 04, 09, 24, 28, TimeSpan.Zero),
+                        Reservations = new List<Reservation>
                         {
-                            VenueId = "138",
-                            ProductId = "1587",
-                            Date = new DateTimeOffset(2020, 10, 23, 19, 30, 00, TimeSpan.Zero),
-                            Quantity = 1,
-                            Items = new List<ReservationItem>
+                            new Reservation
                             {
-                                new ReservationItem
+                                Id = 1,
+                                LinkedReservationId = 0,
+                                VenueId = "139",
+                                VenueName = "Dominion Theatre",
+                                ProductId = "2017",
+                                ProductType = "SHW",
+                                ProductName = "White Christmas",
+                                Date = new DateTimeOffset(2020, 01, 04, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 2,
+                                Items = new List<ReservationItem>
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k"
-                                }
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "31",
+                                        LocationDescription = "",
+                                    },
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                        AreaId = "DC",
+                                        AreaName = "CIRCLE",
+                                        Row = "P",
+                                        Number = "32",
+                                        LocationDescription = "",
+                                    },
+                                },
+                                FaceValueInOfficeCurrency = new Price
+                                {
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                FaceValueInShopperCurrency = new Price
+                                {
+                                    Value = 3950,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 5100,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInOfficeCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInShopperCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
                             },
-                        }
-                    }
-                },
-                null,
-                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"
-            ),
-        };
+                        },
+                        Coupon = null,
+                        AppliedPromotion = null,
+                        MissedPromotions = null,
+                    },
+                    true,
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
+                    {
+                        Reference = "1010101",
+                        ChannelId = "encoretickets",
+                        Delivery = new Delivery
+                        {
+                            Method = DeliveryMethod.Collection,
+                            Charge = new Price
+                            {
+                                Value = 1000,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                        AllowFlexiTickets = true,
+                        ShopperCurrency = "GBP",
+                        ShopperReference = "5ec76ed81e39699b102d01a39fe74f1c",
+                        Reservations = new List<Reservation>
+                        {
+                            new Reservation
+                            {
+                                Id = 1,
+                                VenueId = "163",
+                                ProductId = "2102",
+                                Date = new DateTimeOffset(2019, 04, 10, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 1,
+                                Items = new List<ReservationItem>
+                                {
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                    },
+                                },
+                            },
+                            new Reservation
+                            {
+                                Id = 2,
+                                LinkedReservationId = 1,
+                                VenueId = "901",
+                                ProductId = "9001",
+                                ProductType = "FLX",
+                                Date = new DateTimeOffset(2020, 10, 23, 00, 01, 00, TimeSpan.FromHours(1)),
+                                Quantity = 1,
+                                FaceValueInOfficeCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                FaceValueInShopperCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                SalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInOfficeCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustedSalePriceInShopperCurrency = new Price
+                                {
+                                    Value = 199,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInOfficeCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                                AdjustmentAmountInShopperCurrency = new Price
+                                {
+                                    Value = 0,
+                                    Currency = "GBP",
+                                    DecimalPlaces = 2,
+                                },
+                            },
+                            new Reservation(),
+                        },
+                        Coupon = new Coupon
+                        {
+                            Code = "SAMPLE_SOURCE_CODE",
+                        },
+                    },
+                    null,
+                    "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
+                    {
+                        Reference = "1010101",
+                        ChannelId = "encoretickets",
+                        Delivery = new Delivery
+                        {
+                            Method = DeliveryMethod.Collection,
+                            Charge = new Price
+                            {
+                                Value = 1000,
+                                Currency = "GBP",
+                                DecimalPlaces = 2,
+                            },
+                        },
+                        AllowFlexiTickets = true,
+                        ShopperCurrency = "GBP",
+                        ShopperReference = "5ec76ed81e39699b102d01a39fe74f1c",
+                        Reservations = new List<Reservation>
+                        {
+                            new Reservation
+                            {
+                                VenueId = "163",
+                                ProductId = "2102",
+                                Date = new DateTimeOffset(2019, 04, 10, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 1,
+                                Items = new List<ReservationItem>
+                                {
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                    },
+                                },
+                            },
+                        },
+                        Coupon = new Coupon
+                        {
+                            Code = "SAMPLE_SOURCE_CODE",
+                        },
+                    },
+                    false,
+                    "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
+                new TestCaseData(
+                    new SDK.Basket.Models.Basket
+                    {
+                        ChannelId = "{{affiliateId}}",
+                        Reservations = new List<Reservation>
+                        {
+                            new Reservation
+                            {
+                                VenueId = "138",
+                                ProductId = "1587",
+                                Date = new DateTimeOffset(2020, 10, 23, 19, 30, 00, TimeSpan.Zero),
+                                Quantity = 1,
+                                Items = new List<ReservationItem>
+                                {
+                                    new ReservationItem
+                                    {
+                                        AggregateReference =
+                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    null,
+                    "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
+            };
 
-        public static IEnumerable<TestCaseData> UpsertBasket_IfBasketParametersArePassed_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> UpsertBasket_IfBasketParametersArePassed_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new UpsertBasketParameters
@@ -1634,9 +1654,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 3950,
                             Currency = "GBP",
-                            DecimalPlaces = 2
+                            DecimalPlaces = 2,
                         },
-                        Method = DeliveryMethod.Eticket
+                        Method = DeliveryMethod.Eticket,
                     },
                     ShopperCurrency = "GBP",
                     ShopperReference = "test",
@@ -1652,19 +1672,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 new ReservationItemParameters
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                    AggregateReference =
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                 },
                                 new ReservationItemParameters
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                    AggregateReference =
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                 },
                             },
-                        }
+                        },
                     },
-                    Coupon = null
+                    Coupon = null,
                 },
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new UpsertBasketParameters
                 {
@@ -1677,8 +1698,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     HasFlexiTickets = true,
                     ShopperCurrency = "GBP",
@@ -1695,18 +1716,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 new ReservationItemParameters
                                 {
-                                    AggregateReference = "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ=="
-                                }
+                                    AggregateReference =
+                                        "eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==",
+                                },
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
                         Code = "SAMPLE_SOURCE_CODE",
-                    }
+                    },
                 },
-                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"
-            ),
+                "{\"reference\":\"1010101\",\"channelId\":\"encoretickets\",\"delivery\":{\"method\":\"collection\",\"charge\":{\"value\":1000,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"5ec76ed81e39699b102d01a39fe74f1c\",\"reservations\":[{\"venueId\":\"163\",\"productId\":\"2102\",\"date\":\"2019-04-10T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJzYm9BbW91bnQiOjY5MDAsInNib1ByaWNlIjo2OTAwLCJob3VzZVByaWNlIjo2OTAwLCJzdGFDb3N0Ijo2OTAwfQ==\"}]}],\"coupon\":{\"code\":\"SAMPLE_SOURCE_CODE\"}}"),
             new TestCaseData(
                 new UpsertBasketParameters
                 {
@@ -1723,17 +1744,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 new ReservationItemParameters
                                 {
-                                    AggregateReference = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k"
-                                }
+                                    AggregateReference =
+                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                },
                             },
-                        }
-                    }
+                        },
+                    },
                 },
-                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"
-            ),
+                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
         };
 
-        public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseSuccessful_ReturnsBasket = new[]
+        public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -1857,64 +1878,63 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "X",
                                     Number = "45",
-                                    LocationDescription = ""
-                                }
+                                    LocationDescription = "",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-            ),
+                    MissedPromotions = null,
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -2086,56 +2106,56 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "CIRCLE",
                                     Row = "X",
                                     Number = "45",
-                                    LocationDescription = ""
-                                }
+                                    LocationDescription = "",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 2500,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 3200,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                         },
                         new Reservation
@@ -2151,57 +2171,56 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 199,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 0,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-            ),
+                    MissedPromotions = null,
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -2329,8 +2348,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2359,68 +2378,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2428,14 +2447,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
-                }
-            ),
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -2457,8 +2475,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "channelId: This value should not be blank."
-            ),
+                "channelId: This value should not be blank."),
 
             // 503
             new TestCaseData(
@@ -2478,45 +2495,41 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.ServiceUnavailable,
-                "Unable to process \"new\" basket. Error code: \"THTNOTFOUND\"."
-            ),
+                "Unable to process \"new\" basket. Error code: \"THTNOTFOUND\"."),
         };
 
         #endregion
 
         #region UpsertPromotion
-        
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters = new[]
+
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponAreSet_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "791631",
                 null,
-                "{\"coupon\":null}"
-            ),
+                "{\"coupon\":null}"),
             new TestCaseData(
                 "791631",
-                new Coupon{
-                    Code = "PRODUCTDISCOUNT"
+                new Coupon
+                {
+                    Code = "PRODUCTDISCOUNT",
                 },
-                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"
-            ),
+                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfBasketReferenceAndCouponNameAreSet_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 "791631",
                 null,
-                "{\"coupon\":{\"code\":null}}"
-            ),
+                "{\"coupon\":{\"code\":null}}"),
             new TestCaseData(
                 "791631",
                 "PRODUCTDISCOUNT",
-                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"
-            ),
+                "{\"coupon\":{\"code\":\"PRODUCTDISCOUNT\"}}"),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulAndPromoCodeValid_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -2645,8 +2658,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2675,68 +2688,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2744,11 +2757,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
-                }
-            ),
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
+                }),
             new TestCaseData(
                 @"{
   ""request"": {
@@ -2884,8 +2896,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -2914,68 +2926,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -2983,19 +2995,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
-                }
-            ),
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
+                }),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulButPromoCodeInvalid_ThrowsInvalidPromoCodeException = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseSuccessfulButPromoCodeInvalid_ThrowsInvalidPromoCodeException { get; } = new[]
         {
             new TestCaseData(
                 new Coupon
                 {
-                    Code = "test"
+                    Code = "test",
                 },
                 @"{
     ""request"": {
@@ -3094,11 +3105,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "The supplied promotion code [test] was not applied as it didn't match a valid promotion code"
-            ),
+                "The supplied promotion code [test] was not applied as it didn't match a valid promotion code"),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith400Code_ThrowsBasketCannotBeModifiedException = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith400Code_ThrowsBasketCannotBeModifiedException { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3118,8 +3128,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "The basket with reference [8605916] cannot be modified. It has a status of [cancelled]. Only baskets in [active] status can be updated or confirmed."
-            ),
+                "The basket with reference [8605916] cannot be modified. It has a status of [cancelled]. Only baskets in [active] status can be updated or confirmed."),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3138,11 +3147,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith404Code_ThrowsBasketNotFoundException = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWith404Code_ThrowsBasketNotFoundException { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3162,11 +3170,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                "Basket with reference \"34343434\" was not found."
-            ),
+                "Basket with reference \"34343434\" was not found."),
         };
 
-        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWithUnexpectedCode_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> UpsertPromotion_IfApiResponseFailedWithUnexpectedCode_ThrowsApiException { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3187,15 +3194,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.ServiceUnavailable,
-                "test"
-            ),
+                "test"),
         };
 
         #endregion
 
         #region ClearBasket
 
-        public static IEnumerable<TestCaseData> ClearBasket_IfApiResponseSuccessful_ReturnsBasket = new[]
+        public static IEnumerable<TestCaseData> ClearBasket_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3243,9 +3249,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-            ),
+                    MissedPromotions = null,
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3292,12 +3297,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-            ),
+                    MissedPromotions = null,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> ClearBasket_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> ClearBasket_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -3319,8 +3323,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Insufficient data has been supplied for \"test\" basket to complete this request."
-            ),
+                "Insufficient data has been supplied for \"test\" basket to complete this request."),
 
             // 404
             new TestCaseData(
@@ -3342,15 +3345,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Basket with reference \"5926058\" was not found."
-            ),
+                "Basket with reference \"5926058\" was not found."),
         };
 
         #endregion
 
         #region RemoveReservation
 
-        public static IEnumerable<TestCaseData> RemoveReservation_IfApiResponseSuccessful_ReturnsBasket = new[]
+        public static IEnumerable<TestCaseData> RemoveReservation_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3479,8 +3481,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Value = 1000,
                             Currency = "GBP",
-                            DecimalPlaces = 2
-                        }
+                            DecimalPlaces = 2,
+                        },
                     },
                     AllowFlexiTickets = true,
                     Status = BasketStatus.Active,
@@ -3509,68 +3511,68 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     AreaName = "STALLS",
                                     Row = "G",
                                     Number = "14",
-                                    LocationDescription = "Seat Location Description."
-                                }
+                                    LocationDescription = "Seat Location Description.",
+                                },
                             },
                             FaceValueInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             FaceValueInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             SalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustedSalePriceInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInOfficeCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
                             AdjustmentAmountInShopperCurrency = new Price
                             {
                                 Value = 1000,
                                 Currency = "GBP",
-                                DecimalPlaces = 2
+                                DecimalPlaces = 2,
                             },
-                        }
+                        },
                     },
                     Coupon = new Coupon
                     {
-                        Code = "SAMPLE_SOURCE_CODE"
+                        Code = "SAMPLE_SOURCE_CODE",
                     },
                     AppliedPromotion = new Promotion
                     {
                         Id = "1",
                         Name = "Free ticket",
-                        DisplayText = "Buy one ticket, get another free."
+                        DisplayText = "Buy one ticket, get another free.",
                     },
                     MissedPromotions = new List<Promotion>
                     {
@@ -3578,11 +3580,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         {
                             Id = "1",
                             Name = "Free ticket",
-                            DisplayText = "Buy one ticket, get another free."
-                        }
-                    }
-                }
-            ),
+                            DisplayText = "Buy one ticket, get another free.",
+                        },
+                    },
+                }),
             new TestCaseData(
                 @"{
     ""request"": {
@@ -3630,16 +3631,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                     Reservations = new List<Reservation>(),
                     Coupon = null,
                     AppliedPromotion = null,
-                    MissedPromotions = null
-                }
-            ),
+                    MissedPromotions = null,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> RemoveReservation_IfApiResponseFailed_ThrowsApiException = new[]
-        {
-            // 404
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> RemoveReservation_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+            {
+                // 404
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -3657,11 +3657,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                HttpStatusCode.NotFound,
-                "Reservation with id [2] does not exist for basket [8604865]."
-            ),
-            new TestCaseData(
-                @"{
+                    HttpStatusCode.NotFound,
+                    "Reservation with id [2] does not exist for basket [8604865]."),
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -3679,36 +3678,32 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ]
     }
 }",
-                HttpStatusCode.NotFound,
-                "Basket with reference \"04865\" was not found."
-            ),
-        };
+                    HttpStatusCode.NotFound,
+                    "Basket with reference \"04865\" was not found."),
+            };
 
         #endregion
 
         #region GetPromotions
 
-        public static IEnumerable<TestCaseData> GetPromotions_CallsApiWithRightParameters = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_CallsApiWithRightParameters { get; } = new[]
         {
             new TestCaseData(
                 new PageRequest
                 {
                     Limit = 500,
-                    Page = 2
-                }
-            ),
+                    Page = 2,
+                }),
             new TestCaseData(
-                null
-            ),
+                null),
             new TestCaseData(
                 new PageRequest
                 {
-                    Limit = 500
-                }
-            ),
+                    Limit = 500,
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseSuccessful_ReturnsPromotions = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseSuccessful_ReturnsPromotions { get; } = new[]
         {
             new TestCaseData(
                 @"{
@@ -3762,11 +3757,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         ValidFrom = new DateTimeOffset(2019, 05, 28, 07, 00, 00, TimeSpan.Zero),
                         ValidTo = new DateTimeOffset(2019, 10, 30, 22, 59, 59, TimeSpan.Zero),
                     },
-                }
-            ),
+                }),
         };
 
-        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetPromotions_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(
@@ -3789,18 +3783,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.BadRequest,
-                "Parameter \"page\" of value \"-1\" violated a constraint \"must be an integer\""
-            ),
+                "Parameter \"page\" of value \"-1\" violated a constraint \"must be an integer\""),
         };
 
         #endregion
 
         #region GetPromotionDetails
 
-        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion = new[]
-        {
-            new TestCaseData(
-                @"{
+        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseSuccessful_ReturnsPromotion { get; } =
+            new[]
+            {
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -3820,20 +3814,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     },
     ""context"": null
 }",
-                new Promotion
-                {
-                    Id = "206000054",
-                    Name = "Product % or value_2",
-                    DisplayText = "",
-                    Description = "",
-                    Reference = "",
-                    ReportingCode = "",
-                    ValidFrom = new DateTimeOffset(2019, 11, 01, 07, 47, 43, TimeSpan.Zero),
-                    ValidTo = new DateTimeOffset(2019, 11, 20, 07, 45, 28, TimeSpan.Zero),
-                }
-            ),
-            new TestCaseData(
-                @"{
+                    new Promotion
+                    {
+                        Id = "206000054",
+                        Name = "Product % or value_2",
+                        DisplayText = "",
+                        Description = "",
+                        Reference = "",
+                        ReportingCode = "",
+                        ValidFrom = new DateTimeOffset(2019, 11, 01, 07, 47, 43, TimeSpan.Zero),
+                        ValidTo = new DateTimeOffset(2019, 11, 20, 07, 45, 28, TimeSpan.Zero),
+                    }),
+                new TestCaseData(
+                    @"{
     ""request"": {
         ""body"": """",
         ""query"": {},
@@ -3853,21 +3846,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     },
     ""context"": null
 }",
-                new Promotion
-                {
-                    Id = "206000019",
-                    Name = "Test promo",
-                    DisplayText = "This is test promotion text for end-user",
-                    Description = "This is test promotion",
-                    Reference = "TESTPROMO",
-                    ReportingCode = "ReportingCode001",
-                    ValidFrom = new DateTimeOffset(2019, 08, 07, 08, 37, 49, TimeSpan.Zero),
-                    ValidTo = new DateTimeOffset(2019, 08, 11, 08, 35, 42, TimeSpan.Zero),
-                }
-            ),
-        };
+                    new Promotion
+                    {
+                        Id = "206000019",
+                        Name = "Test promo",
+                        DisplayText = "This is test promotion text for end-user",
+                        Description = "This is test promotion",
+                        Reference = "TESTPROMO",
+                        ReportingCode = "ReportingCode001",
+                        ValidFrom = new DateTimeOffset(2019, 08, 07, 08, 37, 49, TimeSpan.Zero),
+                        ValidTo = new DateTimeOffset(2019, 08, 11, 08, 35, 42, TimeSpan.Zero),
+                    }),
+            };
 
-        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseFailed_ThrowsApiException = new[]
+        public static IEnumerable<TestCaseData> GetPromotionDetails_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 404
             new TestCaseData(
@@ -3889,8 +3881,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
     }
 }",
                 HttpStatusCode.NotFound,
-                "Promotion with id [2060] does not exist."
-            ),
+                "Promotion with id [2060] does not exist."),
         };
 
         #endregion

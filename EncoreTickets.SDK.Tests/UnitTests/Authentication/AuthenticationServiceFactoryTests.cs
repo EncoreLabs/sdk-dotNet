@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         [TestCaseSource(typeof(AuthenticationServiceFactoryTestsSource), nameof(AuthenticationServiceFactoryTestsSource.Create_IfServiceForAuthMethodExists_ReturnsService))]
         public void Create_IfServiceForAuthMethodExists_ReturnsService(AuthenticationMethod authMethod, Type expectedType)
         {
-            var context = new ApiContext(It.IsAny<Environments>()) {AuthenticationMethod = authMethod};
+            var context = new ApiContext(It.IsAny<Environments>()) { AuthenticationMethod = authMethod };
 
             var service = AuthenticationServiceFactory.Create(context, It.IsAny<string>(), It.IsAny<string>());
 
@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         public void
             Create_IfServiceForAuthMethodDoesNotExist_ThrowsNotImplementedException(AuthenticationMethod authMethod)
         {
-            var context = new ApiContext(It.IsAny<Environments>()) {AuthenticationMethod = authMethod};
+            var context = new ApiContext(It.IsAny<Environments>()) { AuthenticationMethod = authMethod };
 
             Assert.Throws<NotImplementedException>(() =>
             {
@@ -35,18 +35,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
         }
     }
 
-    public static class AuthenticationServiceFactoryTestsSource
+    internal static class AuthenticationServiceFactoryTestsSource
     {
-        public static IEnumerable<TestCaseData> Create_IfServiceForAuthMethodExists_ReturnsService = new[]
+        public static IEnumerable<TestCaseData> Create_IfServiceForAuthMethodExists_ReturnsService { get; } = new[]
         {
             new TestCaseData(
                 AuthenticationMethod.JWT,
-                typeof(JwtAuthenticationService)
-            ),
+                typeof(JwtAuthenticationService)),
             new TestCaseData(
                 AuthenticationMethod.PredefinedJWT,
-                typeof(PredefinedJwtAuthenticationService)
-            ),
+                typeof(PredefinedJwtAuthenticationService)),
         };
     }
 }

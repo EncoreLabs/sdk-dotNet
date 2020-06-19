@@ -20,12 +20,12 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
 
         /// <summary>
         /// Gets or sets ASC or DESC.
-        /// Default value : ASC
+        /// Default value : ASC.
         /// </summary>
         public Direction? Direction { get; set; }
 
         /// <summary>
-        /// Gets or sets the field you'd like to sort by (limited to price)
+        /// Gets or sets the field you'd like to sort by (limited to price).
         /// </summary>
         public string Sort { get; set; }
     }

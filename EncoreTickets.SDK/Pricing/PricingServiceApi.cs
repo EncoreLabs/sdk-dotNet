@@ -26,10 +26,10 @@ namespace EncoreTickets.SDK.Pricing
         public override int? ApiVersion => 3;
 
         /// <summary>
-        /// Default constructor.
+        /// Initialises a new instance of the <see cref="PricingServiceApi"/> class.
         /// </summary>
         /// <param name="context"></param>
-        /// /// <param name="automaticAuthentication"></param>
+        /// <param name="automaticAuthentication"></param>
         public PricingServiceApi(ApiContext context, bool automaticAuthentication = false)
             : base(context, PricingApiHost, automaticAuthentication)
         {
@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Pricing
                 Endpoint = $"v{ApiVersion}/admin/exchange_rates",
                 Method = RequestMethod.Get,
                 Query = ratesParameters,
-                DateFormat = DateFormat
+                DateFormat = DateFormat,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<ResponseForPage<ExchangeRate>>(parameters);
             return result.DataOrException;
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Pricing
             {
                 Endpoint = $"v{ApiVersion}/pricing/products/{productId}/quantity/{quantity}/bands",
                 Method = RequestMethod.Get,
-                Query = queryParameters
+                Query = queryParameters,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<PriceBand>>(parameters);
             return result.DataOrException;
@@ -73,7 +73,7 @@ namespace EncoreTickets.SDK.Pricing
             {
                 Endpoint = $"v{ApiVersion}/pricing/days/products/{productId}/quantity/{quantity}" +
                            $"/from/{fromDate.ToEncoreDate()}/to/{toDate.ToEncoreDate()}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<DailyPriceRange>>(parameters);
             return result.DataOrException;
@@ -87,7 +87,7 @@ namespace EncoreTickets.SDK.Pricing
             {
                 Endpoint = $"v{ApiVersion}/pricing/months/products/{productId}/quantity/{quantity}" +
                            $"/from/{fromDate.ToEncoreDate()}/to/{toDate.ToEncoreDate()}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<MonthlyPriceRange>>(parameters);
             return result.DataOrException;
@@ -100,7 +100,7 @@ namespace EncoreTickets.SDK.Pricing
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/admin/pricing/rules",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<PriceRuleSummary>>(parameters);
             return result.DataOrException;
@@ -113,7 +113,7 @@ namespace EncoreTickets.SDK.Pricing
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/admin/pricing/rules/{id}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<PriceRule>(parameters);
             return result.DataOrException;
@@ -126,7 +126,7 @@ namespace EncoreTickets.SDK.Pricing
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/admin/groups",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<PartnerGroup>>(parameters);
             return result.DataOrException;
@@ -139,7 +139,7 @@ namespace EncoreTickets.SDK.Pricing
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/admin/groups/{partnerGroupId}/partners",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<IList<Partner>>(parameters);
             return result.DataOrException;
@@ -152,7 +152,7 @@ namespace EncoreTickets.SDK.Pricing
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/admin/partners/{id}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Partner>(parameters);
             return result.DataOrException;

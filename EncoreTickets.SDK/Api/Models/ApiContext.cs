@@ -9,12 +9,12 @@ namespace EncoreTickets.SDK.Api.Models
     public class ApiContext
     {
         /// <summary>
-        /// Gets the Nova user name of the user that your API calls will run as.
+        /// Gets or sets the Nova user name of the user that your API calls will run as.
         /// </summary>
         public string UserName { get; set; }
 
         /// <summary>
-        /// Gets the user's password.
+        /// Gets or sets the user's password.
         /// </summary>
         public string Password { get; set; }
 
@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Api.Models
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// Gets the environment.
+        /// Gets or sets the environment.
         /// </summary>
         public Environments Environment { get; set; }
 
@@ -46,7 +46,7 @@ namespace EncoreTickets.SDK.Api.Models
         public string Correlation { get; set; }
 
         /// <summary>
-        /// Gets or sets the received correlation ID.
+        /// Gets the received correlation ID.
         /// Received as a header in responses.
         /// </summary>
         public string ReceivedCorrelation { get; internal set; }
@@ -66,38 +66,41 @@ namespace EncoreTickets.SDK.Api.Models
         internal Credentials AgentCredentials { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments environment,
             string userName,
             string password,
-            AuthenticationMethod authMethod = AuthenticationMethod.JWT) : this(environment, authMethod)
+            AuthenticationMethod authMethod = AuthenticationMethod.JWT)
+            : this(environment, authMethod)
         {
             UserName = userName;
             Password = password;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments environment,
             string token,
-            AuthenticationMethod authMethod = AuthenticationMethod.PredefinedJWT) : this(environment, authMethod)
+            AuthenticationMethod authMethod = AuthenticationMethod.PredefinedJWT)
+            : this(environment, authMethod)
         {
             AccessToken = token;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
-        public ApiContext() : this(Environments.Production)
+        public ApiContext()
+            : this(Environments.Production)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiContext"/> class.
+        /// Initialises a new instance of the <see cref="ApiContext"/> class.
         /// </summary>
         public ApiContext(
             Environments env,

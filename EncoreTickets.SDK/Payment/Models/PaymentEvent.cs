@@ -33,7 +33,7 @@ namespace EncoreTickets.SDK.Payment.Models
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets status in boolean.
+        /// Gets or sets a value indicating whether gets or sets status in boolean.
         /// </summary>
         public bool Status { get; set; }
 

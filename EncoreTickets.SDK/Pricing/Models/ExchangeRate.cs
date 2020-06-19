@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Pricing.Models
 {
     /// <summary>
-    /// Exchange rate DTO
+    /// Exchange rate DTO.
     /// </summary>
     public class ExchangeRate
     {
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Pricing.Models
 
         /// <summary>
         /// Gets or sets the rate with margin.
-        /// encoreFxRate = fxRate * protection margin
+        /// encoreFxRate = fxRate * protection margin.
         /// </summary>
         public decimal EncoreRate { get; set; }
 

@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA, configuration["Pricing:Username"], configuration["Pricing:Password"])
             {
-                Affiliate = configuration["Pricing:AffiliateId"]
+                Affiliate = configuration["Pricing:AffiliateId"],
             };
             service = new PricingServiceApi(context, true);
         }
@@ -41,13 +41,14 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         {
             var parameters = new ExchangeRatesParameters
             {
-                Direction = Direction.Asc
+                Direction = Direction.Asc,
             };
 
             var rates = service.GetExchangeRates(parameters);
 
             AssertRatesAreValid(rates);
-            CollectionAssert.AreEqual(rates.OrderBy(r => r.DatetimeOfSourcing).Select(r => r.DatetimeOfSourcing).ToList(),
+            CollectionAssert.AreEqual(
+                rates.OrderBy(r => r.DatetimeOfSourcing).Select(r => r.DatetimeOfSourcing).ToList(),
                 rates.Select(r => r.DatetimeOfSourcing).ToList());
         }
 
@@ -111,10 +112,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var date = DateTime.Now.AddMonths(3).Date + new TimeSpan(13, 37, 0);
 
             var exception = Assert.Catch<ApiException>(() =>
-            { 
+            {
                 service.GetPriceBands("1018", 2, date);
             });
-            
+
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 
@@ -188,7 +189,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 service.GetPriceRule(0);
             });
-            
+
             Assert.AreEqual(HttpStatusCode.NotFound, exception.ResponseCode);
         }
 

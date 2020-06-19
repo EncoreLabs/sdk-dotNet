@@ -12,7 +12,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// </summary>
         /// <param name="basket"></param>
         /// <returns></returns>
-        public static bool IsExpired(this Models.Basket basket) 
+        public static bool IsExpired(this Models.Basket basket)
             => basket.ExpiredAt.UtcDateTime <= DateTime.UtcNow;
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace EncoreTickets.SDK.Basket.Extensions
         /// </summary>
         /// <param name="basket"></param>
         /// <returns></returns>
-        public static bool HasPromotion(this Models.Basket basket) 
+        public static bool HasPromotion(this Models.Basket basket)
             => basket.AppliedPromotion != null;
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace EncoreTickets.SDK.Basket.Extensions
                 : total;
         }
 
-        private static Price GetTotalFromAllReservations(this Models.Basket basket, Func<Reservation, Price> priceFunc) 
-             => basket.Reservations?.Count > 0 
-                 ? basket.Reservations.Select(priceFunc).Aggregate((x, y) => x.Add(y)) 
+        private static Price GetTotalFromAllReservations(this Models.Basket basket, Func<Reservation, Price> priceFunc)
+             => basket.Reservations?.Count > 0
+                 ? basket.Reservations.Select(priceFunc).Aggregate((x, y) => x.Add(y))
                  : null;
     }
 }

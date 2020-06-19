@@ -24,7 +24,7 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets direction.
+        /// Gets direction.
         /// </summary>
         public string Direction { get; }
 
