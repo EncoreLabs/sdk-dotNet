@@ -54,7 +54,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Catch<Exception>(() => wrapper.GetRestClient(restClientParameters));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull))]
         public void GetRestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull(
             RestClientCredentials credentials)
         {
@@ -66,7 +66,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Null(result.Authenticator);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator))]
         public void GetRestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator(
             RestClientCredentials credentials,
             IAuthenticator expectedAuthenticator,
@@ -120,7 +120,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.AreEqual(expectedResource, result.Resource);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod))]
         public void GetRestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod(
             RestClientParameters restClientParameters,
             Method expectedMethod)
@@ -142,7 +142,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Catch(() => restClientWrapper.GetRestRequest(restClientParameters));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat))]
         public void GetRestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat(
             RestClientParameters restClientParameters,
             RestSharp.DataFormat expectedFormat)
@@ -164,7 +164,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Catch(() => restClientWrapper.GetRestRequest(restClientParameters));
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_ReturnsRequestWithCorrectHeaders))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_ReturnsRequestWithCorrectHeaders))]
         public void GetRestRequest_ReturnsRequestWithCorrectHeaders(RestClientParameters restClientParameters)
         {
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
@@ -187,7 +187,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             }
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_ReturnsRequestWithCorrectUrlSegments))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_ReturnsRequestWithCorrectUrlSegments))]
         public void GetRestRequest_ReturnsRequestWithCorrectUrlSegments(RestClientParameters restClientParameters)
         {
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
@@ -210,7 +210,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             }
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_ReturnsRequestWithCorrectQueryParams))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_ReturnsRequestWithCorrectQueryParams))]
         public void GetRestRequest_ReturnsRequestWithCorrectQueryParams(RestClientParameters restClientParameters)
         {
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
@@ -233,7 +233,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             }
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_ReturnsRequestWithCorrectBody))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_ReturnsRequestWithCorrectBody))]
         public void GetRestRequest_ReturnsRequestWithCorrectBody(
             RestClientParameters restClientParameters,
             string expectedBodyType)
@@ -248,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.AreEqual(expectedBodyType, body.FirstOrDefault()?.ContentType);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer))]
         public void GetRestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer(RestClientParameters restClientParameters)
         {
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
@@ -260,7 +260,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
             Assert.Null(result.XmlSerializer);
         }
 
-        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.RestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer))]
+        [TestCaseSource(typeof(RestClientWrapperTestsSource), nameof(RestClientWrapperTestsSource.GetRestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer))]
         public void GetRestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer(RestClientParameters restClientParameters)
         {
             var restClientWrapper = new SDK.Utilities.RestClientWrapper.RestClientWrapper();
@@ -389,7 +389,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
 
     internal static class RestClientWrapperTestsSource
     {
-        public static IEnumerable<TestCaseData> RestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestClient_IfAuthenticatorCannotBeCreated_ReturnsCorrectlyWithAuthenticatorAsNull { get; } = new[]
         {
             new TestCaseData(
                 null),
@@ -451,7 +451,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 }),
         };
 
-        public static IEnumerable<TestCaseData> RestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestClient_IfAuthenticatorCanBeCreated_ReturnsCorrectlyWithAuthenticator { get; } = new[]
         {
             new TestCaseData(
                 new RestClientCredentials
@@ -495,7 +495,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 "Basic Og=="),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_IfRequestMethodExists_ReturnsRequestWithCorrectMethod { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -532,7 +532,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 Method.GET),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_IfDataFormatExists_ReturnsRequestWithCorrectRequestFormat { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -551,7 +551,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 RestSharp.DataFormat.Json),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_ReturnsRequestWithCorrectHeaders { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectHeaders { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -567,7 +567,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters()),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_ReturnsRequestWithCorrectUrlSegments { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectUrlSegments { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -583,7 +583,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters()),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_ReturnsRequestWithCorrectQueryParams { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectQueryParams { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -599,7 +599,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 new RestClientParameters()),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_ReturnsRequestWithCorrectBody { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_ReturnsRequestWithCorrectBody { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -633,7 +633,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 "application/json"),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_IfJsonSerializerIsSet_ReturnsRequestWithCustomSerializer { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters
@@ -654,7 +654,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.RestClientWrapper
                 }),
         };
 
-        public static IEnumerable<TestCaseData> RestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer { get; } = new[]
+        public static IEnumerable<TestCaseData> GetRestRequest_IfJsonSerializerIsNotSet_ReturnsRequestWithDefaultSerializer { get; } = new[]
         {
             new TestCaseData(
                 new RestClientParameters

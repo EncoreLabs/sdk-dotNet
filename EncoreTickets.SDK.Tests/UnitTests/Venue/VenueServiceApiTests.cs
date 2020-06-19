@@ -248,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
             mockers.VerifyExecution<ApiResponse<List<Attribute>>>(BaseUrl, $"v{ApiVersion}/attributes/standard", Method.GET);
         }
 
-        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.StandardAttributes_IfApiResponseSuccessful_ReturnsAttributes))]
+        [TestCaseSource(typeof(VenueServiceTestsSource), nameof(VenueServiceTestsSource.GetStandardAttributes_IfApiResponseSuccessful_ReturnsAttributes))]
         public void GetStandardAttributes_IfApiResponseSuccessful_ReturnsAttributes(
             string responseContent,
             List<Attribute> expected)
@@ -1250,7 +1250,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue
                 "Venue not found"),
         };
 
-        public static IEnumerable<TestCaseData> StandardAttributes_IfApiResponseSuccessful_ReturnsAttributes { get; } = new[]
+        public static IEnumerable<TestCaseData> GetStandardAttributes_IfApiResponseSuccessful_ReturnsAttributes { get; } = new[]
             {
                 new TestCaseData(
                     "{\"request\":{\"body\":\"\",\"query\":{},\"urlParams\":{}},\"response\":[{\"title\":\"EndOfRow\",\"description\":\"Seat at end of row\",\"intention\":\"positive\",\"mapping\":[]},{\"title\":\"AisleSeat\",\"description\":\"Aisle seat\",\"intention\":\"positive\",\"mapping\":[]},{\"title\":\"ExtraLegRoom\",\"description\":\"Extra legroom\",\"intention\":\"positive\",\"mapping\":[]},{\"title\":\"SlightlyRestrictedView\",\"description\":\"Slightly restricted view\",\"intention\":\"negative\",\"mapping\":[]},{\"title\":\"RestrictedView\",\"description\":\"Restricted view\",\"intention\":\"negative\",\"mapping\":[]},{\"title\":\"VeryRestrictedView\",\"description\":\"Very restricted view\",\"intention\":\"negative\",\"mapping\":[]},{\"title\":\"MissMoments\",\"description\":\"Might miss certain moments\",\"intention\":\"negative\",\"mapping\":[]},{\"title\":\"SideView\",\"description\":\"Side view\",\"intention\":\"negative\",\"mapping\":[]}],\"context\":null}",

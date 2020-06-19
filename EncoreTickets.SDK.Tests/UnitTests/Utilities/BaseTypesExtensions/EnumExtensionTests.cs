@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
 {
     internal class EnumExtensionTests
     {
-        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.EnumValues_ReturnsCorrectly))]
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumValues_ReturnsCorrectly))]
         public void GetEnumValues_ReturnsCorrectly<T>(List<T> expected)
             where T : Enum
         {
@@ -20,7 +20,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.EnumFromString_IfEnumValueExists_ReturnsCorrectly))]
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumFromString_IfEnumValueExists_ReturnsCorrectly))]
         public void GetEnumFromString_IfEnumValueExists_ReturnsCorrectly<T>(string source, T expected)
             where T : Enum
         {
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.EnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException))]
+        [TestCaseSource(typeof(EnumExtensionTestsSource), nameof(EnumExtensionTestsSource.GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException))]
         public void GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException<T>(string source, T expected)
             where T : Enum
         {
@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
 
     internal static class EnumExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> EnumValues_ReturnsCorrectly { get; } = new[]
+        public static IEnumerable<TestCaseData> GetEnumValues_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new List<Environments>
@@ -59,7 +59,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                 }),
         };
 
-        public static IEnumerable<TestCaseData> EnumFromString_IfEnumValueExists_ReturnsCorrectly { get; } = new[]
+        public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueExists_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 "1234",
@@ -87,7 +87,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
                 Intention.Negative),
         };
 
-        public static IEnumerable<TestCaseData> EnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetEnumFromString_IfEnumValueDoesNotExist_ThrowsArgumentException { get; } = new[]
         {
             new TestCaseData(
                 "dev",

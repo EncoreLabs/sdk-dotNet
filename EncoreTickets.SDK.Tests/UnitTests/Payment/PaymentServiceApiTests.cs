@@ -282,7 +282,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
                 expectedHeaders: new Dictionary<string, object> { [CorrelationIdHeader] = Context.Correlation });
         }
 
-        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.UsStates_IfApiResponseSuccessful_ReturnsUsStates))]
+        [TestCaseSource(typeof(PaymentServiceApiTestsSource), nameof(PaymentServiceApiTestsSource.GetUsStates_IfApiResponseSuccessful_ReturnsUsStates))]
         public void GetUsStates_IfApiResponseSuccessful_ReturnsUsStates(
             string responseContent,
             List<CountryTerritorialUnit> expected)
@@ -1846,7 +1846,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment
 
         #region Country
 
-        public static IEnumerable<TestCaseData> UsStates_IfApiResponseSuccessful_ReturnsUsStates { get; } = new[]
+        public static IEnumerable<TestCaseData> GetUsStates_IfApiResponseSuccessful_ReturnsUsStates { get; } = new[]
         {
             new TestCaseData(
                 @"{

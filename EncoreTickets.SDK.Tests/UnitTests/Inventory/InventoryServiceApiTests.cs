@@ -246,7 +246,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
             AssertExtension.AreObjectsValuesEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.Availabilities_IfApiResponseFailed_ThrowsApiException))]
+        [TestCaseSource(typeof(InventoryServiceApiTestsSource), nameof(InventoryServiceApiTestsSource.GetAvailabilities_IfApiResponseFailed_ThrowsApiException))]
         public void GetAvailabilities_IfApiResponseFailed_ThrowsApiException(
             string responseContent,
             HttpStatusCode code,
@@ -732,7 +732,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Inventory
                 }),
         };
 
-        public static IEnumerable<TestCaseData> Availabilities_IfApiResponseFailed_ThrowsApiException { get; } = new[]
+        public static IEnumerable<TestCaseData> GetAvailabilities_IfApiResponseFailed_ThrowsApiException { get; } = new[]
         {
             // 400
             new TestCaseData(

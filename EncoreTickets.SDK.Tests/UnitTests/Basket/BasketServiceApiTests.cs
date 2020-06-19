@@ -143,7 +143,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 expectedQueryParameters: null);
         }
 
-        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.BasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket))]
+        [TestCaseSource(typeof(BasketServiceApiTestsSource), nameof(BasketServiceApiTestsSource.GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket))]
         public void GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket(
             string responseContent,
             List<Delivery> expected)
@@ -967,7 +967,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
         #region GetBasketDeliveryOptions
 
-        public static IEnumerable<TestCaseData> BasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket { get; } =
+        public static IEnumerable<TestCaseData> GetBasketDeliveryOptions_IfApiResponseSuccessful_ReturnsBasket { get; } =
             new[]
             {
                 new TestCaseData(
