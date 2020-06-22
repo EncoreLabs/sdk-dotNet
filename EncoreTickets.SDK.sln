@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK", "Encore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoreTickets.SDK.Tests", "EncoreTickets.SDK.Tests\EncoreTickets.SDK.Tests.csproj", "{48098143-B237-4664-B18D-3E721C651871}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomCodeAnalysis", "CustomCodeAnalysis", "{9256271B-CD0E-46C0-B0BD-FC5460F9F718}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoreTickets.SDK.CustomRules", "EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules.csproj", "{2CFAD82F-778A-450C-900A-F9D3BE18F03B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoreTickets.SDK.CustomRules.Test", "EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules.Test\EncoreTickets.SDK.CustomRules.Test.csproj", "{73766B8B-DC0A-4B2A-9700-00189FC09029}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoreTickets.SDK.CustomRules.Vsix", "EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules.Vsix\EncoreTickets.SDK.CustomRules.Vsix.csproj", "{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +29,26 @@ Global
 		{48098143-B237-4664-B18D-3E721C651871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48098143-B237-4664-B18D-3E721C651871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48098143-B237-4664-B18D-3E721C651871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CFAD82F-778A-450C-900A-F9D3BE18F03B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFAD82F-778A-450C-900A-F9D3BE18F03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFAD82F-778A-450C-900A-F9D3BE18F03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFAD82F-778A-450C-900A-F9D3BE18F03B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73766B8B-DC0A-4B2A-9700-00189FC09029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73766B8B-DC0A-4B2A-9700-00189FC09029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73766B8B-DC0A-4B2A-9700-00189FC09029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73766B8B-DC0A-4B2A-9700-00189FC09029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CFAD82F-778A-450C-900A-F9D3BE18F03B} = {9256271B-CD0E-46C0-B0BD-FC5460F9F718}
+		{73766B8B-DC0A-4B2A-9700-00189FC09029} = {9256271B-CD0E-46C0-B0BD-FC5460F9F718}
+		{098C79E2-0AA9-4ADD-AFFB-5A6B015FFF0B} = {9256271B-CD0E-46C0-B0BD-FC5460F9F718}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFE37AEB-C45E-4C10-AE2D-89657C23BAF9}
