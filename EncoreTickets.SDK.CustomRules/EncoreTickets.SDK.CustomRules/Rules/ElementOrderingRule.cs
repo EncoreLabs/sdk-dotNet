@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace EncoreTickets.SDK.CustomRules.Rules
 {
-    internal class ElementOrderingRule : BaseSymbolRule
+    public class ElementOrderingRule : BaseSymbolRule
     {
         public const string DiagnosticId = "Custom_SA1201";
         private const string Category = "Ordering";

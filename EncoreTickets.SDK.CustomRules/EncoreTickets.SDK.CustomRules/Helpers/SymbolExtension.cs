@@ -26,6 +26,7 @@ namespace EncoreTickets.SDK.CustomRules.Helpers
             { TypeKind.Interface, ElementKind.Interface },
             { TypeKind.Delegate, ElementKind.Delegate },
             { TypeKind.Enum, ElementKind.Enum },
+            { TypeKind.Struct, ElementKind.Struct },
         };
 
         private static readonly Dictionary<bool, ElementKind> IsIndexerPropertyToElementKindDictionary = new Dictionary<bool, ElementKind>

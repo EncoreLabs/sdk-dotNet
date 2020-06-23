@@ -1,6 +1,6 @@
 ﻿namespace EncoreTickets.SDK.CustomRules.Enums
 {
-    internal enum ElementKind
+    public enum ElementKind
     {
         Unspecified,
         Field,
