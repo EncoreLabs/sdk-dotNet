@@ -19,6 +19,8 @@ namespace EncoreTickets.SDK.CustomRules
 
         public override void Initialize(AnalysisContext context)
         {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
             foreach (var rule in SymbolRules)
             {
                 context.RegisterSymbolAction(rule.Rule.AnalyzeSymbol, rule.SymbolKind);

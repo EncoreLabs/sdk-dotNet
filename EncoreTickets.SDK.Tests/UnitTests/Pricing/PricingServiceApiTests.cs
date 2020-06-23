@@ -519,58 +519,6 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         #region PriceRanges
 
-        private static readonly IEnumerable<PriceRange> TestPriceRanges = new List<PriceRange>
-        {
-            new PriceRange
-            {
-                CreatedAt = DateTimeOffset.Now,
-                DisplayCurrency = "GBP",
-                IncludesBookingFee = true,
-                MinPrice = new List<Price>
-                {
-                    new Price
-                    {
-                        Currency = "GBP",
-                        DecimalPlaces = 2,
-                        Value = 100,
-                    },
-                },
-                MaxPrice = new List<Price>
-                {
-                    new Price
-                    {
-                        Currency = "GBP",
-                        DecimalPlaces = 2,
-                        Value = 200,
-                    },
-                },
-            },
-        };
-
-        private static List<DailyPriceRange> CreateTestDailyRanges()
-        {
-            return TestPriceRanges.Select(r =>
-            {
-                var dailyRange = r.CopyObjectToChildClass<PriceRange, DailyPriceRange>();
-                dailyRange.Date = DateTimeOffset.Now;
-                return dailyRange;
-            }).ToList();
-        }
-
-        private static List<MonthlyPriceRange> CreateTestMonthlyRanges()
-        {
-            return TestPriceRanges.Select(r =>
-            {
-                var monthlyRange = r.CopyObjectToChildClass<PriceRange, MonthlyPriceRange>();
-                monthlyRange.Date = new YearMonthDate
-                {
-                    Month = DateTimeOffset.Now.Month,
-                    Year = DateTimeOffset.Now.Year,
-                };
-                return monthlyRange;
-            }).ToList();
-        }
-
         public static IEnumerable<TestCaseData> GetDailyPriceRanges_ReturnsPriceRanges { get; } = new[]
         {
             new TestCaseData(CreateTestDailyRanges()),
@@ -662,7 +610,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         #region PartnersAndGroups
 
-        private static readonly List<PartnerGroup> PartnerGroups = new List<PartnerGroup>
+        private static List<PartnerGroup> PartnerGroups { get; } = new List<PartnerGroup>
         {
             new PartnerGroup
             {
@@ -676,7 +624,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             },
         };
 
-        private static readonly List<Partner> Partners = new List<Partner>
+        public static IEnumerable<TestCaseData> GetPartnerGroups_ReturnsPartnerGroups { get; } = new[]
+        {
+            new TestCaseData(PartnerGroups),
+        };
+
+        public static IEnumerable<TestCaseData> GetPartnersInGroup_ReturnsPartners { get; } = new[]
+        {
+            new TestCaseData(Partners),
+        };
+
+        public static IEnumerable<TestCaseData> GetPartner_ReturnsPartner { get; } = new[]
+        {
+            new TestCaseData(Partners[0]),
+        };
+
+        #endregion
+
+        #region HelperPropertiesAndMethods
+
+        private static List<Partner> Partners { get; } = new List<Partner>
         {
             new Partner
             {
@@ -700,20 +667,57 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             },
         };
 
-        public static IEnumerable<TestCaseData> GetPartnerGroups_ReturnsPartnerGroups { get; } = new[]
+        private static IEnumerable<PriceRange> TestPriceRanges { get; } = new List<PriceRange>
         {
-            new TestCaseData(PartnerGroups),
+            new PriceRange
+            {
+                CreatedAt = DateTimeOffset.Now,
+                DisplayCurrency = "GBP",
+                IncludesBookingFee = true,
+                MinPrice = new List<Price>
+                {
+                    new Price
+                    {
+                        Currency = "GBP",
+                        DecimalPlaces = 2,
+                        Value = 100,
+                    },
+                },
+                MaxPrice = new List<Price>
+                {
+                    new Price
+                    {
+                        Currency = "GBP",
+                        DecimalPlaces = 2,
+                        Value = 200,
+                    },
+                },
+            },
         };
 
-        public static IEnumerable<TestCaseData> GetPartnersInGroup_ReturnsPartners { get; } = new[]
+        private static List<DailyPriceRange> CreateTestDailyRanges()
         {
-            new TestCaseData(Partners),
-        };
+            return TestPriceRanges.Select(r =>
+            {
+                var dailyRange = r.CopyObjectToChildClass<PriceRange, DailyPriceRange>();
+                dailyRange.Date = DateTimeOffset.Now;
+                return dailyRange;
+            }).ToList();
+        }
 
-        public static IEnumerable<TestCaseData> GetPartner_ReturnsPartner { get; } = new[]
+        private static List<MonthlyPriceRange> CreateTestMonthlyRanges()
         {
-            new TestCaseData(Partners[0]),
-        };
+            return TestPriceRanges.Select(r =>
+            {
+                var monthlyRange = r.CopyObjectToChildClass<PriceRange, MonthlyPriceRange>();
+                monthlyRange.Date = new YearMonthDate
+                {
+                    Month = DateTimeOffset.Now.Month,
+                    Year = DateTimeOffset.Now.Year,
+                };
+                return monthlyRange;
+            }).ToList();
+        }
 
         #endregion
     }

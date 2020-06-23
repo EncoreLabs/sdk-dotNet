@@ -14,11 +14,6 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
     /// <typeparam name="TValue"></typeparam>
     public class ReadOnlyTree<TKey, TValue> : ITree<TKey, TValue>
     {
-        private ReadOnlyTree()
-        {
-            Children = new LinkedList<ReadOnlyTree<TKey, TValue>>();
-        }
-
         /// <inheritdoc />
         public TKey Key { get; private set; }
 
@@ -28,6 +23,11 @@ namespace EncoreTickets.SDK.Utilities.DataStructures.Tree
         private LinkedList<ReadOnlyTree<TKey, TValue>> Children { get; }
 
         private ReadOnlyTree<TKey, TValue> Parent { get; set; }
+
+        private ReadOnlyTree()
+        {
+            Children = new LinkedList<ReadOnlyTree<TKey, TValue>>();
+        }
 
         /// <summary>
         /// Builds the collection of all trees that can be defined by the source collection and the key selectors.
