@@ -643,7 +643,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
 
         #region HelperPropertiesAndMethods
 
-        private static List<Partner> Partners { get; } = new List<Partner>
+        private static List<Partner> Partners => new List<Partner>
         {
             new Partner
             {
@@ -667,7 +667,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Pricing
             },
         };
 
-        private static IEnumerable<PriceRange> TestPriceRanges { get; } = new List<PriceRange>
+        private static IEnumerable<PriceRange> TestPriceRanges => new List<PriceRange>
         {
             new PriceRange
             {
