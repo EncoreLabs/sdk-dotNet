@@ -61,29 +61,29 @@ namespace EncoreTickets.SDK.CustomRules {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type names should be all uppercase..
+        ///   Looks up a localized string similar to Elements should be ordered correctly..
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string ElementOrderingAnalyzerDescription {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("ElementOrderingAnalyzerDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type name &apos;{0}&apos; contains lowercase letters.
+        ///   Looks up a localized string similar to {0} should not follow {1}.
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string ElementOrderingAnalyzerMessageFormat {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("ElementOrderingAnalyzerMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type name contains lowercase letters.
+        ///   Looks up a localized string similar to Elements are ordered incorrectly.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string ElementOrderingAnalyzerTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("ElementOrderingAnalyzerTitle", resourceCulture);
             }
         }
     }

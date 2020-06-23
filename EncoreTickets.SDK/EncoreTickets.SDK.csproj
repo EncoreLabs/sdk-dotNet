@@ -14,6 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules\EncoreTickets.SDK.CustomRules.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Analyzer</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
