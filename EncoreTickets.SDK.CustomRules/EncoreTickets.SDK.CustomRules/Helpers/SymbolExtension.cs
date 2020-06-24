@@ -63,12 +63,13 @@ namespace EncoreTickets.SDK.CustomRules.Helpers
 
         public static bool IsSubjectToOrderingRules(this ISymbol symbol)
         {
+            var symbolElementKind = symbol.GetElementKind();
             return !symbol.IsImplicitlyDeclared &&
-                   symbol.GetElementKind() != ElementKind.Unspecified &&
+                   symbolElementKind != ElementKind.Unspecified &&
                    (symbol.CanBeReferencedByName ||
-                    symbol.GetElementKind() == ElementKind.Constructor ||
-                    symbol.GetElementKind() == ElementKind.Finalizer ||
-                    symbol.GetElementKind() == ElementKind.Indexer);
+                    symbolElementKind == ElementKind.Constructor ||
+                    symbolElementKind == ElementKind.Finalizer ||
+                    symbolElementKind == ElementKind.Indexer);
         }
     }
 }
