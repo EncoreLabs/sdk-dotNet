@@ -30,8 +30,8 @@ namespace EncoreTickets.SDK.CustomRules.Rules
             ElementKind.Delegate,
             ElementKind.Event,
             ElementKind.Constructor,
-            ElementKind.Method,
             ElementKind.Finalizer,
+            ElementKind.Method,
         };
 
         public override void AnalyzeSymbol(SymbolAnalysisContext context)

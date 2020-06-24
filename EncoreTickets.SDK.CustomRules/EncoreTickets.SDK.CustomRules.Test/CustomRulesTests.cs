@@ -39,9 +39,9 @@ namespace EncoreTickets.SDK.CustomRules.Test
 
             public TypeName() {}
 
-            public void Method() {}
-
             ~TypeName() {}
+
+            public void Method() {}
         }
     }";
 
@@ -56,9 +56,9 @@ namespace EncoreTickets.SDK.CustomRules.Test
     {
         class TypeName
         {   
-            ~TypeName() {}
-
             public void Method() {}
+
+            ~TypeName() {}
 
             public TypeName() {}
 
@@ -84,8 +84,8 @@ namespace EncoreTickets.SDK.CustomRules.Test
 
             var expectedDiagnostics = new[]
             {
-                Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(8, 25).WithArguments(ElementKind.Method, ElementKind.Finalizer),
-                Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(10, 20).WithArguments(ElementKind.Constructor, ElementKind.Method),
+                Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(8, 14).WithArguments(ElementKind.Finalizer, ElementKind.Method),
+                Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(10, 20).WithArguments(ElementKind.Constructor, ElementKind.Finalizer),
                 Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(12, 35).WithArguments(ElementKind.Event, ElementKind.Constructor),
                 Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(14, 36).WithArguments(ElementKind.Delegate, ElementKind.Event),
                 Verify.Diagnostic(ElementOrderingRule.DiagnosticId).WithLocation(16, 27).WithArguments(ElementKind.Indexer, ElementKind.Delegate),
