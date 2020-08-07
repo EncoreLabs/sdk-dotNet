@@ -43,7 +43,7 @@ namespace EncoreTickets.SDK.Basket.Models
         /// <summary>
         /// Gets or sets exchange Rate for a basket.
         /// </summary>
-        public decimal ExchangeRate { get; set; }
+        public decimal? ExchangeRate { get; set; }
 
         /// <summary>
         /// Gets or sets a basket delivery option.
