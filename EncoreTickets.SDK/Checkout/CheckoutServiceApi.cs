@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Checkout
         private const string CheckoutApiHost = "checkout-service.{0}tixuk.io/api/";
 
         /// <inheritdoc/>
-        public override int? ApiVersion => 1;
+        protected override int? LatestApiVersion => 1;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CheckoutServiceApi"/> class.

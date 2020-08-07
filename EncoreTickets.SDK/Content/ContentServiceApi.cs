@@ -19,7 +19,7 @@ namespace EncoreTickets.SDK.Content
         private const string ContentApiHost = "content-service.{0}tixuk.io/api/";
 
         /// <inheritdoc/>
-        public override int? ApiVersion => 1;
+        protected override int? LatestApiVersion => 1;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ContentServiceApi"/> class.

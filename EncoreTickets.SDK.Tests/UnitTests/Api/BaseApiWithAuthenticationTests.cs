@@ -13,7 +13,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 {
     internal class BaseApiWithAuthenticationTests : BaseApiWithAuthentication
     {
-        public override int? ApiVersion { get; }
+        protected override int? LatestApiVersion { get; }
 
         public BaseApiWithAuthenticationTests()
             : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
@@ -93,7 +93,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
     {
         private readonly Mock<IAuthenticationService> authenticationServiceMocker;
 
-        public override int? ApiVersion { get; }
+        protected override int? LatestApiVersion { get; }
 
         public override IAuthenticationService AuthenticationService => authenticationServiceMocker.Object;
 

@@ -26,7 +26,10 @@ namespace EncoreTickets.SDK.Basket
         private const string BasketApiHost = "basket-service.{0}tixuk.io/api/";
 
         /// <inheritdoc/>
-        public override int? ApiVersion => 1;
+        protected override int? LatestApiVersion => 2;
+
+        /// <inheritdoc/>
+        protected override int? LegacyApiVersion => 1;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="BasketServiceApi"/> class.

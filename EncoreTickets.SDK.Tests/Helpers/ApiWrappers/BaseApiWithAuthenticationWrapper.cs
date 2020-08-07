@@ -5,7 +5,7 @@ namespace EncoreTickets.SDK.Tests.Helpers.ApiWrappers
 {
     internal class BaseApiWithAuthenticationWrapper : BaseApiWithAuthentication, IApiWithAuthenticationWrapper
     {
-        public override int? ApiVersion { get; }
+        protected override int? LatestApiVersion { get; }
 
         public ApiContext SourceContext => Context;
 

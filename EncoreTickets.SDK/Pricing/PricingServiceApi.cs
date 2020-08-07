@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Pricing
         private const string DateFormat = "yyyy-MM-ddTHH:mm:sszzz";
 
         /// <inheritdoc />
-        public override int? ApiVersion => 3;
+        protected override int? LatestApiVersion => 3;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PricingServiceApi"/> class.
