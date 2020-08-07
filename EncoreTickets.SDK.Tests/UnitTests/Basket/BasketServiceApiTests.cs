@@ -17,6 +17,8 @@ using RestSharp;
 
 namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 {
+    [TestFixture(true)]
+    [TestFixture(false)]
     internal class BasketServiceApiTests : BasketServiceApi
     {
         private const string TestBasketValidReference = "12345678";
@@ -29,8 +31,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         protected override ApiRequestExecutor Executor =>
             new ApiRequestExecutor(Context, BaseUrl, mockers.RestClientBuilderMock.Object);
 
-        public BasketServiceApiTests()
-            : base(new ApiContext(Environments.Sandbox))
+        public BasketServiceApiTests(bool useLegacyMode)
+            : base(new ApiContext(Environments.Sandbox), useLegacyMode)
         {
         }
 
@@ -39,6 +41,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         {
             mockers = new ApiServiceMocker();
         }
+
+        #region ApiVersion
+
+        [Test]
+        public void ApiVersion_DependsOnLegacyMode()
+        {
+            Assert.AreEqual(LegacyModeEnabled ? LegacyApiVersion : LatestApiVersion, ApiVersion);
+        }
+
+        #endregion
 
         #region GetBasketDetails
 
@@ -70,7 +82,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                $"v1/baskets/{reference}",
+                $"v{ApiVersion}/baskets/{reference}",
                 Method.GET,
                 expectedHeaders: null,
                 expectedQueryParameters: null);
@@ -137,7 +149,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponseWithResultsBlock<List<Delivery>>>(
                 BaseUrl,
-                $"v1/baskets/{reference}/deliveryOptions",
+                $"v{ApiVersion}/baskets/{reference}/deliveryOptions",
                 Method.GET,
                 expectedHeaders: null,
                 expectedQueryParameters: null);
@@ -213,7 +225,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                "v1/baskets",
+                $"v{ApiVersion}/baskets",
                 Method.PATCH,
                 bodyInJson: requestBody,
                 expectedHeaders: null,
@@ -236,7 +248,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                "v1/baskets",
+                $"v{ApiVersion}/baskets",
                 Method.PATCH,
                 bodyInJson: requestBody,
                 expectedHeaders: null,
@@ -308,7 +320,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                $"v1/baskets/{reference}/applyPromotion",
+                $"v{ApiVersion}/baskets/{reference}/applyPromotion",
                 Method.PATCH,
                 bodyInJson: expectedBody,
                 expectedHeaders: null,
@@ -336,7 +348,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                $"v1/baskets/{reference}/applyPromotion",
+                $"v{ApiVersion}/baskets/{reference}/applyPromotion",
                 Method.PATCH,
                 bodyInJson: expectedBody,
                 expectedHeaders: null,
@@ -457,7 +469,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                $"v1/baskets/{reference}/clear",
+                $"v{ApiVersion}/baskets/{reference}/clear",
                 Method.PATCH,
                 expectedHeaders: null,
                 expectedQueryParameters: null);
@@ -535,7 +547,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<SDK.Basket.Models.Basket>>(
                 BaseUrl,
-                $"v1/baskets/{reference}/reservations/{reservationId}",
+                $"v{ApiVersion}/baskets/{reference}/reservations/{reservationId}",
                 Method.DELETE,
                 expectedHeaders: null,
                 expectedQueryParameters: null);
@@ -600,7 +612,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponseWithResultsBlock<List<Promotion>>>(
                 BaseUrl,
-                "v1/promotions",
+                $"v{ApiVersion}/promotions",
                 Method.GET,
                 expectedHeaders: null,
                 expectedQueryParameters: queryParameters);
@@ -667,7 +679,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
 
             mockers.VerifyExecution<ApiResponse<Promotion>>(
                 BaseUrl,
-                $"v1/promotions/{id}",
+                $"v{ApiVersion}/promotions/{id}",
                 Method.GET,
                 expectedHeaders: null,
                 expectedQueryParameters: null);
@@ -746,7 +758,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
         ""quantity"": 2,
         ""items"": [
           {
-            ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co"",
+            ""aggregateReference"": ""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co"",
             ""areaId"": ""DC"",
             ""areaName"": ""CIRCLE"",
             ""row"": ""P"",
@@ -754,7 +766,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             ""locationDescription"": """"
           },
           {
-            ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do"",
+            ""aggregateReference"": ""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do"",
             ""areaId"": ""DC"",
             ""areaName"": ""CIRCLE"",
             ""row"": ""P"",
@@ -842,7 +854,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItem
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "P",
@@ -852,7 +864,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItem
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "P",
@@ -1160,7 +1172,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1170,7 +1182,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1233,7 +1245,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         MissedPromotions = null,
                     },
                     null,
-                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
                 new TestCaseData(
                     new SDK.Basket.Models.Basket
                     {
@@ -1277,7 +1289,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1287,7 +1299,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1350,7 +1362,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         MissedPromotions = null,
                     },
                     false,
-                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
                 new TestCaseData(
                     new SDK.Basket.Models.Basket
                     {
@@ -1394,7 +1406,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1404,7 +1416,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                         AreaId = "DC",
                                         AreaName = "CIRCLE",
                                         Row = "P",
@@ -1467,7 +1479,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                         MissedPromotions = null,
                     },
                     true,
-                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                    "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":true,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
                 new TestCaseData(
                     new SDK.Basket.Models.Basket
                     {
@@ -1631,14 +1643,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                     new ReservationItem
                                     {
                                         AggregateReference =
-                                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                            "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
                                     },
                                 },
                             },
                         },
                     },
                     null,
-                    "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
+                    "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
             };
 
         public static IEnumerable<TestCaseData> UpsertBasket_IfBasketParametersArePassed_CallsApiWithRightParameters { get; } = new[]
@@ -1673,19 +1685,19 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItemParameters
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co",
                                 },
                                 new ReservationItemParameters
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do",
                                 },
                             },
                         },
                     },
                     Coupon = null,
                 },
-                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
+                "{\"reference\":\"791631\",\"channelId\":\"integrator-qa-boxoffice\",\"delivery\":{\"method\":\"eticket\",\"charge\":{\"value\":3950,\"currency\":\"GBP\",\"decimalPlaces\":2}},\"hasFlexiTickets\":false,\"shopperCurrency\":\"GBP\",\"shopperReference\":\"test\",\"reservations\":[{\"venueId\":\"139\",\"productId\":\"2017\",\"date\":\"2020-01-04T19:30:00+00:00\",\"quantity\":2,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzEiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.T58JjzInDwXHCaytrA2eaAbmdi1wj1MkrVmiQvSm5co\"},{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOSIsInZjIjoiIiwicGkiOiIyMDE3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJQIiwiaXNuIjoiMzIiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTAxLTA0VDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDAxMDQiLCJwcnYiOjB9.5RWZjTbph1R-AXXq2e0qj4s-tepdXBbICEqMSXB35Do\"}]}],\"coupon\":null}"),
             new TestCaseData(
                 new UpsertBasketParameters
                 {
@@ -1745,13 +1757,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItemParameters
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k",
                                 },
                             },
                         },
                     },
                 },
-                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
+                "{\"reference\":null,\"channelId\":\"{{affiliateId}}\",\"delivery\":null,\"hasFlexiTickets\":false,\"shopperCurrency\":null,\"shopperReference\":null,\"reservations\":[{\"venueId\":\"138\",\"productId\":\"1587\",\"date\":\"2020-10-23T19:30:00+00:00\",\"quantity\":1,\"items\":[{\"aggregateReference\":\"eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\"}]}],\"coupon\":null}"),
         };
 
         public static IEnumerable<TestCaseData> UpsertBasket_IfApiResponseSuccessful_ReturnsBasket { get; } = new[]
@@ -1759,7 +1771,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 @"{
     ""request"": {
-        ""body"": ""{\n  \""channelId\"":\""{{affiliateId}}\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
+        ""body"": ""{\n  \""channelId\"":\""{{affiliateId}}\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
         ""query"": {},
         ""urlParams"": {}
     },
@@ -1787,7 +1799,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 ""quantity"": 1,
                 ""items"": [
                     {
-                        ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MDUiLCJwcnYiOjB9.ge0efOx2fFWthyy11W_ACz2_BDcG6S9xAlRHxK0tu50"",
+                        ""aggregateReference"": ""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MDUiLCJwcnYiOjB9.ge0efOx2fFWthyy11W_ACz2_BDcG6S9xAlRHxK0tu50"",
                         ""areaId"": ""DC"",
                         ""areaName"": ""CIRCLE"",
                         ""row"": ""X"",
@@ -1873,7 +1885,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItem
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MDUiLCJwcnYiOjB9.ge0efOx2fFWthyy11W_ACz2_BDcG6S9xAlRHxK0tu50",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MDUiLCJwcnYiOjB9.ge0efOx2fFWthyy11W_ACz2_BDcG6S9xAlRHxK0tu50",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "X",
@@ -1938,7 +1950,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 @"{
     ""request"": {
-        ""body"": ""{\n  \""channelId\"":\""encoretickets\"",\n  \""hasFlexiTickets\"": \""true\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
+        ""body"": ""{\n  \""channelId\"":\""encoretickets\"",\n  \""hasFlexiTickets\"": \""true\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
         ""query"": {},
         ""urlParams"": {}
     },
@@ -1966,7 +1978,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 ""quantity"": 1,
                 ""items"": [
                     {
-                        ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.9EHyJHe5DMvpGnDZJliAh4hSmAlck42YLek3vI9YfLA"",
+                        ""aggregateReference"": ""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.9EHyJHe5DMvpGnDZJliAh4hSmAlck42YLek3vI9YfLA"",
                         ""areaId"": ""DC"",
                         ""areaName"": ""CIRCLE"",
                         ""row"": ""X"",
@@ -2101,7 +2113,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                                 new ReservationItem
                                 {
                                     AggregateReference =
-                                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.9EHyJHe5DMvpGnDZJliAh4hSmAlck42YLek3vI9YfLA",
+                                        "eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.9EHyJHe5DMvpGnDZJliAh4hSmAlck42YLek3vI9YfLA",
                                     AreaId = "DC",
                                     AreaName = "CIRCLE",
                                     Row = "X",
@@ -2459,7 +2471,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 @"{
     ""request"": {
-        ""body"": ""{\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
+        ""body"": ""{\n  \""reservations\"":[\n     {\n        \""venueId\"":\""138\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
         ""query"": {},
         ""urlParams"": {}
     },
@@ -2481,7 +2493,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
             new TestCaseData(
                 @"{
     ""request"": {
-        ""body"": ""{\n  \""channelId\"":\""{{affiliateId}}\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""1\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
+        ""body"": ""{\n  \""channelId\"":\""{{affiliateId}}\"",\n  \""reservations\"":[\n     {\n        \""venueId\"":\""1\"",\n        \""productId\"":\""1587\"",\n        \""date\"":\""2020-10-23T19:30:00+0000\"",\n        \""quantity\"":1,\n        \""items\"":[\n           {\n              \""aggregateReference\"":\""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiR0IiLCJwaSI6IjE1ODciLCJpaSI6IkNJUkNMRX5YNDU7NTAiLCJpYiI6IkRDIiwiaXIiOiJYIiwiaXNuIjoiNDUiLCJpc2xkIjoiQ2lyY2xlIiwiaXBpIjpudWxsLCJpZCI6IjIwMjAtMTAtMjNUMTk6MzA6MDArMDA6MDAiLCJlc2kiOiJJTlRFUk5BTCIsImVyaSI6bnVsbCwiZXNlaSI6bnVsbCwiZWJpIjpudWxsLCJlcGkiOm51bGwsImVkY3QiOm51bGwsInBhaSI6IjM1MzgiLCJjcHYiOjAsImNwYyI6IkdCUCIsIm9zcHYiOjMyMDAsIm9zcGMiOiJHQlAiLCJvZnZ2IjoyNTAwLCJvZnZjIjoiR0JQIiwic3NwdiI6MzIwMCwic3NwYyI6IkdCUCIsInNmdnYiOjI1MDAsInNmdmMiOiJHQlAiLCJvdHNzcGZyIjoxLCJzdG9zcGZyIjoxLCJpYyI6NCwicG1jIjpudWxsLCJyZWQiOiIxODU4MTExNyIsInBydiI6MH0.-M7KQoFh1N7PKWestjbdbVR7EkwbsrVh9jwtsGMJh_k\""\n           }\n        ]\n     }\n  ]\n}"",
         ""query"": {},
         ""urlParams"": {}
     },
@@ -3040,7 +3052,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket
                 ""quantity"": 1,
                 ""items"": [
                     {
-                        ""aggregateReference"": ""eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJIIiwiaXNuIjoiNDMiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.CxiDEFy_x5tOtb3-K1jmAGVot-mkA8PCDIcfVGo3ukc"",
+                        ""aggregateReference"": ""eyJ0eXAiOiJKv1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aSI6IjEzOCIsInZjIjoiIiwicGkiOiIxNTg3IiwiaWkiOiIiLCJpYiI6IkRDIiwiaXIiOiJIIiwiaXNuIjoiNDMiLCJpc2xkIjoiIiwiaXBpIjoiIiwiaWQiOiIyMDIwLTEwLTIzVDE5OjMwOjAwKzAwOjAwIiwiZXNpIjoiIiwiZXJpIjoiIiwiZXNlaSI6IiIsImViaSI6IiIsImVwaSI6IiIsImVkY3QiOiIiLCJwYWkiOiIiLCJjcHYiOjAsImNwYyI6IiIsIm9zcHYiOjAsIm9zcGMiOiIiLCJvZnZ2IjowLCJvZnZjIjoiIiwic3NwdiI6MCwic3NwYyI6IiIsInNmdnYiOjAsInNmdmMiOiIiLCJvdHNzcGZyIjowLCJzdG9zcGZyIjowLCJpYyI6MCwicG1jIjoiIiwicmVkIjoiMjAyMDA2MTAiLCJwcnYiOjB9.CxiDEFy_x5tOtb3-K1jmAGVot-mkA8PCDIcfVGo3ukc"",
                         ""areaId"": ""DC"",
                         ""areaName"": ""CIRCLE"",
                         ""row"": ""H"",

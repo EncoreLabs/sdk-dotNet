@@ -35,8 +35,9 @@ namespace EncoreTickets.SDK.Basket
         /// Initialises a new instance of the <see cref="BasketServiceApi"/> class.
         /// </summary>
         /// <param name="context">The API context for requests.</param>
-        public BasketServiceApi(ApiContext context)
-            : base(context, BasketApiHost)
+        /// <param name="useLegacyMode">Indicates whether the service should be using legacy mode.</param>
+        public BasketServiceApi(ApiContext context, bool useLegacyMode = true)
+            : base(context, BasketApiHost, useLegacyMode)
         {
         }
 
