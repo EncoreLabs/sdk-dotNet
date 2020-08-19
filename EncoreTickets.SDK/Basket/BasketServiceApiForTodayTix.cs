@@ -1,4 +1,6 @@
-﻿using EncoreTickets.SDK.Api.Models;
+﻿using System;
+using EncoreTickets.SDK.Api.Models;
+using EncoreTickets.SDK.Basket.Models;
 
 namespace EncoreTickets.SDK.Basket
 {
@@ -19,6 +21,22 @@ namespace EncoreTickets.SDK.Basket
         public BasketServiceApiForTodayTix(ApiContext context)
             : base(context)
         {
+            if (context.Environment == Environments.Production)
+            {
+                throw new NotSupportedException("The API for TodayTix is not available for production.");
+            }
+        }
+
+        /// <inheritdoc />
+        public Models.Basket UpsertPromotion(string basketReference, string couponName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Models.Basket UpsertPromotion(string basketReference, Coupon coupon)
+        {
+            throw new NotImplementedException();
         }
     }
 }
