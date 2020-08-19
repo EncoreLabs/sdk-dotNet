@@ -163,6 +163,51 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketParametersAreUsedAndWithoutFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasketParameters(reference);
+                upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 1;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
+        public void UpsertBasket_GetBasket_IfNewBasketAndBasketParametersAreUsedAndWithFlexi_Successful()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasketParameters(reference);
+                request.HasFlexiTickets = true;
+                upsertBasketResult = service.UpsertBasket(request);
+                const int expectedReservationsCount = 1;
+
+                var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
+
+                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
+
+        [Test]
         public void UpsertBasket_GetBasket_IfNewBasketAndReservationItemsMoreThan1_Successful()
         {
             var upsertBasketResult = (Basket.Models.Basket)null;
@@ -185,7 +230,28 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             }
         }
 
-        // todo: add additional tests when the basket API v2 is fully ready
+        [Test]
+        public void UpsertBasket_IfExistingBasket_Exception400()
+        {
+            var upsertBasketResult = (Basket.Models.Basket)null;
+            try
+            {
+                var reference = configuration["Basket:TestReferences:0"];
+                var request = CreateDefaultBasket(reference);
+                upsertBasketResult = service.UpsertBasket(request);
+
+                var exception = Assert.Catch<ApiException>(() =>
+                {
+                    upsertBasketResult = service.UpsertBasket(upsertBasketResult);
+                });
+
+                AssertApiException(exception, HttpStatusCode.BadRequest);
+            }
+            finally
+            {
+                service.ClearBasket(upsertBasketResult?.Reference);
+            }
+        }
 
         [Test]
         public void UpsertBasket_IfReservationsMoreThan1_Exception400()
@@ -347,6 +413,22 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
+        public void RemoveReservation_GetBasket_Exception404()
+        {
+            var reference = configuration["Basket:TestReferences:0"];
+            var request = CreateDefaultBasket(reference);
+            var upsertBasketResult = service.UpsertBasket(request);
+
+            service.RemoveReservation(upsertBasketResult.Reference, upsertBasketResult.Reservations[0].Id);
+            var exception = Assert.Catch<ApiException>(() =>
+            {
+                var result = service.GetBasketDetails(reference);
+            });
+
+            AssertApiException(exception, HttpStatusCode.NotFound);
+        }
+
+        [Test]
         public void RemoveReservation_IfBasketReferenceIsInvalid_Exception404()
         {
             var basketReference = "test";
@@ -494,7 +576,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var codesEnabled = VerifyPromoCodeTestsEnabled();
             return new UpsertBasketParameters
             {
-                ChannelId = "test-channel",
+                ChannelId = "boxoffice",
                 Coupon = codesEnabled ? new Coupon { Code = configuration["Basket:ValidPromoCode"] } : null,
                 Delivery = CreateDefaultDelivery(),
                 Reservations = new List<ReservationParameters>
