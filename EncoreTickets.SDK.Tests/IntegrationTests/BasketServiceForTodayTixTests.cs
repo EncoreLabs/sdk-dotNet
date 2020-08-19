@@ -124,13 +124,13 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             try
             {
                 var reference = configuration["Basket:TestReferences:0"];
-                var request = CreateDefaultBasket(reference);
-                upsertBasketResult = service.UpsertBasket(request);
+                var basketInRequest = CreateDefaultBasket(reference);
+                upsertBasketResult = service.UpsertBasket(basketInRequest);
                 const int expectedReservationsCount = 1;
 
                 var basketDetails = service.GetBasketDetails(upsertBasketResult.Reference);
 
-                AssertUpsertBasketSuccess(request, basketDetails, expectedReservationsCount);
+                AssertUpsertBasketSuccess(basketInRequest, basketDetails, expectedReservationsCount);
                 Assert.AreEqual(upsertBasketResult.Reference, basketDetails.Reference);
             }
             finally
@@ -200,14 +200,6 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var exception = Assert.Catch<ApiException>(() =>
             {
                 var upsertBasketResult = service.UpsertBasket(request);
-                try
-                {
-                    service.ClearBasket(upsertBasketResult?.Reference);
-                }
-                catch (Exception e)
-                {
-                    // ignored
-                }
             });
 
             AssertApiException(exception, HttpStatusCode.BadRequest);
@@ -381,7 +373,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         }
 
         [Test]
-        public void RemoveReservation_IReservationNotFound_Exception404()
+        public void RemoveReservation_IfReservationNotFound_Exception404()
         {
             var reference = configuration["Basket:TestReferences:0"];
             var request = CreateDefaultBasket(reference);
@@ -503,7 +495,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             return new UpsertBasketParameters
             {
                 ChannelId = "test-channel",
-                Coupon = !codesEnabled ? null : new Coupon { Code = configuration["Basket:ValidPromoCode"] },
+                Coupon = codesEnabled ? new Coupon { Code = configuration["Basket:ValidPromoCode"] } : null,
                 Delivery = CreateDefaultDelivery(),
                 Reservations = new List<ReservationParameters>
                 {
@@ -528,7 +520,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             return new Basket.Models.Basket
             {
                 ChannelId = "boxoffice",
-                Coupon = !codesEnabled ? null : new Coupon { Code = configuration["Basket:ValidPromoCode"] },
+                Coupon = codesEnabled ? new Coupon { Code = configuration["Basket:ValidPromoCode"] } : null,
                 Delivery = CreateDefaultDelivery(),
                 Reservations = new List<Reservation>
                 {

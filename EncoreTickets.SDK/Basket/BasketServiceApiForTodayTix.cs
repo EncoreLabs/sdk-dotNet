@@ -28,13 +28,13 @@ namespace EncoreTickets.SDK.Basket
         }
 
         /// <inheritdoc />
-        public Models.Basket UpsertPromotion(string basketReference, string couponName)
+        public new Models.Basket UpsertPromotion(string basketReference, string couponName)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Models.Basket UpsertPromotion(string basketReference, Coupon coupon)
+        public new Models.Basket UpsertPromotion(string basketReference, Coupon coupon)
         {
             throw new NotImplementedException();
         }
