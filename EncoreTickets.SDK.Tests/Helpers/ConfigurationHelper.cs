@@ -19,7 +19,6 @@ namespace EncoreTickets.SDK.Tests.Helpers
         private static IConfiguration BuildConfiguration()
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.test.json")
                 .AddJsonFile("appsettings.test.real.json", optional: true);
             return builder.Build();
