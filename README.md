@@ -34,6 +34,21 @@ Install-Package EncoreTickets.SDK
 
 ### Versions:
 
+#### 5.0
+###### Includes:
+- basket v1 (v2 for testing only)
+- checkout v1
+- content v1
+- inventory v4
+- payment v1
+- pricing v3
+- venue v2
+###### Changes:
+- Updated methods and models used to call Basket API endpoints
+- Added extra methods to call Pricing API endpoints 
+- Added models extensions to get information from aggregate references
+- Added new utilities for hash generation etc
+
 #### 4.0
 ###### Includes:
 - basket v1
