@@ -12,7 +12,8 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
     public class JwtAuthenticationService : BaseJwtAuthenticationService
     {
         /// <summary>
-        /// Initializes an instance for the JWT authentication service based on credentials.
+        /// Initialises a new instance of the <see cref="JwtAuthenticationService"/> class.
+        /// Initialises an instance for the JWT authentication service based on credentials.
         /// </summary>
         /// <param name="context">The API context.</param>
         /// <param name="host">The service host.</param>
@@ -39,8 +40,8 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
                 Body = new Credentials
                 {
                     Username = Context.UserName ?? string.Empty,
-                    Password = Context.Password ?? string.Empty
-                }
+                    Password = Context.Password ?? string.Empty,
+                },
             };
             var result = Executor.ExecuteApiWithNotWrappedResponse<AccessToken>(requestParameters);
             return result.DataOrException;

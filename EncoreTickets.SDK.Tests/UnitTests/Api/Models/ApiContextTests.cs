@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Models
             string username,
             string password)
         {
-            var context  = new ApiContext(env, username, password);
+            var context = new ApiContext(env, username, password);
 
             Assert.AreEqual(env, context.Environment);
             Assert.AreEqual(username, context.UserName);

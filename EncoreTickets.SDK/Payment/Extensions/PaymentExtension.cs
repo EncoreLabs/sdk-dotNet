@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Payment.Extensions
                 PaymentApiConstants.PaymentStatusCompensated,
                 PaymentApiConstants.PaymentStatusPartiallyCompensated,
                 PaymentApiConstants.PaymentStatusRefunded,
-                PaymentApiConstants.PaymentStatusPartiallyRefunded
+                PaymentApiConstants.PaymentStatusPartiallyRefunded,
             };
             return payment.HasOneOfStatuses(statuses);
         }

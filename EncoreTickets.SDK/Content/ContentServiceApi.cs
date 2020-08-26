@@ -22,10 +22,11 @@ namespace EncoreTickets.SDK.Content
         public override int? ApiVersion => 1;
 
         /// <summary>
-        /// Default constructor for the content service
+        /// Initialises a new instance of the <see cref="ContentServiceApi"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public ContentServiceApi(ApiContext context) : base(context, ContentApiHost)
+        public ContentServiceApi(ApiContext context)
+            : base(context, ContentApiHost)
         {
         }
 
@@ -35,7 +36,7 @@ namespace EncoreTickets.SDK.Content
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/locations",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var results = Executor.ExecuteApiWithWrappedResponse<List<Location>>(parameters);
             return results.DataOrException;
@@ -44,12 +45,12 @@ namespace EncoreTickets.SDK.Content
         /// <inheritdoc />
         public IList<Product> GetProducts(GetProductsParameters requestParameters = null)
         {
-            requestParameters ??= new GetProductsParameters();
+            requestParameters = requestParameters ?? new GetProductsParameters();
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/products",
                 Method = RequestMethod.Get,
-                Query = requestParameters
+                Query = requestParameters,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>>(parameters);
             return result.DataOrException;
@@ -66,7 +67,7 @@ namespace EncoreTickets.SDK.Content
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/products/{id}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Product>(parameters);
             return result.DataOrException;

@@ -27,80 +27,70 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.CommonModels
 
     internal static class EntityWithStatusExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> HasStatus_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> HasStatus_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
                 "status",
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment(),
                 "status",
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status"
+                    Status = "status",
                 },
                 "status",
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status1"
+                    Status = "status1",
                 },
                 "status2",
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status"
+                    Status = "status",
                 },
                 "sTaTus",
-                true
-            ),
+                true),
         };
 
-        public static IEnumerable<TestCaseData> HasOneOfStatuses_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> HasOneOfStatuses_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                new []{"status1", "status2", "status3"},
-                false
-            ),
+                new[] { "status1", "status2", "status3" },
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment(),
-                new []{"status1", "status2", "status3"},
-                false
-            ),
+                new[] { "status1", "status2", "status3" },
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status4"
+                    Status = "status4",
                 },
-                new []{"status1", "status2", "status3"},
-                false
-            ),
+                new[] { "status1", "status2", "status3" },
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "status2"
+                    Status = "status2",
                 },
-                new []{"status1", "status2", "status3"},
-                true
-            ),
+                new[] { "status1", "status2", "status3" },
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "STATUS3"
+                    Status = "STATUS3",
                 },
-                new []{"status1", "status2", "status3"},
-                true
-            ),
+                new[] { "status1", "status2", "status3" },
+                true),
         };
     }
 }

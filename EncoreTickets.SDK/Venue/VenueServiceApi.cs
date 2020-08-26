@@ -10,7 +10,6 @@ using EncoreTickets.SDK.Utilities.Serializers;
 using EncoreTickets.SDK.Utilities.Serializers.Converters;
 using EncoreTickets.SDK.Venue.Models;
 using EncoreTickets.SDK.Venue.Models.RequestModels;
-using EncoreTickets.SDK.Venue.Models.ResponseModels;
 using Attribute = EncoreTickets.SDK.Venue.Models.Attribute;
 
 namespace EncoreTickets.SDK.Venue
@@ -28,7 +27,7 @@ namespace EncoreTickets.SDK.Venue
         public override int? ApiVersion => 2;
 
         /// <summary>
-        /// Default constructor for the Venue service
+        /// Initialises a new instance of the <see cref="VenueServiceApi"/> class.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="automaticAuthentication"></param>
@@ -43,9 +42,9 @@ namespace EncoreTickets.SDK.Venue
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/venues",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
-            var result = Executor.ExecuteApiWithWrappedResponse<List<Models.Venue>, VenuesResponse, VenuesResponseContent>(parameters);
+            var result = Executor.ExecuteApiWithWrappedResultsInResponse<List<Models.Venue>>(parameters);
             return result.DataOrException;
         }
 
@@ -60,7 +59,7 @@ namespace EncoreTickets.SDK.Venue
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/venues/{id}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
             return result.DataOrException;
@@ -79,7 +78,7 @@ namespace EncoreTickets.SDK.Venue
             {
                 Endpoint = $"v{ApiVersion}/admin/venues/{venue.InternalId}",
                 Method = RequestMethod.Post,
-                Body = venue
+                Body = venue,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Venue>(parameters);
             return result.DataOrException;
@@ -91,7 +90,7 @@ namespace EncoreTickets.SDK.Venue
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/attributes/standard",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Attribute>>(parameters);
             return result.DataOrException;
@@ -110,7 +109,7 @@ namespace EncoreTickets.SDK.Venue
             {
                 Endpoint = $"v{ApiVersion}/admin/attributes",
                 Method = RequestMethod.Patch,
-                Body = attribute
+                Body = attribute,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Attribute>(parameters);
             return result.DataOrException;
@@ -134,7 +133,7 @@ namespace EncoreTickets.SDK.Venue
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/venues/{venueId}/seats/attributes/detailed",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<SeatDetailed>>(parameters);
             return result.DataOrException;
@@ -155,10 +154,10 @@ namespace EncoreTickets.SDK.Venue
                 Method = RequestMethod.Patch,
                 Body = new SeatAttributesRequest
                 {
-                    Seats = seatAttributes ?? new List<SeatDetailed>()
+                    Seats = seatAttributes ?? new List<SeatDetailed>(),
                 },
                 DateFormat = "yyyy-MM-dd",
-                Deserializer = new DefaultJsonSerializer(new[] {new SingleOrListToListConverter<string>()})
+                Deserializer = new DefaultJsonSerializer(new[] { new SingleOrListToListConverter<string>() }),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<string>>(parameters);
             return result.DataOrException?.Any(x =>

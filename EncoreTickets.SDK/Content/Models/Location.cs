@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Content.Models
 {
     /// <summary>
-    /// Location
+    /// Location.
     /// </summary>
     public class Location
     {

@@ -20,16 +20,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class AddressExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> ToNullIfEmpty_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> ToNullIfEmpty_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                true
-            ),
+                true),
             new TestCaseData(
                 new Address(),
-                true
-            ),
+                true),
             new TestCaseData(
                 new Address
                 {
@@ -39,17 +37,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     LegacyCountryCode = null,
                     Line1 = "address",
                     Line2 = "house",
-                    StateOrProvince = "minsk"
+                    StateOrProvince = "minsk",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Address
                 {
                     CountryCode = "BLR",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Address
                 {
@@ -58,10 +54,9 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
                     LegacyCountryCode = null,
                     Line1 = "address",
                     Line2 = "house",
-                    StateOrProvince = "minsk"
+                    StateOrProvince = "minsk",
                 },
-                false
-            ),
+                false),
         };
     }
 }

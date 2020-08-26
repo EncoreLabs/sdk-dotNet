@@ -34,7 +34,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return new RestResponse<T>
             {
                 ResponseStatus = ResponseStatus.Completed,
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.OK,
             };
         }
 
@@ -43,12 +43,15 @@ namespace EncoreTickets.SDK.Tests.Helpers
             return new RestResponse<T>
             {
                 ResponseStatus = ResponseStatus.Error,
-                StatusCode = code
+                StatusCode = code,
             };
         }
 
-        private static IRestResponse<T> GetJsonResponseWithData<T>(IRestResponse<T> response, IRestClient client,
-            IRestRequest request, string content)
+        private static IRestResponse<T> GetJsonResponseWithData<T>(
+            IRestResponse<T> response,
+            IRestClient client,
+            IRestRequest request,
+            string content)
         {
             response.Content = content;
             response.Request = request;

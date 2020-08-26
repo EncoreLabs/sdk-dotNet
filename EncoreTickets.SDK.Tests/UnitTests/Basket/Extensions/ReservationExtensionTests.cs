@@ -1,6 +1,8 @@
-﻿using EncoreTickets.SDK.Basket.Extensions;
+﻿using System.Collections.Generic;
+using EncoreTickets.SDK.Basket.Extensions;
 using EncoreTickets.SDK.Basket.Models;
 using EncoreTickets.SDK.Tests.Helpers;
+using EncoreTickets.SDK.Utilities.CommonModels.Constants;
 using EncoreTickets.SDK.Utilities.CommonModels.Extensions;
 using NUnit.Framework;
 
@@ -12,10 +14,18 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
         {
             Currency = "GBP",
             DecimalPlaces = 2,
-            Value = 2500
+            Value = 2500,
         };
 
         private static readonly int DefaultQuantity = 2;
+
+        [TestCaseSource(typeof(ReservationExtensionTestsSource), nameof(ReservationExtensionTestsSource.IsFlexi_Correct))]
+        public void IsFlexi_Correct(Reservation reservation, bool expected)
+        {
+            var actual = reservation.IsFlexi();
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void TotalAdjustedAmountInOfficeCurrency_Correct()
@@ -96,5 +106,41 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Basket.Extensions
 
             AssertExtension.AreObjectsValuesEqual(DefaultPrice.MultiplyByNumber(DefaultQuantity), result);
         }
+    }
+
+    internal static class ReservationExtensionTestsSource
+    {
+        public static IEnumerable<TestCaseData> IsFlexi_Correct { get; } = new[]
+        {
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId,
+                    ProductType = ProductConstants.FlexiProductType,
+                },
+                true),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId,
+                    ProductType = ProductConstants.FlexiProductType.ToLower(),
+                },
+                true),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductId = ProductConstants.FlexiProductId,
+                },
+                false),
+            new TestCaseData(
+                new Reservation
+                {
+                    ProductType = ProductConstants.FlexiProductType,
+                },
+                false),
+            new TestCaseData(
+                new Reservation(),
+                false),
+        };
     }
 }

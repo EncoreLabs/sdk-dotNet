@@ -11,7 +11,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
     {
         public override int? ApiVersion { get; }
 
-        public BaseApiTests() : base(new ApiContext(), BaseApiTestsSource.TestHost)
+        public BaseApiTests()
+            : base(new ApiContext(), BaseApiTestsSource.TestHost)
         {
         }
 
@@ -49,28 +50,24 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         }
     }
 
-    public static class BaseApiTestsSource
+    internal static class BaseApiTestsSource
     {
         public static readonly string TestHost = "venue-service.{0}tixuk.io/api/";
 
-        public static IEnumerable<TestCaseData> BaseUrl_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> BaseUrl_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
-                "https://venue-service.tixuk.io/api/"
-            ),
+                "https://venue-service.tixuk.io/api/"),
             new TestCaseData(
                 new ApiContext(Environments.Sandbox),
-                "https://venue-service.devtixuk.io/api/"
-            ),
+                "https://venue-service.devtixuk.io/api/"),
             new TestCaseData(
                 new ApiContext(Environments.Staging),
-                "https://venue-service.stagingtixuk.io/api/"
-            ),
+                "https://venue-service.stagingtixuk.io/api/"),
             new TestCaseData(
                 new ApiContext(Environments.QA),
-                "https://venue-service.qatixuk.io/api/"
-            ),
+                "https://venue-service.qatixuk.io/api/"),
         };
     }
 }

@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
 
         /// <summary>
         /// Gets or sets ASC or DESC.
-        /// Default value : ASC
+        /// Default value : ASC.
         /// </summary>
         public Direction? Direction { get; set; }
     }

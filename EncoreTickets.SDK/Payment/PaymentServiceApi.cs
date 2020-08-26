@@ -39,7 +39,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = $"v{ApiVersion}/orders/{channelId}/{externalId}",
                 Method = RequestMethod.Get,
-                Deserializer = new JsonResponseToOrderDeserializer()
+                Deserializer = new JsonResponseToOrderDeserializer(),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;
@@ -54,7 +54,7 @@ namespace EncoreTickets.SDK.Payment
                 Endpoint = $"v{ApiVersion}/orders",
                 Method = RequestMethod.Post,
                 Body = orderRequest,
-                Deserializer = new JsonResponseToOrderDeserializer()
+                Deserializer = new JsonResponseToOrderDeserializer(),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;
@@ -74,7 +74,7 @@ namespace EncoreTickets.SDK.Payment
                 Endpoint = $"v{ApiVersion}/orders/{orderId}",
                 Method = RequestMethod.Patch,
                 Body = orderRequest,
-                Deserializer = new JsonResponseToOrderDeserializer()
+                Deserializer = new JsonResponseToOrderDeserializer(),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Order>(parameters);
             return result.DataOrException;
@@ -88,7 +88,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = $"v{ApiVersion}/payments",
                 Method = RequestMethod.Post,
-                Body = paymentRequest
+                Body = paymentRequest,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<Models.Payment>(parameters);
             return result.DataOrException;
@@ -101,7 +101,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = $"v{ApiVersion}/countries/usa/states",
                 Method = RequestMethod.Get,
-                Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
+                Deserializer = new JsonResponseToTerritorialUnitsDeserializer(),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<CountryTerritorialUnit>>(parameters);
             return result.DataOrException;
@@ -114,7 +114,7 @@ namespace EncoreTickets.SDK.Payment
             {
                 Endpoint = $"v{ApiVersion}/countries/canada/provinces",
                 Method = RequestMethod.Get,
-                Deserializer = new JsonResponseToTerritorialUnitsDeserializer()
+                Deserializer = new JsonResponseToTerritorialUnitsDeserializer(),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<CountryTerritorialUnit>>(parameters);
             return result.DataOrException;

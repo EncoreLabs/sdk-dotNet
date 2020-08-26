@@ -3,14 +3,14 @@
 namespace EncoreTickets.SDK.Utilities.Cache
 {
     /// <summary>
-    /// A lazy-loading wrapper over the ICache implementations
+    /// A lazy-loading wrapper over the ICache implementations.
     /// </summary>
     public class LazyCacheDecorator : ICache
     {
         private readonly ICache cache;
 
         /// <summary>
-        /// Initializes the instance of the <see cref="LazyCacheDecorator"/> class.
+        /// Initialises a new instance of the <see cref="LazyCacheDecorator"/> class.
         /// </summary>
         public LazyCacheDecorator(ICache cache)
         {
@@ -28,7 +28,7 @@ namespace EncoreTickets.SDK.Utilities.Cache
         /// <inheritdoc />
         public void Set<T>(string key, Func<T> factory, TimeSpan? lifeSpan)
         {
-            var lazyFactory = (Func<Lazy<T>>) (() => new Lazy<T>(factory));
+            var lazyFactory = (Func<Lazy<T>>)(() => new Lazy<T>(factory));
             cache.Set(key, lazyFactory, lifeSpan);
         }
 

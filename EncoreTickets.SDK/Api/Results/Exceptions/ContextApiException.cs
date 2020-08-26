@@ -16,12 +16,12 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         public override List<string> Errors => GetContextErrorsAsStrings();
 
         /// <summary>
-        /// Gets infos that should be errors
+        /// Gets infos that should be errors.
         /// </summary>
         public IEnumerable<Info> ContextErrors { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>
+        /// Initialises a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
         public ContextApiException(IEnumerable<Info> infosAsErrors)
         {
@@ -29,9 +29,10 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>
+        /// Initialises a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
-        public ContextApiException(ContextApiException sourceException) : this(
+        public ContextApiException(ContextApiException sourceException)
+            : this(
             sourceException?.ContextErrors,
             sourceException?.Response,
             sourceException?.Context,
@@ -41,7 +42,7 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContextApiException"/>
+        /// Initialises a new instance of the <see cref="ContextApiException"/> class.
         /// </summary>
         public ContextApiException(
             IEnumerable<Info> infosAsErrors,
@@ -54,15 +55,15 @@ namespace EncoreTickets.SDK.Api.Results.Exceptions
             ContextErrors = infosAsErrors;
         }
 
+        private static string ConvertInfoToString(Info info)
+        {
+            return string.IsNullOrEmpty(info.Message) ? info.Code : info.Message;
+        }
+
         private List<string> GetContextErrorsAsStrings()
         {
             var errors = ContextErrors?.Select(ConvertInfoToString);
             return errors.ExcludeEmptyStrings().NullIfEmptyEnumerable();
-        }
-
-        private static string ConvertInfoToString(Info info)
-        {
-            return string.IsNullOrEmpty(info.Message) ? info.Code : info.Message;
         }
     }
 }

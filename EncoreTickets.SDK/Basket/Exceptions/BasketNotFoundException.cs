@@ -9,7 +9,8 @@ namespace EncoreTickets.SDK.Basket.Exceptions
     {
         public string BasketId { get; set; }
 
-        public BasketNotFoundException(ApiException sourceException, string basketId) : base(sourceException)
+        public BasketNotFoundException(ApiException sourceException, string basketId)
+            : base(sourceException)
         {
             BasketId = basketId;
         }

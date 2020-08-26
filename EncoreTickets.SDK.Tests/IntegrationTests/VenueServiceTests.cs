@@ -145,15 +145,15 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         public void UpdateVenue_IfVenueDoesNotExist_Exception404()
         {
             var venueId = configuration["Venue:TestVenueIdNotExisting"];
-            var sourceVenue = new Venue.Models.Venue {InternalId = venueId};
+            var sourceVenue = new Venue.Models.Venue { InternalId = venueId };
             try
             {
                 service.GetVenueById(venueId);
                 Assert.Fail("Venue actually exists");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //ignore
+                // ignore
             }
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -193,7 +193,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var sourceAttribute = new Attribute
             {
                 Title = "test",
-                Intention = Intention.Negative
+                Intention = Intention.Negative,
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -211,7 +211,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 Title = "test",
                 Description = "test description",
-                Intention = (Intention)100
+                Intention = (Intention)100,
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -225,7 +225,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
         [Test]
         public void UpsertStandardAttributeByTitle_IfContextUnauthorized_Exception401()
         {
-            var sourceAttribute = new Attribute {Title = "test"};
+            var sourceAttribute = new Attribute { Title = "test" };
             service = new VenueServiceApi(context);
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -298,7 +298,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 new SeatDetailed
                 {
-                }
+                },
             };
             var attributes = newAttributes.Concat(sourceAttributes);
 
@@ -327,10 +327,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         {
                             Title = title,
                             Description = "test description",
-                            Intention = Intention.Neutral
-                        }
-                    }
-                }
+                            Intention = Intention.Neutral,
+                        },
+                    },
+                },
             };
             var attributes = newAttributes.Concat(sourceAttributes);
 
@@ -359,10 +359,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         {
                             Title = "test title",
                             Description = description,
-                            Intention = Intention.Neutral
-                        }
-                    }
-                }
+                            Intention = Intention.Neutral,
+                        },
+                    },
+                },
             };
             var attributes = newAttributes.Concat(sourceAttributes);
 
@@ -432,10 +432,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                         {
                             Title = "test_not_existing_title",
                             Description = "test description",
-                            Intention = Intention.Neutral
-                        }
-                    }
-                }
+                            Intention = Intention.Neutral,
+                        },
+                    },
+                },
             };
             var attributes = newAttributes.Concat(sourceAttributes);
 

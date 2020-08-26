@@ -26,7 +26,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
             var payment = paymentStatus != null
                 ? new SDK.Payment.Models.Payment
                 {
-                    Status = paymentStatus
+                    Status = paymentStatus,
                 }
                 : null;
 
@@ -44,10 +44,10 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
         [TestCase(null, false)]
         public void IsNewPayment_ReturnsCorrectly(string paymentStatus, bool expected)
         {
-            var payment = paymentStatus != null 
+            var payment = paymentStatus != null
                 ? new SDK.Payment.Models.Payment
                 {
-                    Status = paymentStatus
+                    Status = paymentStatus,
                 }
                 : null;
 
@@ -59,72 +59,62 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Payment.Extensions
 
     internal static class PaymentExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsSuccessfulPayment_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsSuccessfulPayment_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment(),
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "new"
+                    Status = "new",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "authorised"
+                    Status = "authorised",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "captured"
+                    Status = "captured",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "partially_refunded"
+                    Status = "partially_refunded",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "refunded"
+                    Status = "refunded",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "partially_compensated"
+                    Status = "partially_compensated",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "compensated"
+                    Status = "compensated",
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new SDK.Payment.Models.Payment
                 {
-                    Status = "REFUNDEd"
+                    Status = "REFUNDEd",
                 },
-                true
-            ),
+                true),
         };
     }
 }

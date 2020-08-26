@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Authentication
         /// <summary>
         /// Get an API context with data set for an authenticated user.
         /// </summary>
-        /// <returns>The API context</returns>
+        /// <returns>The API context.</returns>
         ApiContext Authenticate();
 
         /// <summary>

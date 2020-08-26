@@ -7,7 +7,7 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
     public static class EnumerableExtension
     {
         /// <summary>
-        /// Returns new collection where elements have unique property value. 
+        /// Returns new collection where elements have unique property value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">Source collection.</param>
@@ -17,7 +17,7 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
             => source?.GroupBy(selector).DefaultIfEmpty().Where(g => g != null).Select(g => g.FirstOrDefault());
 
         /// <summary>
-        /// Returns new collection where there are no null or empty strings. 
+        /// Returns new collection where there are no null or empty strings.
         /// </summary>
         /// <param name="stringCollection">Source string collection.</param>
         /// <returns>Enumerable without empty strings.</returns>
@@ -27,11 +27,11 @@ namespace EncoreTickets.SDK.Utilities.BaseTypesExtensions
         }
 
         /// <summary>
-        /// Returns null if source enumerable has no elements, otherwise returns the source enumerable. 
+        /// Returns null if source enumerable has no elements, otherwise returns the source enumerable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable">Source enumerable.</param>
-        /// <returns>Null or the source enumerable</returns>
+        /// <returns>Null or the source enumerable.</returns>
         public static List<T> NullIfEmptyEnumerable<T>(this IEnumerable<T> enumerable)
         {
             var enumerableAsList = enumerable?.ToList();

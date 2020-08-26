@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Utilities.RestClientWrapper
 {
     /// <summary>
-    /// Credentials for <see cref="RestClientWrapper"/>
+    /// Credentials for <see cref="RestClientWrapper"/>.
     /// </summary>
     public class RestClientCredentials
     {

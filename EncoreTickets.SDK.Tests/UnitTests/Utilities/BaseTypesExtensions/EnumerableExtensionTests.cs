@@ -11,7 +11,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
         [Test]
         public void DistinctBy_Null()
         {
-            var source = (IEnumerable<dynamic>) null;
+            var source = (IEnumerable<dynamic>)null;
 
             var result = source.DistinctBy(o => o.Id);
 
@@ -43,12 +43,12 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
         [Test]
         public void Prepend_Successful()
         {
-            var item = new {Id = 1, Value = "string1"};
+            var item = new { Id = 1, Value = "string1" };
             var originalList = new List<object>
             {
-                new {Id = 2, Value = "string2"},
+                new { Id = 2, Value = "string2" },
                 null,
-                new {Id = 3, Value = "string3"}
+                new { Id = 3, Value = "string3" },
             };
 
             var result = EnumerableExtension.Prepend(originalList, item).ToList();
@@ -80,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
         [TestCaseSource(typeof(EnumerableExtensionTestsSource), nameof(EnumerableExtensionTestsSource.NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly))]
         public void NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly<T>(IEnumerable<T> defaultEnumerable)
         {
-            var source = (IEnumerable<T>) null;
+            var source = (IEnumerable<T>)null;
 
             var actual = source.NullIfEmptyEnumerable();
 
@@ -88,52 +88,43 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BaseTypesExtensions
         }
     }
 
-    public static class EnumerableExtensionTestsSource
+    internal static class EnumerableExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> ExcludeEmptyStrings_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> ExcludeEmptyStrings_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
-                new [] {"test", "test test", "", null, "   ", "test"},
-                new [] { "test", "test test", "   ", "test" }
-            ),
+                new[] { "test", "test test", "", null, "   ", "test" },
+                new[] { "test", "test test", "   ", "test" }),
             new TestCaseData(
-                new [] {null, ""},
-                new string[0]
-            ),
+                new[] { null, "" },
+                new string[0]),
             new TestCaseData(
                 null,
-                null
-            ),
+                null),
         };
 
-        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNotNull_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNotNull_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
-                new [] {"test", "test test", "", null, "   ", "test"},
-                new List<string> {"test", "test test", "", null, "   ", "test"}
-            ),
+                new[] { "test", "test test", "", null, "   ", "test" },
+                new List<string> { "test", "test test", "", null, "   ", "test" }),
             new TestCaseData(
-                new Queue<int>(new []{1, 2, 3, 4, 5}),
-                new List<int> {1, 2, 3, 4, 5}
-            ),
+                new Queue<int>(new[] { 1, 2, 3, 4, 5 }),
+                new List<int> { 1, 2, 3, 4, 5 }),
             new TestCaseData(
                 new string[0],
-                null
-            ),
+                null),
             new TestCaseData(
                 new List<int>(),
-                null
-            ),
+                null),
         };
 
-        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> NullIfEmptyEnumerable_IfSourceEnumerableIsNull_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
-                new List<string>()
-            ),
+                new List<string>()),
             new TestCaseData(
-                new int[0]
-            ),
+                new int[0]),
         };
     }
 }

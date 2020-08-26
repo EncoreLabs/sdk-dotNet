@@ -18,13 +18,13 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
         [Test]
         public void FromSeatToItemRequest_CorrectlyMapped()
         {
-            var seat = new Seat
+            var seat = new ReservationItem
             {
                 AggregateReference = "reference",
-                AreaName = "E"
+                AreaName = "E",
             };
 
-            var result = seat.Map<Seat, ItemRequest>();
+            var result = seat.Map<ReservationItem, ReservationItemParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(seat);
         }
@@ -34,26 +34,26 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
         {
             var sourceBasket = new SDK.Basket.Models.Basket
             {
-                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i}).ToList(),
+                Reservations = Enumerable.Range(1, 3).Select(i => new Reservation { Quantity = i }).ToList(),
                 Coupon = new Coupon { Code = "DISCOUNT" },
                 Reference = "1234567",
                 AllowFlexiTickets = true,
                 ChannelId = "test-channel",
                 Delivery = new Delivery
                 {
-                    Method = "postage",
+                    Method = DeliveryMethod.Postage,
                     Charge = new Price
                     {
                         Currency = DefaultCurrency,
                         DecimalPlaces = DefaultDecimalPlaces,
-                        Value = 145
-                    }
+                        Value = 145,
+                    },
                 },
                 ShopperReference = "test reference",
-                ShopperCurrency = "USD"
+                ShopperCurrency = "USD",
             };
 
-            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketRequest>();
+            var result = sourceBasket.Map<SDK.Basket.Models.Basket, UpsertBasketParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(sourceBasket);
             Assert.AreEqual(sourceBasket.AllowFlexiTickets, result.HasFlexiTickets);
@@ -73,11 +73,11 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Mapping
                 Date = DateTimeOffset.Now,
                 ProductId = "1234",
                 VenueId = "123",
-                Items = new List<Seat> { new Seat { AggregateReference = "reference1" }, new Seat { AggregateReference = "reference2" } },
-                Quantity = 2
+                Items = new List<ReservationItem> { new ReservationItem { AggregateReference = "reference1" }, new ReservationItem { AggregateReference = "reference2" } },
+                Quantity = 2,
             };
 
-            var result = reservation.Map<Reservation, ReservationRequest>();
+            var result = reservation.Map<Reservation, ReservationParameters>();
 
             result.ShouldBeEquivalentToObjectWithMoreProperties(reservation);
             for (var i = 0; i < result.Items.Count; i++)

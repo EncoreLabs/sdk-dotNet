@@ -14,7 +14,7 @@ namespace EncoreTickets.SDK.Inventory
     /// <inheritdoc cref="BaseApi" />
     /// <inheritdoc cref="IInventoryServiceApi" />
     /// <summary>
-    /// Wrapper class for the inventory service API
+    /// Wrapper class for the inventory service API.
     /// </summary>
     public class InventoryServiceApi : BaseApi, IInventoryServiceApi
     {
@@ -24,10 +24,11 @@ namespace EncoreTickets.SDK.Inventory
         public override int? ApiVersion => 4;
 
         /// <summary>
-        /// Default constructor for the Inventory service
+        /// Initialises a new instance of the <see cref="InventoryServiceApi"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public InventoryServiceApi(ApiContext context) : base(context, InventoryApiHost)
+        public InventoryServiceApi(ApiContext context)
+            : base(context, InventoryApiHost)
         {
         }
 
@@ -45,8 +46,8 @@ namespace EncoreTickets.SDK.Inventory
                 Method = RequestMethod.Get,
                 Query = new
                 {
-                    query = text
-                }
+                    query = text,
+                },
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Product>, ProductSearchResponse, ProductSearchResponseContent>(requestParameters);
             return result.DataOrException;
@@ -69,7 +70,7 @@ namespace EncoreTickets.SDK.Inventory
             var parameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/products/{productId}/availability-range",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<AvailabilityRange>(parameters);
             return result.DataOrException;
@@ -92,7 +93,7 @@ namespace EncoreTickets.SDK.Inventory
             var requestParameters = new ExecuteApiRequestParameters
             {
                 Endpoint = $"v{ApiVersion}/availability/products/{productId}/quantity/{quantity}/from/{from.ToEncoreDate()}/to/{to.ToEncoreDate()}",
-                Method = RequestMethod.Get
+                Method = RequestMethod.Get,
             };
             var result = Executor.ExecuteApiWithWrappedResponse<List<Availability>>(requestParameters);
             return result.DataOrException;
@@ -104,7 +105,7 @@ namespace EncoreTickets.SDK.Inventory
             var parameters = new AggregateSeatAvailabilityParameters
             {
                 PerformanceTime = performance,
-                Quantity = quantity
+                Quantity = quantity,
             };
             return GetAggregateSeatAvailability(productId, parameters);
         }
@@ -126,7 +127,7 @@ namespace EncoreTickets.SDK.Inventory
             {
                 Endpoint = $"v{ApiVersion}/products/{productId}/areas",
                 Method = RequestMethod.Get,
-                Query = new AggregateSeatAvailabilityQueryParameters(parameters)
+                Query = new AggregateSeatAvailabilityQueryParameters(parameters),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<AggregateSeatAvailability>(requestParameters);
             return result.DataOrException;
@@ -153,7 +154,7 @@ namespace EncoreTickets.SDK.Inventory
             {
                 Endpoint = $"v{ApiVersion}/europa/availability/products/{productId}/quantity/{quantity}/seats",
                 Method = RequestMethod.Get,
-                Query = new SeatAvailabilityQueryParameters(parameters)
+                Query = new SeatAvailabilityQueryParameters(parameters),
             };
             var result = Executor.ExecuteApiWithWrappedResponse<SeatAvailability>(requestParameters);
             return result.DataOrException;

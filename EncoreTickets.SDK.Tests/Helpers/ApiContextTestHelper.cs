@@ -18,6 +18,7 @@ namespace EncoreTickets.SDK.Tests.Helpers
             context.Correlation = defaultApiContext.Correlation;
             context.Market = defaultApiContext.Market;
             context.AgentCredentials = defaultApiContext.AgentCredentials;
+            context.DisplayCurrency = defaultApiContext.DisplayCurrency;
         }
     }
 }

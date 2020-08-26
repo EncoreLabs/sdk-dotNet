@@ -15,17 +15,18 @@ namespace EncoreTickets.SDK.Api
         public virtual IAuthenticationService AuthenticationService => GetAuthenticationService(Context);
 
         /// <summary>
-        /// Gets the flag enabled automatic authentication
+        /// Gets or sets a value indicating whether gets the flag enabled automatic authentication.
         /// </summary>
         protected bool AutomaticAuthentication { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApiWithAuthentication"/> class.
+        /// Initialises a new instance of the <see cref="BaseApiWithAuthentication"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="host">The host.</param>
-        /// <param name="automaticAuthentication">Optional: the flag enables automatic authentication</param>
-        protected BaseApiWithAuthentication(ApiContext context, string host, bool automaticAuthentication = false) : base(context, host)
+        /// <param name="automaticAuthentication">Optional: the flag enables automatic authentication.</param>
+        protected BaseApiWithAuthentication(ApiContext context, string host, bool automaticAuthentication = false)
+            : base(context, host)
         {
             AutomaticAuthentication = automaticAuthentication;
         }
@@ -45,7 +46,7 @@ namespace EncoreTickets.SDK.Api
         }
 
         /// <summary>
-        /// Triggers authentication if automatic authentication is enabled and an authentication service exists
+        /// Triggers authentication if automatic authentication is enabled and an authentication service exists.
         /// </summary>
         protected virtual void TriggerAutomaticAuthentication()
         {

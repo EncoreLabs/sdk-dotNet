@@ -24,12 +24,12 @@ namespace EncoreTickets.SDK.Inventory.Models.RequestModels
         public int? GroupingLimit { get; }
 
         /// <summary>
-        /// Gets or sets direction.
+        /// Gets direction.
         /// </summary>
-        public string? Direction { get; }
+        public string Direction { get; }
 
         /// <summary>
-        /// Gets the field you'd like to sort by (limited to price)
+        /// Gets the field you'd like to sort by (limited to price).
         /// </summary>
         public string Sort { get; }
 

@@ -18,7 +18,8 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         {
         }
 
-        protected DefaultJsonSerializer(JsonSerializerSettings settings) : base(settings)
+        protected DefaultJsonSerializer(JsonSerializerSettings settings)
+            : base(settings)
         {
         }
 
@@ -54,7 +55,7 @@ namespace EncoreTickets.SDK.Utilities.Serializers
         {
             return new List<JsonConverter>
             {
-                new StringEnumConverter(enumNamingStrategy ?? new CamelCaseNamingStrategy())
+                new StringEnumConverter(enumNamingStrategy ?? new CamelCaseNamingStrategy()),
             };
         }
     }

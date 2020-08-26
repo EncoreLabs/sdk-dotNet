@@ -33,79 +33,71 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
         }
     }
 
-    public static class AttributeExtensionTestsSource
+    internal static class AttributeExtensionTestsSource
     {
-        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsValid_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "title",
                     Description = "description",
-                    Intention = Intention.Negative
+                    Intention = Intention.Negative,
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "   ",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
-                true
-            ),
+                true),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "",
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Attribute
                 {
                     Description = "description",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "title",
                     Description = "",
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "title",
                     Description = null,
-                    Intention = Intention.Positive
+                    Intention = Intention.Positive,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new Attribute
                 {
                     Title = "title",
                     Description = "description",
-                    Intention = (Intention) 3
+                    Intention = (Intention)3,
                 },
-                false
-            ),
+                false),
         };
 
-        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntentionAsStr_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntentionAsStr_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 "description",
@@ -114,9 +106,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
-                }
-            ),
+                    Intention = Intention.Negative,
+                }),
             new TestCaseData(
                 "description",
                 "Positive",
@@ -124,9 +115,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Positive
-                }
-            ),
+                    Intention = Intention.Positive,
+                }),
             new TestCaseData(
                 "description",
                 "negative",
@@ -134,17 +124,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
-                }
-            ),
+                    Intention = Intention.Negative,
+                }),
             new TestCaseData(
                 "description",
                 "invalid_value",
-                null
-            ),
+                null),
         };
 
-        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntention_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> CreateExtraAttribute_IfWithIntention_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 "description",
@@ -153,9 +141,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Negative
-                }
-            ),
+                    Intention = Intention.Negative,
+                }),
             new TestCaseData(
                 "description",
                 Intention.Positive,
@@ -163,9 +150,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Venue.Extensions
                 {
                     Title = "Other",
                     Description = "description",
-                    Intention = Intention.Positive
-                }
-            ),
+                    Intention = Intention.Positive,
+                }),
         };
     }
 }

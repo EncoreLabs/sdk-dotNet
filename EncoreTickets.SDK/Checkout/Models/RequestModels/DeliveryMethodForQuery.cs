@@ -18,6 +18,6 @@
         /// <summary>
         /// for Collection
         /// </summary>
-        C
+        C,
     }
 }

@@ -3,7 +3,7 @@
 namespace EncoreTickets.SDK.Pricing.Models
 {
     /// <summary>
-    /// Exchange rate DTO
+    /// Exchange rate DTO.
     /// </summary>
     public class ExchangeRate
     {
@@ -29,7 +29,7 @@ namespace EncoreTickets.SDK.Pricing.Models
 
         /// <summary>
         /// Gets or sets the rate with margin.
-        /// encoreFxRate = fxRate * protection margin
+        /// encoreFxRate = fxRate * protection margin.
         /// </summary>
         public decimal EncoreRate { get; set; }
 
@@ -42,11 +42,11 @@ namespace EncoreTickets.SDK.Pricing.Models
         /// <summary>
         /// Gets or sets the time for the current exchange rate.
         /// </summary>
-        public DateTime DatetimeOfSourcing { get; set; }
+        public DateTimeOffset DatetimeOfSourcing { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         public int Sourced { get; set; }
     }

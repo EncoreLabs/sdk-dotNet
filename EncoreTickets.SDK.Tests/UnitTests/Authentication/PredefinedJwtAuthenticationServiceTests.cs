@@ -34,46 +34,39 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Authentication
 
     internal static class JwtWithApiKeyAuthenticationServiceTestsSource
     {
-        public static IEnumerable<TestCaseData> Authenticate_DoesNotChangeContext = new[]
+        public static IEnumerable<TestCaseData> Authenticate_DoesNotChangeContext { get; } = new[]
         {
             new TestCaseData(
-                new ApiContext(Environments.Production, "token")
-            ),
+                new ApiContext(Environments.Production, "token")),
             new TestCaseData(
-                new ApiContext(Environments.QA, "admin", "valid_password")
-            ),
+                new ApiContext(Environments.QA, "admin", "valid_password")),
             new TestCaseData(
-                new ApiContext(Environments.Staging, "admin", "valid_password")
-            ),
+                new ApiContext(Environments.Staging, "admin", "valid_password")),
         };
 
-        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly = new[]
+        public static IEnumerable<TestCaseData> IsThereAuthentication_ReturnsCorrectly { get; } = new[]
         {
             new TestCaseData(
                 null,
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = null
+                    AccessToken = null,
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = ""
+                    AccessToken = "",
                 },
-                false
-            ),
+                false),
             new TestCaseData(
                 new ApiContext
                 {
-                    AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO"
+                    AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiO",
                 },
-                true
-            ),
+                true),
         };
     }
 }

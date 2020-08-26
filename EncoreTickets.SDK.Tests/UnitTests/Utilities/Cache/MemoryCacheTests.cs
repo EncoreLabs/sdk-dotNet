@@ -322,15 +322,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         private static string GetRandomKey() => Guid.NewGuid().ToString();
     }
 
-    public static class MemoryCacheTestsSource
+    internal static class MemoryCacheTestsSource
     {
-        public static IEnumerable<TestCaseData> TestCasesWithNotNullData = new[]
+        public static IEnumerable<TestCaseData> TestCasesWithNotNullData { get; } = new[]
         {
             new TestCaseData("1730"),
             new TestCaseData(4),
             new TestCaseData(1.2),
             new TestCaseData("Success"),
-            new TestCaseData(new List<string> {"a", "b", "c"})
+            new TestCaseData(new List<string> { "a", "b", "c" }),
         };
     }
 }

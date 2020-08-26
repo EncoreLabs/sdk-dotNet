@@ -23,7 +23,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             configuration = ConfigurationHelper.GetConfiguration();
             var context = new ApiContext(Environments.QA)
             {
-                Correlation = Guid.NewGuid().ToString()
+                Correlation = Guid.NewGuid().ToString(),
             };
             service = new ContentServiceApi(context);
         }
@@ -39,6 +39,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                 Assert.False(string.IsNullOrEmpty(location.IsoCode));
                 Assert.False(location.SubLocations.Any(loc => string.IsNullOrEmpty(loc.Name)));
             }
+
             Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 
@@ -51,6 +52,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             {
                 AssertProductPropertiesAreSet(product);
             }
+
             Assert.NotNull(service.Context.ReceivedCorrelation);
         }
 

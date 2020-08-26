@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
-    /// Internal territorial unit of a country (province / state / etc)
+    /// Internal territorial unit of a country (province / state / etc).
     /// </summary>
     public class CountryTerritorialUnit
     {

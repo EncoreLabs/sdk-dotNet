@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     FirstName = "Shawn",
                     LastName = "Butler",
                     TelephoneNumber = "07882571812",
-                    ExternalId = "8263702"
+                    ExternalId = "8263702",
                 },
                 BillingAddress = new Address
                 {
@@ -51,7 +51,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     City = "London",
                     CountryCode = "GB",
                     CountryName = "United Kingdom",
-                    StateOrProvince = "NY"
+                    StateOrProvince = "NY",
                 },
                 Origin = "https://example.com",
                 RedirectUrl = "https://example.com",
@@ -67,10 +67,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     City = "London",
                     CountryCode = "GB",
                     CountryName = "United Kingdom",
-                    StateOrProvince = "NY"
+                    StateOrProvince = "NY",
                 },
                 HasFlexiTickets = false,
-                PaymentType = PaymentType.Card
+                PaymentType = PaymentType.Card,
             };
 
             var paymentInfo = service.Checkout(parameters);
@@ -92,7 +92,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     Title = "Mrs",
                     FirstName = "clientFName",
                     LastName = "clientLName",
-                    TelephoneNumber = "123321321321"
+                    TelephoneNumber = "123321321321",
                 },
                 BillingAddress = new Address
                 {
@@ -100,12 +100,12 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     Line2 = "",
                     PostalCode = "SE1 0BS",
                     City = "London",
-                    CountryCode = "UK"
+                    CountryCode = "UK",
                 },
                 RedirectUrl = "http://localhost:8000/",
                 DeliveryMethod = DeliveryMethod.Collection,
                 PaymentType = PaymentType.Account,
-                PaymentId = "111"
+                PaymentId = "111",
             };
 
             var paymentInfo = service.Checkout(parameters);
@@ -140,7 +140,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     FirstName = "Shawn",
                     LastName = "Butler",
                     TelephoneNumber = "07882571812",
-                    ExternalId = "8263702"
+                    ExternalId = "8263702",
                 },
                 BillingAddress = new Address
                 {
@@ -150,7 +150,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     City = "London",
                     CountryCode = "GB",
                     CountryName = "United Kingdom",
-                    StateOrProvince = "NY"
+                    StateOrProvince = "NY",
                 },
                 Origin = "https://example.com",
                 RedirectUrl = "https://example.com",
@@ -166,10 +166,10 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
                     City = "London",
                     CountryCode = "GB",
                     CountryName = "United Kingdom",
-                    StateOrProvince = "NY"
+                    StateOrProvince = "NY",
                 },
                 HasFlexiTickets = true,
-                PaymentType = PaymentType.Card
+                PaymentType = PaymentType.Card,
             };
 
             var exception = Assert.Catch<ApiException>(() =>
@@ -192,7 +192,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var parameters = new ConfirmBookingParameters
             {
                 ChannelId = agentChannel,
-                PaymentId = "agent_payment"
+                PaymentId = "agent_payment",
             };
 
             var result = service.ConfirmBooking(agentId, agentPassword, reference, parameters);
@@ -207,7 +207,7 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
             var parameters = new ConfirmBookingParameters
             {
                 ChannelId = configuration["Checkout:TestChannelId"],
-                PaymentId = configuration["Checkout:TestPaymentId"]
+                PaymentId = configuration["Checkout:TestPaymentId"],
             };
 
             var result = service.ConfirmBooking(reference, parameters);
@@ -268,8 +268,8 @@ namespace EncoreTickets.SDK.Tests.IntegrationTests
 
         private (string agentId, string agentPassword, string agentChannel) GetAgentInfoFromConfig()
         {
-            var agentId = configuration ["Checkout:TestAgentId"];
-            var agentPassword = configuration ["Checkout:TestAgentPassword"];
+            var agentId = configuration["Checkout:TestAgentId"];
+            var agentPassword = configuration["Checkout:TestAgentPassword"];
             var channelId = configuration["Checkout:TestAgentChannelId"];
             return (agentId, agentPassword, channelId);
         }

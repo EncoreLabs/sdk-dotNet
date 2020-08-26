@@ -41,7 +41,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item1 = new TreeItem(1, -1);
             var item2 = new TreeItem(2, 1);
 
-            var result = ReadOnlyTree<int, TreeItem>.BuildAllTrees(new[] {item1, item2}, item => item.Id, item => item.ParentId.Value).Single();
+            var result = ReadOnlyTree<int, TreeItem>.BuildAllTrees(new[] { item1, item2 }, item => item.Id, item => item.ParentId.Value).Single();
 
             AssertExtension.AreObjectsValuesEqual(item1, result.Item);
         }
@@ -69,7 +69,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var item3 = new TreeItem(2, -1);
 
             var result = ReadOnlyTree<int?, TreeItem>
-                .BuildAllTrees(new[] {item1, item2, item3}, item => item.Id, item => item.ParentId)
+                .BuildAllTrees(new[] { item1, item2, item3 }, item => item.Id, item => item.ParentId)
                 .ToList();
 
             Assert.AreEqual(1, result.Count);
@@ -103,22 +103,22 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.DataStructures
             var tree1Level2Item1 = new TreeItem(8, 4);
             var setupList = new List<TreeItem>
             {
-                tree1Parent, tree2Parent, tree1Level1Item1, tree1Level1Item2, tree1Level1Item3, tree2Level1Item1, tree2Level1Item2, tree1Level2Item1
+                tree1Parent, tree2Parent, tree1Level1Item1, tree1Level1Item2, tree1Level1Item3, tree2Level1Item1, tree2Level1Item2, tree1Level2Item1,
             };
             var expectedTraversalList = new List<TreeItem>
             {
                 tree1Parent,
-                    tree1Level1Item1,
-                    tree1Level1Item2,
-                        tree1Level2Item1,
-                    tree1Level1Item3,
+                tree1Level1Item1,
+                tree1Level1Item2,
+                tree1Level2Item1,
+                tree1Level1Item3,
                 tree2Parent,
-                    tree2Level1Item1,
-                    tree2Level1Item2
+                tree2Level1Item1,
+                tree2Level1Item2,
             };
             var expectedParents = new List<TreeItem>
             {
-                tree1Parent, tree2Parent
+                tree1Parent, tree2Parent,
             };
             return (setupList, expectedTraversalList, expectedParents);
         }

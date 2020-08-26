@@ -9,7 +9,7 @@ namespace EncoreTickets.SDK.Aws.Utilities
             var options = new CredentialProfileOptions
             {
                 AccessKey = accessKey,
-                SecretKey = secretKey
+                SecretKey = secretKey,
             };
             var profile = new CredentialProfile(profileName, options);
             var credentialsFile = CreateCredentialProfileStore();

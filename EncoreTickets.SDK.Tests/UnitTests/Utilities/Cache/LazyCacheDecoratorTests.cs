@@ -38,11 +38,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             var key = GetRandomKey();
             var factoryCalled = false;
 
-            var actual = cache.AddOrGetExisting<object>(key, () =>
-            {
-                factoryCalled = true;
-                return default;
-            }, null);
+            var actual = cache.AddOrGetExisting<object>(
+                key,
+                () =>
+                {
+                    factoryCalled = true;
+                    return default;
+                },
+                null);
 
             Assert.IsTrue(factoryCalled);
             Assert.True(cache.Contains(key));
@@ -55,11 +58,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             var key = GetRandomKey();
             var factoryCalled = false;
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return data;
-            }, null);
+            var actual = cache.AddOrGetExisting(
+                key,
+                () =>
+                {
+                    factoryCalled = true;
+                    return data;
+                },
+                null);
 
             Assert.IsTrue(factoryCalled);
             Assert.True(cache.Contains(key));
@@ -73,11 +79,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             var factoryCalled = false;
             var lifeTime = new TimeSpan(0, 0, 0, 0, 100);
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return data;
-            }, lifeTime);
+            var actual = cache.AddOrGetExisting(
+                key,
+                () =>
+                {
+                    factoryCalled = true;
+                    return data;
+                },
+                lifeTime);
 
             Assert.IsTrue(factoryCalled);
             Assert.True(cache.Contains(key));
@@ -95,11 +104,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
             cache.Set(key, () => instance1, null);
             var instance2 = new object();
 
-            var actual = cache.AddOrGetExisting(key, () =>
-            {
-                factoryCalled = true;
-                return instance2;
-            }, null);
+            var actual = cache.AddOrGetExisting(
+                key,
+                () =>
+                {
+                    factoryCalled = true;
+                    return instance2;
+                },
+                null);
 
             Assert.IsFalse(factoryCalled);
             Assert.AreEqual(instance1, actual);
@@ -116,11 +128,14 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
 
             Assert.Throws<InvalidCastException>(() =>
             {
-                var result = cache.AddOrGetExisting(key, () =>
-                {
-                    factoryCalled = true;
-                    return intInstance;
-                }, null);
+                var result = cache.AddOrGetExisting(
+                    key,
+                    () =>
+                    {
+                        factoryCalled = true;
+                        return intInstance;
+                    },
+                    null);
             });
             Assert.IsFalse(factoryCalled);
         }
@@ -338,15 +353,15 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.Cache
         private static string GetRandomKey() => Guid.NewGuid().ToString();
     }
 
-    public static class LazyCacheDecoratorTestsSource
+    internal static class LazyCacheDecoratorTestsSource
     {
-        public static IEnumerable<TestCaseData> TestCasesWithNotNullData = new[]
+        public static IEnumerable<TestCaseData> TestCasesWithNotNullData { get; } = new[]
         {
             new TestCaseData("1730"),
             new TestCaseData(4),
             new TestCaseData(1.2),
             new TestCaseData("Success"),
-            new TestCaseData(new List<string> {"a", "b", "c"})
+            new TestCaseData(new List<string> { "a", "b", "c" }),
         };
     }
 }

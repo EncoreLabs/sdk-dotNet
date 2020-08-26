@@ -32,7 +32,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Utilities.BusinessHelpers
         [TestCase(10, 2, 1000)]
         [TestCase(1, 3, 1000)]
         [TestCase(0.1, 4, 1000)]
-        [TestCase( 0.001, 6, 1000)]
+        [TestCase(0.001, 6, 1000)]
         [TestCase(10, null, 1000)]
         [TestCase(1000, 0, 1000)]
         [TestCase(-10, 2, -1000)]

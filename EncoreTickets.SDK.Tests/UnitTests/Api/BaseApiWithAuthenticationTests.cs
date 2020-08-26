@@ -15,7 +15,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
     {
         public override int? ApiVersion { get; }
 
-        public BaseApiWithAuthenticationTests() : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
+        public BaseApiWithAuthenticationTests()
+            : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
         {
         }
 
@@ -51,19 +52,20 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             Context = new ApiContext
             {
-                AuthenticationMethod = AuthenticationMethod.Basic
+                AuthenticationMethod = AuthenticationMethod.Basic,
             };
             var basicService = AuthenticationService;
             Context = new ApiContext
             {
-                AuthenticationMethod = AuthenticationMethod.JWT
+                AuthenticationMethod = AuthenticationMethod.JWT,
             };
             var jwtService = AuthenticationService;
 
             Assert.AreNotEqual(basicService, jwtService);
         }
 
-        [TestCaseSource(typeof(BaseApiWithAuthenticationTestsSource),
+        [TestCaseSource(
+            typeof(BaseApiWithAuthenticationTestsSource),
             nameof(BaseApiWithAuthenticationTestsSource.GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService))]
         public void GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService(ApiContext context, Type expectedType)
         {
@@ -78,7 +80,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         {
             var context = new ApiContext
             {
-                AuthenticationMethod = authenticationMethod
+                AuthenticationMethod = authenticationMethod,
             };
 
             var actual = GetAuthenticationService(context);
@@ -87,7 +89,7 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         }
     }
 
-    public class BaseApiWithAuthenticationTestsWithMockers : BaseApiWithAuthentication
+    internal class BaseApiWithAuthenticationTestsWithMockers : BaseApiWithAuthentication
     {
         private readonly Mock<IAuthenticationService> authenticationServiceMocker;
 
@@ -95,7 +97,8 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
 
         public override IAuthenticationService AuthenticationService => authenticationServiceMocker.Object;
 
-        public BaseApiWithAuthenticationTestsWithMockers() : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
+        public BaseApiWithAuthenticationTestsWithMockers()
+            : base(new ApiContext(Environments.Sandbox), BaseApiWithAuthenticationTestsSource.TestHost)
         {
             authenticationServiceMocker = new Mock<IAuthenticationService>();
         }
@@ -123,34 +126,30 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api
         }
     }
 
-    public static class BaseApiWithAuthenticationTestsSource
+    internal static class BaseApiWithAuthenticationTestsSource
     {
         public static readonly string TestHost = "venue-service.{0}tixuk.io/api/";
 
-        public static IEnumerable<TestCaseData> GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService = new[]
+        public static IEnumerable<TestCaseData> GetAuthenticationService_IfCorrespondingAuthServiceExists_ReturnsCorrectAuthenticationService { get; } = new[]
         {
             new TestCaseData(
                 new ApiContext(Environments.Production),
-                typeof(PredefinedJwtAuthenticationService)
-            ),
+                typeof(PredefinedJwtAuthenticationService)),
             new TestCaseData(
                 new ApiContext(),
-                typeof(PredefinedJwtAuthenticationService)
-            ),
+                typeof(PredefinedJwtAuthenticationService)),
             new TestCaseData(
                 new ApiContext
                 {
-                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT
+                    AuthenticationMethod = AuthenticationMethod.PredefinedJWT,
                 },
-                typeof(PredefinedJwtAuthenticationService)
-            ),
+                typeof(PredefinedJwtAuthenticationService)),
             new TestCaseData(
                 new ApiContext
                 {
-                    AuthenticationMethod = AuthenticationMethod.JWT
+                    AuthenticationMethod = AuthenticationMethod.JWT,
                 },
-                typeof(JwtAuthenticationService)
-            ),
+                typeof(JwtAuthenticationService)),
         };
     }
 }

@@ -11,7 +11,7 @@
         /// Gets or sets payment type.
         /// </summary>
         public string PaymentType { get; set; }
-        
+
         public BookingQueryParameters(BookingParameters parameters)
         {
             DeliveryMethod = GetDeliveryMethod(parameters.DeliveryMethod);

@@ -8,11 +8,13 @@ namespace EncoreTickets.SDK.Utilities.Exceptions
         {
         }
 
-        public CurrenciesDontMatchException(string message) : base(message)
+        public CurrenciesDontMatchException(string message)
+            : base(message)
         {
         }
 
-        public CurrenciesDontMatchException(string message, Exception innerException) : base(message, innerException)
+        public CurrenciesDontMatchException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

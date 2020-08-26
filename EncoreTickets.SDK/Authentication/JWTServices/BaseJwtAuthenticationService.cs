@@ -10,10 +10,10 @@ namespace EncoreTickets.SDK.Authentication.JWTServices
     /// </summary>
     public abstract class BaseJwtAuthenticationService : BaseApi, IAuthenticationService
     {
-        protected readonly string Endpoint;
-
         /// <inheritdoc/>
         public override int? ApiVersion => null;
+
+        protected string Endpoint { get; }
 
         protected BaseJwtAuthenticationService(ApiContext context, string host, string loginEndpoint)
             : base(context, host)

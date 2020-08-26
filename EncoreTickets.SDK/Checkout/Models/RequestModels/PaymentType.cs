@@ -7,6 +7,6 @@
         Paypal,
         Account,
         Alipay,
-        Wechatpay
+        Wechatpay,
     }
 }

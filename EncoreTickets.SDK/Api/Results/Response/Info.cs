@@ -1,7 +1,7 @@
 ﻿namespace EncoreTickets.SDK.Api.Results.Response
 {
     /// <summary>
-    /// The model for API infos returned in a <see cref="Context"/>
+    /// The model for API infos returned in a <see cref="Context"/>.
     /// </summary>
     public class Info
     {

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using EncoreTickets.SDK.Utilities.CommonModels;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace EncoreTickets.SDK.Payment.Models
 {
     /// <summary>
-    /// Stores payment details
+    /// Stores payment details.
     /// </summary>
     public class Payment : IEntityWithStatus
     {

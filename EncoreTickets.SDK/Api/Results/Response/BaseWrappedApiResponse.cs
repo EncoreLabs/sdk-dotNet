@@ -6,8 +6,6 @@
     /// <typeparam name="TResponse">The type of data in "response" section.</typeparam>
     /// <typeparam name="TData">The type of requested data.</typeparam>
     public abstract class BaseWrappedApiResponse<TResponse, TData>
-        where TResponse : class
-        where TData : class
     {
         /// <summary>
         /// Gets unwrapped response data.

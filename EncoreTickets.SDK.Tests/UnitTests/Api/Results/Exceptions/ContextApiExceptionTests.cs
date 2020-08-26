@@ -63,10 +63,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         }
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Errors_ReturnsExpectedValue))]
-        public void Errors_ReturnsExpectedValue(IEnumerable<Info> infosAsErrors, IRestResponse response,
-            Context context, List<string> expected)
+        public void Errors_ReturnsExpectedValue(
+            IEnumerable<Info> infosAsErrors,
+            IRestResponse response,
+            Context context,
+            List<string> expected)
         {
-            var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
+            var exception = new ContextApiException(
+                infosAsErrors,
+                response,
+                It.IsAny<ApiContext>(),
+                context,
                 It.IsAny<Request>());
 
             var actual = exception.Errors;
@@ -75,10 +82,16 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         }
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Message_IfErrorsDoesNotExist_ReturnsDefaultMessage))]
-        public void Message_IfErrorsDoesNotExist_ReturnsDefaultMessage(IEnumerable<Info> infosAsErrors, IRestResponse response,
+        public void Message_IfErrorsDoesNotExist_ReturnsDefaultMessage(
+            IEnumerable<Info> infosAsErrors,
+            IRestResponse response,
             Context context)
         {
-            var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
+            var exception = new ContextApiException(
+                infosAsErrors,
+                response,
+                It.IsAny<ApiContext>(),
+                context,
                 It.IsAny<Request>());
 
             var actual = exception.Message;
@@ -87,10 +100,17 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         }
 
         [TestCaseSource(typeof(ContextApiExceptionTestsSource), nameof(ContextApiExceptionTestsSource.Message_IfErrorsExists_ReturnsExpectedValue))]
-        public void Message_IfErrorsExists_ReturnsExpectedValue(IEnumerable<Info> infosAsErrors, IRestResponse response,
-            Context context, string expected)
+        public void Message_IfErrorsExists_ReturnsExpectedValue(
+            IEnumerable<Info> infosAsErrors,
+            IRestResponse response,
+            Context context,
+            string expected)
         {
-            var exception = new ContextApiException(infosAsErrors, response, It.IsAny<ApiContext>(), context,
+            var exception = new ContextApiException(
+                infosAsErrors,
+                response,
+                It.IsAny<ApiContext>(),
+                context,
                 It.IsAny<Request>());
 
             var actual = exception.Message;
@@ -99,146 +119,130 @@ namespace EncoreTickets.SDK.Tests.UnitTests.Api.Results.Exceptions
         }
     }
 
-    public static class ContextApiExceptionTestsSource
+    internal static class ContextApiExceptionTestsSource
     {
-        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Errors_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 null,
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                null
-            ),
+                null),
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                null
-            ),
+                null),
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info()
-                },
-                It.IsAny<IRestResponse>(),
-                It.IsAny<Context>(),
-                null
-            ),
-            new TestCaseData(
-                new List<Info>
-                {
-                    new Info {Message = "Some info"}
-                },
-                It.IsAny<IRestResponse>(),
-                It.IsAny<Context>(),
-                new List<string> {"Some info"}
-            ),
-            new TestCaseData(
-                new List<Info>
-                {
-                    new Info {Code = "validation_error"}
-                },
-                It.IsAny<IRestResponse>(),
-                It.IsAny<Context>(),
-                new List<string> {"validation_error"}
-            ),
-            new TestCaseData(
-                new List<Info>
-                {
-                    new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
-                },
-                It.IsAny<IRestResponse>(),
-                It.IsAny<Context>(),
-                new List<string> {"Validation error"}
-            ),
-            new TestCaseData(
-                new List<Info>
-                {
-                    new Info {Message = "Some info"},
-                    new Info {Code = "validation_error"},
                     new Info(),
-                    new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                new List<string> {"Some info", "validation_error", "Validation error"}
-            ),
+                null),
+            new TestCaseData(
+                new List<Info>
+                {
+                    new Info { Message = "Some info" },
+                },
+                It.IsAny<IRestResponse>(),
+                It.IsAny<Context>(),
+                new List<string> { "Some info" }),
+            new TestCaseData(
+                new List<Info>
+                {
+                    new Info { Code = "validation_error" },
+                },
+                It.IsAny<IRestResponse>(),
+                It.IsAny<Context>(),
+                new List<string> { "validation_error" }),
+            new TestCaseData(
+                new List<Info>
+                {
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
+                },
+                It.IsAny<IRestResponse>(),
+                It.IsAny<Context>(),
+                new List<string> { "Validation error" }),
+            new TestCaseData(
+                new List<Info>
+                {
+                    new Info { Message = "Some info" },
+                    new Info { Code = "validation_error" },
+                    new Info(),
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
+                },
+                It.IsAny<IRestResponse>(),
+                It.IsAny<Context>(),
+                new List<string> { "Some info", "validation_error", "Validation error" }),
             new TestCaseData(
                 null,
-                new RestResponse {StatusDescription = "OK"},
-                new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}},
-                null
-            ),
+                new RestResponse { StatusDescription = "OK" },
+                new Context { Errors = new List<Error> { new Error { Message = "ERROR" } } },
+                null),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfErrorsDoesNotExist_ReturnsDefaultMessage = new[]
+        public static IEnumerable<TestCaseData> Message_IfErrorsDoesNotExist_ReturnsDefaultMessage { get; } = new[]
         {
             new TestCaseData(
                 null,
                 It.IsAny<IRestResponse>(),
-                It.IsAny<Context>()
-            ),
+                It.IsAny<Context>()),
             new TestCaseData(
                 new List<Info>(),
                 It.IsAny<IRestResponse>(),
-                It.IsAny<Context>()
-            ),
+                It.IsAny<Context>()),
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info()
+                    new Info(),
                 },
                 It.IsAny<IRestResponse>(),
-                It.IsAny<Context>()
-            ),
+                It.IsAny<Context>()),
             new TestCaseData(
                 null,
-                new RestResponse {StatusDescription = "OK"},
-                new Context {Errors = new List<Error> {new Error {Message = "ERROR"}}}
-            ),
+                new RestResponse { StatusDescription = "OK" },
+                new Context { Errors = new List<Error> { new Error { Message = "ERROR" } } }),
         };
 
-        public static IEnumerable<TestCaseData> Message_IfErrorsExists_ReturnsExpectedValue = new[]
+        public static IEnumerable<TestCaseData> Message_IfErrorsExists_ReturnsExpectedValue { get; } = new[]
         {
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info {Message = "Some info"}
+                    new Info { Message = "Some info" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                "Some info"
-            ),
+                "Some info"),
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info {Code = "validation_error"}
+                    new Info { Code = "validation_error" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                "validation_error"
-            ),
+                "validation_error"),
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                "Validation error"
-            ) ,
+                "Validation error"),
             new TestCaseData(
                 new List<Info>
                 {
-                    new Info {Message = "Some info"},
-                    new Info {Code = "validation_error"},
+                    new Info { Message = "Some info" },
+                    new Info { Code = "validation_error" },
                     new Info(),
-                    new Info {Message = "Validation error", Code = "validation_error", Type = "information"}
+                    new Info { Message = "Validation error", Code = "validation_error", Type = "information" },
                 },
                 It.IsAny<IRestResponse>(),
                 It.IsAny<Context>(),
-                "Some info\r\nvalidation_error\r\nValidation error"
-            ),
+                "Some info\r\nvalidation_error\r\nValidation error"),
         };
     }
 }
